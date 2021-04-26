@@ -42,6 +42,14 @@ public class MarvinTab extends JPanel {
     //unused textarea.
     private JTextArea textare = new JTextArea(10, 50);
 
+
+	/**
+	 * allows lazy initialization
+	 */
+	private static MarvinTab instance;
+	private JPanel sketchPanel;
+	private JPanel mainPanel;
+
     /**
      * construct the front-end JPanel for the main MarvinSketch application.
      * by creating and arranging the other components created by the methods
@@ -51,16 +59,21 @@ public class MarvinTab extends JPanel {
      */
     public JPanel createMainPanel() {
         //main panel for application. contains topPanel.
-        JPanel mainPanel = new JPanel();
 
         //top panel. contains sketchpanel.
-        JPanel topPanel = new JPanel();
-
+        JPanel topPanel = new JPanel() {
+            public void setVisible(boolean tf) {
+            	getSketchPane();
+            }
+        };
+        
         //sketchPanel. contains marvinPane.
-        JPanel sketchPanel = new JPanel();
-
-        marvinPane = createSketchPane();
-        sketchPanel.add(marvinPane);
+        sketchPanel = new JPanel();
+// BH 2021.04.26 -- lazy initialization of MarvinPane for SwingJS        
+//        marvinPane = createSketchPane();
+//        sketchPanel.add(marvinPane);
+    	instance = this; 
+        mainPanel = new JPanel();
 
         topPanel.add(sketchPanel);
 
@@ -107,6 +120,12 @@ public class MarvinTab extends JPanel {
      * @return returns the marvin sketch pane
      */
     public static MSketchPane getSketchPane() {
+    	// BH 2021.04.26 allows lazy instantiation of Marvin for SwingJS
+    	if (marvinPane == null) {
+            marvinPane = instance.createSketchPane();
+            instance.sketchPanel.add(marvinPane);
+            instance.mainPanel.validate();
+    	}
         return marvinPane;
     }
 }

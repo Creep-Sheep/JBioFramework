@@ -25,7 +25,10 @@ package main.java.MainWindows;
  */
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import main.java.Electro1D.Electrophoresis;
 import main.java.Electro2D.Electro2D;
@@ -47,6 +50,7 @@ public class JBioFrameworkMain extends JFrame {
     private MassSpecMain spectrometer;
     private MarvinTab marvin;
     /*private [NameOfClass] [user-created reference]*/
+	private JPanel marvinTab;
 
     /**
      * Main method for entire program.
@@ -77,9 +81,25 @@ public class JBioFrameworkMain extends JFrame {
         tabbedPane.addTab("Electro1D", new Electrophoresis());
         tabbedPane.addTab("Electro2D", new Electro2D());
         tabbedPane.addTab("Spectrometer", new MassSpecMain());
-        tabbedPane.addTab("Marvin Sketch", new MarvinTab().createMainPanel());
+        /**
+         * @j2sIgnore
+         */
+        {
+        	// BH 2021.04.26 for now, Marvin Sketch is just for Java
+        	// but lazy initialization could allow it also in JavaScript
+            tabbedPane.addTab("Marvin Sketch", marvinTab = new MarvinTab().createMainPanel());
+        	MarvinTab.getSketchPane();
+        }
         /*tabbedPane.addTab(["name (to be displayed)"], [object]);*/
+        tabbedPane.addChangeListener(new ChangeListener() {
 
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (tabbedPane.getSelectedComponent() == marvinTab)
+					MarvinTab.getSketchPane();
+			}
+        	
+        });
         //add tabbedPane to frame
         add(tabbedPane);
 
