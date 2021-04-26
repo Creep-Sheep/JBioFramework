@@ -69,7 +69,8 @@ public class Welcome extends JPanel {
      *
      * @return returns the head panel
      */
-    public JPanel mkHeadPanel() {
+    @SuppressWarnings("unused")
+	public JPanel mkHeadPanel() {
         JPanel headP = new JPanel(new GridBagLayout());
         GridBagConstraints con = new GridBagConstraints();
 
@@ -83,13 +84,9 @@ public class Welcome extends JPanel {
         JPanel subHeadP = new JPanel();
 
         //java takes in html-style formatting. This increases readbility and aesthetics.
-//        String s = "<html>JBioFramework (JBF) is a set of chemical separations simulations frequently used in " +
-//                "chemistry, biochemistry and proteomics research. It is written in the Java programming language and will " +
-//                "run on any and all systems that have the JVM installed. A copy of the source code is available " +
-//                "online on Github, or by clicking 'Contact Us' > 'Source Code'. Click on one of the tabs  " +
-//                "in the upper left to get started.";
-        
-        String s = "<html>JBioFramework (JBF) is a set of chemical separations simulations frequently used in " +
+        String s;
+        if (/** @j2sNative true || */false) {
+        	s = "<html>JBioFramework (JBF) is a set of chemical separations simulations frequently used in " +
                 "chemistry, biochemistry and proteomics research. "
                 + "<br>It is written in the Java programming language and will " +
                 "run on any and all systems that have the JVM installed. "
@@ -97,7 +94,13 @@ public class Welcome extends JPanel {
                 "online on Github, or by clicking 'Contact Us' > 'Source Code'. "
                 + "Click on one of the tabs  " +
                 "in the upper left to get started.";
-
+        } else {
+        	s = "<html>JBioFramework (JBF) is a set of chemical separations simulations frequently used in " +
+                    "chemistry, biochemistry and proteomics research. It is written in the Java programming language and will " +
+                    "run on any and all systems that have the JVM installed. A copy of the source code is available " +
+                    "online on Github, or by clicking 'Contact Us' > 'Source Code'. Click on one of the tabs  " +
+                    "in the upper left to get started.";
+        }
         String html1 = "<html><body style=\"width: ";
         String html2 = "px\">";
         JLabel head1 = new JLabel(html1 + "500" + html2 + s);
