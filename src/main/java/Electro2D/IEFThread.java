@@ -1,4 +1,10 @@
-package main.java.Electro2D;/*
+package main.java.Electro2D;
+
+import javajs.async.SwingJSUtils;
+import javajs.async.SwingJSUtils.StateHelper;
+import javajs.async.SwingJSUtils.StateMachine;
+
+/*
  * Copyright (C) 2013 Rochester Institute of Technology
  *
  * This program is free software; you can redistribute it and/or
@@ -67,37 +73,63 @@ public class IEFThread extends Thread {
      * the IEFProteins.
      */
 
-    public void run() {
+	private StateHelper stateHelper;
+
+	public void run() {
 
         // if the user has selected IEF animation
         if (go == true) {
 
             //get the current and final widths of the IEFProteins
-            double width = IEFProtein.returnTempWidth();
+            // BH not used double width = IEFProtein.returnTempWidth();
             double finalWidth = IEFProtein.returnWidth();
-
-
             if (IEFProtein.returnTempWidth() >= finalWidth) {
                 gel.drawIEF();
             }
+            
+//            //while the current width and the values of the background colors
+//            // are less than their final values, call the animateIEF method
+//            while (IEFProtein.returnTempWidth() <= finalWidth && GelCanvas.getBlue() >= 0 &&
+//                    GelCanvas.getGreen() >= 0 && GelCanvas.getRed() >=
+//                    0) {
+//                gel.animateIEF();
+//                try {
+//                    sleep((long) 250);
+//                } catch (Exception e) {
+//                    System.err.println("the error was " + e.getMessage());
+//                }
+//            }
+//            //display the pH markers along the gel
+//            gel.setreLine();
+//            gel.repaint();
+//            //change the value selected in the animationChooser
+//            electro2D.setSDS();
 
-            //while the current width and the values of the background colors
-            // are less than their final values, call the animateIEF method
-            while (IEFProtein.returnTempWidth() <= finalWidth && GelCanvas.getBlue() >= 0 &&
-                    GelCanvas.getGreen() >= 0 && GelCanvas.getRed() >=
-                    0) {
-                gel.animateIEF();
-                try {
-                    sleep((long) 250);
-                } catch (Exception e) {
-                    System.err.println("the error was " + e.getMessage());
-                }
-            }
-            //display the pH markers along the gel
-            gel.setreLine();
-            gel.repaint();
-            //change the value selected in the animationChooser
-            electro2D.setSDS();
+            stateHelper = new SwingJSUtils.StateHelper(new StateMachine() {
+
+            	@Override
+            	public boolean stateLoop() {
+            		if (stateHelper.isAlive()) {
+            			// while the current width and the values of the background colors
+            			// are less than their final values, call the animateIEF method
+            			if (IEFProtein.returnTempWidth() <= finalWidth && GelCanvas.getBlue() >= 0 && GelCanvas.getGreen() >= 0
+            					&& GelCanvas.getRed() >= 0) {
+            				gel.animateIEF();
+            				stateHelper.sleep(250);
+            			} else {
+            				// display the pH markers along the gel
+            				gel.setreLine();
+            				gel.repaint();
+            				// change the value selected in the animationChooser
+            				electro2D.setSDS();
+            			}
+            		}
+            		return false;
+            	}
+            	
+            });
+            stateHelper.next(0);
         }
     }
+
 } //Electro2D.IEFThread

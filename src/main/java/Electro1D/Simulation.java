@@ -14,7 +14,7 @@ import javajs.async.SwingJSUtils.StateMachine;
  * @author Bader AlHarbi
  * Simulation class to initiate the simulation panel GUI
  */
-public class Simulation extends JPanel implements Runnable, StateMachine {
+public class Simulation extends JPanel implements Runnable {
     private final int numOfStds = 7;
     Thread runner;
     Electrophoresis parent;
@@ -581,12 +581,44 @@ public class Simulation extends JPanel implements Runnable, StateMachine {
             stopRun();
     }
 
-    /**
-     * run the thread
-     */
-    public void run() {
-    	startAnimation();
-    }
+    private final static int SLEEP = 0;
+    private final static int PAINT = 1;
+
+	/**
+	 * run the thread
+	 */
+	public void run() {
+		Thread.currentThread().setPriority(1);
+		System.out.println(runner == Thread.currentThread());
+//          while (!stopAnimation) {
+//              try {
+//                  Thread.sleep(long) pause);
+//              } catch (InterruptedException e) {
+//              }
+//              repaint();
+//          }
+		stateHelper = new StateHelper(new StateMachine() {
+
+			@Override
+			public boolean stateLoop() {
+				if (stateHelper.isAlive() && !stopAnimation) {
+					switch (stateHelper.getState()) {
+					case SLEEP:
+						stateHelper.setState(PAINT);
+						stateHelper.sleep(pause);
+						break;
+					case PAINT:
+						repaint();
+						stateHelper.next(SLEEP);
+						break;
+					}
+				}
+				return false;
+			}
+
+		});
+		stateHelper.next(SLEEP);
+	}
 
     /**
      * change the standardized proteins loading status (per each simulation )
@@ -738,36 +770,4 @@ public class Simulation extends JPanel implements Runnable, StateMachine {
 
     // javajs.async.SwingJSUtils.StateMachine
     
-    private void startAnimation() {
-        Thread.currentThread().setPriority(1);
-//      while (!stopAnimation) {
-//          try {
-//              Thread.sleep(long) pause);
-//          } catch (InterruptedException e) {
-//          }
-//          repaint();
-//      }
-    	stateHelper = new StateHelper(this);
-        stateHelper.next(SLEEP);
-    }
-
-    private final static int SLEEP = 0;
-    private final static int PAINT = 1;
-    
-    @Override
-	public boolean stateLoop() {
-		if (stateHelper.isAlive() && !stopAnimation) {
-		  switch (stateHelper.getState()) {
-		  case SLEEP:
-			  stateHelper.setState(PAINT);
-			  stateHelper.sleep(pause);
-			  break;
-		  case PAINT:
-	          repaint();
-			  stateHelper.next(SLEEP);
-			  break;
-		  }
-		}
-		return false;
-	}
 }
