@@ -259,7 +259,7 @@ public class GenomeFileParser {
      * @param data      user-inputted file data
      * @param fileNum the file number
      */
-    public static void pdbParse(String theFile, Electro2D electro2D,
+    public static int pdbParse(String theFile, Electro2D electro2D,
                                 String data, int fileNum) {
         //error in reading file?
         boolean anerror = false;
@@ -689,8 +689,8 @@ public class GenomeFileParser {
         } catch (IOException e) {
         }
 
-        Preprocessor p = new Preprocessor(electro2D);
-        p.writeToFile();
+        Preprocessor.process(electro2D);
+        return sequences.size();
     }
 
     /**
@@ -702,7 +702,7 @@ public class GenomeFileParser {
      * @param electro2D electro2D reference
      * @param data the data
      */
-    public static void fastaParse(String theFile, Electro2D electro2D,
+    public static int fastaParse(String theFile, Electro2D electro2D,
                                   String data, int fileNum) {
 
         //was there an error in file reading?
@@ -901,16 +901,15 @@ public class GenomeFileParser {
         } catch (IOException e) {
         }
 
-        Preprocessor p = new Preprocessor(electro2D);
-        p.writeToFile();
-
+        Preprocessor.process(electro2D);
+        return sequences.size();
     }
 
     /**
      * This method parses a .gbk file, extracting sequence information and
      * appropriate descriptor for the sequence.
      *
-     * @return 0 on success, 1 on error
+     * @return n on success, 0 on error
      *
      * @param data the data
      * @param fileNum the file number
@@ -1013,7 +1012,7 @@ public class GenomeFileParser {
                             if (x < fileData.size()) {
                                 temp = (String) fileData.elementAt(x);
                             } else {
-                                return 1; //error code
+                                return 0; //error code
                             }
                         }
                     }
@@ -1046,7 +1045,7 @@ public class GenomeFileParser {
                             if (x < fileData.size()) {
                                 temp = (String) fileData.elementAt(x);
                             } else {
-                                return 1; //error code
+                                return 0; //error code
                             }
                         }
                         //if the line is the function line then its contents are
@@ -1070,7 +1069,7 @@ public class GenomeFileParser {
                                     if (x < fileData.size()) {
                                         temp = (String) fileData.elementAt(x);
                                     } else {
-                                        return 1; //error code
+                                        return 0; //error code
                                     }
                                 }
                                 function = function + temp.substring(21,
@@ -1081,7 +1080,7 @@ public class GenomeFileParser {
                             if (x < fileData.size()) {
                                 temp = (String) fileData.elementAt(x);
                             } else {
-                                return 1; //error code
+                                return 0; //error code
                             }
                         }
                         //if the line is the section containing notes about the
@@ -1109,7 +1108,7 @@ public class GenomeFileParser {
                                     if (x < fileData.size()) {
                                         temp = (String) fileData.elementAt(x);
                                     } else {
-                                        return 1; //error code
+                                        return 0; //error code
                                     }
                                 }
                                 function = function + " " + temp.substring(21,
@@ -1120,7 +1119,7 @@ public class GenomeFileParser {
                             if (x < fileData.size()) {
                                 temp = (String) fileData.elementAt(x);
                             } else {
-                                return 1; //error code
+                                return 0; //error code
                             }
                         }
                         //if the line is the product information of the protein,
@@ -1143,7 +1142,7 @@ public class GenomeFileParser {
                                     if (x < fileData.size()) {
                                         temp = (String) fileData.elementAt(x);
                                     } else {
-                                        return 1;
+                                        return 0;
                                     }
                                 }
                                 function = function + " " + temp.substring(21,
@@ -1154,7 +1153,7 @@ public class GenomeFileParser {
                             if (x < fileData.size()) {
                                 temp = (String) fileData.elementAt(x);
                             } else {
-                                return 1; //error code
+                                return 0; //error code
                             }
                         }
 
@@ -1166,7 +1165,7 @@ public class GenomeFileParser {
                             } else {
                                 System.err.println("Error! Protein lacking " +
                                         "sequence.");
-                                return 1; //error code
+                                return 0; //error code
                             }
                         }
                     }
@@ -1189,7 +1188,7 @@ public class GenomeFileParser {
                             if (x < fileData.size()) {
                                 temp = (String) fileData.elementAt(x);
                             } else {
-                                return 1;
+                                return 0;
                             }
                         }
 
@@ -1289,10 +1288,8 @@ public class GenomeFileParser {
         // store the file name in Electro2D.Electro2D
         electro2D.setLastFileLoaded(theFile);
 
-        Preprocessor p = new Preprocessor(electro2D);
-        p.writeToFile();
-
-        return 0;
+        Preprocessor.process(electro2D);
+        return sequences.size();
     }
 
     /**
@@ -1303,7 +1300,7 @@ public class GenomeFileParser {
      * @param electro2D electro2D reference
      * @param fileNum the file number
      * @param theFile the file to be parsed
-     * @return 0 on success, 1 on error
+     * @return n on success, 0 on error
      */
     public static int e2dParse(String theFile, Electro2D electro2D, String data, int fileNum) {
         File f = new File("data" + File.separator + theFile);
@@ -1314,9 +1311,8 @@ public class GenomeFileParser {
         } catch (Exception e) {
             System.err.println("Error reading from file.  Double-check the file name and try again.");
         }
-        Preprocessor.readFromFile(in, electro2D, fileNum);
+        return Preprocessor.readFromFile(in, electro2D, fileNum);
         //	electro2D.setLastFileLoaded( theFile );
-        return 0;
     }
 
 

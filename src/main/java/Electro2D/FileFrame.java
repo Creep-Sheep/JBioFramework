@@ -151,27 +151,27 @@ public class FileFrame extends JFrame implements ActionListener {
                 error.setMessage("File extension is not valid.");
                 error.setVisible(true);
             } else {
-
+            	int n = 0;
                 //call the proper method to read the file depending on
                 // its type
                 if (extension.equalsIgnoreCase("faa") ||
                         extension.equalsIgnoreCase("fasta")) {
 
-                    GenomeFileParser.fastaParse(filename, electro2D, "", fileNum);
+                    n = GenomeFileParser.fastaParse(filename, electro2D, "", fileNum);
 
                 } else if (extension.equalsIgnoreCase("pdb")) {
 
-                    GenomeFileParser.pdbParse(filename, electro2D, "", fileNum);
+                    n = GenomeFileParser.pdbParse(filename, electro2D, "", fileNum);
 
                 } else if (extension.equalsIgnoreCase("gbk")) {
 
-                    GenomeFileParser.gbkParse(filename, electro2D, "", fileNum);
+                    n = GenomeFileParser.gbkParse(filename, electro2D, "", fileNum);
 
                 } else if (extension.equalsIgnoreCase("e2d")) {
-                    GenomeFileParser.e2dParse(filename, electro2D, "", fileNum);
+                    n = GenomeFileParser.e2dParse(filename, electro2D, "", fileNum);
                 }
 
-                JOptionPane.showMessageDialog(null, "Proteins loaded.");
+                JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");
 
             }
         }

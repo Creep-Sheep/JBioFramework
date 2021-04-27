@@ -58,7 +58,11 @@ public class Preprocessor {
     private int numEnzymes;
     private Electro2D electro2D;
 
-    public Preprocessor(Electro2D e) {
+	public static void process(Electro2D electro2D) {
+        new Preprocessor(electro2D).writeToFile();
+	}
+
+	private Preprocessor(Electro2D e) {
         sequence = e.getSequences();
         sequenceTitle = e.getSequenceTitles();
         molwts = e.getMolecularWeights();
@@ -67,71 +71,71 @@ public class Preprocessor {
         fileName = e.getLastFileLoaded();
     }
 
-    public void writeToFile() {
-        int length = 0;
-        String fcn = "";
-        String seq = "";
-        String tmp = fileName.substring(0, fileName.indexOf(".")) + "_" +
-                fileName.substring(
-                        fileName.indexOf(".") + 1);
-        File theFile = new File("data" + File.separator + tmp + EXTENTION);
-        PrintWriter out = null;
-        if (!theFile.exists()) {
-            try {
-                out = new PrintWriter(new BufferedWriter(
-                        new FileWriter(theFile)),
-                        true);
-            } catch (IOException e) {
-                System.err.println("Error writing to file");
-            }
-            out.println(FILE_HEADER + fileName);
-            out.println(LINE_SEPARATOR);
+	@SuppressWarnings("unused")
+	public void writeToFile() {
+		// BH no writing to files for JS
+		if (/** @j2sNative true || */false)
+			return;
+		// TODO BH Need use File.getTempFile() here.
+		int length = 0;
+		String fcn = "";
+		String seq = "";
+		String tmp = fileName.substring(0, fileName.indexOf(".")) + "_" + fileName.substring(fileName.indexOf(".") + 1);
+		File theFile = new File("data" + File.separator + tmp + EXTENTION);
+		System.out.println("Preprocessor creating " + theFile);
+		if (theFile.exists())
+			return;
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(new BufferedWriter(new FileWriter(theFile)), true);
+		} catch (IOException e) {
+			System.err.println("Error writing to file");
+			return;
+		}
+		out.println(FILE_HEADER + fileName);
+		out.println(LINE_SEPARATOR);
 
-            for (int i = 0; i < sequenceTitle.size(); i++) {
-                out.println(PROTTITLE_HEADER +
-                        (String) sequenceTitle.elementAt(i));
-                fcn = (String) functions.elementAt(i);
-                length = fcn.length();
-                while (length >= 0) {
-                    if (length <= lineLength) {
-                        out.println(FUNCTION_HEADER + fcn);
-                        length = -1;
-                    } else {
-                        out.println(FUNCTION_HEADER + fcn.substring(0,
-                                lineLength));
-                        fcn = fcn.substring(lineLength);
-                        length = length - lineLength;
-                    }
-                }
+		for (int i = 0; i < sequenceTitle.size(); i++) {
+			out.println(PROTTITLE_HEADER + (String) sequenceTitle.elementAt(i));
+			fcn = (String) functions.elementAt(i);
+			length = fcn.length();
+			while (length >= 0) {
+				if (length <= lineLength) {
+					out.println(FUNCTION_HEADER + fcn);
+					length = -1;
+				} else {
+					out.println(FUNCTION_HEADER + fcn.substring(0, lineLength));
+					fcn = fcn.substring(lineLength);
+					length = length - lineLength;
+				}
+			}
 
-                seq = (String) sequence.elementAt(i);
-                length = seq.length();
+			seq = (String) sequence.elementAt(i);
+			length = seq.length();
 
-                while (length >= 0) {
-                    if (length <= lineLength) {
-                        out.println(SEQUENCE_HEADER + seq);
-                        length = -1;
-                    } else {
-                        out.println(SEQUENCE_HEADER + seq.substring(0,
-                                lineLength));
-                        seq = seq.substring(lineLength);
-                        length = length - lineLength;
-                    }
-                }
+			while (length >= 0) {
+				if (length <= lineLength) {
+					out.println(SEQUENCE_HEADER + seq);
+					length = -1;
+				} else {
+					out.println(SEQUENCE_HEADER + seq.substring(0, lineLength));
+					seq = seq.substring(lineLength);
+					length = length - lineLength;
+				}
+			}
 
-                out.println(MOLWT_HEADER + (String) molwts.elementAt(i));
-                out.println(PIVAL_HEADER + (String) piVals.elementAt(i));
-                out.println(LINE_SEPARATOR);
-            }
-            out.close();
-        }
-    }
+			out.println(MOLWT_HEADER + (String) molwts.elementAt(i));
+			out.println(PIVAL_HEADER + (String) piVals.elementAt(i));
+			out.println(LINE_SEPARATOR);
+		}
+		out.close();
+	}
 
     public static int getHeaderLength() {
         return HEADER_LENGTH;
     }
 
-    public static void readFromFile(BufferedReader in, Electro2D electro2D,
+    public static int readFromFile(BufferedReader in, Electro2D electro2D,
                                     int fileNum) {
         int fileNameLoc = 0;
         int endofHeader = 1;
@@ -181,7 +185,7 @@ public class Preprocessor {
                         line = (String) fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
-                        return;
+                        return 0;
                     }
                 }
                 while (line.indexOf("FUNCTION:") != -1) {
@@ -191,7 +195,7 @@ public class Preprocessor {
                         line = (String) fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
-                        return;
+                        return 0;
                     }
                 }
                 while (line.indexOf("SEQUENCE:") != -1) {
@@ -201,7 +205,7 @@ public class Preprocessor {
                         line = (String) fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
-                        return;
+                        return 0;
                     }
                 }
                 if (line.indexOf("MOLWEIGHT:") != -1) {
@@ -218,7 +222,7 @@ public class Preprocessor {
                         line = (String) fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
-                        return;
+                        return 0;
                     }
                 }
                 if (line.indexOf("PIVAL:") != -1) {
@@ -261,5 +265,7 @@ public class Preprocessor {
             } catch (Exception e) {
             }
         }
+        return sequences.size();
     }
+
 }
