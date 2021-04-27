@@ -1,6 +1,15 @@
 package main.java.Ionex;
 
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javajs.async.SwingJSUtils;
+import javajs.async.SwingJSUtils.StateHelper;
+import javajs.async.SwingJSUtils.StateMachine;
 
 class ImageCanvas extends Canvas implements Runnable {
     final int COLLOY = 25;
@@ -25,6 +34,8 @@ class ImageCanvas extends Canvas implements Runnable {
     Point m_pLastDetect;
     double m_dTopConc;        // concentration entering column
     double m_dBottomConc;    // concentration leaving column
+	private StateHelper stateHelper;
+	private long startTime;
 
     public ImageCanvas(Ionex theExp) {
         m_theExp = theExp;
@@ -62,27 +73,50 @@ class ImageCanvas extends Canvas implements Runnable {
         //Just to be nice, lower this thread's priority
         //so it can't interfere with other processing going on.
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-
+        // BH cache this thread
+        Thread myThread = m_animator;
         //Remember the starting time.
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
 
-        //This is the animation loop.
-        while (Thread.currentThread() == m_animator) {
-            //Advance the animation frame.
-            animate();
+//        //This is the animation loop.
+//        while (Thread.currentThread() == m_animator) {
+//            //Advance the animation frame.
+//            animate();
+//
+//            //Display it.
+//            repaint();
+//
+//            //Delay depending on how far we are behind.
+//            try {
+//                startTime += delay;
+//                Thread.sleep(Math.max(0,
+//                        startTime - System.currentTimeMillis()));
+//            } catch (InterruptedException e) {
+//                break;
+//            }
+//        }
+        stateHelper = new SwingJSUtils.StateHelper(new StateMachine() {
 
-            //Display it.
-            repaint();
+			@Override
+			public boolean stateLoop() {
+				if (myThread == m_animator) {
+					// This is the animation loop.
+					// Advance the animation frame.
+					animate();
 
-            //Delay depending on how far we are behind.
-            try {
-                startTime += delay;
-                Thread.sleep(Math.max(0,
-                        startTime - System.currentTimeMillis()));
-            } catch (InterruptedException e) {
-                break;
-            }
-        }
+					// Display it.
+					repaint();
+
+					// Delay depending on how far we are behind.
+					startTime += delay;
+					// BH we use 1 not 0 for min, as 0 would not use setTimeout
+					stateHelper.sleep((int) Math.max(1, startTime - System.currentTimeMillis()));
+				}
+				return false;
+			}
+        	
+        });
+        stateHelper.next(0);
     }
 
     public void paint(Graphics g) {

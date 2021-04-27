@@ -26,7 +26,7 @@ import javajs.async.SwingJSUtils.StateMachine;
 /**
  * The type Plot.
  */
-public class Plot extends JPanel implements Runnable, StateMachine {
+public class Plot extends JPanel implements Runnable {
     private static Font plotFont = new Font("Courier New", 0, 10);
     Thread runner;
     int pause;
@@ -628,10 +628,6 @@ public class Plot extends JPanel implements Runnable, StateMachine {
         fitLineY2 = point.y;
     }
 
-    public void run() {
-    	startAnimation();
-    }
-    
     private void graphHorizLine(Graphics g) {
         if (graphHorizontalLine)
             g.drawLine(xPlot, userLineY, userLineX, userLineY);
@@ -646,7 +642,10 @@ public class Plot extends JPanel implements Runnable, StateMachine {
         harpPlayed = false;
     }
     
-    private void startAnimation() {
+    private final static int SLEEP = 0;
+    private final static int PAINT = 1;
+
+    public void run() {
         Thread.currentThread().setPriority(1);
 //      while (!stopAnimation) {
 //          try {
@@ -655,29 +654,27 @@ public class Plot extends JPanel implements Runnable, StateMachine {
 //          }
 //          repaint();
 //      }
-    	stateHelper = new StateHelper(this);
+    	stateHelper = new StateHelper(new StateMachine() {
+
+			@Override
+			public boolean stateLoop() {
+				if (stateHelper.isAlive() && !stopAnimation) {
+					switch (stateHelper.getState()) {
+					case SLEEP:
+						stateHelper.setState(PAINT);
+						stateHelper.sleep(pause);
+						break;
+					case PAINT:
+						repaint();
+						stateHelper.next(SLEEP);
+						break;
+					}
+				}
+				return false;
+			}
+    		
+    	});
         stateHelper.next(SLEEP);
     }
-
-    private final static int SLEEP = 0;
-    private final static int PAINT = 1;
-    
-    @Override
-	public boolean stateLoop() {
-		if (stateHelper.isAlive() && !stopAnimation) {
-		  switch (stateHelper.getState()) {
-		  case SLEEP:
-			  stateHelper.setState(PAINT);
-			  stateHelper.sleep(pause);
-			  break;
-		  case PAINT:
-	          repaint();
-			  stateHelper.next(SLEEP);
-			  break;
-		  }
-		}
-		return false;
-	}
-
 
 }

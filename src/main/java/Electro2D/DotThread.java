@@ -1,5 +1,9 @@
 package main.java.Electro2D;
 
+import javajs.async.SwingJSUtils;
+import javajs.async.SwingJSUtils.StateHelper;
+import javajs.async.SwingJSUtils.StateMachine;
+
 /**
  * Electro2D.DotThread is the thread controlling the second half of the 2DGE animation.
  *
@@ -7,10 +11,13 @@ package main.java.Electro2D;
  * @author Adam Bazinet
  */
 
-public class DotThread extends Thread {
+public class DotThread extends Thread implements StateMachine {
     private static boolean go = false;
     private GelCanvas gel;
     private Electro2D electro2D;
+	private StateHelper stateHelper;
+	private int loop_i;
+	private long tm;
 
     /**
      * Constructor
@@ -59,63 +66,70 @@ public class DotThread extends Thread {
      * calls to Electro2D.GelCanvas' genDots method while go is true.
      */
 
+    private final static int INIT = 0;
+    private final static int LOOP_IEF = 1;
+    private final static int LOOP_DOTS = 2;
+    
+    
     public void run() {
-        GelCanvas.stopBlink();
-        //send the percent acrylamide value to Electro2D.ProteinDot
-        ProteinDot.setPercent(electro2D.getLowPercent(),
-                electro2D.getHighPercent());
-
-        gel.resetReLine();
-        // while the IEFProteins are still visible...
-        while (IEFProtein.returnHeight() > 0) {
-            //...shrink them in size...
-            IEFProtein.shrinkProtein();
-            // ...and redraw them to the Electro2D.GelCanvas
-            gel.shrinkIEF();
-
-            // then wait for 100 milliseconds
-            try {
-                sleep((long) 100);
-            } catch (Exception exc) {
-                System.err.println("Exception was: " + exc.getMessage());
-            }
-        }
-
-        // Make the ProteinDots visible
-        if (ProteinDot.getShow() == false) {
-            ProteinDot.setShow();
-        }
-
-        int i = 0;
-        long tm = System.currentTimeMillis();
-        long newTm = 0;
-        // While the stop button or pause button has not been pressed...
-        while (go == true) {
-            // ...change the location of the dots and redraw them to
-            // the Electro2D.GelCanvas
-            gel.genDots();
-            newTm = System.currentTimeMillis();
-            if (newTm - tm >= 10000) {
-                stopDots();
-            }
-            // Then wait for 100 milliseconds
-            try {
-                sleep((long) 100);
-            } catch (Exception e) {
-                System.err.println("Exception was: " + e);
-            }
-            i = 1 + i;
-        }
-        try {
-            sleep((long) 100);
-        } catch (Exception e) {
-            System.err.println("Exception was: " + e);
-        }
-        gel.setreLine();
-        gel.setMWLines(i);
-        i = 0;
-        electro2D.resetPlay();
-        gel.paint(gel.getGraphic());
-        gel.repaint();
+    	stateHelper = new SwingJSUtils.StateHelper(this);
+    	stateHelper.next(INIT);
     }
+
+	@Override
+	public boolean stateLoop() {
+		if (stateHelper.isAlive()) {
+			switch (stateHelper.getState()) {
+			case INIT:
+				GelCanvas.stopBlink();
+				// send the percent acrylamide value to Electro2D.ProteinDot
+				ProteinDot.setPercent(electro2D.getLowPercent(), electro2D.getHighPercent());
+
+				gel.resetReLine();
+				stateHelper.next(LOOP_IEF);
+				break;
+			case LOOP_IEF:
+				// while the IEFProteins are still visible...
+				// LOOP_IEF
+				if (IEFProtein.returnHeight() > 0) {
+					// ...shrink them in size...
+					IEFProtein.shrinkProtein();
+					// ...and redraw them to the Electro2D.GelCanvas
+					gel.shrinkIEF();
+					// then wait for 100 milliseconds
+					stateHelper.sleep(100);
+					break;
+				}
+				// Make the ProteinDots visible
+				if (ProteinDot.getShow() == false) {
+					ProteinDot.setShow();
+				}
+				loop_i = 0;
+				tm = System.currentTimeMillis();
+				stateHelper.next(LOOP_DOTS);
+				break;
+			case LOOP_DOTS:
+				// While the stop button or pause button has not been pressed...
+				if (go) {
+					// ...change the location of the dots and redraw them to
+					// the Electro2D.GelCanvas
+					gel.genDots();
+					if (System.currentTimeMillis() - tm >= 10000) {
+						stopDots();
+					}
+					loop_i = 1 + loop_i;
+					stateHelper.sleep(100);
+					break;
+				}
+				gel.setreLine();
+				gel.setMWLines(loop_i);
+				loop_i = 0;
+				electro2D.resetPlay();
+				gel.paint(gel.getGraphic());
+				gel.repaint();
+				break;
+			}
+		}
+		return false;
+	}
 }
