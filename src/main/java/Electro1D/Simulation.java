@@ -767,7 +767,4 @@ public class Simulation extends JPanel implements Runnable {
         }
 
     }
-
-    // javajs.async.SwingJSUtils.StateMachine
-    
 }
