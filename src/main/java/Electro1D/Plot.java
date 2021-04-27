@@ -20,11 +20,14 @@ import java.text.DecimalFormat;
 
 import javax.swing.JPanel;
 
+import javajs.async.SwingJSUtils.StateHelper;
+import javajs.async.SwingJSUtils.StateMachine;
+
 /**
  * The type Plot.
  */
-public class Plot extends JPanel implements Runnable {
-    Font plotFont;
+public class Plot extends JPanel implements Runnable, StateMachine {
+    private static Font plotFont = new Font("Courier New", 0, 10);
     Thread runner;
     int pause;
     Electrophoresis parent;
@@ -109,6 +112,7 @@ public class Plot extends JPanel implements Runnable {
     protected int fitLineY2;
     protected double errorMargin;
     protected DecimalFormat twoDigits;
+	private StateHelper stateHelper;
 
     Plot(Electrophoresis electrophoresis) {
         pause = 20;
@@ -417,10 +421,11 @@ public class Plot extends JPanel implements Runnable {
 
     private void showLgMW(Graphics g) {
         if (showLogMW) {
-            plotFont = new Font("Courier New", 0, 10);
-            g.setFont(plotFont);
-            g.drawString(twoDigits.format(logMw), xArray[leftGridCol]
+        	Graphics g1 = g.create();
+            g1.setFont(plotFont);
+            g1.drawString(twoDigits.format(logMw), xArray[leftGridCol]
                     + charHalfWidth, userLineY);
+            g1.dispose();
         }
     }
 
@@ -624,17 +629,9 @@ public class Plot extends JPanel implements Runnable {
     }
 
     public void run() {
-        Thread.currentThread().setPriority(1);
-        while (!stopAnimation) {
-            try {
-                Thread.sleep((long) pause);
-            } catch (InterruptedException e) {
-                System.out.println("thread interrupted");
-            }
-            repaint();
-        }
+    	startAnimation();
     }
-
+    
     private void graphHorizLine(Graphics g) {
         if (graphHorizontalLine)
             g.drawLine(xPlot, userLineY, userLineX, userLineY);
@@ -648,4 +645,39 @@ public class Plot extends JPanel implements Runnable {
         Played = false;
         harpPlayed = false;
     }
+    
+    private void startAnimation() {
+        Thread.currentThread().setPriority(1);
+//      while (!stopAnimation) {
+//          try {
+//              Thread.sleep(long) pause);
+//          } catch (InterruptedException e) {
+//          }
+//          repaint();
+//      }
+    	stateHelper = new StateHelper(this);
+        stateHelper.next(SLEEP);
+    }
+
+    private final static int SLEEP = 0;
+    private final static int PAINT = 1;
+    
+    @Override
+	public boolean stateLoop() {
+		if (stateHelper.isAlive() && !stopAnimation) {
+		  switch (stateHelper.getState()) {
+		  case SLEEP:
+			  stateHelper.setState(PAINT);
+			  stateHelper.sleep(pause);
+			  break;
+		  case PAINT:
+	          repaint();
+			  stateHelper.next(SLEEP);
+			  break;
+		  }
+		}
+		return false;
+	}
+
+
 }
