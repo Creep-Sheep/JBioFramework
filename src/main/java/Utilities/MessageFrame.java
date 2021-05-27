@@ -44,6 +44,7 @@ public class MessageFrame extends JFrame {
     private JLabel label;              //label to display message on
     private String theMessage = "";      //message to display to user
 
+    
     /**
      * construct and display a simple GUI
      */
@@ -51,7 +52,6 @@ public class MessageFrame extends JFrame {
 
         //set the title to Alert
         super("Alert");
-
         //initialize components
         panel = new JPanel();          //init components
         //position the message label to be centered in the frame

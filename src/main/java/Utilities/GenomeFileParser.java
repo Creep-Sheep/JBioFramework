@@ -259,8 +259,9 @@ public class GenomeFileParser {
      * @param data      user-inputted file data
      * @param fileNum the file number
      */
-    public static int pdbParse(String theFile, Electro2D electro2D,
+    public static int pdbParse(File f, Electro2D electro2D,
                                 String data, int fileNum) {
+    	String theFile = f.getName();
         //error in reading file?
         boolean anerror = false;
 
@@ -304,7 +305,7 @@ public class GenomeFileParser {
 
         if (data == null || data.equals("")) {  //read from server
             try {
-                File f = new File("data" + File.separator + theFile);
+//                File f = new File("data" + File.separator + theFile);
                 in = new BufferedReader
                         (new InputStreamReader(f.toURL().openStream()));
                 String temp1;
@@ -525,7 +526,7 @@ public class GenomeFileParser {
 
             try {
                 //read in aminoconversiontable
-                File f = new File("./aminoconversiontable.txt");
+                f = new File("./aminoconversiontable.txt");
                 in = new BufferedReader(new InputStreamReader(
                         f.toURL().openStream()));
 
@@ -702,9 +703,9 @@ public class GenomeFileParser {
      * @param electro2D electro2D reference
      * @param data the data
      */
-    public static int fastaParse(String theFile, Electro2D electro2D,
+    public static int fastaParse(File f, Electro2D electro2D,
                                   String data, int fileNum) {
-
+    	String theFile = f.getName();
         //was there an error in file reading?
         boolean anerror = false;
 
@@ -739,7 +740,6 @@ public class GenomeFileParser {
         if (data == null || data.equals("")) {  //read from server
 
             try {
-                File f = new File("data" + File.separator + theFile);
                 in = new BufferedReader
                         (new InputStreamReader(f.toURL().openStream()));
                 String temp1;
@@ -916,9 +916,10 @@ public class GenomeFileParser {
      * @param electro2D electro2D reference
      * @param theFile the file
      */
-    public static int gbkParse(String theFile, Electro2D electro2D,
+    public static int gbkParse(File f, Electro2D electro2D,
                                String data, int fileNum) {
 
+    	String theFile = f.getName();
         //was there an error in file reading?
         boolean anerror = false;
 
@@ -953,7 +954,7 @@ public class GenomeFileParser {
 
         if (data == null || data.equals("")) {  //read from server
             try {
-                File f = new File("data" + File.separator + theFile);
+//                File f = new File("data" + File.separator + theFile);
                 in = new BufferedReader
                         (new InputStreamReader((/*electro2D.getCodeBase()*/
 						   /* "data/" + theFile*/
@@ -1302,8 +1303,8 @@ public class GenomeFileParser {
      * @param theFile the file to be parsed
      * @return n on success, 0 on error
      */
-    public static int e2dParse(String theFile, Electro2D electro2D, String data, int fileNum) {
-        File f = new File("data" + File.separator + theFile);
+    public static int e2dParse(File f, Electro2D electro2D, String data, int fileNum) {
+        //File f = new File("data" + File.separator + theFile);
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(f.toURL().openStream()));
