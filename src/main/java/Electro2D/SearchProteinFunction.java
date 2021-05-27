@@ -227,6 +227,7 @@ public class SearchProteinFunction implements MouseListener, ActionListener {
                 count++;
             }
         }
+        //here a dialog pops up
         JOptionPane.showMessageDialog(null, "Search found " + count + " proteins.");
         count = 0;
         gel.update(gel.getGraphics());

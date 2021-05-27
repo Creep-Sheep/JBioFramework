@@ -339,6 +339,7 @@ public class MassSpecMain extends JPanel {
             try {
                 lower = Double.valueOf(noComma);
             } catch (NumberFormatException e) {
+            	//here a dialog pops up
                 JOptionPane.showMessageDialog(null, "Did not recognize Lower Limit as a number. Using default lower limit of 0.");
                 lowerRange.setText("0");
                 return 0;

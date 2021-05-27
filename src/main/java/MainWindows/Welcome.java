@@ -324,6 +324,7 @@ public class Welcome extends JPanel {
                 bug.setToolTipText("Report an issue with the software");
                 bug.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                    	//here a dialog pops up
                         JOptionPane.showMessageDialog(null, "will copy information about program");
                     }
                 });

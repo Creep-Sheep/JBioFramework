@@ -73,6 +73,7 @@ public class CSVCreator {
                         d.returnX() + "," + d.returnY());
             }
 
+            //here a dialog pops up
             //alert user that the file has been created.
             JOptionPane.showMessageDialog(null, "CSV created at " + directoryString + "/" + filename);
 

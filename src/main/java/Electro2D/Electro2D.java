@@ -1743,6 +1743,7 @@ public class Electro2D extends JPanel implements ActionListener {
 
     public void generateWebPage() {
         web.genFile(this.getLastFileLoaded());
+      //here a dialog pops up
         JOptionPane.showMessageDialog(null, "Webpage created in 'HTML Files/' subdirectory");
     }
 

@@ -170,7 +170,7 @@ public class FileFrame extends JFrame implements ActionListener {
                 } else if (extension.equalsIgnoreCase("e2d")) {
                     n = GenomeFileParser.e2dParse(filename, electro2D, "", fileNum);
                 }
-
+                //here a dialog pops up
                 JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");
 
             }
