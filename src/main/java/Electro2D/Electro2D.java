@@ -163,8 +163,7 @@ public class Electro2D extends JPanel implements ActionListener {
 							list = (List<File>) tr.getTransferData(flavors[i]);
 							for (int j = 0; j < list.size(); j++) {
 								File file = (File) list.get(j);
-								byte[] data = getDroppedFileBytes(file);
-								String s = new String(data);
+								String s = FileFrame.getStringForFile(file);
 								System.out.println(s);
 							}
 							return true;
@@ -1836,38 +1835,6 @@ public class Electro2D extends JPanel implements ActionListener {
     	
     }
     
-    
-	private byte[] getDroppedFileBytes(File file) {
-		/**
-		 * @j2sNative
-		 * return file.秘bytes;
-		 */
-		{
-			try {
-				return (byte[]) getStreamAsBytes(new BufferedInputStream(new FileInputStream(file)));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}
-	}
-	
-	public static Object getStreamAsBytes(BufferedInputStream bis) throws IOException {
-		byte[] buf = new byte[1024];
-		byte[] bytes = new byte[4096];
-		int len = 0;
-		int totalLen = 0;
-		while ((len = bis.read(buf, 0, 1024)) > 0) {
-			totalLen += len;
-			if (totalLen >= bytes.length)
-				bytes = Arrays.copyOf(bytes, totalLen * 2);
-			System.arraycopy(buf, 0, bytes, totalLen - len, len);
-		}
-		bis.close();
-		return (totalLen < bytes.length ? Arrays.copyOf(bytes,  totalLen) : bytes);
-	}
-
 
 }
 

@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.io.*;
+import java.util.Arrays;
 import java.util.function.Function;
 
 import main.java.Utilities.GenomeFileParser;
@@ -144,10 +145,7 @@ public class FileFrame extends JFrame {
 					String data = null;
 					if (/** @j2sNative true || */
 					false) {
-						// In JavaScript we get the data directly from the File object
-						swingjs.api.JSUtilI jsutil = (/** @j2sNative new swingjs.api.JSUtil() || */
-						null);
-						data = new String(jsutil.getBytes(f));
+						data = getStringForFile(f);
 					} else {
 						// In Java we work with the filename.
 					}
@@ -196,4 +194,34 @@ public class FileFrame extends JFrame {
 				dispose();				
 			});
 	}
+
+	@SuppressWarnings("unused")
+	public static String getStringForFile(File f) {
+		// In JavaScript we get the data directly from the File object
+		swingjs.api.JSUtilI jsutil = (/** @j2sNative new swingjs.JSUtil() || */
+		null);
+		if (jsutil != null) {
+			return new String(jsutil.getBytes(f));
+		}
+		try {
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));
+			byte[] buf = new byte[1024];
+			byte[] bytes = new byte[4096];
+			int len = 0;
+			int totalLen = 0;
+			while ((len = bis.read(buf, 0, 1024)) > 0) {
+				totalLen += len;
+				if (totalLen >= bytes.length)
+					bytes = Arrays.copyOf(bytes, totalLen * 2);
+				System.arraycopy(buf, 0, bytes, totalLen - len, len);
+			}
+			bis.close();
+			return new String(totalLen < bytes.length ? Arrays.copyOf(bytes,  totalLen) : bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+	}
+		
 }
