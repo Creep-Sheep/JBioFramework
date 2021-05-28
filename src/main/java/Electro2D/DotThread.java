@@ -125,7 +125,7 @@ public class DotThread extends Thread implements StateMachine {
 				gel.setMWLines(loop_i);
 				loop_i = 0;
 				electro2D.resetPlay();
-				gel.paint(gel.getGraphic());
+				//gel.paint(gel.getGraphic());
 				gel.repaint();
 				break;
 			}

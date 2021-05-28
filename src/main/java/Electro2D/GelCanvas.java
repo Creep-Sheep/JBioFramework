@@ -43,7 +43,7 @@ public class GelCanvas extends JPanel implements MouseListener {
     private CompIEF comp;
     private static final int VOLTAGE = 50;
 
-    private Graphics graphic;
+    //private Graphics graphic;
     private Rectangle gelCanvasRectangle;
     private Image bufferImage;
     private Graphics bufferImageGraphics;
@@ -76,6 +76,14 @@ public class GelCanvas extends JPanel implements MouseListener {
     private int stopX = -1;
     private int stopY = -1;
 
+	private boolean doShrink;
+
+	private boolean doGenDots;
+
+	private boolean doAnimateIEF;
+
+	private boolean doDrawIEF;
+
     /**
      * Constructs a gel canvas and adds itself as a mouse listener
      *
@@ -85,6 +93,7 @@ public class GelCanvas extends JPanel implements MouseListener {
         super();
 
         electro2D = e;
+        setDropTarget(e);
         addMouseListener(this);
     }
 
@@ -321,12 +330,7 @@ public class GelCanvas extends JPanel implements MouseListener {
      * @override overrides the paintComponent method of JPanel
      */
     public void paintComponent(Graphics g) {
-        /**
-         * We first set up the graphics object to equal an instance variable
-         * so other methods can interact with it.
-         */
-        graphic = g;
-
+    	
         /**
          * We then set up a buffer image area so that once we're done painting
          * on it we can transfer what we've drawn to the actual area that the
@@ -341,58 +345,34 @@ public class GelCanvas extends JPanel implements MouseListener {
 
         }
 
-        /**
-         * Next we check to see if it's time to draw the pH lines by finding if
-         * an animation has been run by looking at whether or not the PH values
-         * are different from their startig values of -1 as well as checking to
-         * see if the Line boolean indicates that the lines have already been
-         * drawn.
-         */
-        if (maxPH != -1 && minPH != -1 && pHLinesNeedToBeDrawn) {
-            drawPHLines();
-        }
-
-        /**
-         * Check to see if the SDS animation has been run, and if it has
-         * draw the lines for molecular weight.
-         */
-        if (mWLinesNeedToBeDrawn) {
-            initiateMWLines();
-            mWLinesNeedToBeDrawn = false;
-            redrawPHAndMWLines = true;
-        } else if (redrawPHAndMWLines) {
-            drawPHLines();
-            redoMWLines();
-        }
-
-        /**
-         * When the user clicks on a protein name in the protein list in
-         * Electro2D.Electro2D, the drawProteinPosition method will draw a draw axis on
-         * the gel canvas with the protein of interest at its origin.
-         */
-        if (indicateProteinPosition) {
-            redrawLocation();
-        }
-
-        /**
-         * Next, we color the buffer image with a rectangle the size of our
-         * canvas in black. Then we make a black
-         * rectangle at the top of the image that's almost as long as the
-         * image itself but only 46 pixals tall.
-         * Then we copy it all over to our canvas.
-         */
-        bufferImageGraphics.setColor(Color.RED);
-        bufferImageGraphics.drawRect(0, 0, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 1);
-        bufferImageGraphics.drawRect(1, 1, gelCanvasRectangle.width - 3, 46);
-        graphic.drawImage(bufferImage, 0, 0, this);
-    }
-
-    /**
-     * This method is responsible for drawing the dot proteins onto the canvas
-     *
-     * @param g the graphics object
-     */
-    public void update(Graphics g) {
+    	if (doAnimateIEF) {
+    		doAnimateIEF = false;
+    		animateIEF(g);
+    		return;
+    	}
+    	if (doDrawIEF) {
+    		doDrawIEF = false;
+    		drawIEF(g);
+    		return;
+    	}
+    	if (doShrink) {
+            clearIEF(g);
+            drawIEF(g);
+            doShrink = false;
+            return;
+    	}
+    	if (doGenDots) {
+    		doGenDots = false;
+            clearCanvas(g);
+            for (int i = 0; i < dotProteins.size(); i++) {
+                ((ProteinDot) (dotProteins.elementAt(i))).changeY();
+            }
+            if (dotProteins2 != null) {
+                for (int j = 0; j < dotProteins2.size(); j++) {
+                    ((ProteinDot) (dotProteins2.elementAt(j))).changeY();
+                }
+            }
+    	}
         if (dotProteins == null) {
             dotProteins = new Vector();
         }
@@ -424,7 +404,55 @@ public class GelCanvas extends JPanel implements MouseListener {
 
         // transfer the buffer image to the real canvas
         g.drawImage(bufferImage, 0, 0, this);
-        paint(g);
+
+
+        /**
+         * Next we check to see if it's time to draw the pH lines by finding if
+         * an animation has been run by looking at whether or not the PH values
+         * are different from their startig values of -1 as well as checking to
+         * see if the Line boolean indicates that the lines have already been
+         * drawn.
+         */
+        if (maxPH != -1 && minPH != -1 && pHLinesNeedToBeDrawn) {
+            drawPHLines();
+        }
+
+        /**
+         * Check to see if the SDS animation has been run, and if it has
+         * draw the lines for molecular weight.
+         */
+        if (mWLinesNeedToBeDrawn) {
+            initiateMWLines(g);
+            mWLinesNeedToBeDrawn = false;
+            redrawPHAndMWLines = true;
+        } else if (redrawPHAndMWLines) {
+            drawPHLines();
+            redoMWLines();
+        }
+
+        /**
+         * When the user clicks on a protein name in the protein list in
+         * Electro2D.Electro2D, the drawProteinPosition method will draw a draw axis on
+         * the gel canvas with the protein of interest at its origin.
+         */
+        if (indicateProteinPosition) {
+            redrawLocation();
+        }
+
+        /**
+         * Next, we color the buffer image with a rectangle the size of our
+         * canvas in black. Then we make a black
+         * rectangle at the top of the image that's almost as long as the
+         * image itself but only 46 pixals tall.
+         * Then we copy it all over to our canvas.
+         */
+        bufferImageGraphics.setColor(Color.RED);
+        bufferImageGraphics.drawRect(0, 0, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 1);
+        bufferImageGraphics.drawRect(1, 1, gelCanvasRectangle.width - 3, 46);
+        g.drawImage(bufferImage, 0, 0, this);
+        
+        
+        
     }
 
     /**
@@ -451,14 +479,6 @@ public class GelCanvas extends JPanel implements MouseListener {
         }
     }
 
-    /**
-     * returns the graphics object used to draw on the canvas
-     *
-     * @return graphic
-     */
-    public Graphics getGraphic() {
-        return graphic;
-    }
 
     /**
      * This method draws the dotted black vertical lines that represent
@@ -542,8 +562,9 @@ public class GelCanvas extends JPanel implements MouseListener {
     /**
      * This method initializes the lines that denote the different ranges of
      * molecular weight and draws them for the first time.
+     * @param g 
      */
-    public void initiateMWLines() {
+    public void initiateMWLines(Graphics g) {
         lowAcrylamide = electro2D.getLowPercent();
         highAcrylamide = electro2D.getHighPercent();
         int height = this.getHeight();
@@ -580,7 +601,7 @@ public class GelCanvas extends JPanel implements MouseListener {
             electro2D.clearMW();
             electro2D.showMW((int) hundredK, (int) fiftyK, (int) twentyfiveK, (int) tenK, reMWLabel);
             reMWLabel = true;
-            graphic.drawImage(bufferImage, 0, 0, this);
+            g.drawImage(bufferImage, 0, 0, this);
         }
     }
 
@@ -612,7 +633,7 @@ public class GelCanvas extends JPanel implements MouseListener {
      * This method draws the IEF proteins, which appear as moving rectangles at
      * the top of the animation, to the screen.
      */
-    public void drawIEF() {
+    public void drawIEF(Graphics g) {
         for (int i = 0; i < barProteins.size(); i++) {
             if (barProteinsStillMoving) {
                 ((IEFProtein) barProteins.elementAt(i)).changeX();
@@ -633,7 +654,7 @@ public class GelCanvas extends JPanel implements MouseListener {
             }
         }
 
-        graphic.drawImage(bufferImage, 0, 0, this);
+        g.drawImage(bufferImage, 0, 0, this);
         this.repaint();
     }
 
@@ -642,20 +663,20 @@ public class GelCanvas extends JPanel implements MouseListener {
      * into the lower part of the animation.
      */
     public void shrinkIEF() {
-        clearIEF();
-        drawIEF();
+    	doShrink = true;
+    	repaint();
     }
 
     /**
      * This method clears the IEF animation area.
      */
-    public void clearIEF() {
+    public void clearIEF(Graphics g) {
         bufferImageGraphics.setColor(Color.BLACK);
         bufferImageGraphics.clearRect(2, 2, gelCanvasRectangle.width - 3, 45);
         bufferImageGraphics.fillRect(2, 2, gelCanvasRectangle.width - 3, 45); //trying to turn canvas black
         bufferImageGraphics.setColor(Color.RED);
         bufferImageGraphics.drawRect(2, 2, gelCanvasRectangle.width - 3, 45);
-        graphic.drawImage(bufferImage, 0, 0, this);
+        g.drawImage(bufferImage, 0, 0, this);
     }
 
     /**
@@ -712,7 +733,7 @@ public class GelCanvas extends JPanel implements MouseListener {
     /**
      * Controls the animation for the initial display of IEF proteins.
      */
-    public void animateIEF() {
+    public void animateIEF(Graphics g) {
         int finalRed = 0;
         int finalGreen = 0;
         int finalBlue = 0;
@@ -724,7 +745,7 @@ public class GelCanvas extends JPanel implements MouseListener {
         bufferImageGraphics.fillRect(2, 2, gelCanvasRectangle.width - 3, 45);
 
         IEFProtein.changeWidth();
-        drawIEF();
+        drawIEF(g);
 
         iefRed = iefRed - 1;
         iefGreen = iefGreen - 2;
@@ -735,7 +756,7 @@ public class GelCanvas extends JPanel implements MouseListener {
             bufferImageGraphics.setColor(new Color(finalRed, finalGreen, finalBlue));
             IEFProtein.setWidth();
             bufferImageGraphics.fillRect(2, 2, gelCanvasRectangle.width - 3, 45);
-            drawIEF();
+            drawIEF(g);
         }
     }
 
@@ -762,17 +783,8 @@ public class GelCanvas extends JPanel implements MouseListener {
      * start button for the second animation has been pushed or not.
      */
     public void genDots() {
-        clearCanvas();
-
-        for (int i = 0; i < dotProteins.size(); i++) {
-            ((ProteinDot) (dotProteins.elementAt(i))).changeY();
-        }
-        if (dotProteins2 != null) {
-            for (int j = 0; j < dotProteins2.size(); j++) {
-                ((ProteinDot) (dotProteins2.elementAt(j))).changeY();
-            }
-        }
-        repaint();
+    	doGenDots = true;
+    	repaint();
     }
 
     /**
@@ -793,20 +805,19 @@ public class GelCanvas extends JPanel implements MouseListener {
          }
          }
          **/
-        update(graphic);
+       // update(g);
         repaint();
     }
 
     /**
-     * Clears the canvas in preperation for more animation.
+     * Clears the canvas in preparation for more animation.
      */
-    public void clearCanvas() {
-        graphic.setColor(Color.BLACK);
-        graphic.clearRect(1, 48, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 47);
-        graphic.fillRect(1, 48, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 47); //trying to turn canvas black
-        graphic.setColor(Color.RED);
-        graphic.drawRect(1, 48, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 47);
-        update(graphic);
+    public void clearCanvas(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.clearRect(1, 48, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 47);
+        g.fillRect(1, 48, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 47); //trying to turn canvas black
+        g.setColor(Color.RED);
+        g.drawRect(1, 48, gelCanvasRectangle.width - 1, gelCanvasRectangle.height - 47);
     }
 
     /**
@@ -1004,5 +1015,15 @@ public class GelCanvas extends JPanel implements MouseListener {
             }
         }
     }
+
+	public void drawIEF() {
+		doDrawIEF = true;
+		repaint();
+	}
+
+	public void animateIEF() {
+		doAnimateIEF = true;
+		repaint();
+	}
 
 }

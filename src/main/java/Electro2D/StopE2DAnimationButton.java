@@ -21,10 +21,10 @@ public class StopE2DAnimationButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         GelCanvas g = electro2D.getGel();
-        g.clearIEF();
+        //g.clearIEF();
         g.resetLocation();
         g.resetRanges();
-        g.clearCanvas();
+        //g.clearCanvas();
         electro2D.resetIEF();
         IEFProtein.resetProtein();
 

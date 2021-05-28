@@ -56,6 +56,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
@@ -498,6 +499,7 @@ public class Electro2D extends JPanel implements ActionListener {
         return leftPanel;
     }
 
+    
     /**
      * Any drawing on the applet panel itself is done here.
      */
@@ -540,8 +542,9 @@ public class Electro2D extends JPanel implements ActionListener {
             if (i != 0) {
                 linePositions.add((gelCanvas.getX() + (i * labelOffset) - 9));
             }
-            newLabel.repaint();
+//            newLabel.repaint();
         }
+        pHPanel.repaint();
         return linePositions;
     }
 
@@ -564,7 +567,7 @@ public class Electro2D extends JPanel implements ActionListener {
         clearMW();
         pHPanel.removeAll();
         //repaint the applet to reflect the change
-        this.repaint();
+        pHPanel.repaint();
     }
 
     /**
@@ -581,7 +584,7 @@ public class Electro2D extends JPanel implements ActionListener {
         mwLabels.removeAllElements();
         //repaint the applet to reflect the change
         mWPanel.removeAll();
-        this.repaint();
+        mWPanel.repaint();
     }
 
     /**

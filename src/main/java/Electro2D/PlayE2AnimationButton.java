@@ -160,8 +160,8 @@ public class PlayE2AnimationButton extends JButton implements ActionListener {
                 // already drawn, perform the SDS-PAGE animation
                 else if (choice.equals("SDS-PAGE")) {
                     if (iefDrawn) {
-                        electro2D.getGel().clearCanvas();
-                        electro2D.getGel().clearIEF();
+//                        electro2D.getGel().clearCanvas();
+//                        electro2D.getGel().clearIEF();
                         electro2D.getGel().resetLocation();
                         electro2D.clearpH();
                         sdsPlaying = true;
