@@ -23,31 +23,57 @@ package main.java.Electro2D;/*
  * Created 4/17/03
  */
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Component;
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
-import main.java.Utilities.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.TransferHandler;
+import javax.swing.border.TitledBorder;
+
+import main.java.Utilities.BrowserLauncher;
+import main.java.Utilities.MessageFrame;
 
 /**
  * The main electro2D class.
@@ -117,6 +143,48 @@ public class Electro2D extends JPanel implements ActionListener {
 
     public Electro2D() {
 
+		setTransferHandler(new TransferHandler() {
+			
+			  @Override
+			  public boolean canImport(TransferHandler.TransferSupport support) {
+				  return true;
+			  }
+
+
+			@Override
+			public boolean importData(TransferHandler.TransferSupport support) {
+				System.out.println(support.getComponent());
+				Transferable tr = support.getTransferable();
+				DataFlavor[] flavors = tr.getTransferDataFlavors();
+				try {
+					for (int i = 0; i < flavors.length; i++) {
+						if (flavors[i].isFlavorJavaFileListType()) {
+							List<File> list = null;
+							list = (List<File>) tr.getTransferData(flavors[i]);
+							for (int j = 0; j < list.size(); j++) {
+								File file = (File) list.get(j);
+								byte[] data = getDroppedFileBytes(file);
+								String s = new String(data);
+								System.out.println(s);
+							}
+							return true;
+						} else if (flavors[i].isFlavorTextType()) {
+							String data = (String) tr.getTransferData(flavors[i]);
+							System.out.println(data);
+							return true;
+						}
+					}
+				} catch (UnsupportedFlavorException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return false;
+			}	
+			  
+		});
+
+
+		
         proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
         fileFrame = new FileFrame(this, 1);                            //init frame
         fileFrame2 = new FileFrame(this, 2);
@@ -1767,6 +1835,39 @@ public class Electro2D extends JPanel implements ActionListener {
     	f.setVisible(true);
     	
     }
- 
+    
+    
+	private byte[] getDroppedFileBytes(File file) {
+		/**
+		 * @j2sNative
+		 * return file.秘bytes;
+		 */
+		{
+			try {
+				return (byte[]) getStreamAsBytes(new BufferedInputStream(new FileInputStream(file)));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
+	
+	public static Object getStreamAsBytes(BufferedInputStream bis) throws IOException {
+		byte[] buf = new byte[1024];
+		byte[] bytes = new byte[4096];
+		int len = 0;
+		int totalLen = 0;
+		while ((len = bis.read(buf, 0, 1024)) > 0) {
+			totalLen += len;
+			if (totalLen >= bytes.length)
+				bytes = Arrays.copyOf(bytes, totalLen * 2);
+			System.arraycopy(buf, 0, bytes, totalLen - len, len);
+		}
+		bis.close();
+		return (totalLen < bytes.length ? Arrays.copyOf(bytes,  totalLen) : bytes);
+	}
+
+
 }
 
