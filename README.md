@@ -80,3 +80,6 @@ To download the latest release download the [latest release](https://github.com/
 - wiki ([github](https://github.com/RITJBF/JBioFramework/wiki) | [sourceforge](https://sourceforge.net/p/jbf/wiki/Home/))
 - [sourceforge](https://sourceforge.net/p/jbf/)
 - [issues](https://github.com/RITJBF/JBioFramework/issues)
+
+## dev notes
+- 2021.05.27 BH initial optimization for SwingJS, including AsyncFileChooser for Electro2D, optimizations for GenomeFileParser
