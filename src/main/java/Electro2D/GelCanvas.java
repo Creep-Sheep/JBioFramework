@@ -93,7 +93,6 @@ public class GelCanvas extends JPanel implements MouseListener {
         super();
 
         electro2D = e;
-        setDropTarget(e);
         addMouseListener(this);
     }
 
