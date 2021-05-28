@@ -1743,7 +1743,7 @@ public class Electro2D extends JPanel implements ActionListener {
 
 	public void generateWebPage() {
 		web.genFile(this.getLastFileLoaded());
-		if (/** @j2sNative ? true || */ false) {
+		if (/** @j2sNative true || */ false) {
 			// JavaScript only...
 		} else {
 			// Java ....
