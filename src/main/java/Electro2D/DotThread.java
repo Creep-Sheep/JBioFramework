@@ -18,6 +18,7 @@ public class DotThread extends Thread implements StateMachine {
 	private StateHelper stateHelper;
 	private int loop_i;
 	private long tm;
+	private int delay = /** @j2sNative 10 || */100; // was 100
 
     /**
      * Constructor
@@ -97,7 +98,7 @@ public class DotThread extends Thread implements StateMachine {
 					// ...and redraw them to the Electro2D.GelCanvas
 					gel.shrinkIEF();
 					// then wait for 100 milliseconds
-					stateHelper.sleep(100);
+					stateHelper.sleep(delay );
 					break;
 				}
 				// Make the ProteinDots visible
@@ -118,7 +119,7 @@ public class DotThread extends Thread implements StateMachine {
 						stopDots();
 					}
 					loop_i = 1 + loop_i;
-					stateHelper.sleep(100);
+					stateHelper.sleep(delay);
 					break;
 				}
 				gel.setreLine();

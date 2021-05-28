@@ -74,6 +74,7 @@ public class IEFThread extends Thread {
      */
 
 	private StateHelper stateHelper;
+	protected int delay = /** @j2sNative 1 ? 50 : */250 ; // was 250
 
 	public void run() {
 
@@ -115,7 +116,7 @@ public class IEFThread extends Thread {
             			if (IEFProtein.returnTempWidth() <= finalWidth && GelCanvas.getBlue() >= 0 && GelCanvas.getGreen() >= 0
             					&& GelCanvas.getRed() >= 0) {
             				gel.animateIEF();
-            				stateHelper.sleep(250);
+            				stateHelper.sleep(delay );
             			} else {
             				// display the pH markers along the gel
             				gel.setreLine();
