@@ -209,8 +209,9 @@ public class ProteinDot extends Component {
 
         if (showAllDots && showMe) {
             g.setColor(myColor);
-            g.drawOval((int) (myX), (int) (myY), (int) (DIAMETER), (int) (DIAMETER));
-            g.fillOval((int) (myX), (int) (myY), (int) (DIAMETER), (int) (DIAMETER));
+            //g.drawOval((int) (myX), (int) (myY), (int) (DIAMETER), (int) (DIAMETER));
+            g.fillRect((int) (myX), (int) (myY), 3, 3);
+            //g.fillOval((int) (myX), (int) (myY), (int) (DIAMETER), (int) (DIAMETER));
             g.setColor(new Color(54, 100, 139));
         }
     }

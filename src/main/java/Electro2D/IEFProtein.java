@@ -48,6 +48,7 @@ public class IEFProtein extends Component {
     private static double maxpH = 10;
     private static double minpH = 3;
     private static GelCanvas gelcanvas;
+	private static double w34;
 
     /**
      * constructor - creates the Electro2D.IEFProtein object
@@ -130,14 +131,13 @@ public class IEFProtein extends Component {
          * add the new protein names to the vector of names and set any
          * changes in the max or min pI values
          */
-        E2DProtein p = null;
-        double pi = 0;
         for (int i = 0; i < ((Vector) c).size(); i++) {
 
-            names.add(((E2DProtein) ((Vector) c).elementAt(i)).toString());
+            E2DProtein p = ((E2DProtein) ((Vector) c).elementAt(i));
+        	
+            names.add(p.toString());
 
-            p = ((E2DProtein) ((Vector) c).elementAt(i));
-            pi = p.getPI();
+            double pi = p.getPI();
 
             if (pi > maxPi) {
                 maxPi = pi;
@@ -326,6 +326,11 @@ public class IEFProtein extends Component {
         minpH = min;
         // calculate the final width
         myWidth = 563 / 100;
+        w34 = myWidth * 0.75;
     }
+
+	public static double returnWidth34() {
+		return w34;
+	}
 
 }

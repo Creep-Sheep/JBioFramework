@@ -32,7 +32,7 @@ public class GelCanvas extends JPanel implements MouseListener {
 
     private Electro2D electro2D;
 
-    private Vector barProteins;
+    private Vector<IEFProtein> barProteins;
     private Vector dotProteins;
     private Vector barProteins2;
     private Vector dotProteins2;
@@ -116,7 +116,7 @@ public class GelCanvas extends JPanel implements MouseListener {
          * Make two vectors that will contain the objects that are the image
          * representations of the proteins in gel canvas
          */
-        barProteins = new Vector();
+        barProteins = new Vector<IEFProtein>();
         dotProteins = new Vector();
 
         /**
@@ -170,7 +170,9 @@ public class GelCanvas extends JPanel implements MouseListener {
         /**
          * Call the next method, which will sort the elements in barProteins
          */
+        long t0 = System.currentTimeMillis();
         sortBarProteins();
+        System.out.println("GelCanvas.sortBarProteins (ms) " + (System.currentTimeMillis() - t0));
     }
 
     public void sortBarProteins() {
@@ -183,15 +185,16 @@ public class GelCanvas extends JPanel implements MouseListener {
          * The for loops start out with their iterators at -1 the length of
          * barProteins so that they can access their elements in order correctly
          */
+    	barProteins.sort(comp);
         for (int i = barProteins.size() - 1; i >= 0; i--) {
+        	IEFProtein p1 = (IEFProtein) barProteins.elementAt(i);
             for (int j = i - 1; j >= 0; j--) {
-                if (comp.compare((IEFProtein) barProteins.elementAt(i),
-                        (IEFProtein) barProteins.elementAt(j)) == 0) {
-                    ((IEFProtein) (barProteins.elementAt(i))).addProtein(
-                            ((IEFProtein) (barProteins.elementAt(j))).getProtein());
+            	IEFProtein p2 = (IEFProtein) barProteins.elementAt(j);
+                if (comp.compare(p1, p2) == 0) {
+                    p1.addProtein(p2.getProtein());
                     barProteins.remove(j);
-                    i--;
-                    j = i;
+                    j = --i;
+                    // restart j loop to test with this one
                 }
             }
         }
@@ -204,36 +207,24 @@ public class GelCanvas extends JPanel implements MouseListener {
         makeDotProteins();
     }
 
-    public void makeDotProteins() {
+	public void makeDotProteins() {
 
-        /**
-         * this next for loop goes through each element in the vector that we
-         * just collapsed everything in and retrieves all the proteins that
-         * were represented by each bar in the last animation
-         */
-        Vector tempProteins = new Vector();
-        double tempx = 0;
-        double tempy = 0;
-        for (int i = 0; i < barProteins.size(); i++) {
-
-            /**
-             * retrieve the coordinates and proteins of each bar protein
-             */
-            tempx = ((IEFProtein) (barProteins.elementAt(i))).returnX();
-            tempy = ((IEFProtein) (barProteins.elementAt(i))).returnY();
-            tempProteins = ((IEFProtein) (barProteins.elementAt(i))).getProtein();
-            for (int j = 0; j < tempProteins.size(); j++) {
-                /**
-                 * make a protein dot animation for each protein contained in
-                 * the bar proteins
-                 */
-                dotProteins.addElement(new ProteinDot(
-                        ((E2DProtein) (tempProteins.elementAt(j))), this, tempx,
-                        tempy + 43));
-            }
-            tempProteins.removeAllElements();
-        }
-    }
+		/**
+		 * this next for loop goes through each element in the vector that we just
+		 * collapsed everything in and retrieves all the proteins that were represented
+		 * by each bar in the last animation
+		 */
+		for (int i = 0, m = barProteins.size(); i < m; i++) {
+			IEFProtein p = barProteins.elementAt(i);
+			double tempx = p.returnX();
+			double tempy = p.returnY();
+			Vector<E2DProtein> tempProteins = p.getProtein();
+			//  make a protein dot animation for each protein contained in the bar proteins
+			for (int j = 0, n = tempProteins.size(); j < n; j++) {
+				dotProteins.addElement(new ProteinDot(tempProteins.elementAt(j), this, tempx, tempy + 43));
+			}
+		}
+	}
 
     /**
      * The prepare2 method is called only when the user wishes to compare
@@ -654,7 +645,7 @@ public class GelCanvas extends JPanel implements MouseListener {
         }
 
         g.drawImage(bufferImage, 0, 0, this);
-        this.repaint();
+        //this.repaint();
     }
 
     /**

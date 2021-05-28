@@ -7,10 +7,11 @@ package main.java.Electro2D; /**
 
 import java.util.Comparator;
 
-public class CompIEF implements Comparator {
+public class CompIEF implements Comparator<IEFProtein> {
 
-    private double max;  //the maximum pH value for the IEF
-    private double min;  //the minimum pH value for the IEF
+    private final double max;  //the maximum pH value for the IEF
+    private final double min;  //the minimum pH value for the IEF
+    private final double range;
 
     /**
      * Constructor for the Electro2D.CompIEF object
@@ -21,6 +22,7 @@ public class CompIEF implements Comparator {
     public CompIEF(double _max, double _min) {
         max = _max;
         min = _min;
+        range = 1 / (max - min);
     }
 
     /**
@@ -33,16 +35,10 @@ public class CompIEF implements Comparator {
      * @param o2 the second Electro2D.IEFProtein object
      * @return retVal
      */
-    public int compare(Object o1, Object o2) {
-
-        // cast the objects to IEFProteins
-        IEFProtein i1 = (IEFProtein) o1;
-        IEFProtein i2 = (IEFProtein) o2;
-        int retVal = -1;
+    public int compare(IEFProtein i1, IEFProtein i2) {
         // the width of an Electro2D.IEFProtein bar
-        double width = IEFProtein.returnWidth();
+        double w34 = IEFProtein.returnWidth34();
         // the range each Electro2D.IEFProtein represents
-        double range = 1 / (max - min);
         // get the objects' pI values and x coordinates
         double minpi1 = i1.getMinPI();
         double minpi2 = i2.getMinPI();
@@ -54,34 +50,23 @@ public class CompIEF implements Comparator {
 
         // if the pI values are both greater than the max value for the range,
         // they are equal
-        if ((minpi1 >= max) && (minpi2 >= max)) {
-            retVal = 0;
-        }
         // if the pI values are both less than the min value for the range,
         // they are equal
-        else if ((minpi1 <= min) && (minpi2 <= min)) {
-            retVal = 0;
+        if (minpi1 >= max && minpi2 >= max
+        		|| maxpi1 <= min && maxpi2 <= min) {
+            return 0;
         }
-        //if the x coordinates are within 1/2 the width of a bar of eachother..
-        else if ((x1 + ((3 * width) / 4) >= x2) && (x1 - ((3 * width) / 4) <= x2)) {
-
-            //..and the pI values are within range of eachother, they are equal
-            if ((minpi2 <= minpi1 + range) && (minpi2 >= minpi1)) {
-                retVal = 0;
-            } else if ((maxpi2 >= maxpi1 - range) && (maxpi2 <= maxpi1)) {
-                retVal = 0;
-            }
-
+        //if the x coordinates are within 1/2 the width of a bar of each other..
+        //..and the pI values are within range of each other, they are equal
+        if (w34 >= Math.abs(x2 - x1)
+        		&& (minpi2 - minpi1 >= 0 && minpi2 - minpi1 <= range 
+            		|| maxpi1 - maxpi2 >= 0 && maxpi1 - maxpi2 <= range)) {
+                return 0;
         }
         // if the x coordinate of the first Electro2D.IEFProtein is greater than that of
         // the second, the first Electro2D.IEFProtein is greater.
-        else if (x1 > x2) {
-            retVal = 1;
-        }
-
         //else, the second was greater and retVal still equals -1.
-
-        return retVal;
+        return (x1 > x2 ? 1 : -1);
     }
 
 }

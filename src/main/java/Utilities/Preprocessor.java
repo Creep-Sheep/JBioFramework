@@ -59,6 +59,8 @@ public class Preprocessor {
     private Electro2D electro2D;
 
 	public static void process(Electro2D electro2D) {
+		/** @j2sNative return; */
+		
         new Preprocessor(electro2D).writeToFile();
 	}
 
