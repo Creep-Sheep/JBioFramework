@@ -74,6 +74,7 @@ import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 
 import main.java.Utilities.BrowserLauncher;
+import main.java.Utilities.GenomeFileParser;
 import main.java.Utilities.MessageFrame;
 
 /**
@@ -140,51 +141,10 @@ public class Electro2D extends JPanel implements ActionListener {
     /**
      * This method initializes all GUI components.
      */
-    private Electro2D electro2D;
+	public int fileNum;
 
     public Electro2D() {
 
-		setTransferHandler(new TransferHandler() {
-			
-			  @Override
-			  public boolean canImport(TransferHandler.TransferSupport support) {
-				  return true;
-			  }
-
-
-			@Override
-			public boolean importData(TransferHandler.TransferSupport support) {
-				System.out.println(support.getComponent());
-				Transferable tr = support.getTransferable();
-				DataFlavor[] flavors = tr.getTransferDataFlavors();
-				try {
-					for (int i = 0; i < flavors.length; i++) {
-						if (flavors[i].isFlavorJavaFileListType()) {
-							List<File> list = null;
-							list = (List<File>) tr.getTransferData(flavors[i]);
-							for (int j = 0; j < list.size(); j++) {
-								File file = (File) list.get(j);
-								String s = FileFrame.getStringForFile(file);
-								System.out.println(s);
-							}
-							return true;
-						} else if (flavors[i].isFlavorTextType()) {
-							String data = (String) tr.getTransferData(flavors[i]);
-							System.out.println(data);
-							return true;
-						}
-					}
-				} catch (UnsupportedFlavorException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return false;
-			}	
-			  
-		});
-
-
-		
         proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
         fileFrame = new FileFrame(this, 1);                            //init frame
         fileFrame2 = new FileFrame(this, 2);
@@ -211,6 +171,41 @@ public class Electro2D extends JPanel implements ActionListener {
         resetPressed = false;
         rangeReload = false;
         gelCanvas = new GelCanvas(this);
+		gelCanvas.setTransferHandler(new TransferHandler() {
+			
+			  @Override
+			  public boolean canImport(TransferHandler.TransferSupport support) {
+				  return true;
+			  }
+
+
+			@Override
+			public boolean importData(TransferHandler.TransferSupport support) {
+				System.out.println(support.getComponent());
+				Transferable tr = support.getTransferable();
+				DataFlavor[] flavors = tr.getTransferDataFlavors();
+				try {
+					for (int i = 0; i < flavors.length; i++) {
+						if (flavors[i].isFlavorJavaFileListType()) {
+							List<File> list = null;
+							list = (List<File>) tr.getTransferData(flavors[i]);
+							for (int j = 0; j < Math.min(2, list.size()); j++) {
+								loadFile(list.get(j), j + 1);
+							}
+							return true;
+						}
+					}
+				} catch (UnsupportedFlavorException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return false;
+			}	
+			  
+		});
+
+
+		
         JButton compareButton = new JButton("Compare Proteins");
         compareButton.setToolTipText("Compares multiple proteins to eacho ther");
         compareButton.addActionListener(new ActionListener() {
@@ -1837,7 +1832,92 @@ public class Electro2D extends JPanel implements ActionListener {
     	f.setVisible(true);
     	
     }
+
+	public void loadFile(File f, int fileNum) {
+		String filename = (f == null ? null : f.getName());
+		MessageFrame error = null;
+		int n = -1;
+		if (filename == null || filename.equals("")) {
+			error = new MessageFrame();
+			error.setMessage("Please enter a file name.");
+		} else {
+			filename = f.getAbsolutePath();
+			String extension = filename.substring(filename.lastIndexOf(".") + 1);
+			// if the file's extention is not one of the supported types
+			// display an error message
+			String data = null;
+			if (/** @j2sNative true || */
+			false) {
+				data = getStringForFile(f);
+			} else {
+				// In Java we work with the filename.
+			}
+			// call the proper method to read the file depending on
+			// its type
+			// BH using Java 8 switch here
+			switch (extension.toLowerCase()) {
+			case "faa":
+			case "fasta":
+				n = GenomeFileParser.fastaParse(f, this, data, fileNum);
+				break;
+			case "pdb":
+				n = GenomeFileParser.pdbParse(f, this, data, fileNum);
+				break;
+			case "gbk":
+				n = GenomeFileParser.gbkParse(f, this, data, fileNum);
+				break;
+			case "e2d":
+				n = GenomeFileParser.e2dParse(f, this, data, fileNum);
+				break;
+			default:
+				error = new MessageFrame();
+				error.setMessage("File extension is not valid: " + filename);
+				break;
+			}
+		}
+		if (error == null) {
+			// here a dialog pops up
+			JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");					
+			// display the protein titles from the file
+			if (fileNum == 1) {
+				refreshProteinList();
+			} else if (fileNum == 2) {
+				refreshProteinList2();
+			}
+		} else {
+			error.setLocationRelativeTo(this);
+			error.setVisible(true);
+		}
+	}
     
+	@SuppressWarnings("unused")
+	public static String getStringForFile(File f) {
+		// In JavaScript we get the data directly from the File object
+		swingjs.api.JSUtilI jsutil = (/** @j2sNative new swingjs.JSUtil() || */
+		null);
+		if (jsutil != null) {
+			return new String(jsutil.getBytes(f));
+		}
+		try {
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));
+			byte[] buf = new byte[1024];
+			byte[] bytes = new byte[4096];
+			int len = 0;
+			int totalLen = 0;
+			while ((len = bis.read(buf, 0, 1024)) > 0) {
+				totalLen += len;
+				if (totalLen >= bytes.length)
+					bytes = Arrays.copyOf(bytes, totalLen * 2);
+				System.arraycopy(buf, 0, bytes, totalLen - len, len);
+			}
+			bis.close();
+			return new String(totalLen < bytes.length ? Arrays.copyOf(bytes,  totalLen) : bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+	}
 
 }
 
