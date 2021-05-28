@@ -73,10 +73,6 @@ public class Preprocessor {
 
 	@SuppressWarnings("unused")
 	public void writeToFile() {
-		// BH no writing to files for JS
-		if (/** @j2sNative true || */false)
-			return;
-		// TODO BH Need use File.getTempFile() here.
 		int length = 0;
 		String fcn = "";
 		String seq = "";
