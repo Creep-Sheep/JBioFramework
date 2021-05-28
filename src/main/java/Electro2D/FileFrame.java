@@ -37,7 +37,9 @@ public class FileFrame extends JFrame {
 	private Electro2D electro2D; // reference to calling applet
 	private WindowListener ffwl; // listen for window closing, etc.
 	private int fileNum;
-	private final String directoryString = "." + File.separator + ".." + File.separator + "data";
+	private final String directoryString = "." + File.separator + 
+			//".." + File.separator + 
+			"data";
 	private JTextArea instructions;
 	private JLabel select;
 //    private JComboBox choice;
@@ -121,11 +123,14 @@ public class FileFrame extends JFrame {
 		JFrame frame = this;
 		
 		// BH using the AsyncFileChooser for Java and JavaScript
-		AsyncFileChooser.getFileAsync(this, "Open File", AsyncFileChooser.OPEN_DIALOG, new Function<File, Void>() {
-
-			@Override
-			public Void apply(File f) {
-				String filename = f.getName();
+		File dir = new File(directoryString);
+		System.out.println(dir.getAbsolutePath());
+		if (!dir.isDirectory())
+			dir = new File("." + File.separator + ".." + File.separator + "data");
+		AsyncFileChooser chooser = new AsyncFileChooser(dir);
+		chooser.showOpenDialog(this, () -> {
+			File f = chooser.getSelectedFile();
+			String filename = (f == null ? null : f.getName());
 				MessageFrame error = null;
 				int n = -1;
 				if (filename == null || filename.equals("")) {
@@ -186,8 +191,9 @@ public class FileFrame extends JFrame {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				// close the frame
 				dispose();
-				return null;
-			}
-		});
+			}, () -> {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				dispose();				
+			});
 	}
 }
