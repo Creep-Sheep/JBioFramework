@@ -189,8 +189,9 @@ public class Electro2D extends JPanel implements ActionListener {
 						if (flavors[i].isFlavorJavaFileListType()) {
 							List<File> list = null;
 							list = (List<File>) tr.getTransferData(flavors[i]);
-							for (int j = 0; j < Math.min(2, list.size()); j++) {
-								loadFile(list.get(j), j + 1);
+							// BH for now we just load one if multiple are picked
+							for (int j = 0; j < Math.max(1, list.size()); j++) {
+								loadFile(list.get(j), 1);
 							}
 							return true;
 						}
@@ -207,7 +208,7 @@ public class Electro2D extends JPanel implements ActionListener {
 
 		
         JButton compareButton = new JButton("Compare Proteins");
-        compareButton.setToolTipText("Compares multiple proteins to eacho ther");
+        compareButton.setToolTipText("Compares multiple proteins to each other");
         compareButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 getSequenceData2();
@@ -1704,6 +1705,12 @@ public class Electro2D extends JPanel implements ActionListener {
         sequencesReady = true;
     }
 
+    public void setSequences2(Vector s) {
+        sequences2 = new Vector();
+        sequences2 = s;
+        sequencesReady = true;
+    }
+
     /**
      * This method is used by Electro2D.ProteinListFrame to let Electro2D.Electro2D and
      * Electro2D.GelCanvas know whether or not there are sequences available for
@@ -1732,11 +1739,20 @@ public class Electro2D extends JPanel implements ActionListener {
         sequenceTitles = st;
     }
 
+
+    public void setSequenceTitles2(Vector st) {
+        sequenceTitles2 = st;
+    }
+
     /**
      * sets the vector of molecular weights
      */
     public void setMolecularWeights(Vector mw) {
         molecularWeights = mw;
+    }
+
+    public void setMolecularWeights2(Vector mw) {
+        molecularWeights2 = mw;
     }
 
     /**
@@ -1746,6 +1762,10 @@ public class Electro2D extends JPanel implements ActionListener {
         functions = fcn;
     }
 
+    public void setFunctionValues2(Vector fcn) {
+        functions2 = fcn;
+    }
+
     /**
      * sets the vector of pI values
      */
@@ -1753,30 +1773,8 @@ public class Electro2D extends JPanel implements ActionListener {
         piValues = pi;
     }
 
-    public void setSequences2(Vector s) {
-        sequences2 = new Vector();
-        sequences2 = s;
-        sequencesReady = true;
-    }
-
-    public void setSequenceTitles2(Vector st) {
-        sequenceTitles2 = new Vector();
-        sequenceTitles2 = st;
-    }
-
-    public void setMolecularWeights2(Vector mw) {
-        molecularWeights2 = new Vector();
-        molecularWeights2 = mw;
-    }
-
     public void setPiValues2(Vector pi) {
-        piValues2 = new Vector();
         piValues2 = pi;
-    }
-
-    public void setFunctionValues2(Vector fcn) {
-        functions2 = new Vector();
-        functions2 = fcn;
     }
 
     /**
