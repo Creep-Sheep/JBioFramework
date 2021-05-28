@@ -23,6 +23,42 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class GenomeFileParser {
+	
+    private final static String[] aas = {
+		"alanine","ALA","A",
+		"arginine","ARG","R",
+		"asparagine","ASN","N",
+		"aspartic acid","ASP","D",
+		"asparagine or aspartic acid","ASX","B",
+		"cysteine","CYS","C",
+		"glutamic acid","GLU","E",
+		"glutamine","GLN","Q",
+		"glutamine or glutamic acid","GLX","Z",
+		"glycine","GLY","G",
+		"histidine","HIS","H",
+		"isoleucine","ILE","I",
+		"leucine","LEU","L",
+		"lysine","LYS","K",
+		"methionine","MET","M",
+		"phenylalanine","PHE","F",
+		"proline","PRO","P",
+		"serine","SER","S",
+		"threonine","THR","T",
+		"tryptophan","TRP","W",
+		"tyrosine","TYR","Y",
+		"valine","VAL","V",
+    };
+    
+    
+    final static Hashtable<String, String> aminoConversions = new Hashtable<>(); //holds amino conversions
+
+    static {
+    	for (int i = 1; i < aas.length; i++)
+    		aminoConversions.put(aas[i++], aas[i++]);
+    	int i = 0;
+    }
+
+    private final static Hashtable<String, Double> htPI = new Hashtable<>();
     /**
      * This method calculates the pI from inputted sequence
      *
@@ -31,6 +67,10 @@ public class GenomeFileParser {
      */
     public static double getpI(String pro) {
 
+    	Double d = htPI.get(pro);
+    	if (d != null)
+    		return d.doubleValue();
+    	
         // Calculate charge at a certain pH, starting with a pH of 7
         double pH = 7;
 
@@ -147,10 +187,12 @@ public class GenomeFileParser {
                 pH = (lowpH + highpH) / 2;
             }
         }
+        htPI.put(pro, Double.valueOf(pH));
         return pH; // Method returns the pH at which charge is 0 (pI)
     }
 
 
+    private final static Hashtable<String, Double> htMW = new Hashtable<>();
     /**
      * This method calculates the molecular weight from inputted sequence
      *
@@ -159,9 +201,11 @@ public class GenomeFileParser {
      * @return returns the molecular weight
      */
     public static double getMW(String pro) {
-
+    	Double d = htMW.get(pro);
+    	if (d != null)
+    		return d.doubleValue();
         // Length of protein sequence
-        int Plength = pro.length();
+        int len = pro.length();
 
         // Molecular weight of protein
         double weight = 0;//I( String pro ) {
@@ -176,7 +220,7 @@ public class GenomeFileParser {
 	   If the AA character does not match one of the 20 accepted
 	   abbreviations, then a weight of 0 is given for that AA. */
 
-        for (int f = 0; f < Plength; f++) {
+        for (int f = 0; f < len; f++) {
             switch (pro.charAt(f)) {
                 case 'A':
                     weight += 71.0938;
@@ -247,8 +291,11 @@ public class GenomeFileParser {
         weight += 18;
 
         // Return the molecular weight of the protein
+        htMW.put(pro, Double.valueOf(weight));
         return weight;
     }
+
+    final static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /**
      * This method parses a .pdb file, extracting sequence information and
@@ -275,7 +322,6 @@ public class GenomeFileParser {
         Vector sequences = new Vector(); //holds sequence data
         Vector sequenceTitles = new Vector(); //holds sequence titles
         Vector functions = new Vector(); //holds protein function info
-        Hashtable aminoConversions = new Hashtable(); //holds amino conversions
         String proteinFunction = ""; //holds the protein function
         String headerLine = ""; //holds the information from the HEADER line
         double maxPi = -1;
@@ -291,7 +337,6 @@ public class GenomeFileParser {
         Vector piValues = new Vector();
 
         //temporary variables used in parsing
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String temp = "";
         String tempLabel = "";
         String proteinID = "";
@@ -524,44 +569,35 @@ public class GenomeFileParser {
                 }
             }
 
-            try {
-                //read in aminoconversiontable
-                f = new File("./aminoconversiontable.txt");
-                in = new BufferedReader(new InputStreamReader(
-                        f.toURL().openStream()));
-
-                while ((temp = in.readLine()) != null) {
-                    aminoConversions.put(temp.substring(0, 3), temp.substring(4, 5));
-                }
-            } catch (Exception e) {
-                System.err.println("Exception was: " + e);
-            }
+//            try {
+//                //read in aminoconversiontable
+//            	// BH this file does not exist.
+//                f = new File("./aminoconversiontable.txt");
+//                in = new BufferedReader(new InputStreamReader(
+//                        f.toURL().openStream()));
+//
+//                while ((temp = in.readLine()) != null) {
+//                    aminoConversions.put(temp.substring(0, 3), temp.substring(4, 5));
+//                }
+//            } catch (Exception e) {
+//                System.err.println("Exception was: " + e);
+//            }
 
             //convert sequence data
-            for (int x = 0; x < sequences.size(); x++) {
-                totalChain = (String) sequences.elementAt(x);
-                for (int y = 0; y < totalChain.length() - 2; y++) {
-                    if (aminoConversions.containsKey(totalChain.substring(y, y + 3))) {
-                        totalChain = totalChain.substring(0, y) +
-                                (String) aminoConversions.get
-                                        (totalChain.substring(y, y + 3)) +
-                                totalChain.substring(y + 3);
-                    }
+            for (int i = 0; i < sequences.size(); i++) {
+                totalChain = (String) sequences.elementAt(i);
+                int len = totalChain.length();
+                byte[] c = new byte[(len + 1)/4];
+                int pt = 0;
+                for (int j = 0; j < len; j += 4) {
+                	String aaa = totalChain.substring(j, j + 3).toUpperCase();
+                	String s = aminoConversions.get(aaa);
+                    if (s != null)
+                    	c[pt++] = (byte)s.charAt(0);
+                    else
+                    	System.err.println("GenomeFileParser could not convert " + aaa + " to X");
                 }
-
-                totalChain = totalChain.trim(); //remove whitespace from ends
-                //remove excess whitespace from middle
-                for (int z = 0; z < totalChain.length(); z++) {
-                    tempLabel = totalChain.substring(z, z + 1);
-                    if (tempLabel.equals(" ")) {
-                        totalChain = totalChain.substring(0, z) +
-                                totalChain.substring(z + 1);
-
-                        z -= 1;
-                    }
-                }
-
-                sequences.setElementAt(totalChain, x);
+                sequences.setElementAt(new String(c, 0, pt), i);
             }
 
             //temp data storage
@@ -584,7 +620,6 @@ public class GenomeFileParser {
                 // Set format to two decimal places
                 if (mWstring.length() >
                         mWstring.indexOf('.') + 3) {
-
                     mWstring = mWstring.substring(0, mWstring.indexOf('.') + 3);
                 }
 
@@ -729,7 +764,6 @@ public class GenomeFileParser {
         Vector piValues = new Vector();
 
         //temporary variables used in parsing
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String temp = "";
         String proteinID = "";
         String totalChain = "";
@@ -1316,8 +1350,9 @@ public class GenomeFileParser {
         //	electro2D.setLastFileLoaded( theFile );
     }
 
+    
 
-} //MolWT
+} 
 
 
 
