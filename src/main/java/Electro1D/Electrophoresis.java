@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+import main.java.Electro2D.Electro2D;
 //
 import main.java.Utilities.BrowserLauncher;
 
@@ -164,4 +166,13 @@ public class Electrophoresis extends JPanel {
     public void displayProtein(Protein protein) {
         dataPanel.displayData(protein);
     }
+    
+    static public void main(String[] args) {
+    	JFrame f = new JFrame();
+    	f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	f.add(new Electrophoresis());
+    	f.pack();
+    	f.setVisible(true);    	
+    }
+
 }

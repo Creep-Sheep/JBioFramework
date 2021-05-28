@@ -1757,5 +1757,16 @@ public class Electro2D extends JPanel implements ActionListener {
         proteinList2 = new java.awt.List();
         sequencesReady = false;
     }
+    
+    
+    static public void main(String[] args) {
+    	JFrame f = new JFrame();
+    	f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	f.add(new Electro2D());
+    	f.pack();
+    	f.setVisible(true);
+    	
+    }
+ 
 }
 
