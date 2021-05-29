@@ -26,6 +26,7 @@ package main.java.Electro2D;/*
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -506,43 +507,60 @@ public class Electro2D extends JPanel implements ActionListener {
         proteinListFrame.validate();
     }
 
-    /**
-     * displays the incrementing pH values above the gel after the IEF
-     * animation.
-     *
-     * [at]param loc - the location of the label
-     * [at]param value - the value to be placed on the label
-     */
-    public ArrayList<Integer> showPH() {
+	/**
+	 * displays the incrementing pH values above the gel after the IEF animation.
+	 *
+	 * [at]param loc - the location of the label [at]param value - the value to be
+	 * placed on the label
+	 */
+	public ArrayList<Integer> showPH() {
 
-        double minPH = getMinRange();
-        double maxPH = getMaxRange();
-        ArrayList<Integer> linePositions = new ArrayList<Integer>();
+		double minPH = getMinRange();
+		double maxPH = getMaxRange();
+		ArrayList<Integer> linePositions = new ArrayList<Integer>();
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		FontMetrics fm = null;
+		for (int pH = (int) minPH; pH <= maxPH; pH++) {
+			int x = IEFProtein.getXForPH(pH);
+			String s = twoDForm.format(pH);
+			JLabel newLabel = new JLabel(s);
+			if (fm == null)
+				fm = new JLabel().getFontMetrics(newLabel.getFont());
+			int w = fm.stringWidth(s);
+			int maxx = IEFProtein.pixelWidth - w;			
+			int lx = Math.min(maxx, Math.max(x - w / 2, 0));
+			newLabel.setBounds(lx, pHPanel.getHeight() - 15, 35, 10);
+			pHPanel.add(newLabel);
+			rangeLabels.add(newLabel);
+			if (pH > minPH && pH < maxPH) {
+				linePositions.add(x);
+			}
 
-        double pHOffset = (maxPH - minPH) / 7;
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
-        pHOffset = Double.valueOf(twoDForm.format(pHOffset));
+		}
 
-        int labelOffset = pHPanel.getWidth() / 7;
-        for (int i = 0; i < 8; i++) {
-            JLabel newLabel;
-            if (i == 7) {
-                newLabel = new JLabel(twoDForm.format(maxPH));
-                newLabel.setBounds(pHPanel.getWidth() - 35, pHPanel.getHeight() - 15, 35, 10);
-            } else {
-                newLabel = new JLabel(twoDForm.format(minPH + i * pHOffset));
-                newLabel.setBounds(1 + i * labelOffset, pHPanel.getHeight() - 15, 35, 10);
-            }
-            pHPanel.add(newLabel);
-            rangeLabels.add(newLabel);
-            if (i != 0) {
-                linePositions.add((gelCanvas.getX() + (i * labelOffset) - 9));
-            }
+//        double pHOffset = (maxPH - minPH) / 7;
+//		pHOffset = Double.valueOf(twoDForm.format(pHOffset));
+//
+//		int labelOffset = pHPanel.getWidth() / 7;
+//		for (int i = 0; i < 8; i++) {
+//			JLabel newLabel;
+//			if (i == 7) {
+//				newLabel = new JLabel(twoDForm.format(maxPH));
+//				newLabel.setBounds(pHPanel.getWidth() - 35, pHPanel.getHeight() - 15, 35, 10);
+//			} else {
+//				newLabel = new JLabel(twoDForm.format(minPH + i * pHOffset));
+//				newLabel.setBounds(1 + i * labelOffset, pHPanel.getHeight() - 15, 35, 10);
+//			}
+//			pHPanel.add(newLabel);
+//			rangeLabels.add(newLabel);
+//			if (i != 0) {
+//				linePositions.add((gelCanvas.getX() + (i * labelOffset) - 9));
+//			}
 //            newLabel.repaint();
-        }
-        pHPanel.repaint();
-        return linePositions;
-    }
+//		}
+		pHPanel.repaint();
+		return linePositions;
+	}
 
     /**
      * This method removes the labels that show the pH values.  It is called

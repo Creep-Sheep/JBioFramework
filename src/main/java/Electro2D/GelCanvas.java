@@ -124,7 +124,7 @@ public class GelCanvas extends JPanel implements MouseListener {
          */
         maxPH = electro2D.getMaxRange();
         minPH = electro2D.getMinRange();
-        IEFProtein.setRange(maxPH, minPH);
+        IEFProtein.setRange(maxPH, minPH, getWidth());
 
         /**
          * Create the Electro2D.CompIEF object that later will help sort the proteins
@@ -171,11 +171,12 @@ public class GelCanvas extends JPanel implements MouseListener {
          * Call the next method, which will sort the elements in barProteins
          */
         long t0 = System.currentTimeMillis();
-    	comp.sortBarProteins(barProteins);
+    	barProteins = comp.sortBarProteins(barProteins);
     	// convert the bar proteins into dot proteins, animation wise
         makeDotProteins();
 
         System.out.println("GelCanvas.sortBarProteins (ms) " + (System.currentTimeMillis() - t0));
+        return;
     }
 
 	public void makeDotProteins() {
@@ -446,11 +447,12 @@ public class GelCanvas extends JPanel implements MouseListener {
      * where the different pH values are on the canvas.
      */
     public void drawPHLines() {
+    	System.out.println("GC test ");
         ArrayList<Integer> linePositions = electro2D.showPH();
 
         int length = 0;
         int loc = 0;
-        int offset = (this.getTopLevelAncestor().getWidth() - this.getWidth() - 25);
+        int offset = 0;//(this.getTopLevelAncestor().getWidth() - this.getWidth() - 25);
         bufferImageGraphics.setColor(Color.WHITE);
 
         /**
@@ -458,9 +460,9 @@ public class GelCanvas extends JPanel implements MouseListener {
          * and the maxPH and use that integer to figure out the starting point
          * for the line. Then draw a dotted line down the length of the canvas.
          */
-        for (int i = 0; i < linePositions.size() - 1; i++) {
+        for (int i = 0; i < linePositions.size(); i++) {
             length = 0;
-            loc = linePositions.get(i) - 24;
+            loc = linePositions.get(i);// - 24;
             if (loc > 0 && loc < getWidth()) {
                 while (length < this.getHeight()) {
                     bufferImageGraphics.drawLine(loc, length, loc, length + 5);
