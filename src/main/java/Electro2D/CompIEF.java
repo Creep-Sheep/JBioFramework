@@ -6,6 +6,7 @@ package main.java.Electro2D; /**
  */
 
 import java.util.Comparator;
+import java.util.Vector;
 
 public class CompIEF implements Comparator<IEFProtein> {
 
@@ -68,5 +69,30 @@ public class CompIEF implements Comparator<IEFProtein> {
         //else, the second was greater and retVal still equals -1.
         return (x1 > x2 ? 1 : -1);
     }
+
+	public void sortBarProteins(Vector<IEFProtein> barProteins) {
+        /**
+         * This nested for loop will do a sort of collapsing exercise; every
+         * protein in the barProtein vector will be evaluated by the Electro2D.CompIEF
+         * class against every other protein, and if they're the same they'll
+         * be collapsed into the same element.
+         *
+         * The for loops start out with their iterators at -1 the length of
+         * barProteins so that they can access their elements in order correctly
+         */
+    	barProteins.sort(this);
+        for (int i = barProteins.size() - 1; i >= 0; i--) {
+        	IEFProtein p1 = (IEFProtein) barProteins.elementAt(i);
+            for (int j = i - 1; j >= 0; j--) {
+            	IEFProtein p2 = (IEFProtein) barProteins.elementAt(j);
+                if (compare(p1, p2) == 0) {
+                    p1.addProtein(p2.getProtein());
+                    barProteins.remove(j);
+                    j = --i;
+                    // restart j loop to test with this one
+                }
+            }
+        }
+	}
 
 }

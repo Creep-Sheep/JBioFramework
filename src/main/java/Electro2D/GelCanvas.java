@@ -171,40 +171,11 @@ public class GelCanvas extends JPanel implements MouseListener {
          * Call the next method, which will sort the elements in barProteins
          */
         long t0 = System.currentTimeMillis();
-        sortBarProteins();
-        System.out.println("GelCanvas.sortBarProteins (ms) " + (System.currentTimeMillis() - t0));
-    }
-
-    public void sortBarProteins() {
-        /**
-         * This nested for loop will do a sort of collapsing exercise; every
-         * protein in the barProtein vector will be evaluated by the Electro2D.CompIEF
-         * class against every other protein, and if they're the same they'll
-         * be collapsed into the same element.
-         *
-         * The for loops start out with their iterators at -1 the length of
-         * barProteins so that they can access their elements in order correctly
-         */
-    	barProteins.sort(comp);
-        for (int i = barProteins.size() - 1; i >= 0; i--) {
-        	IEFProtein p1 = (IEFProtein) barProteins.elementAt(i);
-            for (int j = i - 1; j >= 0; j--) {
-            	IEFProtein p2 = (IEFProtein) barProteins.elementAt(j);
-                if (comp.compare(p1, p2) == 0) {
-                    p1.addProtein(p2.getProtein());
-                    barProteins.remove(j);
-                    j = --i;
-                    // restart j loop to test with this one
-                }
-            }
-        }
-
-        /**
-         * call the next method, makeDotProteins(), which will convert the bar
-         * proteins into dot proteins, animation wise
-         */
-
+    	comp.sortBarProteins(barProteins);
+    	// convert the bar proteins into dot proteins, animation wise
         makeDotProteins();
+
+        System.out.println("GelCanvas.sortBarProteins (ms) " + (System.currentTimeMillis() - t0));
     }
 
 	public void makeDotProteins() {
