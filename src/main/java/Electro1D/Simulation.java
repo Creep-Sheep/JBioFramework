@@ -15,7 +15,11 @@ import javajs.async.SwingJSUtils.StateMachine;
  * Simulation class to initiate the simulation panel GUI
  */
 public class Simulation extends JPanel implements Runnable {
-    private final int numOfStds = 7;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4599259684085322211L;
+	private final int numOfStds = 7;
     Thread runner;
     Electrophoresis parent;
     int pause;

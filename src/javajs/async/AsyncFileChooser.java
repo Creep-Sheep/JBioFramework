@@ -24,6 +24,10 @@ import javax.swing.filechooser.FileSystemView;
 
 public class AsyncFileChooser extends JFileChooser implements PropertyChangeListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6351747780802094509L;
 	private int optionSelected;
 	private Runnable ok, cancel; // sorry, no CANCEL in JavaScript for file open
 	private boolean isAsyncSave = true;

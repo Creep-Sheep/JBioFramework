@@ -22,6 +22,7 @@ import java.awt.Insets;
 /**
  * The type Protein list frame.
  */
+@SuppressWarnings("serial")
 public class ProteinListFrame extends JFrame {
 
     /**
@@ -31,19 +32,19 @@ public class ProteinListFrame extends JFrame {
     /**
      * The Sequence one list.
      */
-    JList sequenceOneList;
+    JList<String> sequenceOneList;
     /**
      * The Sequence two list.
      */
-    JList sequenceTwoList;
+    JList<String> sequenceTwoList;
     /**
      * The Sequence titles one.
      */
-    Vector sequenceTitlesOne;
+    Vector<String> sequenceTitlesOne;
     /**
      * The Sequence titles two.
      */
-    Vector sequenceTitlesTwo;
+    Vector<String> sequenceTitlesTwo;
     /**
      * The Positions one.
      */
@@ -55,11 +56,11 @@ public class ProteinListFrame extends JFrame {
     /**
      * The Copy sequence one.
      */
-    Vector copySequenceOne;
+    Vector<String> copySequenceOne;
     /**
      * The Copy sequence two.
      */
-    Vector copySequenceTwo;
+    Vector<String> copySequenceTwo;
 
     /**
      * Constructor for the window; sets up the instance variables and builds
@@ -68,18 +69,19 @@ public class ProteinListFrame extends JFrame {
      * @param param     The title of the window.
      * @param electro2D Reference to the electro2D where the protein lists are.
      */
-    public ProteinListFrame(String param, Electro2D electro2D) {
+    @SuppressWarnings("unchecked")
+	public ProteinListFrame(String param, Electro2D electro2D) {
         super(param);
         this.electro2D = electro2D;
         setLayout(new GridBagLayout());
         JLabel sequenceOneLabel = new JLabel("Sequence One");
         JLabel sequenceTwoLabel = new JLabel("Sequence Two");
-        sequenceOneList = new JList();
-        sequenceTwoList = new JList();
-        sequenceTitlesOne = new Vector();
-        sequenceTitlesTwo = new Vector();
-        copySequenceOne = (Vector) sequenceTitlesOne.clone();
-        copySequenceTwo = (Vector) sequenceTitlesTwo.clone();
+        sequenceOneList = new JList<>();
+        sequenceTwoList = new JList<>();
+        sequenceTitlesOne = new Vector<>();
+        sequenceTitlesTwo = new Vector<>();
+        copySequenceOne = (Vector<String>) sequenceTitlesOne.clone();
+        copySequenceTwo = (Vector<String>) sequenceTitlesTwo.clone();
         positionsOne = new Vector<Integer>();
         positionsTwo = new Vector<Integer>();
         JScrollPane sequenceOneScroll = new JScrollPane(sequenceOneList);
@@ -150,13 +152,14 @@ public class ProteinListFrame extends JFrame {
      * @param pL1 the p l 1
      * @param pL2 the p l 2
      */
-    public void updateSequences(Vector pL1, Vector pL2) {
+    @SuppressWarnings("unchecked")
+	public void updateSequences(Vector<String> pL1, Vector<String> pL2) {
         sequenceOneList.setListData(pL1);
         sequenceTwoList.setListData(pL2);
-        sequenceTitlesOne = new Vector(pL1);
-        sequenceTitlesTwo = new Vector(pL2);
-        copySequenceOne = (Vector) sequenceTitlesOne.clone();
-        copySequenceTwo = (Vector) sequenceTitlesTwo.clone();
+        sequenceTitlesOne = new Vector<>(pL1);
+        sequenceTitlesTwo = new Vector<>(pL2);
+        copySequenceOne = (Vector<String>) sequenceTitlesOne.clone();
+        copySequenceTwo = (Vector<String>) sequenceTitlesTwo.clone();
         positionsOne = new Vector<Integer>();
         positionsTwo = new Vector<Integer>();
     }
@@ -251,7 +254,8 @@ public class ProteinListFrame extends JFrame {
      */
     private class CommonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            Vector copySequenceTwo = (Vector) sequenceTitlesTwo.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copySequenceTwo = (Vector<String>) sequenceTitlesTwo.clone();
             sequenceTitlesTwo.removeAll(sequenceTitlesOne);
             sequenceTitlesOne.removeAll(copySequenceTwo);
 
@@ -270,8 +274,8 @@ public class ProteinListFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             int[] oneIndexes = sequenceOneList.getSelectedIndices();
             int[] twoIndexes = sequenceTwoList.getSelectedIndices();
-            Vector oneProteins = new Vector();
-            Vector twoProteins = new Vector();
+            Vector<String> oneProteins = new Vector<>();
+            Vector<String> twoProteins = new Vector<>();
             for (int x = 0; x < oneIndexes.length; x++) {
                 oneProteins.add(sequenceTitlesOne.get(oneIndexes[x]));
             }

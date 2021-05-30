@@ -26,7 +26,11 @@ import javax.swing.JPanel;
 
 public class ProteinDot extends Component {
 
-    private Graphics graphic;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2634102407713527330L;
+	private Graphics graphic;
     private E2DProtein myProtein;
     private double myMolecularWeight;
     private Color myColor;

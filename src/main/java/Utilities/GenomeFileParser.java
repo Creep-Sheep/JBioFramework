@@ -313,15 +313,15 @@ public class GenomeFileParser {
         boolean anerror = false;
 
         //structures to hold file data
-        Vector fileData = new Vector();  //holds complete file
-        Vector compoundInfo = new Vector(); //holds COMPND tag data
-        Vector sequenceInfo = new Vector(); //holds SEQRES tag data
-        Vector keywordInfo = new Vector(); //holds KEYWDS info
-        Vector moleculeTitles = new Vector(); //holds mol. titles
-        Vector chainData = new Vector(); //holds chain designations
-        Vector sequences = new Vector(); //holds sequence data
-        Vector sequenceTitles = new Vector(); //holds sequence titles
-        Vector functions = new Vector(); //holds protein function info
+        Vector<String> fileData = new Vector<>();  //holds complete file
+        Vector<String> compoundInfo = new Vector<>(); //holds COMPND tag data
+        Vector<String> sequenceInfo = new Vector<>(); //holds SEQRES tag data
+        Vector<String> keywordInfo = new Vector<>(); //holds KEYWDS info
+        Vector<String> moleculeTitles = new Vector<>(); //holds mol. titles
+        Vector<String> chainData = new Vector<>(); //holds chain designations
+        Vector<String> sequences = new Vector<>(); //holds sequence data
+        Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
+        Vector<String> functions = new Vector<>(); //holds protein function info
         String proteinFunction = ""; //holds the protein function
         String headerLine = ""; //holds the information from the HEADER line
         double maxPi = -1;
@@ -333,8 +333,8 @@ public class GenomeFileParser {
         BufferedReader in = null;
 
         //structures to hold calculated MW and pI
-        Vector molecularWeights = new Vector();
-        Vector piValues = new Vector();
+        Vector<String> molecularWeights = new Vector<>();
+        Vector<String> piValues = new Vector<>();
 
         //temporary variables used in parsing
         String temp = "";
@@ -380,7 +380,7 @@ public class GenomeFileParser {
 
             //separate compound info and sequence info
             for (int x = 0; x < fileData.size(); x++) {
-                temp = (String) fileData.elementAt(x);
+                temp = fileData.elementAt(x);
                 tempLabel = temp.substring(0, 6);
 
                 if (tempLabel.equals("COMPND")) {
@@ -402,9 +402,9 @@ public class GenomeFileParser {
             for (int i = 0; i < compoundInfo.size(); i++) {
                 //if the COMPND section of the file listed an EC number,
                 //the protein is an enzyme.  Store the information accordingly
-                if (((String) compoundInfo.elementAt(i)).indexOf("EC\u003A") != -1) {
+                if ((compoundInfo.elementAt(i)).indexOf("EC\u003A") != -1) {
                     hasECnumber = true;
-                    temp = (String) compoundInfo.elementAt(i);
+                    temp = compoundInfo.elementAt(i);
                     temp = temp.substring(temp.indexOf("EC:") + 4, temp.indexOf(
                             "\u003B") + 1);
                     proteinFunction = proteinFunction + temp;
@@ -420,7 +420,7 @@ public class GenomeFileParser {
 
             //determine the number of molecules
             for (int x = 0; x < compoundInfo.size(); x++) {
-                temp = (String) compoundInfo.elementAt(x);
+                temp = compoundInfo.elementAt(x);
                 if (temp.indexOf("MOLECULE:") != -1) {
                     temp = temp.substring(temp.indexOf("MOLECULE:") + 10);
                     temp = temp.trim();
@@ -435,8 +435,8 @@ public class GenomeFileParser {
                 totalChain = "";
                 hasMoleculeTag = false;
                 for (int x = 0; x < compoundInfo.size(); x++) {
-                    temp = (String) compoundInfo.elementAt(x);
-                    totalChain += ((String) compoundInfo.elementAt(x)).substring
+                    temp = compoundInfo.elementAt(x);
+                    totalChain += (compoundInfo.elementAt(x)).substring
                             (temp.indexOf("COMPND") + 10, temp.indexOf(proteinID));
                 }
 
@@ -464,14 +464,14 @@ public class GenomeFileParser {
                 int counter = 0; //sequenceTitle counter
 
                 for (int x = 0; x < compoundInfo.size(); x++) {
-                    temp = (String) compoundInfo.elementAt(x);
+                    temp = compoundInfo.elementAt(x);
                     foundIndex = temp.indexOf("CHAIN:");
                     if (foundIndex != -1) {
                         //isolate first letter or number
                         tempLabel = temp.substring(foundIndex + 7, foundIndex + 8);
                         chainData.addElement(tempLabel);
 
-                        sequenceTitles.addElement((String) moleculeTitles.
+                        sequenceTitles.addElement(moleculeTitles.
                                 elementAt(counter));
 
                         while (temp.charAt(foundIndex + 8) == ',') {
@@ -481,7 +481,7 @@ public class GenomeFileParser {
                             tempLabel = temp.substring(foundIndex + 7,
                                     foundIndex + 8);
                             chainData.addElement(tempLabel);
-                            sequenceTitles.addElement((String) moleculeTitles.
+                            sequenceTitles.addElement(moleculeTitles.
                                     elementAt(counter));
                         }
                         counter++;
@@ -492,7 +492,7 @@ public class GenomeFileParser {
             //extract sequences
 
             //handle special case where there is no chain data
-            temp = (String) sequenceInfo.elementAt(0);
+            temp = sequenceInfo.elementAt(0);
             tempLabel = temp.substring(11, 12);
             if (tempLabel.equals(" ")) {
                 noChainData = true;
@@ -500,14 +500,14 @@ public class GenomeFileParser {
                 //must be only one chain
                 for (int x = 0; x < sequenceInfo.size(); x++) {
                     //may include whitespace
-                    temp += ((String) sequenceInfo.elementAt(x)).substring(19, 70);
+                    temp += (sequenceInfo.elementAt(x)).substring(19, 70);
                     temp += " ";
                 }
 
                 //add sequence
                 if (!(temp = temp.trim()).equals("")) {
                     sequences.addElement(temp);
-                    sequenceTitles.addElement((String) moleculeTitles.elementAt(0));
+                    sequenceTitles.addElement(moleculeTitles.elementAt(0));
                 }
 
             } else if (hasMoleculeTag == false) {
@@ -522,11 +522,11 @@ public class GenomeFileParser {
                     totalChain = "";
                     foundChain = false;
                     for (int x = 0; x < sequenceInfo.size(); x++) {
-                        temp = (String) sequenceInfo.elementAt(x);
+                        temp = sequenceInfo.elementAt(x);
                         tempLabel = temp.substring(11, 12);
                         if (tempLabel.equals(chainValue)) {
                             foundChain = true;
-                            totalChain += ((String) sequenceInfo.elementAt(x)).
+                            totalChain += (sequenceInfo.elementAt(x)).
                                     substring(19, 70);
                             totalChain += " ";
                         }
@@ -538,7 +538,7 @@ public class GenomeFileParser {
                                 (whichChain, whichChain + 1));
                         //should only be one
                         sequenceTitles.addElement
-                                ((String) moleculeTitles.elementAt(0));
+                                (moleculeTitles.elementAt(0));
                     }
                     //add sequence
                     if (!(totalChain = totalChain.trim()).equals("")) {
@@ -550,13 +550,13 @@ public class GenomeFileParser {
 
                 for (int whichChain = 0; whichChain < chainData.size(); whichChain++) {
                     //find which chain we're looking for
-                    chainValue = (String) chainData.elementAt(whichChain);
+                    chainValue = chainData.elementAt(whichChain);
                     totalChain = "";
                     for (int x = 0; x < sequenceInfo.size(); x++) {
-                        temp = (String) sequenceInfo.elementAt(x);
+                        temp = sequenceInfo.elementAt(x);
                         tempLabel = temp.substring(11, 12);
                         if (tempLabel.equals(chainValue)) {
-                            totalChain += ((String) sequenceInfo.elementAt(x)).
+                            totalChain += (sequenceInfo.elementAt(x)).
                                     substring(19, 70);
                             totalChain += " ";
                         }
@@ -585,7 +585,7 @@ public class GenomeFileParser {
 
             //convert sequence data
             for (int i = 0; i < sequences.size(); i++) {
-                totalChain = (String) sequences.elementAt(i);
+                totalChain = sequences.elementAt(i);
                 int len = totalChain.length();
                 byte[] c = new byte[(len + 1)/4];
                 int pt = 0;
@@ -609,7 +609,7 @@ public class GenomeFileParser {
             // For each sequence in the file, determine the pI and MW
             for (int x = 0; x < sequences.size(); x++) {
 
-                temp = (String) sequences.elementAt(x);
+                temp = sequences.elementAt(x);
 
                 // Determine the MW from the getMW method
                 mW = getMW(temp);
@@ -663,13 +663,13 @@ public class GenomeFileParser {
             else if (keywordInfo.size() > 0) {
                 for (int fcn = 0; fcn < keywordInfo.size(); fcn++) {
                     if (fcn == 0) {
-                        temp = ((String) keywordInfo.elementAt(fcn)).substring(10);
+                        temp = (keywordInfo.elementAt(fcn)).substring(10);
                         //while( (temp.substring( temp.length() - 1 )).equals(" ")){
                         temp.trim();
                         // }
                     } else {
                         temp = temp +
-                                ((String) keywordInfo.elementAt(fcn)).substring(10);
+                                (keywordInfo.elementAt(fcn)).substring(10);
                         //  while((temp.substring(temp.length() - 1)).equals(" ")){
                         temp.trim();
                         //   }
@@ -745,11 +745,11 @@ public class GenomeFileParser {
         boolean anerror = false;
 
         //structures to hold file data
-        Vector fileData = new Vector();  //holds complete file
-        Vector chainData = new Vector(); //holds chain designations
-        Vector sequences = new Vector(); //holds sequence data
-        Vector sequenceTitles = new Vector(); //holds sequence titles
-        Vector functions = new Vector(); //holds the protein functions
+        Vector<String> fileData = new Vector<>();  //holds complete file
+        Vector<String> chainData = new Vector<>(); //holds chain designations
+        Vector<String> sequences = new Vector<>(); //holds sequence data
+        Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
+        Vector<String> functions = new Vector<>(); //holds the protein functions
         double maxMW = -1;
         double minMW = -1;
         double maxPi = -1;
@@ -760,8 +760,8 @@ public class GenomeFileParser {
         BufferedReader in = null;
 
         //structures to hold calculated MW and pI
-        Vector molecularWeights = new Vector();
-        Vector piValues = new Vector();
+        Vector<String> molecularWeights = new Vector<>();
+        Vector<String> piValues = new Vector<>();
 
         //temporary variables used in parsing
         String temp = "";
@@ -804,7 +804,7 @@ public class GenomeFileParser {
 
             for (int x = 0; x < fileData.size(); x++) {
 
-                temp = (String) fileData.elementAt(x);
+                temp = fileData.elementAt(x);
                 if (temp.substring(0, 1).equals(">")) { //we know it's a header line
 
                     //if it's not the first line in the file
@@ -863,7 +863,7 @@ public class GenomeFileParser {
             // For each sequence in the file, determine the pI and MW
             for (int x = 0; x < sequences.size(); x++) {
 
-                temp = (String) sequences.elementAt(x);
+                temp = sequences.elementAt(x);
 
                 // Determine the MW from the getMW method
                 mW = getMW(temp);
@@ -960,10 +960,10 @@ public class GenomeFileParser {
         //structures to hold file data
         String organismID = "";
         String organismTitle = "";
-        Vector fileData = new Vector();  //holds complete file
-        Vector sequences = new Vector(); //holds sequence data
-        Vector sequenceTitles = new Vector(); //holds sequence titles
-        Vector functions = new Vector(); //holds protein functions
+        Vector<String> fileData = new Vector<>();  //holds complete file
+        Vector<String> sequences = new Vector<>(); //holds sequence data
+        Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
+        Vector<String> functions = new Vector<>(); //holds protein functions
         double doubleVal;
         double minMW = -1;
         double maxMW = -1;
@@ -974,8 +974,8 @@ public class GenomeFileParser {
         BufferedReader in = null;
 
         //structures to hold calculated MW and pI
-        Vector molecularWeights = new Vector();
-        Vector piValues = new Vector();
+        Vector<String> molecularWeights = new Vector<>();
+        Vector<String> piValues = new Vector<>();
 
         //temporary variables used in parsing
         String temp = "";
@@ -1022,7 +1022,7 @@ public class GenomeFileParser {
 
             for (int x = 0; x < fileData.size(); x++) {
 
-                temp = (String) fileData.elementAt(x);
+                temp = fileData.elementAt(x);
 
                 if (temp.length() >= 10 &&
                         temp.substring(0, 10).equals("DEFINITION")) {
@@ -1045,7 +1045,7 @@ public class GenomeFileParser {
                         } else {
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 return 0; //error code
                             }
@@ -1078,7 +1078,7 @@ public class GenomeFileParser {
                             }
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 return 0; //error code
                             }
@@ -1096,13 +1096,13 @@ public class GenomeFileParser {
                                 temp = temp.substring(32);
                                 function = function + " " + temp;
                                 x = x + 1; //jump to next line
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                                 while (temp.lastIndexOf("\"") == -1) {
                                     function = function + " " +
                                             temp.substring(21);
                                     x = x + 1;
                                     if (x < fileData.size()) {
-                                        temp = (String) fileData.elementAt(x);
+                                        temp = fileData.elementAt(x);
                                     } else {
                                         return 0; //error code
                                     }
@@ -1113,7 +1113,7 @@ public class GenomeFileParser {
 
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 return 0; //error code
                             }
@@ -1135,13 +1135,13 @@ public class GenomeFileParser {
                                 temp = temp.substring(28);
                                 function = function + " " + temp;
                                 x = x + 1;
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                                 while (temp.lastIndexOf("\"") == -1) {
                                     function = function + " " +
                                             temp.substring(21);
                                     x = x + 1;
                                     if (x < fileData.size()) {
-                                        temp = (String) fileData.elementAt(x);
+                                        temp = fileData.elementAt(x);
                                     } else {
                                         return 0; //error code
                                     }
@@ -1152,7 +1152,7 @@ public class GenomeFileParser {
 
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 return 0; //error code
                             }
@@ -1169,13 +1169,13 @@ public class GenomeFileParser {
                                 temp = temp.substring(31);
                                 function = function + " " + temp;
                                 x = x + 1;
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                                 while (temp.lastIndexOf("\"") == -1) {
                                     function = function + " " +
                                             temp.substring(21);
                                     x = x + 1;
                                     if (x < fileData.size()) {
-                                        temp = (String) fileData.elementAt(x);
+                                        temp = fileData.elementAt(x);
                                     } else {
                                         return 0;
                                     }
@@ -1186,7 +1186,7 @@ public class GenomeFileParser {
 
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 return 0; //error code
                             }
@@ -1196,7 +1196,7 @@ public class GenomeFileParser {
                         else {
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 System.err.println("Error! Protein lacking " +
                                         "sequence.");
@@ -1213,7 +1213,7 @@ public class GenomeFileParser {
                         //add first line
                         totalChain += temp.substring(35);
                         x++; //jump to next line
-                        temp = (String) fileData.elementAt(x);
+                        temp = fileData.elementAt(x);
 
                         //add remaining lines
                         while (temp.lastIndexOf("\"") == -1) {
@@ -1221,7 +1221,7 @@ public class GenomeFileParser {
                             totalChain += temp.substring(21);
                             x++;
                             if (x < fileData.size()) {
-                                temp = (String) fileData.elementAt(x);
+                                temp = fileData.elementAt(x);
                             } else {
                                 return 0;
                             }
@@ -1249,7 +1249,7 @@ public class GenomeFileParser {
             // For each sequence in the file, determine the pI and MW
             for (int x = 0; x < sequences.size(); x++) {
 
-                temp = (String) sequences.elementAt(x);
+                temp = sequences.elementAt(x);
 
                 // Determine the MW from the getMW method
                 mW = getMW(temp);

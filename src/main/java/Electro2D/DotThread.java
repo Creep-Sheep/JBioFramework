@@ -86,7 +86,7 @@ public class DotThread extends Thread implements StateMachine {
 				// send the percent acrylamide value to Electro2D.ProteinDot
 				ProteinDot.setPercent(electro2D.getLowPercent(), electro2D.getHighPercent());
 
-				gel.resetReLine();
+				gel.setRedrawPHLines(false);
 				stateHelper.next(LOOP_IEF);
 				break;
 			case LOOP_IEF:
@@ -122,7 +122,7 @@ public class DotThread extends Thread implements StateMachine {
 					stateHelper.sleep(delay);
 					break;
 				}
-				gel.setreLine();
+				gel.setRedrawPHLines(true);
 				gel.setMWLines(loop_i);
 				loop_i = 0;
 				electro2D.resetPlay();

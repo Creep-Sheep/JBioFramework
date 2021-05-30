@@ -8,6 +8,10 @@ import javax.swing.*;
 public class EmailForm extends javax.swing.JFrame {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8098578752418280816L;
+	/**
      * Creates new form ContactEditorUI
      */
     public EmailForm() {

@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 
 public class SearchProteinFunction implements MouseListener, ActionListener {
 
-    private Vector dots1;
-    private Vector dots2;
+    private Vector<ProteinDot> dots1;
+    private Vector<ProteinDot> dots2;
     private GelCanvas gel;
     private Electro2D electro2D;
     private JFrame window;
@@ -51,8 +51,8 @@ public class SearchProteinFunction implements MouseListener, ActionListener {
         radioButtons = new ButtonGroup();
 
         gel = electro2D.getGel();
-        dots1 = new Vector();
-        dots2 = new Vector();
+        dots1 = new Vector<>();
+        dots2 = new Vector<>();
         excludesLabel = new JLabel("Excludes: ");
         includesLabel = new JLabel("Includes: ");
         searchTerm = new JTextField();
@@ -66,7 +66,7 @@ public class SearchProteinFunction implements MouseListener, ActionListener {
         window = new JFrame();
         window.addWindowListener(new WindowAdapter() {
                                      public void windowClosing(WindowEvent e) {
-                                         window.hide();
+                                         window.setVisible(false);
                                      }
                                  }
         );
@@ -145,21 +145,21 @@ public class SearchProteinFunction implements MouseListener, ActionListener {
         dots2 = gel.getDots2();
 
         if (dots1 == null) {
-            dots1 = new Vector();
+            dots1 = new Vector<>();
         }
 
         if (dots2 == null) {
-            dots2 = new Vector();
+            dots2 = new Vector<>();
         }
 
         ProteinDot prot = null;
         if (searchField.equals("function")) {
             for (int i = 0; i < dots1.size(); i++) {
                 prot = (ProteinDot) dots1.elementAt(i);
-                if (((E2DProtein) prot.getPro()).getFunction().indexOf(fcnName)
+                if (prot.getPro().getFunction().indexOf(fcnName)
                         == -1) {
                     prot.doNotShowMe();
-                } else if (((E2DProtein) prot.getPro()).getFunction().indexOf(
+                } else if (prot.getPro().getFunction().indexOf(
                         limitations) != -1 && !limitations.equals("")) {
                     prot.doNotShowMe();
                 }

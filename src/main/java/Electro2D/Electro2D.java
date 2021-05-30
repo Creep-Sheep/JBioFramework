@@ -37,11 +37,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -57,9 +52,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -70,7 +63,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 
@@ -81,6 +73,7 @@ import main.java.Utilities.MessageFrame;
 /**
  * The main electro2D class.
  */
+@SuppressWarnings("serial")
 public class Electro2D extends JPanel implements ActionListener {
 
     private FileFrame fileFrame;        //pop up for loading file data
@@ -94,7 +87,7 @@ public class Electro2D extends JPanel implements ActionListener {
     private java.awt.List proteinList;    //current protein list
     private int[] selectedIndexes;        //selected indexes in the list
     private JLabel animationChooser;      //select animation to control
-    private JComboBox rangeChooser;     //select the range for IEF
+    private JComboBox<String> rangeChooser;     //select the range for IEF
     private DotThread dotThread;          //thread controlling the SDS-PAGE
     //animation
     private IEFThread iefThread;          //thread controlling IEF animation
@@ -105,7 +98,7 @@ public class Electro2D extends JPanel implements ActionListener {
     private boolean rangeReload;      //determines whether or not the user 
     //enters a pH range manually or not
 
-    private JComboBox percentAcrylamide; //the Choices for entering the
+    private JComboBox<String> percentAcrylamide; //the Choices for entering the
     //% acrylamide for the gel
     private Vector<JLabel> rangeLabels;
     private Vector<JLabel> mwLabels;
@@ -118,19 +111,19 @@ public class Electro2D extends JPanel implements ActionListener {
     private double maxMW;
     private double minPi;
     private double maxPi;
-    private Vector sequences;                        //sequence data
-    private Vector sequenceTitles;                   //sequence titles
-    private Vector molecularWeights;                 //molecular weights of proteins
-    private Vector piValues;                         //pI values of proteins
-    private Vector functions;                        //functions of proteins
+    private Vector<String> sequences;                        //sequence data
+    private Vector<String> sequenceTitles;                   //sequence titles
+    private Vector<String> molecularWeights;                 //molecular weights of proteins
+    private Vector<String> piValues;                         //pI values of proteins
+    private Vector<String> functions;                        //functions of proteins
 
     private boolean set2ndFile = false;
     private java.awt.List proteinList2;
-    private Vector sequences2;
-    private Vector sequenceTitles2 = new Vector();
-    private Vector functions2;
-    private Vector molecularWeights2;
-    private Vector piValues2;
+    private Vector<String> sequences2;
+    private Vector<String> sequenceTitles2 = new Vector<String>();
+    private Vector<String> functions2;
+    private Vector<String> molecularWeights2;
+    private Vector<String> piValues2;
     private FileFrame fileFrame2;
     private boolean sequencesReady;
 
@@ -168,11 +161,11 @@ public class Electro2D extends JPanel implements ActionListener {
                         "rangeSelectDeactivated.jpg"));
 
         rangeLabels = new Vector<JLabel>();
-        mwLabels = new Vector();
+        mwLabels = new Vector<JLabel>();
         resetPressed = false;
         rangeReload = false;
         gelCanvas = new GelCanvas(this);
-		gelCanvas.setTransferHandler(new TransferHandler() {
+		setTransferHandler(new TransferHandler() {
 			
 			  @Override
 			  public boolean canImport(TransferHandler.TransferSupport support) {
@@ -188,8 +181,8 @@ public class Electro2D extends JPanel implements ActionListener {
 				try {
 					for (int i = 0; i < flavors.length; i++) {
 						if (flavors[i].isFlavorJavaFileListType()) {
-							List<File> list = null;
-							list = (List<File>) tr.getTransferData(flavors[i]);
+							@SuppressWarnings("unchecked")
+							List<File> list = (List<File>) tr.getTransferData(flavors[i]);
 							// BH for now we just load one if multiple are picked
 							for (int j = 0; j < Math.max(1, list.size()); j++) {
 								loadFile(list.get(j), 1);
@@ -306,9 +299,9 @@ public class Electro2D extends JPanel implements ActionListener {
         animationChooser = new JLabel("IEF");
 
         // Add the pH range chooser
-        rangeChooser = new JComboBox();
+        rangeChooser = new JComboBox<String>();
         rangeChooser.addItem("3 - 10");
-        rangeChooser.addItem("4- 7");
+        rangeChooser.addItem("4 - 7");
         rangeChooser.addItem("Enter A Range");
         rangeChooser.addItemListener(new ItemListener() {
             @Override
@@ -322,7 +315,7 @@ public class Electro2D extends JPanel implements ActionListener {
         });
 
         // init %Acrylamide field and set initial value to 15
-        percentAcrylamide = new JComboBox();
+        percentAcrylamide = new JComboBox<String>();
         percentAcrylamide.addItem("5");
         percentAcrylamide.addItem("7.5");
         percentAcrylamide.addItem("10");
@@ -334,10 +327,10 @@ public class Electro2D extends JPanel implements ActionListener {
         percentAcrylamide.addItem("10 - 20");
         percentAcrylamide.setSelectedItem("15");
 
-        sequences = new Vector();
-        sequenceTitles = new Vector();
-        molecularWeights = new Vector();
-        piValues = new Vector();
+        sequences = new Vector<String>();
+        sequenceTitles = new Vector<String>();
+        molecularWeights = new Vector<String>();
+        piValues = new Vector<String>();
         sequencesReady = false;
 
         proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
@@ -951,7 +944,7 @@ public class Electro2D extends JPanel implements ActionListener {
         //create a URL object
         //URL searchPage = null;
         String searchId = "";           //the name used in the search
-        Vector ecNums = new Vector(); //holds the EC numbers contained in the
+        Vector<Object> ecNums = new Vector<>(); //holds the EC numbers contained in the
         // id string
 
         while (id.length() > 0 && id.indexOf("\u003B") != -1) {
@@ -1025,7 +1018,7 @@ public class Electro2D extends JPanel implements ActionListener {
      * Opens the protein search dialog box
      */
     public void openProteinSearch() {
-        SearchProteinFunction proteinSearch = new SearchProteinFunction(this);
+        new SearchProteinFunction(this);
     }
 
     /**
@@ -1038,120 +1031,45 @@ public class Electro2D extends JPanel implements ActionListener {
     }
 
     /**
-     * returns the maximum pH range that the user selected
+     * Get the maximum pH range that the user selected
      *
      * @return max the maximum pH to be used in the simulation
      */
     public double getMaxRange() {
-        // set up the default maximum range of 10
-        Double max = new Double(10);
-        String ranges = (String) rangeChooser.getSelectedItem();
-        // if the user selected a range from the list, supply the correct max
-        if (ranges.equals("3 - 10")) {
-            max = 10.0;
-            return (double) max;
-        } else if (ranges.equals("4 - 7")) {
-            max = 7.0;
-            return (double) max;
-        }
-        /**
-         * if the user chose to enter their own value, first check to make sure
-         * it is in the correct format
-         */
-        else if (ranges.matches("\\d+.?\\d*-\\d+.?\\d*")) {
-            /**
-             * split the user's range into a String array so that Scanner can
-             * find the correct Double
-             */
-            String[] lowAndHigh = ranges.split("-");
-            Scanner scan = new Scanner(lowAndHigh[1]);
-            max = scan.nextDouble();
-            /**
-             * the maximum pH cannot be below 0 or above 14 because a pH of any
-             * other value is a physical impossibility
-             */
-            if ((max < 0) || (max > 14)) {
-
-                MessageFrame mess = new MessageFrame();
-                String m = max + " is not a valid number.  Please " +
-                        "press restart and try again using values between 0" +
-                        "and 14.";
-                mess.setMessage(m);
-                mess.setVisible(true);
-
-            } else {
-                // return the user's maximum pH
-                return (double) max;
-
-            }
-
-        }
-        /**
-         * if none of the provided choices were selected and the user did not
-         * enter a value, then use the default max of 10
-         */
-        return (double) max;
+    	return getRanges()[1];
     }
 
     /**
-     * this method returns the minimum pH range that the user selected
+     * Get the minimum pH range that the user selected
      *
      * @return min the minimum pH to be used in the simulation
      */
 
     public double getMinRange() {
         // set up the default minimum pH of 3
-        Double min = new Double(3);
-        String ranges = (String) rangeChooser.getSelectedItem();
-        /**
-         * if the user selected one of the provided choices set the minimum pH
-         * to the appropriate value
-         */
-        if (ranges.equals("3 - 10")) {
-            min = 3.0;
-            return (double) min;
-        } else if (ranges.equals("4 - 7")) {
-            min = 4.0;
-            return (double) min;
-        }
-        /**
-         * if the user chose to enter their own value, check to make sure that
-         * it is in the correct format
-         */
-        else if (ranges.matches("\\d+.?\\d*-\\d+.?\\d*")) {
-            // make the scanner object to find the correct Double
-            String[] lowAndHigh = ranges.split("-");
-            Scanner scan = new Scanner(lowAndHigh[0]);
-            min = scan.nextDouble();
-            /**
-             * the minimum pH cannot be below 0 or above 14 because a pH of any
-             * other value is a physical impossibility
-             */
-            if ((min < 0) || (min > 14)) {
-
-                MessageFrame mess = new MessageFrame();
-                String m = min + " is not a valid number.  Please " +
-                        "press restart and try again using values between 0" +
-                        "and 14.";
-                mess.setMessage(m);
-                mess.setVisible(true);
-
-            } else {
-                // return the user's minimum pH value
-                return (double) min;
-
-            }
-
-        }
-        /**
-         * if the user did not select any of the provided choices and did not
-         * enter their own pH value, use the default pH value of 3
-         */
-        return (double) min;
-
+        	return getRanges()[0];
     }
 
-    /**
+	private double[] getRanges() {
+		try {
+			String ranges = ((String) rangeChooser.getSelectedItem()).replaceAll(" ", "");
+			// note that result cannot be negative, since we are splitting on "-"
+			String[] lowAndHigh = ranges.split("-");
+			double[] range = new double[] { Double.parseDouble(lowAndHigh[0]), Double.parseDouble(lowAndHigh[1]) };
+			if ((range[0] <= 14 && range[1] <= 14 && range[0] < range[1] && range[0] >= 0 && range[1] >= 0)) {
+				return range;
+			}
+		} catch (Exception e) {
+		}
+		MessageFrame mess = new MessageFrame();
+		String m = "That is not a range such as 3-10. Please "
+				+ "press restart and try again using values between 0 and 14.";
+		mess.setMessage(m);
+		mess.setVisible(true);
+		return new double[] { 3, 10 };
+	}
+
+	/**
      * Returns the value stored in the % acrylamide text field
      *
      * @return percent
@@ -1415,10 +1333,11 @@ public class Electro2D extends JPanel implements ActionListener {
      *
      * @return sequences
      */
-    public Vector getSequences() {
+	public Vector<String> getSequences() {
         Vector<Integer> positionsOne = proteinListFrame.getPositionsOne();
         if (positionsOne.size() > 0) {
-            Vector copySequences = (Vector) sequences.clone();
+            @SuppressWarnings("unchecked")
+            Vector<String> copySequences = (Vector<String>) sequences.clone();
             sequences.clear();
             if (positionsOne.get(0) > -1) {
                 for (int x = 0; x < positionsOne.size(); x++) {
@@ -1434,17 +1353,15 @@ public class Electro2D extends JPanel implements ActionListener {
      *
      * @return sequenceTitles
      */
-    public Vector getSequenceTitles() {
+	public Vector<String> getSequenceTitles() {
         Vector<Integer> positionsOne = proteinListFrame.getPositionsOne();
         if (positionsOne.size() > 0) {
-            Vector copySequenceTitles = (Vector) sequenceTitles.clone();
+            @SuppressWarnings("unchecked")
+            Vector<String> copySequenceTitles = (Vector<String>) sequenceTitles.clone();
             sequenceTitles.clear();
             if (positionsOne.get(0) > -1) {
                 for (int x = 0; x < positionsOne.size(); x++) {
-                    Integer temp = positionsOne.get(x);
-                    Object next = copySequenceTitles.get(temp);
-                    sequenceTitles.add(next);
-                    //sequenceTitles.add(copySequenceTitles.get(positionsOne.get(x)));
+                    sequenceTitles.add(copySequenceTitles.get(positionsOne.get(x)));
                 }
             }
         }
@@ -1465,10 +1382,11 @@ public class Electro2D extends JPanel implements ActionListener {
      *
      * @return molecularWeights
      */
-    public Vector getMolecularWeights() {
+    public Vector<String> getMolecularWeights() {
         Vector<Integer> positionsOne = proteinListFrame.getPositionsOne();
         if (positionsOne.size() > 0) {
-            Vector copyMolecularWeights = (Vector) molecularWeights.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copyMolecularWeights = (Vector<String>) molecularWeights.clone();
             molecularWeights.clear();
             if (positionsOne.get(0) > -1) {
                 for (int x = 0; x < positionsOne.size(); x++) {
@@ -1530,14 +1448,14 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public String getPIbyTitle(String title) {
         for (int x = 0; x < sequenceTitles.size(); x++) {
-            if (((String) sequenceTitles.elementAt(x)).equals(title)) {
-                return (String) piValues.elementAt(x);
+            if (sequenceTitles.elementAt(x).equals(title)) {
+                return piValues.elementAt(x);
             }
         }
         if (sequenceTitles2 != null) {
             for (int x = 0; x < sequenceTitles2.size(); x++) {
-                if (((String) sequenceTitles2.elementAt(x)).equals(title)) {
-                    return (String) piValues2.elementAt(x);
+                if (sequenceTitles2.elementAt(x).equals(title)) {
+                    return piValues2.elementAt(x);
                 }
             }
         }
@@ -1551,14 +1469,14 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public String getSequencebyTitle(String title) {
         for (int x = 0; x < sequenceTitles.size(); x++) {
-            if (((String) sequenceTitles.elementAt(x)).equals(title)) {
-                return (String) sequences.elementAt(x);
+            if (sequenceTitles.elementAt(x).equals(title)) {
+                return sequences.elementAt(x);
             }
         }
         if (sequenceTitles2 != null) {
             for (int x = 0; x < sequenceTitles2.size(); x++) {
-                if (((String) sequenceTitles2.elementAt(x)).equals(title)) {
-                    return (String) sequences2.elementAt(x);
+                if (sequenceTitles2.elementAt(x).equals(title)) {
+                    return sequences2.elementAt(x);
                 }
             }
         }
@@ -1602,10 +1520,11 @@ public class Electro2D extends JPanel implements ActionListener {
      *
      * @return piValues
      */
-    public Vector getPiValues() {
+    public Vector<String> getPiValues() {
         Vector<Integer> positionsOne = proteinListFrame.getPositionsOne();
         if (positionsOne.size() > 0) {
-            Vector copyPiValues = (Vector) piValues.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copyPiValues = (Vector<String>) piValues.clone();
             piValues.clear();
             if (positionsOne.get(0) > -1) {
                 for (int x = 0; x < positionsOne.size(); x++) {
@@ -1621,10 +1540,11 @@ public class Electro2D extends JPanel implements ActionListener {
      *
      * @return functions
      */
-    public Vector getFunctions() {
+    public Vector<String> getFunctions() {
         Vector<Integer> positionsOne = proteinListFrame.getPositionsOne();
         if (positionsOne.size() > 0) {
-            Vector copyFunctions = (Vector) functions.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copyFunctions = (Vector<String>) functions.clone();
             functions.clear();
             if (positionsOne.get(0) > -1) {
                 for (int x = 0; x < positionsOne.size(); x++) {
@@ -1635,10 +1555,11 @@ public class Electro2D extends JPanel implements ActionListener {
         return functions;
     }
 
-    public Vector getPiValues2() {
+    public Vector<String> getPiValues2() {
         Vector<Integer> positionsTwo = proteinListFrame.getPositionsTwo();
         if (positionsTwo.size() > 0) {
-            Vector copyPiValues2 = (Vector) piValues2.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copyPiValues2 = (Vector<String>) piValues2.clone();
             piValues2.clear();
             if (positionsTwo.get(0) > -1) {
                 for (int x = 0; x < positionsTwo.size(); x++) {
@@ -1649,10 +1570,11 @@ public class Electro2D extends JPanel implements ActionListener {
         return piValues2;
     }
 
-    public Vector getSequences2() {
+    public Vector<String> getSequences2() {
         Vector<Integer> positionsTwo = proteinListFrame.getPositionsTwo();
         if (positionsTwo.size() > 0) {
-            Vector copySequences2 = (Vector) sequences2.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copySequences2 = (Vector<String>) sequences2.clone();
             sequences2.clear();
             if (positionsTwo.get(0) > -1) {
                 for (int x = 0; x < positionsTwo.size(); x++) {
@@ -1663,11 +1585,12 @@ public class Electro2D extends JPanel implements ActionListener {
         return sequences2;
     }
 
-    public Vector getSequenceTitles2() {
+    public Vector<String> getSequenceTitles2() {
         if (sequenceTitles2 != null) {
             Vector<Integer> positionsTwo = proteinListFrame.getPositionsTwo();
             if (positionsTwo.size() > 0) {
-                Vector copySequenceTitles2 = (Vector) sequenceTitles2.clone();
+                @SuppressWarnings("unchecked")
+				Vector<String> copySequenceTitles2 = (Vector<String>) sequenceTitles2.clone();
                 sequenceTitles2.clear();
                 if (positionsTwo.get(0) > -1) {
                     for (int x = 0; x < positionsTwo.size(); x++) {
@@ -1677,13 +1600,14 @@ public class Electro2D extends JPanel implements ActionListener {
             }
             return sequenceTitles2;
         }
-        return new Vector();
+        return new Vector<String>();
     }
 
-    public Vector getMolecularWeights2() {
+    public Vector<String> getMolecularWeights2() {
         Vector<Integer> positionsTwo = proteinListFrame.getPositionsTwo();
         if (positionsTwo.size() > 0) {
-            Vector copyMolecularWeights2 = (Vector) molecularWeights2.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copyMolecularWeights2 = (Vector<String>) molecularWeights2.clone();
             molecularWeights2.clear();
             if (positionsTwo.get(0) > -1) {
                 for (int x = 0; x < positionsTwo.size(); x++) {
@@ -1694,10 +1618,11 @@ public class Electro2D extends JPanel implements ActionListener {
         return molecularWeights2;
     }
 
-    public Vector getFunctions2() {
+    public Vector<String> getFunctions2() {
         Vector<Integer> positionsTwo = proteinListFrame.getPositionsTwo();
         if (positionsTwo.size() > 0) {
-            Vector copyFunctions2 = (Vector) functions2.clone();
+            @SuppressWarnings("unchecked")
+			Vector<String> copyFunctions2 = (Vector<String>) functions2.clone();
             functions2.clear();
             if (positionsTwo.get(0) > -1) {
                 for (int x = 0; x < positionsTwo.size(); x++) {
@@ -1718,13 +1643,12 @@ public class Electro2D extends JPanel implements ActionListener {
     /**
      * stores the vector of sequence data
      */
-    public void setSequences(Vector s) {
+    public void setSequences(Vector<String> s) {
         sequences = s;
         sequencesReady = true;
     }
 
-    public void setSequences2(Vector s) {
-        sequences2 = new Vector();
+    public void setSequences2(Vector<String> s) {
         sequences2 = s;
         sequencesReady = true;
     }
@@ -1753,45 +1677,45 @@ public class Electro2D extends JPanel implements ActionListener {
     /**
      * sets the vector of sequence titles
      */
-    public void setSequenceTitles(Vector st) {
+    public void setSequenceTitles(Vector<String> st) {
         sequenceTitles = st;
     }
 
 
-    public void setSequenceTitles2(Vector st) {
+    public void setSequenceTitles2(Vector<String> st) {
         sequenceTitles2 = st;
     }
 
     /**
      * sets the vector of molecular weights
      */
-    public void setMolecularWeights(Vector mw) {
+    public void setMolecularWeights(Vector<String> mw) {
         molecularWeights = mw;
     }
 
-    public void setMolecularWeights2(Vector mw) {
+    public void setMolecularWeights2(Vector<String> mw) {
         molecularWeights2 = mw;
     }
 
     /**
      * sets the vector of protein functions
      */
-    public void setFunctionValues(Vector fcn) {
+    public void setFunctionValues(Vector<String> fcn) {
         functions = fcn;
     }
 
-    public void setFunctionValues2(Vector fcn) {
+    public void setFunctionValues2(Vector<String> fcn) {
         functions2 = fcn;
     }
 
     /**
      * sets the vector of pI values
      */
-    public void setPiValues(Vector pi) {
+    public void setPiValues(Vector<String> pi) {
         piValues = pi;
     }
 
-    public void setPiValues2(Vector pi) {
+    public void setPiValues2(Vector<String> pi) {
         piValues2 = pi;
     }
 
@@ -1822,6 +1746,7 @@ public class Electro2D extends JPanel implements ActionListener {
         csv.writeToCSV();
     }
 
+	@SuppressWarnings("unused")
 	public void generateWebPage() {
 		web.genFile(this.getLastFileLoaded());
 		if (/** @j2sNative true || */ false) {
@@ -1849,6 +1774,7 @@ public class Electro2D extends JPanel implements ActionListener {
     	
     }
 
+	@SuppressWarnings("unused")
 	public void loadFile(File f, int fileNum) {
 		String filename = (f == null ? null : f.getName());
 		MessageFrame error = null;

@@ -10,28 +10,20 @@ package main.java.Electro2D;
  * @author Adam Bazinet
  */
 
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.event.WindowListener;
+import java.io.File;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import javajs.async.AsyncFileChooser;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
-import java.io.*;
-import java.util.Arrays;
-import java.util.function.Function;
-
-import main.java.Utilities.GenomeFileParser;
-import main.java.Utilities.MessageFrame;
-
+@SuppressWarnings("serial")
 public class FileFrame extends JFrame {
 
 	/** variables for the file reading pop-up frame **/

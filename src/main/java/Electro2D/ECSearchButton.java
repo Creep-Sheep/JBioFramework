@@ -14,7 +14,11 @@ import java.awt.event.MouseListener;
  */
 public class ECSearchButton extends Canvas implements MouseListener {
 
-    private Electro2D electro2D;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2552698338041307974L;
+	private Electro2D electro2D;
     private Color bgColor = Color.BLACK;
     private Color fillColorOff = Color.RED;
     private Color fillColorOn = new Color(255, 165, 0); //orange

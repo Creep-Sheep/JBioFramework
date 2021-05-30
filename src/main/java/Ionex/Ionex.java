@@ -20,7 +20,11 @@ import java.util.Vector;
 //==============================================================================
 public class Ionex extends Applet //implements Runnable
 {
-    // THREAD SUPPORT:
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9122237849297111647L;
+	// THREAD SUPPORT:
     //		m_ionex	is the Thread object for the applet
     //--------------------------------------------------------------------------
 //	private Thread	m_ionex = null;
@@ -35,7 +39,7 @@ public class Ionex extends Applet //implements Runnable
     boolean m_bPositiveResin = true;
     CProtein[] m_arrProteins;
 
-    Vector m_arrSelProteins;    //the currently selected proteins
+    Vector<CProtein> m_arrSelProteins;    //the currently selected proteins
 
     //	CProtein[]	m_arrSelProteins;	//the currently selected proteins
 //	Vector		m_vAvailProteins;
@@ -57,7 +61,7 @@ public class Ionex extends Applet //implements Runnable
     public Ionex() {
         m_arrProteins = new CProtein[5];
 //		m_arrSelProteins = new CProtein[5];
-        m_arrSelProteins = new Vector(5);
+        m_arrSelProteins = new Vector<>(5);
 //		m_vAvailProteins = new Vector( 10, 10);
 
         m_arrAvailProteins = new ProteinFile[100];
@@ -259,7 +263,7 @@ public class Ionex extends Applet //implements Runnable
                 strFile = new String(strLine.substring(nPos + 1));
                 strProtein = new String(strLine.substring(0, nPos));
                 m_arrAvailProteins[i] = new ProteinFile(strProtein, strFile);
-                controls.IDC_SELECTPROTEIN.addItem(strProtein, i++);
+                controls.IDC_SELECTPROTEIN.add(strProtein, i++);
 
 //				m_vAvailProteins.addElement( strProtein);
             }
@@ -272,7 +276,7 @@ public class Ionex extends Applet //implements Runnable
 /*
 		// populate the list of available proteins
 		for( int i = 0; i < m_vAvailProteins.size(); i++){
-			controls.IDC_SELECTPROTEIN.addItem( (String)m_vAvailProteins.elementAt( i));
+			controls.IDC_SELECTPROTEIN.add( (String)m_vAvailProteins.elementAt( i));
 		}
 */
 /*
@@ -281,7 +285,7 @@ public class Ionex extends Applet //implements Runnable
 			if( m_arrAvailProteins[i] == null){
 				break;
 			}
-			controls.IDC_SELECTPROTEIN.addItem(m_arrAvailProteins[ i].getName(), i);
+			controls.IDC_SELECTPROTEIN.add(m_arrAvailProteins[ i].getName(), i);
 		}
 */
         //select the first item
@@ -323,7 +327,7 @@ public class Ionex extends Applet //implements Runnable
 
         //copy the saved protein list to the currently selected protein list
         //and add the proteins to the listbox
-        controls.IDC_PROTEINS.clear();
+        controls.IDC_PROTEINS.removeAll();
         for (i = 0; i < 5; i++) {
             if (m_arrProteins[i] != null) {
                 CProtein protein = new CProtein(m_arrProteins[i].getName(),
@@ -334,7 +338,7 @@ public class Ionex extends Applet //implements Runnable
                 m_arrSelProteins.setElementAt(protein, i);
                 String strTemp = new String(String.valueOf(m_arrProteins[i].getAmount()) +
                         "mg " + m_arrProteins[i].getName());
-                controls.IDC_PROTEINS.addItem(strTemp);
+                controls.IDC_PROTEINS.add(strTemp);
             } else {
                 //there isn't anymore proteins, clear out any that are stored
                 if (m_arrSelProteins.size() > i) {
@@ -345,14 +349,14 @@ public class Ionex extends Applet //implements Runnable
 
         //enable/disable the Add and Remove controls
         if (controls.IDC_PROTEINS.countItems() == 5) {
-            controls.IDC_ADD.disable();
+            controls.IDC_ADD.setEnabled(false);
         } else {
-            controls.IDC_ADD.enable();
+            controls.IDC_ADD.setEnabled(true);
         }
         if (controls.IDC_PROTEINS.countItems() == 0) {
-            controls.IDC_REMOVE.disable();
+            controls.IDC_REMOVE.setEnabled(false);
         } else {
-            controls.IDC_REMOVE.enable();
+            controls.IDC_REMOVE.setEnabled(true);
         }
     }
 
@@ -364,7 +368,7 @@ public class Ionex extends Applet //implements Runnable
         m_imageCanvas.resetBackground();
 
         //disable the start button
-        controls.IDC_START.disable();
+        controls.IDC_START.setEnabled(false);
         showStatus("Please wait while the experiment is being loaded...");
 
         //save the settings
@@ -401,7 +405,7 @@ public class Ionex extends Applet //implements Runnable
         loadColumn();
 
         //the process may begin now
-        controls.IDC_START.enable();
+        controls.IDC_START.setEnabled(true);
         showStatus("The experiment has been loaded and is ready to run.");
 
         //get the image canvas ready to run the experiment
@@ -418,8 +422,8 @@ public class Ionex extends Applet //implements Runnable
             // we'll just ignore it
             return;
         }
-        controls.IDC_PROTEINS.delItem(nSelItem);
-        controls.IDC_ADD.enable();
+        controls.IDC_PROTEINS.remove(nSelItem);
+        controls.IDC_ADD.setEnabled(true);
 
         //remove from protein list
         m_arrSelProteins.removeElementAt(nSelItem);
@@ -430,15 +434,15 @@ public class Ionex extends Applet //implements Runnable
 
     void checkAddRemove() {
         if (m_arrSelProteins.size() <= 0) {
-            controls.IDC_REMOVE.disable();
+            controls.IDC_REMOVE.setEnabled(false);
         } else {
-            controls.IDC_REMOVE.enable();
+            controls.IDC_REMOVE.setEnabled(true);
         }
 
         if (m_arrSelProteins.size() >= 5) {
-            controls.IDC_ADD.disable();
+            controls.IDC_ADD.setEnabled(false);
         } else {
-            controls.IDC_ADD.enable();
+            controls.IDC_ADD.setEnabled(true);
         }
 
     }
@@ -470,8 +474,8 @@ public class Ionex extends Applet //implements Runnable
                 p.setAmount(nNewAmount);
 
                 //add the new amount to the listbox
-                controls.IDC_PROTEINS.delItem(i);
-                controls.IDC_PROTEINS.addItem(String.valueOf(nNewAmount) + "mg " + strName, i);
+                controls.IDC_PROTEINS.remove(i);
+                controls.IDC_PROTEINS.add(String.valueOf(nNewAmount) + "mg " + strName, i);
                 return;
             }
         }
@@ -479,7 +483,7 @@ public class Ionex extends Applet //implements Runnable
         m_arrSelProteins.addElement(new CProtein(strName, nAmount, strFile, getPH(), this));
 
         //add it to the listbox
-        controls.IDC_PROTEINS.addItem(strAmount + "mg " + strName);
+        controls.IDC_PROTEINS.add(strAmount + "mg " + strName);
 
         //reset the controls
         checkAddRemove();

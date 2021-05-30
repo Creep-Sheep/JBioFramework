@@ -31,19 +31,29 @@ package main.java.MassSpec;
  *
  * @author Amanda Fisher
  */
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.io.*;
 
-import javax.swing.*;
-import main.java.MainWindows.MarvinTab;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import main.java.MainWindows.JBioFrameworkMain;
+import main.java.MainWindows.MarvinTab;
 
 public class Ion extends ArrayList<SpecAminoAcid> {
 
-    private double totalMass = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8265397581678359850L;
+	private double totalMass = 0;
     private int totalCharge = 0;
     private double hits = 0;
     private int xCoordinate = 0;

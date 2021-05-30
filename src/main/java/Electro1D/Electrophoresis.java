@@ -19,8 +19,13 @@ import main.java.Utilities.BrowserLauncher;
  *         Desktop application
  *         The Swing version 1D Electrophoresis simulation,
  */
+@SuppressWarnings("serial")
 public class Electrophoresis extends JPanel {
-    JTabbedPane tabPane, tabPane2;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6625659357016475348L;
+	JTabbedPane tabPane, tabPane2;
     Parameters paramPanel;
     Simulation simPanel;
     ProteinData dataPanel;

@@ -37,6 +37,10 @@ import java.awt.event.WindowEvent;
 public class MessageFrame extends JFrame {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7696983590754432610L;
+	/**
      * variables for the file reading pop-up frame
      **/
 

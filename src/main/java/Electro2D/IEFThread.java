@@ -119,7 +119,7 @@ public class IEFThread extends Thread {
             				stateHelper.sleep(delay );
             			} else {
             				// display the pH markers along the gel
-            				gel.setreLine();
+            				gel.setRedrawPHLines(true);
             				gel.repaint();
             				// change the value selected in the animationChooser
             				electro2D.setSDS();

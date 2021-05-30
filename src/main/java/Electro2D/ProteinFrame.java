@@ -53,7 +53,11 @@ import java.awt.event.ActionEvent;
 
 public class ProteinFrame extends JFrame {
 
-    private Electro2D electro2D;           //reference to calling applet
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1217452211296066828L;
+	private Electro2D electro2D;           //reference to calling applet
     private String proteinTitle;           //name of the protein
     private String ptTruncated;            //name truncated
     private JPanel proteinInfoPanel;       //panel to add components to

@@ -26,7 +26,11 @@ import javax.swing.border.Border;
  */
 
 public class Parameters extends JPanel implements Constants {
-    // class attributes
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5982938969814262007L;
+	// class attributes
     Protein selectedSample;
     Acrylamide selectedGel;
     double selectedSpeed;

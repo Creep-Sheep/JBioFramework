@@ -65,13 +65,13 @@ public class WebGenerator {
 			System.err.println(x.getMessage());
 		}
 
-		Vector names = electro2D.getSequenceTitles();
-		Vector molwt = electro2D.getMolecularWeights();
-		Vector pI_vals = electro2D.getPiValues();
-		Vector functions = electro2D.getFunctions();
+		Vector<String> names = electro2D.getSequenceTitles();
+		Vector<String> molwt = electro2D.getMolecularWeights();
+		Vector<String> pI_vals = electro2D.getPiValues();
+		Vector<String> functions = electro2D.getFunctions();
 
 		HTMLSorter htmlSort = new HTMLSorter(searchVal, names, pI_vals, molwt, functions);
-		Vector sorted = new Vector(htmlSort.getSorted());
+		Vector<Vector<String>> sorted = new Vector<Vector<String>>(htmlSort.getSorted());
 
 		maxMW = String.valueOf(electro2D.getMaxMW());
 		minMW = String.valueOf(electro2D.getMinMW());
@@ -117,16 +117,16 @@ public class WebGenerator {
 		double molwtDouble = 0;
 		String pI = "";
 		double pIDouble = 0;
-		Vector tmp = new Vector();
+		Vector<String> tmp = new Vector<>();
 		for (int i = 0; i < sorted.size(); i++) {
-			tmp = ((Vector) sorted.elementAt(i));
-			pI = (String) tmp.elementAt(1);
+			tmp = sorted.elementAt(i);
+			pI = tmp.elementAt(1);
 			pIDouble = Double.parseDouble(pI);
-			molwtValue = (String) tmp.elementAt(2);
+			molwtValue = tmp.elementAt(2);
 			molwtDouble = Double.parseDouble(molwtValue);
 
-			protInfoTable = openTR + openTD + (String) tmp.elementAt(0) + closeTD + openTD + molwtValue + closeTD
-					+ openTD + pI + closeTD + openTD + (String) tmp.elementAt(3) + closeTD + closeTR;
+			protInfoTable = openTR + openTD + tmp.elementAt(0) + closeTD + openTD + molwtValue + closeTD
+					+ openTD + pI + closeTD + openTD + tmp.elementAt(3) + closeTD + closeTR;
 
 			pWrite.println(protInfoTable);
 

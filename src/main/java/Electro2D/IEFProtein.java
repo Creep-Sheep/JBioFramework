@@ -20,11 +20,10 @@ package main.java.Electro2D;/*
  */
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.util.Vector;
-import java.util.Random;
 import java.util.Collection;
+import java.util.Random;
+import java.util.Vector;
 
 
 
@@ -37,7 +36,7 @@ public class IEFProtein {
     private static Color[] colors = {Color.blue, Color.green, Color.yellow,
             Color.red, Color.orange, Color.pink};
     private Color myColor;
-    private Vector proteins;
+    private Vector<E2DProtein> proteins;
     private int myX;
     private static int myY = 5;
     private double tempX = 0;
@@ -49,7 +48,7 @@ public class IEFProtein {
     private static int myHeight = 40;
     private static double pixelWidth_100 = 0;
     private static double tempWidth = 0;
-    private Vector names;
+    private Vector<String> names;
     private static double maxpH = 10;
     private static double minpH = 3;
     private static GelCanvas gelcanvas;
@@ -66,9 +65,9 @@ public class IEFProtein {
      */
     public IEFProtein(E2DProtein p, GelCanvas g) {
     	index = ++nProt;
-        names = new Vector();
+        names = new Vector<>();
         gelcanvas = g;
-        proteins = new Vector();
+        proteins = new Vector<>();
         proteins.add(p);
 
         minPi = myPi = p.getPI();
@@ -109,11 +108,11 @@ public class IEFProtein {
      *
      * @param c the collection of proteins to be added to the vector
      */
-    public void addProtein(Collection c) {
+    public void addProtein(Collection<E2DProtein> c) {
         /**
          * copy all of the proteins passed to this object into its vector
          */
-        proteins.addAll((Vector) (c));
+        proteins.addAll(c);
 
         /**
          * change the color of the Electro2D.IEFProtein based on the number of proteins
@@ -139,9 +138,9 @@ public class IEFProtein {
          * add the new protein names to the vector of names and set any
          * changes in the max or min pI values
          */
-        for (int i = 0; i < ((Vector) c).size(); i++) {
+        for (int i = 0; i < c.size(); i++) {
 
-            E2DProtein p = ((E2DProtein) ((Vector) c).elementAt(i));
+            E2DProtein p = ((Vector<E2DProtein>) c).elementAt(i);
         	
             names.add(p.toString());
 
@@ -201,8 +200,7 @@ public class IEFProtein {
      *
      * @return proteins
      */
-    public Vector getProtein() {
-
+    public Vector<E2DProtein> getProtein() {
         return proteins;
     }
 
@@ -319,7 +317,7 @@ public class IEFProtein {
      *
      * @return vector of protein titles
      */
-    public Vector getNames() {
+    public Vector<String> getNames() {
         return names;
     }
 

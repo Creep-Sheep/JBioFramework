@@ -10,7 +10,12 @@ package main.java.MassSpec;/*
  */
 public class AminoException extends Exception {
 
-    public AminoException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2055883749146096766L;
+
+	public AminoException(String message) {
         super(message);
     }
 }

@@ -36,7 +36,12 @@ import chemaxon.marvin.sketch.SketchParameterConstants;
  */
 public class MarvinTab extends JPanel {
 
-    //declaraiton of the main panel being constructed (for accessing below)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3569857311726169914L;
+
+	//declaraiton of the main panel being constructed (for accessing below)
     private static MSketchPane marvinPane;
 
     //unused textarea.
@@ -62,7 +67,12 @@ public class MarvinTab extends JPanel {
 
         //top panel. contains sketchpanel.
         JPanel topPanel = new JPanel() {
-            public void setVisible(boolean tf) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 2047700591318761617L;
+
+			public void setVisible(boolean tf) {
             	getSketchPane();
             }
         };

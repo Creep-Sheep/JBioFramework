@@ -12,7 +12,11 @@ import javax.swing.JTextField;
  *         ProteinData.java class that handle the GUI components of the protein data panel
  */
 public class ProteinData extends JPanel {
-    Electrophoresis parent;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3836828666209394917L;
+	Electrophoresis parent;
     String mw;
     JTextField name;
     JTextField fullName;

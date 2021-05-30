@@ -31,7 +31,11 @@ import java.awt.event.MouseEvent;
  */
 public class OutputGraphGUI extends JPanel implements MouseListener {
 
-    private ArrayList<Ion> peakLines;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3291515557857954427L;
+	private ArrayList<Ion> peakLines;
     private MassSpecMain mainPanel;
     double mostHits;
     int width;

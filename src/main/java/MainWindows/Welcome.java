@@ -41,7 +41,11 @@ import main.java.Utilities.*;
  */
 public class Welcome extends JPanel {
 
-    //links to various jbf sites used below
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3895526665576726006L;
+	//links to various jbf sites used below
     public static String jbfWebsite = "https://sourceforge.net/projects/jbf/";
 
     /**

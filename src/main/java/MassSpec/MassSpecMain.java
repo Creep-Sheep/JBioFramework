@@ -48,13 +48,17 @@ import main.java.Utilities.FastaParser;
  */
 public class MassSpecMain extends JPanel {
 
-    private String[] proteaseChoices = {"Trypsin", "Chymotrypsin", "Proteinase K", "Thermolysin"};
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2867844752315011532L;
+	private String[] proteaseChoices = {"Trypsin", "Chymotrypsin", "Proteinase K", "Thermolysin"};
     private JButton help;
     private JButton about;
     private static JTextArea inputArea; // static so Electro2D.ProteinFrame can interact with it.
     private JTextField lowerRange;
     private JTextField upperRange;
-    private JComboBox proteaseBox;
+    private JComboBox<String> proteaseBox;
     private TandemGraphGUI tandemGraph;
     private JLabel massDisplay;
     private ToggleFragmentButton blueBs;
@@ -177,7 +181,7 @@ public class MassSpecMain extends JPanel {
 //        grid.setConstraints(proteaseLabel, constraints);
         add(proteaseLabel, constraints);
 
-        proteaseBox = new JComboBox(proteaseChoices);
+        proteaseBox = new JComboBox<String>(proteaseChoices);
         constraints.gridy = 7;
 //        grid.setConstraints(proteaseBox, constraints);
         add(proteaseBox, constraints);
@@ -276,6 +280,11 @@ public class MassSpecMain extends JPanel {
     private class ToggleFragmentButton extends JCheckBox implements ItemListener {
 
         /**
+		 * 
+		 */
+		private static final long serialVersionUID = -2579374802627838606L;
+
+		/**
          * Constructor passes the String to be displayed on the button to
          * JCheckBox's constructor and registers itself as its own actionListener.
          */

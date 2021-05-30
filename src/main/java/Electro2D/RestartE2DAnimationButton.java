@@ -10,7 +10,11 @@ import java.util.Vector;
 
 public class RestartE2DAnimationButton extends JButton implements ActionListener {
 
-    Electro2D electro2D;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6766088790667704112L;
+	Electro2D electro2D;
 
     public RestartE2DAnimationButton(Electro2D e) {
         super("Restart");
@@ -45,16 +49,16 @@ public class RestartE2DAnimationButton extends JButton implements ActionListener
         IEFProtein.resetTempWidth();
         PlayE2AnimationButton.setCompare(false);
         electro2D.resetBothProteinLists();
-        electro2D.setSequences(new Vector());
-        electro2D.setSequenceTitles(new Vector());
-        electro2D.setMolecularWeights(new Vector());
-        electro2D.setPiValues(new Vector());
-        electro2D.setFunctionValues(new Vector());
-        electro2D.setSequences2(new Vector());
-        electro2D.setSequenceTitles2(new Vector());
-        electro2D.setMolecularWeights2(new Vector());
-        electro2D.setPiValues2(new Vector());
-        electro2D.setFunctionValues2(new Vector());
+        electro2D.setSequences(new Vector<String>());
+        electro2D.setSequenceTitles(new Vector<String>());
+        electro2D.setMolecularWeights(new Vector<String>());
+        electro2D.setPiValues(new Vector<String>());
+        electro2D.setFunctionValues(new Vector<String>());
+        electro2D.setSequences2(new Vector<String>());
+        electro2D.setSequenceTitles2(new Vector<String>());
+        electro2D.setMolecularWeights2(new Vector<String>());
+        electro2D.setPiValues2(new Vector<String>());
+        electro2D.setFunctionValues2(new Vector<String>());
         electro2D.refreshProteinList();
         electro2D.refreshProteinList2();
 

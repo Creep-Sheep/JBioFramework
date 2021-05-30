@@ -17,6 +17,10 @@ import java.util.ArrayList;
 public class TandemGraphGUI extends JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6604528787253362853L;
+	/**
      * The Width.
      */
     int width;

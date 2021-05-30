@@ -49,14 +49,13 @@ public class Preprocessor {
     private final String PIVAL_HEADER = "PIVAL:      ";
     private final String LINE_SEPARATOR = "-----";
 
-    private Vector sequence;
-    private Vector sequenceTitle;
-    private Vector piVals;
-    private Vector molwts;
-    private Vector functions;
+    private Vector<String> sequence;
+    private Vector<String> sequenceTitle;
+    private Vector<String> piVals;
+    private Vector<String> molwts;
+    private Vector<String> functions;
     private String fileName;
     private int numEnzymes;
-    private Electro2D electro2D;
 
 	public static void process(Electro2D electro2D) {
 		/** @j2sNative return; */
@@ -94,8 +93,8 @@ public class Preprocessor {
 		out.println(LINE_SEPARATOR);
 
 		for (int i = 0; i < sequenceTitle.size(); i++) {
-			out.println(PROTTITLE_HEADER + (String) sequenceTitle.elementAt(i));
-			fcn = (String) functions.elementAt(i);
+			out.println(PROTTITLE_HEADER + sequenceTitle.elementAt(i));
+			fcn = functions.elementAt(i);
 			length = fcn.length();
 			while (length >= 0) {
 				if (length <= lineLength) {
@@ -108,7 +107,7 @@ public class Preprocessor {
 				}
 			}
 
-			seq = (String) sequence.elementAt(i);
+			seq = sequence.elementAt(i);
 			length = seq.length();
 
 			while (length >= 0) {
@@ -122,8 +121,8 @@ public class Preprocessor {
 				}
 			}
 
-			out.println(MOLWT_HEADER + (String) molwts.elementAt(i));
-			out.println(PIVAL_HEADER + (String) piVals.elementAt(i));
+			out.println(MOLWT_HEADER + molwts.elementAt(i));
+			out.println(PIVAL_HEADER + piVals.elementAt(i));
 			out.println(LINE_SEPARATOR);
 		}
 		out.close();
@@ -137,12 +136,12 @@ public class Preprocessor {
                                     int fileNum) {
         int fileNameLoc = 0;
         int endofHeader = 1;
-        Vector sequences = new Vector();
-        Vector sequenceTitles = new Vector();
-        Vector molwts = new Vector();
-        Vector functions = new Vector();
-        Vector piVals = new Vector();
-        Vector fileData = new Vector();
+        Vector<String> sequences = new Vector<>();
+        Vector<String> sequenceTitles = new Vector<>();
+        Vector<String> molwts = new Vector<>();
+        Vector<String> functions = new Vector<>();
+        Vector<String> piVals = new Vector<>();
+        Vector<String> fileData = new Vector<>();
         String seq = "";
         String molwt = "";
         String pI = "";
@@ -167,20 +166,20 @@ public class Preprocessor {
                     "entered the file name correctly.");
         }
 
-        if (((String) fileData.elementAt(fileNameLoc)).indexOf("FILE:")
+        if ((fileData.elementAt(fileNameLoc)).indexOf("FILE:")
                 == -1) {
             System.err.println("Invalid file format.  Missing file name " +
                     "line.");
         } else {
 
-            electro2D.setLastFileLoaded(((String) fileData.elementAt(fileNameLoc)).substring(hlength));
+            electro2D.setLastFileLoaded((fileData.elementAt(fileNameLoc)).substring(hlength));
             for (int i = endofHeader + 1; i < fileData.size() - 1; i++) {
-                line = (String) fileData.elementAt(i);
+                line = fileData.elementAt(i);
                 while (line.indexOf("NAME:") != -1) {
                     title = title + line.substring(hlength);
                     if (i + 1 != fileData.size()) {
                         i = i + 1;
-                        line = (String) fileData.elementAt(i);
+                        line = fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
                         return 0;
@@ -190,7 +189,7 @@ public class Preprocessor {
                     function = function + line.substring(hlength);
                     if (i + 1 < fileData.size()) {
                         i = i + 1;
-                        line = (String) fileData.elementAt(i);
+                        line = fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
                         return 0;
@@ -200,7 +199,7 @@ public class Preprocessor {
                     seq = seq + line.substring(hlength);
                     if (i + 1 < fileData.size()) {
                         i = i + 1;
-                        line = (String) fileData.elementAt(i);
+                        line = fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
                         return 0;
@@ -217,7 +216,7 @@ public class Preprocessor {
                     }
                     if (i + 1 != fileData.size()) {
                         i = i + 1;
-                        line = (String) fileData.elementAt(i);
+                        line = fileData.elementAt(i);
                     } else {
                         System.err.println("Error reading from file.");
                         return 0;

@@ -39,7 +39,11 @@ import javax.swing.JScrollPane;
 
 public class IEFFrame extends Frame {
 
-    private Electro2D electro2D;          //reference to calling applet
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3179201664198172366L;
+	private Electro2D electro2D;          //reference to calling applet
     private String ptTruncated = "";           //name truncated
     private String names = "";
     private JPanel IEFPanel;           //panel to add components to
@@ -52,7 +56,7 @@ public class IEFFrame extends Frame {
     private String minRange;   //the minimum pI value held in the Electro2D.IEFProtein
     private JScrollPane scroll; //the pane that allows the user to scroll to
     //view all of the contents
-    private Vector labels;     // the labels storing the protein names
+    private Vector<Label> labels;     // the labels storing the protein names
     private static int xlocation = 0;  //the x location of this frame
     private static int ylocation = 0;  // the y location of this frame
 
@@ -62,7 +66,7 @@ public class IEFFrame extends Frame {
      * @param i - the Electro2D.IEFProtein being represented
      */
     public IEFFrame(IEFProtein i) {
-        labels = new Vector();
+        labels = new Vector<>();
 
         //set the font for the information being displayed
         theFont = new Font("Arial", Font.PLAIN, 12);
@@ -95,7 +99,7 @@ public class IEFFrame extends Frame {
         IEFPanel.scrollRectToVisible(dimensions);
 
         //get the names of the proteins stored in ief
-        Vector v = i.getNames();
+        Vector<String> v = i.getNames();
 
         int location = 30;
         for (int j = 0; j < v.size(); j++) {

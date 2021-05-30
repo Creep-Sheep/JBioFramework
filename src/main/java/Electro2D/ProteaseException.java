@@ -22,7 +22,12 @@ package main.java.Electro2D;/*
  * @author Amanda Fisher
  */
 public class ProteaseException extends Exception {
-    //
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9138097722821723566L;
+
+	//
     public ProteaseException() {
     }
 

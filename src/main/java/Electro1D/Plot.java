@@ -27,7 +27,11 @@ import javajs.async.SwingJSUtils.StateMachine;
  * The type Plot.
  */
 public class Plot extends JPanel implements Runnable {
-    private static Font plotFont = new Font("Courier New", 0, 10);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2725697857452487199L;
+	private static Font plotFont = new Font("Courier New", 0, 10);
     Thread runner;
     int pause;
     Electrophoresis parent;

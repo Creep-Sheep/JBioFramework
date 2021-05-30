@@ -9,7 +9,12 @@ import java.awt.Dimension;
  * @author Bader Alharbi
  */
 public class Electro1DMain extends JFrame {
-    private Electro1DMain() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6488065550619657403L;
+
+	private Electro1DMain() {
         super("Electrophoresis");
     }
 
