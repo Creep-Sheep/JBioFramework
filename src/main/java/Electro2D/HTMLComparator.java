@@ -29,53 +29,51 @@ public class HTMLComparator implements Comparator<Vector<String>> {
         compBy = c;
     }
 
-    public int compare(Vector<String> objA, Vector<String> objB) {
-        if (compBy != 1 && compBy != 2) {
-            if (((String) objA.elementAt(compBy)).equals(
-                    (String) objB.elementAt(compBy))) {
-                for (int i = 0; i < 4; i++) {
-                    if (i != 1 && i != 2) {
-                        int comp = ((String) objA.elementAt(i)).compareTo(
-                                ((String) objB.elementAt(i)));
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    } else if (i == 1 || i == 2) {
-                        int comp = compareDouble(objA, objB, i);
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    }
-                }
+	public int compare(Vector<String> objA, Vector<String> objB) {
+		if (compBy != 1 && compBy != 2) {
+			if (objA.elementAt(compBy).equals(objB.elementAt(compBy))) {
+				for (int i = 0; i < 4; i++) {
+					if (i != 1 && i != 2) {
+						int comp = objA.elementAt(i).compareTo(objB.elementAt(i));
+						if (comp != 0) {
+							return comp;
+						}
+					} else if (i == 1 || i == 2) {
+						int comp = compareDouble(objA, objB, i);
+						if (comp != 0) {
+							return comp;
+						}
+					}
+				}
 
-            } else {
-                return objA.elementAt(compBy).compareTo(objB.elementAt(compBy));
-            }
+			} else {
+				return objA.elementAt(compBy).compareTo(objB.elementAt(compBy));
+			}
 
-        } else if (compBy == 1 || compBy == 2) {
-            if (compareDouble(objA, objB, compBy) == 0) {
-                for (int i = 0; i < 4; i++) {
-                    if (i != 1 && i != 2) {
-                        int comp = objA.elementAt(i).compareTo(objB.elementAt(i));
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    } else if (i == 1 || i == 2) {
+		} else if (compBy == 1 || compBy == 2) {
+			if (compareDouble(objA, objB, compBy) == 0) {
+				for (int i = 0; i < 4; i++) {
+					if (i != 1 && i != 2) {
+						int comp = objA.elementAt(i).compareTo(objB.elementAt(i));
+						if (comp != 0) {
+							return comp;
+						}
+					} else if (i == 1 || i == 2) {
 
-                        int comp = compareDouble(objA, objB, i);
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    }
-                }
+						int comp = compareDouble(objA, objB, i);
+						if (comp != 0) {
+							return comp;
+						}
+					}
+				}
 
-                return 0;
-            }
-            return compareDouble(objA, objB, compBy);
-        }
+				return 0;
+			}
+			return compareDouble(objA, objB, compBy);
+		}
 
-        return -1000;
-    }
+		return -1000;
+	}
 
     public int compareDouble(Vector<String> objA, Vector<String> objB, int index) {
         int retVal = -2;

@@ -934,64 +934,58 @@ public class Electro2D extends JPanel implements ActionListener {
     **/
     }
 
-    /**
-     * Brings up Enzyme Commission search for the particular protein
-     * id provided
-     */
-    public void showECSearchPage(String id) {
+	/**
+	 * Brings up Enzyme Commission search for the particular protein id provided
+	 */
+	public void showECSearchPage(String id) {
 
-        int index = 0;
-        //create a URL object
-        //URL searchPage = null;
-        String searchId = "";           //the name used in the search
-        Vector<Object> ecNums = new Vector<>(); //holds the EC numbers contained in the
-        // id string
+		int index = 0;
+		// create a URL object
+		// URL searchPage = null;
+		String searchId = ""; // the name used in the search
+		Vector<String> ecNums = new Vector<>(); // holds the EC numbers contained in the
+		// id string
 
-        while (id.length() > 0 && id.indexOf("\u003B") != -1) {
-            ecNums.addElement(id.substring(0, id.indexOf("\u003B")));
-            index = id.indexOf("\u003B");
-            if (index + 1 == id.length()) {
-                id = "";
-            } else {
-                id = id.substring(id.indexOf("\u003B") + 1);
-                id = id.trim();
-            }
-        }
+		while (id.length() > 0 && id.indexOf("\u003B") != -1) {
+			ecNums.addElement(id.substring(0, id.indexOf("\u003B")));
+			index = id.indexOf("\u003B");
+			if (index + 1 == id.length()) {
+				id = "";
+			} else {
+				id = id.substring(id.indexOf("\u003B") + 1);
+				id = id.trim();
+			}
+		}
 
-        searchId = "http\u003A\u002F\u002Fwww.genome.ad.jp\u002Fdbget-bin" +
-                "\u002Fwww_bget?enzyme+";
-        for (int d = 0; d < ecNums.size(); d++) {
-            ecNums.insertElementAt((searchId +
-                    (String) ecNums.elementAt(d)), d);
-            ecNums.removeElementAt(d + 1);
-        }
+		searchId = "http://www.genome.ad.jp/dbget-bin/www_bget?enzyme+";
+		for (int d = 0; d < ecNums.size(); d++) {
+			ecNums.set(d, searchId + ecNums.elementAt(d));
+		}
 
-        try {
-            //assign the search information to the URL
-            for (int d = 0; d < ecNums.size(); d++) {
-                ecNums.insertElementAt((new URL((String) ecNums.elementAt(d))),
-                        d);
-                ecNums.removeElementAt(d + 1);
-            }
-        } catch (MalformedURLException e) {
-            //catch and display any errors that occurred when assigning the
-            //information to the URL
-            System.err.println("Bad URL: " + searchId);
-        } catch (Exception f) {
-            System.err.println("The error was " + f.getMessage());
-        }
-
-        //if no errors occurred, open a new window with the search results
-        if (ecNums.size() != 0) {
-            try {
-                for (int d = 0; d < ecNums.size(); d++) {
-                    BrowserLauncher.openURL(((URL) ecNums.elementAt(d)).toString());
-                }
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
-        }
-    }
+		try {
+			// assign the search information to the URL
+			for (int d = 0; d < ecNums.size(); d++) {
+				//ecNums.set(d, new URL((String) ecNums.elementAt(d)).toString());
+				new URL(ecNums.elementAt(d));
+			}
+		} catch (MalformedURLException e) {
+			// catch and display any errors that occurred when assigning the
+			// information to the URL
+			System.err.println("Bad URL: " + searchId);
+		} catch (Exception f) {
+			System.err.println("The error was " + f.getMessage());
+		}
+		// if no errors occurred, open a new window with the search results
+		// BH That is not what this code does. Errors are ignored above, 
+		// and then as many windows as can be opened are opened before an error occurs.
+		try {
+			for (int d = 0; d < ecNums.size(); d++) {
+				BrowserLauncher.openURL(ecNums.elementAt(d));
+			}
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
 
     /**
      *  Cycles through the list and removes any highlighted proteins.
@@ -1076,8 +1070,7 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public double getLowPercent() {
         // get the value in the text box
-        String value = (String) percentAcrylamide.getSelectedItem();
-        value = value.trim();
+        String value = ((String) percentAcrylamide.getSelectedItem()).trim();
         //return value;
         double percent = -1;
 
@@ -1109,8 +1102,7 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public double getHighPercent() {
         // get the value in the text box
-        String value = (String) percentAcrylamide.getSelectedItem();
-        value = value.trim();
+        String value = ((String) percentAcrylamide.getSelectedItem()).trim();
         //return value;
         double percent = -1;
 
@@ -1142,7 +1134,7 @@ public class Electro2D extends JPanel implements ActionListener {
      * @return a string
      */
     public String getAnimationChoice() {
-        return (String) animationChooser.getText();
+        return animationChooser.getText();
     }
 
     /**
@@ -1162,7 +1154,7 @@ public class Electro2D extends JPanel implements ActionListener {
         proteinList.removeAll();
         // refreshes the list with the new protein titles
         for (int x = 0; x < sequenceTitles.size(); x++) {
-            proteinList.add((String) sequenceTitles.elementAt(x));
+            proteinList.add(sequenceTitles.elementAt(x));
         }
         proteinListFrame.updateSequences(sequenceTitles, sequenceTitles2);
     }
@@ -1175,7 +1167,7 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public boolean removeProteinbyTitle(String title) {
         for (int x = 0; x < sequenceTitles.size(); x++) {
-            if (((String) sequenceTitles.elementAt(x)).equals(title)) {
+            if ((sequenceTitles.elementAt(x)).equals(title)) {
                 molecularWeights.removeElementAt(x);
                 piValues.removeElementAt(x);
                 sequenceTitles.removeElementAt(x);
@@ -1195,7 +1187,7 @@ public class Electro2D extends JPanel implements ActionListener {
     public boolean removeProteinbyTitle2(String title) {
         if (sequenceTitles2 != null) {
             for (int x = 0; x < sequenceTitles2.size(); x++) {
-                if (((String) sequenceTitles2.elementAt(x)).equals(title)) {
+                if ((sequenceTitles2.elementAt(x)).equals(title)) {
                     molecularWeights2.removeElementAt(x);
                     piValues2.removeElementAt(x);
                     sequenceTitles2.removeElementAt(x);
@@ -1210,7 +1202,7 @@ public class Electro2D extends JPanel implements ActionListener {
     public void refreshProteinList2() {
         proteinList2.removeAll();
         for (int x = 0; x < sequenceTitles2.size(); x++) {
-            proteinList2.add((String) sequenceTitles2.elementAt(x));
+            proteinList2.add(sequenceTitles2.elementAt(x));
         }
         proteinListFrame.updateSequences(sequenceTitles, sequenceTitles2);
     }
@@ -1404,15 +1396,15 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public String getMWbyTitle(String title) {
         for (int x = 0; x < sequenceTitles.size(); x++) {
-            if (((String) sequenceTitles.elementAt(x)).equals(title)) {
-                return (String) molecularWeights.elementAt(x);
+            if ((sequenceTitles.elementAt(x)).equals(title)) {
+                return molecularWeights.elementAt(x);
             }
         }
 
         if (sequenceTitles2 != null) {
             for (int x = 0; x < sequenceTitles2.size(); x++) {
-                if (((String) sequenceTitles2.elementAt(x)).equals(title)) {
-                    return (String) molecularWeights2.elementAt(x);
+                if ((sequenceTitles2.elementAt(x)).equals(title)) {
+                    return molecularWeights2.elementAt(x);
                 }
             }
         }
@@ -1426,15 +1418,15 @@ public class Electro2D extends JPanel implements ActionListener {
      */
     public String getFunctionbyTitle(String title) {
         for (int x = 0; x < sequenceTitles.size(); x++) {
-            if (((String) sequenceTitles.elementAt(x)).equals(title)) {
-                return (String) functions.elementAt(x);
+            if ((sequenceTitles.elementAt(x)).equals(title)) {
+                return functions.elementAt(x);
             }
         }
 
         if (sequenceTitles2 != null) {
             for (int x = 0; x < sequenceTitles2.size(); x++) {
-                if (((String) sequenceTitles2.elementAt(x)).equals(title)) {
-                    return (String) functions2.elementAt(x);
+                if ((sequenceTitles2.elementAt(x)).equals(title)) {
+                    return functions2.elementAt(x);
                 }
             }
         }

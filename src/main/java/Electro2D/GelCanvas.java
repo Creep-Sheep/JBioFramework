@@ -228,7 +228,7 @@ public class GelCanvas extends JPanel implements MouseListener {
                  * info and color the protein green in the vector of proteins
                  * from the first file
                  */
-                if (((String) sequences2.elementAt(j)).equals(tempSequence)) {
+                if ((sequences2.elementAt(j)).equals(tempSequence)) {
                     sequences2.remove(j);
                     sequenceTitles2.remove(j);
                     molecularWeights2.remove(j);
@@ -248,13 +248,13 @@ public class GelCanvas extends JPanel implements MouseListener {
         for (int i = 0; i < sequences2.size(); i++) {
 
             barProteins2.addElement(new IEFProtein(new E2DProtein(
-                    ((String) sequenceTitles2.elementAt(i)),
+                    (sequenceTitles2.elementAt(i)),
                     ((Double.valueOf(
-                            (String) molecularWeights2.elementAt(i)))).doubleValue(),
+                            molecularWeights2.elementAt(i)))).doubleValue(),
                     ((Double.valueOf(
-                            (String) pIValues2.elementAt(i)))).doubleValue(),
-                    (String) sequences2.elementAt(i),
-                    (String) functions2.elementAt(i)), this));
+                            pIValues2.elementAt(i)))).doubleValue(),
+                    sequences2.elementAt(i),
+                    functions2.elementAt(i)), this));
 
         }
 

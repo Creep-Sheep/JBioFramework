@@ -242,8 +242,8 @@ public class Plot extends JPanel implements Runnable {
             yIntercept = 0.0;
             return;
         }
-        slope = ((double) nPoints * sumProd - sumX * sumY)
-                / ((double) nPoints * sumXsq - sumX * sumX);
+        slope = (nPoints * sumProd - sumX * sumY)
+                / (nPoints * sumXsq - sumX * sumX);
         yIntercept = (sumY - slope * sumX) / nPoints;
     }
 
@@ -266,8 +266,8 @@ public class Plot extends JPanel implements Runnable {
         double d2 = calcLogMw(d1);
         double d3 = logMwMax - d2;
         double d4 = d3 * yConversion;
-        int j = (int) ((double) yArray[topGridRow] + d4);
-        int i = (int) ((double) xArray[leftGridCol] + d1 * deltaPixelX);
+        int j = (int) (yArray[topGridRow] + d4);
+        int i = (int) (xArray[leftGridCol] + d1 * deltaPixelX);
         return new Point(i, j);
     }
 
@@ -283,8 +283,8 @@ public class Plot extends JPanel implements Runnable {
             if (stds[k].mw < j)
                 j = stds[k].mw;
         }
-        logMwMax = Math.log((double) i) / ln10;
-        logMwMin = Math.log((double) j) / ln10;
+        logMwMax = Math.log(i) / ln10;
+        logMwMin = Math.log(j) / ln10;
         mDelta = (float) (1.1 * (logMwMax - logMwMin));
         for (yDivision = 0; 10 * yDivision < mDelta; yDivision += .05) {
         }
@@ -510,7 +510,7 @@ public class Plot extends JPanel implements Runnable {
                 stds[i].relativeMigration = stds[i].GetDistance() / dye.GetDistance();
                 sumXs(stds[i].relativeMigration);
                 sumXsqs(stds[i].relativeMigration);
-                double d = Math.log((double) stds[i].mw) / ln10;
+                double d = Math.log(stds[i].mw) / ln10;
                 sumYs(d);
                 sumYsqs(d);
                 sumProds(stds[i].relativeMigration, d);
@@ -540,47 +540,45 @@ public class Plot extends JPanel implements Runnable {
         sumY += d;
     }
 
-    private void plotUserRM() {
-        if (paintUserRM) {
-            logMw = calcLogMw(plotRM);
-            lineCoord = calcLinePoint(plotRM);
-            if (newYLine) {
-                newYLine = false;
-                userLineY = yArray[bottomGridRow];
-            } else if (userLineY >= lineCoord.y + 2)
-                userLineY -= 2;
-            graphVerticalLine = true;
-            if (userLineY <= lineCoord.y + 2) {
-                if (newXLine) {
-                    newXLine = false;
-                    userLineX = xPlot;
-                } else
-                    userLineX -= 2;
-                graphHorizontalLine = true;
-                if (userLineX <= xArray[leftGridCol]) {
-                    showLogMW = true;
-                    experimentalMW = Math.pow(10.0, logMw);
-                    showExperimentalMW = true;
-                    double d1 = Math.abs(((double) sample.mw - experimentalMW)
-                            / sample.mw);
-                    double d2 = Math.abs((sample.relativeMigration - plotRM)
-                            / sample.relativeMigration);
-                    if (d1 < errorMargin)
-                        showSampleMW = true;
-                    else if (d2 < errorMargin)
-                        questionRCorr = true;
-                    stop();
-                    resetFlags();
-                    paintUserRM = false;
-                }
-            } else if (userLineY <= lineCoord.y + 2) {
-                showNotBracketed = true;
-                stop();
-                resetFlags();
-                paintUserRM = false;
-            }
-        }
-    }
+	private void plotUserRM() {
+		if (paintUserRM) {
+			logMw = calcLogMw(plotRM);
+			lineCoord = calcLinePoint(plotRM);
+			if (newYLine) {
+				newYLine = false;
+				userLineY = yArray[bottomGridRow];
+			} else if (userLineY >= lineCoord.y + 2)
+				userLineY -= 2;
+			graphVerticalLine = true;
+			if (userLineY <= lineCoord.y + 2) {
+				if (newXLine) {
+					newXLine = false;
+					userLineX = xPlot;
+				} else
+					userLineX -= 2;
+				graphHorizontalLine = true;
+				if (userLineX <= xArray[leftGridCol]) {
+					showLogMW = true;
+					experimentalMW = Math.pow(10.0, logMw);
+					showExperimentalMW = true;
+					double d1 = Math.abs((sample.mw - experimentalMW) / sample.mw);
+					double d2 = Math.abs((sample.relativeMigration - plotRM) / sample.relativeMigration);
+					if (d1 < errorMargin)
+						showSampleMW = true;
+					else if (d2 < errorMargin)
+						questionRCorr = true;
+					stop();
+					resetFlags();
+					paintUserRM = false;
+				}
+			} else if (userLineY <= lineCoord.y + 2) {
+				showNotBracketed = true;
+				stop();
+				resetFlags();
+				paintUserRM = false;
+			}
+		}
+	}
 
     protected void calcDimensions() {
         rightEdge = getSize().width;

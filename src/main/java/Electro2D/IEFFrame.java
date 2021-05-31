@@ -56,7 +56,6 @@ public class IEFFrame extends Frame {
     private String minRange;   //the minimum pI value held in the Electro2D.IEFProtein
     private JScrollPane scroll; //the pane that allows the user to scroll to
     //view all of the contents
-    private Vector<Label> labels;     // the labels storing the protein names
     private static int xlocation = 0;  //the x location of this frame
     private static int ylocation = 0;  // the y location of this frame
 
@@ -66,8 +65,6 @@ public class IEFFrame extends Frame {
      * @param i - the Electro2D.IEFProtein being represented
      */
     public IEFFrame(IEFProtein i) {
-        labels = new Vector<>();
-
         //set the font for the information being displayed
         theFont = new Font("Arial", Font.PLAIN, 12);
 
@@ -104,13 +101,12 @@ public class IEFFrame extends Frame {
         int location = 30;
         for (int j = 0; j < v.size(); j++) {
             //create a label for each protein in ief and store it in labels
-            labels.add(new Label((String) v.elementAt(j)));
-
+        	Label l = new Label(v.elementAt(j));
             //set the sizes of each label
-            ((Label) labels.elementAt(j)).setBounds(5, location, 390, 20);
-            ((Label) labels.elementAt(j)).setFont(theFont);
+            l.setBounds(5, location, 390, 20);
+            l.setFont(theFont);
             location = location + 15;
-            IEFPanel.add((Label) labels.elementAt(j));
+            IEFPanel.add(l);
         }
 
         //adjusts the size of the panel to reflect the number of labels
