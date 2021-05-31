@@ -45,10 +45,10 @@ public class JBioFrameworkMain extends JFrame {
     public static final long serialVersionUID = 1L;
     private static JTabbedPane tabbedPane;
 
-    private Electrophoresis oneDE;
-    private Electro2D electro2D;
-    private MassSpecMain spectrometer;
-    private MarvinTab marvin;
+//    private Electrophoresis oneDE;
+//    private Electro2D electro2D;
+//    private MassSpecMain spectrometer;
+//    private MarvinTab marvin;
     /*private [NameOfClass] [user-created reference]*/
 	private JPanel marvinTab;
 

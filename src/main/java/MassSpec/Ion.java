@@ -33,8 +33,6 @@ package main.java.MassSpec;
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -125,9 +123,9 @@ public class Ion extends ArrayList<SpecAminoAcid> {
     }
    
     	
-    private void setSize(int i, int j) { }
-	private Font newFont(String string, int i) { return null; }
-	private Dimension newDimension(int i, int j) { return null;	}
+//    private void setSize(int i, int j) { }
+//	private Font newFont(String string, int i) { return null; }
+//	private Dimension newDimension(int i, int j) { return null;	}
 
 	/**
      * Used by MassSpec.Ion in add method to keep a running total of the mass, and by

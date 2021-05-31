@@ -43,12 +43,12 @@ public class IEFFrame extends Frame {
 	 * 
 	 */
 	private static final long serialVersionUID = -3179201664198172366L;
-	private Electro2D electro2D;          //reference to calling applet
-    private String ptTruncated = "";           //name truncated
-    private String names = "";
+//	private Electro2D electro2D;          //reference to calling applet
+//    private String ptTruncated = "";           //name truncated
+//    private String names = "";
+//    private Label titleLabel;   //holds protein name
     private JPanel IEFPanel;           //panel to add components to
     private Rectangle dimensions;         //dimension holders
-    private Label titleLabel;   //holds protein name
     private IEFProtein ief;    // the Electro2D.IEFProtein whose information will
     // be displayed
     private Font theFont;                 //font used in this panel

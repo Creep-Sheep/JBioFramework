@@ -92,7 +92,7 @@ public class Parameters extends JPanel implements Constants {
         acrylamide = new JComboBox<String>(gelList);
         sample = new JComboBox<String>(samples);
         UnknownListHandler unl = new UnknownListHandler();
-        gelPercentageHandler gh = new gelPercentageHandler();
+        GelPercentageHandler gh = new GelPercentageHandler();
 
         sample.addItemListener(unl);
         acrylamide.addItemListener(gh);
@@ -613,7 +613,8 @@ public class Parameters extends JPanel implements Constants {
         @Override
         public void itemStateChanged(ItemEvent ev) {
             // Object item = ev.getItem();
-            JComboBox<String> item = (JComboBox<String>) ev.getSource();
+            @SuppressWarnings("unchecked")
+			JComboBox<String> item = (JComboBox<String>) ev.getSource();
 
             if (unknown1.name.equals(item.getSelectedItem())) {
                 selectedSample = unknown1;
@@ -659,12 +660,13 @@ public class Parameters extends JPanel implements Constants {
     /**
      * gelPercentageHandler, inner class  to handle events invoked by GUI components in parameters panel
      */
-    class gelPercentageHandler implements ItemListener {
+    class GelPercentageHandler implements ItemListener {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
 
-            JComboBox<String> item = (JComboBox<String>) e.getSource();
+            @SuppressWarnings("unchecked")
+			JComboBox<String> item = (JComboBox<String>) e.getSource();
 
             if (gel1.percentGel.equals(item.getSelectedItem())) {
                 selectedGel = gel1;

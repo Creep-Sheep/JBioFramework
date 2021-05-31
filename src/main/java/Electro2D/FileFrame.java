@@ -12,12 +12,10 @@ package main.java.Electro2D;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
-import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -28,17 +26,17 @@ public class FileFrame extends JFrame {
 
 	/** variables for the file reading pop-up frame **/
 	private Electro2D electro2D; // reference to calling applet
-	private WindowListener ffwl; // listen for window closing, etc.
+//	private WindowListener ffwl; // listen for window closing, etc.
 	private final String directoryString = "." + File.separator + 
 			//".." + File.separator + 
 			"data";
 	private JTextArea instructions;
-	private JLabel select;
+//	private JLabel select;
 //    private JComboBox choice;
 	private JButton button;
-	private JPanel center;
+//	private JPanel center;
 	private JPanel south;
-	private String[] sa;
+//	private String[] sa;
 	private int fileNum;
 
 	public FileFrame(Electro2D e, int i) {

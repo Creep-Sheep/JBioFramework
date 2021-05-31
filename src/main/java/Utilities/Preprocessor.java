@@ -41,7 +41,7 @@ public class Preprocessor {
     private final int lineLength = 50;
 
     private final String FILE_HEADER = "FILE:       ";
-    private final String NUMENZYME_HEADER = "NUMENZYMES: ";
+//    private final String NUMENZYME_HEADER = "NUMENZYMES: ";
     private final String PROTTITLE_HEADER = "NAME:       ";
     private final String FUNCTION_HEADER = "FUNCTION:   ";
     private final String SEQUENCE_HEADER = "SEQUENCE:   ";
@@ -55,7 +55,6 @@ public class Preprocessor {
     private Vector<String> molwts;
     private Vector<String> functions;
     private String fileName;
-    private int numEnzymes;
 
 	public static void process(Electro2D electro2D) {
 		/** @j2sNative return; */
@@ -72,7 +71,6 @@ public class Preprocessor {
         fileName = e.getLastFileLoaded();
     }
 
-	@SuppressWarnings("unused")
 	public void writeToFile() {
 		int length = 0;
 		String fcn = "";
@@ -146,7 +144,6 @@ public class Preprocessor {
         String molwt = "";
         String pI = "";
         String title = "";
-        String filename = "";
         String function = "";
         String line = "";
         String line1 = "";

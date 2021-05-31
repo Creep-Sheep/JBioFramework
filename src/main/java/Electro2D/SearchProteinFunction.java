@@ -279,31 +279,31 @@ public class SearchProteinFunction implements MouseListener, ActionListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    private class HideExclude implements MouseListener {
-
-        private SearchProteinFunction spf;
-
-        public HideExclude(SearchProteinFunction s) {
-            spf = s;
-        }
-
-        public void mouseClicked(MouseEvent e) {
-            spf.hideExcludeFields();
-        }
-
-        public void mousePressed(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-
-    }
+//    private class HideExclude implements MouseListener {
+//
+//        private SearchProteinFunction spf;
+//
+//        public HideExclude(SearchProteinFunction s) {
+//            spf = s;
+//        }
+//
+//        public void mouseClicked(MouseEvent e) {
+//            spf.hideExcludeFields();
+//        }
+//
+//        public void mousePressed(MouseEvent e) {
+//        }
+//
+//        public void mouseReleased(MouseEvent e) {
+//        }
+//
+//        public void mouseEntered(MouseEvent e) {
+//        }
+//
+//        public void mouseExited(MouseEvent e) {
+//        }
+//
+//    }
 
 }
 

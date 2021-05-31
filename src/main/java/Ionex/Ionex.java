@@ -6,11 +6,19 @@ package main.java.Ionex;
 //******************************************************************************
 
 import java.applet.Applet;
-import java.awt.*;
-import java.io.DataInputStream;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Panel;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Vector;
 
@@ -244,30 +252,23 @@ public class Ionex extends Applet //implements Runnable
 
     //initialize the controls
     void initControls() {
-        String strProtein, strFile;
-        URL url;
-        InputStream in;
-        DataInputStream dis;
-        String strLine = null;
-        CProtein protein;
-
+ 
         //read in the list of available proteins
         try {
-            url = new URL(getCodeBase(), "pdb/pdb.idx");
-            in = url.openStream();
-            dis = new DataInputStream(in);
+            URL url = new URL(getCodeBase(), "pdb/pdb.idx");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
             int i = 0;
-
-            while ((strLine = dis.readLine()) != null) {
+            String strLine = null;
+            while ((strLine = reader.readLine()) != null) {
                 int nPos = strLine.indexOf('\t');
-                strFile = new String(strLine.substring(nPos + 1));
-                strProtein = new String(strLine.substring(0, nPos));
+                String strFile = strLine.substring(nPos + 1);
+                String strProtein = strLine.substring(0, nPos);
                 m_arrAvailProteins[i] = new ProteinFile(strProtein, strFile);
                 controls.IDC_SELECTPROTEIN.add(strProtein, i++);
 
 //				m_vAvailProteins.addElement( strProtein);
             }
-            in.close();
+            reader.close();
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
         } catch (SecurityException e) {
@@ -295,8 +296,6 @@ public class Ionex extends Applet //implements Runnable
 
     //reset the controls to the member variable values
     void resetControls() {
-        String strTemp;
-
         controls.IDC_SOLVENTA.setText((new Double(m_dConc1)).toString());
         controls.IDC_SOLVENTB.setText((new Double(m_dConc2)).toString());
         switch (m_nBuffer) {
@@ -348,12 +347,12 @@ public class Ionex extends Applet //implements Runnable
         }
 
         //enable/disable the Add and Remove controls
-        if (controls.IDC_PROTEINS.countItems() == 5) {
+        if (controls.IDC_PROTEINS.getItemCount() == 5) {
             controls.IDC_ADD.setEnabled(false);
         } else {
             controls.IDC_ADD.setEnabled(true);
         }
-        if (controls.IDC_PROTEINS.countItems() == 0) {
+        if (controls.IDC_PROTEINS.getItemCount() == 0) {
             controls.IDC_REMOVE.setEnabled(false);
         } else {
             controls.IDC_REMOVE.setEnabled(true);
@@ -362,8 +361,6 @@ public class Ionex extends Applet //implements Runnable
 
     //save the entered values in the member variables
     void saveInput() {
-        int nProteins = 0;
-
         //reload the image canvas
         m_imageCanvas.resetBackground();
 
@@ -578,7 +575,7 @@ public class Ionex extends Applet //implements Runnable
         CProtein protein;
         int nPos = 1;
         double arrCharge[] = {0, 0, 0, 0, 0};
-        int nIndex = 0;
+//        int nIndex = 0;
         int nTemp;
         int i, j;
 

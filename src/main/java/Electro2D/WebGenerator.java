@@ -7,17 +7,16 @@ package main.java.Electro2D; /**
  * @author Jill Zapoticznyj
  */
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Vector;
 
 public class WebGenerator {
 
     private Electro2D electro2D;
-    private BufferedWriter buf;
+//    private BufferedWriter buf;
     private FileWriter fWrite;
     private PrintWriter pWrite;
     private String maxMW;
@@ -59,7 +58,7 @@ public class WebGenerator {
 				}
 			}
 			fWrite = new FileWriter(directoryString + filename + ".html");
-			buf = new BufferedWriter(fWrite);
+			// = new BufferedWriter(fWrite);
 			pWrite = new PrintWriter(fWrite);
 		} catch (IOException x) {
 			System.err.println(x.getMessage());
@@ -114,19 +113,24 @@ public class WebGenerator {
 
 		String protInfoTable = "";
 		String molwtValue = "";
-		double molwtDouble = 0;
 		String pI = "";
-		double pIDouble = 0;
+//		double molwtDouble = 0;
+//		double pIDouble = 0;
 		Vector<String> tmp = new Vector<>();
 		for (int i = 0; i < sorted.size(); i++) {
 			tmp = sorted.elementAt(i);
 			pI = tmp.elementAt(1);
-			pIDouble = Double.parseDouble(pI);
 			molwtValue = tmp.elementAt(2);
-			molwtDouble = Double.parseDouble(molwtValue);
 
-			protInfoTable = openTR + openTD + tmp.elementAt(0) + closeTD + openTD + molwtValue + closeTD
-					+ openTD + pI + closeTD + openTD + tmp.elementAt(3) + closeTD + closeTR;
+//			pIDouble = Double.parseDouble(pI);
+//			molwtDouble = Double.parseDouble(molwtValue);
+
+			protInfoTable = openTR 
+					+ openTD + tmp.elementAt(0) + closeTD 
+					+ openTD + molwtValue + closeTD
+					+ openTD + pI + closeTD 
+					+ openTD + tmp.elementAt(3) + closeTD 
+					+ closeTR;
 
 			pWrite.println(protInfoTable);
 

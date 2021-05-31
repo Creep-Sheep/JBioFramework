@@ -55,7 +55,6 @@ public class GenomeFileParser {
     static {
     	for (int i = 1; i < aas.length; i++)
     		aminoConversions.put(aas[i++], aas[i++]);
-    	int i = 0;
     }
 
     private final static Hashtable<String, Double> htPI = new Hashtable<>();
@@ -344,7 +343,7 @@ public class GenomeFileParser {
         String totalChain = "";
         boolean hasMoleculeTag = true;
         boolean foundChain = false;
-        boolean noChainData = false;
+//        boolean noChainData = false;
         boolean hasECnumber = false;
         int foundIndex = 0;
 
@@ -352,7 +351,7 @@ public class GenomeFileParser {
             try {
 //                File f = new File("data" + File.separator + theFile);
                 in = new BufferedReader
-                        (new InputStreamReader(f.toURL().openStream()));
+                        (new InputStreamReader(f.toURI().toURL().openStream()));
                 String temp1;
 
                 while ((temp1 = in.readLine()) != null) {
@@ -363,7 +362,7 @@ public class GenomeFileParser {
                 MessageFrame error = new MessageFrame();
                 error.setMessage("Error reading from file.  Be sure you " +
                         "typed the name correctly.");
-                error.show();
+                error.setVisible(true);
                 anerror = true;
                 System.err.println("Exception was: " + e);
             }
@@ -495,7 +494,7 @@ public class GenomeFileParser {
             temp = sequenceInfo.elementAt(0);
             tempLabel = temp.substring(11, 12);
             if (tempLabel.equals(" ")) {
-                noChainData = true;
+//                noChainData = true;
                 temp = "";
                 //must be only one chain
                 for (int x = 0; x < sequenceInfo.size(); x++) {
@@ -765,17 +764,17 @@ public class GenomeFileParser {
 
         //temporary variables used in parsing
         String temp = "";
-        String proteinID = "";
         String totalChain = "";
-        boolean foundChain = false;
-        boolean noChainData = false;
-        int foundIndex = 0;
+//        String proteinID = "";
+//        boolean foundChain = false;
+//        boolean noChainData = false;
+//        int foundIndex = 0;
 
         if (data == null || data.equals("")) {  //read from server
 
             try {
                 in = new BufferedReader
-                        (new InputStreamReader(f.toURL().openStream()));
+                        (new InputStreamReader(f.toURI().toURL().openStream()));
                 String temp1;
 
                 while ((temp1 = in.readLine()) != null) {
@@ -786,7 +785,7 @@ public class GenomeFileParser {
                 MessageFrame error = new MessageFrame();
                 error.setMessage("Error reading from file.  Be sure you " +
                         "typed the name correctly.");
-                error.show();
+                error.setVisible(true);
                 anerror = true;
                 System.err.println("Exception was: " + e);
             }
@@ -800,7 +799,7 @@ public class GenomeFileParser {
         if (anerror == false) {
 
             //assign protein ID based on file descriptor
-            proteinID = theFile.substring(0, theFile.indexOf("."));
+//            proteinID = theFile.substring(0, theFile.indexOf("."));
 
             for (int x = 0; x < fileData.size(); x++) {
 
@@ -958,8 +957,8 @@ public class GenomeFileParser {
         boolean anerror = false;
 
         //structures to hold file data
-        String organismID = "";
-        String organismTitle = "";
+        //String organismID = "";
+        //String organismTitle = "";
         Vector<String> fileData = new Vector<>();  //holds complete file
         Vector<String> sequences = new Vector<>(); //holds sequence data
         Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
@@ -983,8 +982,8 @@ public class GenomeFileParser {
         boolean foundTranslation = false;
         boolean foundGene = false;
         String function = "";
-        boolean hadFunctionLine = false;
-        boolean hadEnzymeClassNumber = false;
+//        boolean hadFunctionLine = false;
+//        boolean hadEnzymeClassNumber = false;
 
         if (data == null || data.equals("")) {  //read from server
             try {
@@ -992,7 +991,7 @@ public class GenomeFileParser {
                 in = new BufferedReader
                         (new InputStreamReader((/*electro2D.getCodeBase()*/
 						   /* "data/" + theFile*/
-                                f.toURL()).openStream()));
+                                f.toURI().toURL()).openStream()));
                 String temp1;
 
                 while ((temp1 = in.readLine()) != null) {
@@ -1003,7 +1002,7 @@ public class GenomeFileParser {
                 MessageFrame error = new MessageFrame();
                 error.setMessage("Error reading from file.  Be sure you " +
                         "typed the name correctly.");
-                error.show();
+                error.setVisible(true);
 
                 anerror = true;
                 System.err.println("Exception was: " + e);
@@ -1018,7 +1017,7 @@ public class GenomeFileParser {
         if (anerror == false) {
 
             //assign organism ID based on file descriptor
-            organismID = theFile.substring(0, theFile.indexOf("."));
+            //organismID = theFile.substring(0, theFile.indexOf("."));
 
             for (int x = 0; x < fileData.size(); x++) {
 
@@ -1027,7 +1026,7 @@ public class GenomeFileParser {
                 if (temp.length() >= 10 &&
                         temp.substring(0, 10).equals("DEFINITION")) {
                     //assign organism title
-                    organismTitle = temp.substring(12);
+                    //organismTitle = temp.substring(12);
                 }
                 //look for a title for this sequence
                 if (temp.length() >= 9 && temp.substring(5, 9).equals("gene")) {
@@ -1087,7 +1086,7 @@ public class GenomeFileParser {
                         //included in the protein function
                         else if (temp.length() >= 30 &&
                                 temp.substring(21, 30).equals("/function")) {
-                            hadFunctionLine = true;
+                            //hadFunctionLine = true;
                             if (temp.substring(32).lastIndexOf("\"") != -1) {
                                 temp = temp.substring(32);
                                 function = function + " " + temp.substring(0,
@@ -1124,7 +1123,7 @@ public class GenomeFileParser {
                                 temp.substring(21, 26).equals("/note")) {
                             if ((function.indexOf("unknown.") != -1) ||
                                     function.equals("")) {
-                                hadFunctionLine = false;
+                                //hadFunctionLine = false;
                                 function = "";
                             }
                             if (temp.substring(28).lastIndexOf("\"") != -1) {
@@ -1235,8 +1234,8 @@ public class GenomeFileParser {
                     totalChain = ""; //reset for next chain
                     functions.addElement(function); //add the function
                     function = ""; //reset for next chain
-                    hadEnzymeClassNumber = false;
-                    hadFunctionLine = false;
+//                    hadEnzymeClassNumber = false;
+//                    hadFunctionLine = false;
                 }
             }
 
@@ -1341,7 +1340,7 @@ public class GenomeFileParser {
         //File f = new File("data" + File.separator + theFile);
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(f.toURL().openStream()));
+            in = new BufferedReader(new InputStreamReader(f.toURI().toURL().openStream()));
 
         } catch (Exception e) {
             System.err.println("Error reading from file.  Double-check the file name and try again.");

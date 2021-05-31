@@ -22,9 +22,9 @@ package main.java.MainWindows;/*
 //GUI compoents
 
 import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 //chemaxon (marvin) packages necessary for internal Marvin stuff
 import chemaxon.marvin.beans.MSketchPane;
@@ -45,7 +45,7 @@ public class MarvinTab extends JPanel {
     private static MSketchPane marvinPane;
 
     //unused textarea.
-    private JTextArea textare = new JTextArea(10, 50);
+//    private JTextArea textare = new JTextArea(10, 50);
 
 
 	/**

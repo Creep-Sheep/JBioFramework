@@ -1,7 +1,6 @@
 package main.java.Electro1D;
 
 import javax.swing.JFrame;
-import java.awt.Dimension;
 
 /**
  * main class for 1d Electro1D

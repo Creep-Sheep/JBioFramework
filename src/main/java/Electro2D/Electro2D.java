@@ -117,7 +117,7 @@ public class Electro2D extends JPanel implements ActionListener {
     private Vector<String> piValues;                         //pI values of proteins
     private Vector<String> functions;                        //functions of proteins
 
-    private boolean set2ndFile = false;
+//    private boolean set2ndFile = false;
     private java.awt.List proteinList2;
     private Vector<String> sequences2;
     private Vector<String> sequenceTitles2 = new Vector<String>();
@@ -191,7 +191,6 @@ public class Electro2D extends JPanel implements ActionListener {
 						}
 					}
 				} catch (UnsupportedFlavorException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return false;
@@ -1847,7 +1846,6 @@ public class Electro2D extends JPanel implements ActionListener {
 			bis.close();
 			return new String(totalLen < bytes.length ? Arrays.copyOf(bytes,  totalLen) : bytes);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "";
 		}

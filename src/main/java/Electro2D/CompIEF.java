@@ -14,7 +14,6 @@ public class CompIEF implements Comparator<IEFProtein> {
     private final double maxPH;  //the maximum pH value for the IEF
     private final double minPH;  //the minimum pH value for the IEF
     private final double oneOverRange;
-	private double pHPerPixel;
 
     /**
      * Constructor for the Electro2D.CompIEF object
@@ -29,7 +28,7 @@ public class CompIEF implements Comparator<IEFProtein> {
         // 0-10 pH gives 0.1 "fractionalWidth per pH"
         // 3-8  pH gives 0.2 "fractionalWidth per pH"
         oneOverRange = 1 / (maxPH - minPH);
-        pHPerPixel = (maxPH - minPH) / IEFProtein.pixelWidth;
+        //pHPerPixel = (maxPH - minPH) / IEFProtein.pixelWidth;
     }
 
     /**
@@ -51,7 +50,6 @@ public class CompIEF implements Comparator<IEFProtein> {
     	// dividing the full width by 100, so around 5-6 pixels per bar
     	// and 3-4 pixels for the purposes here
         double w34 = IEFProtein.returnWidth34();
-        double pHPerBar34 = IEFProtein.returnWidth() * pHPerPixel;
         // the range each Electro2D.IEFProtein represents
         // get the objects' pI values and x coordinates
         // 

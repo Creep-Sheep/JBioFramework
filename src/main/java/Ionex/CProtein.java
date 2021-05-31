@@ -1,9 +1,9 @@
 package main.java.Ionex;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 class CProtein {
@@ -40,18 +40,15 @@ class CProtein {
     //reads in the protein information from the file specified
     public boolean load() {
         URL url;
-        InputStream in;
-        DataInputStream dis;
         String strLine = null;
         String strTag;
 
         try {
             url = new URL(m_applet.getCodeBase(), "pdb/" + m_strFile);
-            in = url.openStream();
-            dis = new DataInputStream(in);
-
+            //dis = new DataInputStream(in);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
             //read in the file line by line and get the info we need
-            while ((strLine = dis.readLine()) != null) {
+            while ((strLine = reader.readLine()) != null) {
                 strTag = new String(strLine.substring(0, 6));
                 if (strTag.equals("ATOM  ")) {
                     // there is an entry for each atom in the protein
@@ -72,7 +69,7 @@ class CProtein {
                     }
                 }
             }
-            in.close();
+            reader.close();
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
         } catch (SecurityException e) {

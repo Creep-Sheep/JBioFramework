@@ -99,7 +99,8 @@ public class SingleProteinListFrame extends JFrame {
      * @param pL1 the p l 1
      * @param pL2 the p l 2
      */
-    public void updateSequences(Vector<String> pL1, Vector<String> pL2) {
+    @SuppressWarnings("unchecked")
+	public void updateSequences(Vector<String> pL1, Vector<String> pL2) {
         sequenceOneList.setListData(pL1);
         sequenceTitlesOne = new Vector<String>(pL1);
         copySequenceOne = (Vector<String>) sequenceTitlesOne.clone();
