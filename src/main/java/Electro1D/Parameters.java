@@ -154,8 +154,6 @@ public class Parameters extends JPanel implements Constants {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
                 selectedSpeed = low;
                 setSpeed(selectedSpeed);
             }
@@ -220,7 +218,6 @@ public class Parameters extends JPanel implements Constants {
             public void actionPerformed(ActionEvent e) {
                 selectedSpeed = low;
                 setSpeed(selectedSpeed);
-
             }
         });
         JRadioButton volt2 = new JRadioButton("100V");
@@ -230,7 +227,6 @@ public class Parameters extends JPanel implements Constants {
             public void actionPerformed(ActionEvent arg0) {
                 selectedSpeed = medium;
                 setSpeed(selectedSpeed);
-
             }
         });
         JRadioButton volt3 = new JRadioButton("150V", true);
@@ -238,10 +234,8 @@ public class Parameters extends JPanel implements Constants {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 selectedSpeed = high;
                 setSpeed(selectedSpeed);
-
             }
         });
         JRadioButton volt4 = new JRadioButton("200V");
@@ -249,8 +243,6 @@ public class Parameters extends JPanel implements Constants {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
                 selectedSpeed = highX2;
                 setSpeed(selectedSpeed);
 
@@ -552,7 +544,6 @@ public class Parameters extends JPanel implements Constants {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
-            // TODO Auto-generated method stub
 
             Object source = e.getItemSelectable();
 

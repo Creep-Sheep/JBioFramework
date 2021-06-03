@@ -49,7 +49,7 @@ public class Electrophoresis extends JPanel {
 	}
 
 	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(550, 450));
+		super.setPreferredSize(new Dimension(825, 450));//550, 450
 
 		paramPanel = new Parameters(this);
 		simPanel = new Simulation(this);
@@ -62,12 +62,12 @@ public class Electrophoresis extends JPanel {
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Parameters", paramPanel);
 		tabPane.addTab("ProteinData", dataPanel);
-
+		tabPane.setBounds(0, 0, 275, 450);
 		// set up right Panel
 		tabPane2 = new JTabbedPane();
-
 		tabPane2.add("Casting Tray ", simPanel);
 		tabPane2.add("Plot", plotPanel);
+		tabPane2.setBounds(275, 0, 550, 450);
 
 //        this.add(headPanel);
 		this.add(tabPane);
