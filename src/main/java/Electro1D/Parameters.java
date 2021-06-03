@@ -100,7 +100,7 @@ public class Parameters extends JPanel implements Constants {
         voltage = new ButtonGroup();
         speed = new ButtonGroup();
         // panels
-
+        
         headerPanel = new JPanel();
         headerSub1 = new JPanel(new GridLayout(1, 3, 1, 1));
         headerSub2 = new JPanel();
@@ -183,6 +183,36 @@ public class Parameters extends JPanel implements Constants {
         speed.add(speed2button);
         speed.add(speed1button);
 
+        headerSub2.add(speed1button);
+        headerSub2.add(speed2button);
+        headerSub2.add(speed3button);
+        headerSub2.setBorder(border1);
+        headerSub2.setToolTipText("Affects how quickly the animations run");
+        // headerPanel.add(headerSub1);
+        headerPanel.add(headerSub2);
+
+        dropPanel.setLayout(new GridLayout(3, 1));
+        labelPanel1.setLayout(new GridLayout(1, 2));
+
+        JLabel unknownLabel = new JLabel("Unknown Proteins");
+        unknownLabel.setToolTipText("Set of unknown samples");
+        labelPanel1.add(unknownLabel);
+
+        JLabel percentAcrylamideLabel = new JLabel("% Acrylamide");
+        percentAcrylamideLabel.setToolTipText("Affects the density of the gel");
+        labelPanel1.add(percentAcrylamideLabel);
+
+        JLabel standardsLabel = new JLabel("Standards");
+        standardsLabel.setToolTipText("Set of known values for comparison");
+        labelPanel2.add(standardsLabel);
+
+        selectionPanel1.setLayout(new GridLayout(1, 2));
+        selectionPanel2.setLayout(new GridLayout(1, 2));
+
+        voltagePanel.setLayout(new BorderLayout());
+        voltagePanel.setToolTipText("Affects how quickly proteins travel across the gel");
+        voltageSub2Panel.setLayout(new GridLayout(1, 4));
+        
         JRadioButton volt1 = new JRadioButton("50V");
         volt1.addActionListener(new ActionListener() {
 
@@ -226,36 +256,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-
-        headerSub2.add(speed1button);
-        headerSub2.add(speed2button);
-        headerSub2.add(speed3button);
-        headerSub2.setBorder(border1);
-        headerSub2.setToolTipText("Affects how quickly the animations run");
-        // headerPanel.add(headerSub1);
-        headerPanel.add(headerSub2);
-
-        dropPanel.setLayout(new GridLayout(3, 1));
-        labelPanel1.setLayout(new GridLayout(1, 2));
-
-        JLabel unknownLabel = new JLabel("Unknown Proteins");
-        unknownLabel.setToolTipText("Set of unknown samples");
-        labelPanel1.add(unknownLabel);
-
-        JLabel percentAcrylamideLabel = new JLabel("% Acrylamide");
-        percentAcrylamideLabel.setToolTipText("Affects the density of the gel");
-        labelPanel1.add(percentAcrylamideLabel);
-
-        JLabel standardsLabel = new JLabel("Standards");
-        standardsLabel.setToolTipText("Set of known values for comparison");
-        labelPanel2.add(standardsLabel);
-
-        selectionPanel1.setLayout(new GridLayout(1, 2));
-        selectionPanel2.setLayout(new GridLayout(1, 2));
-
-        voltagePanel.setLayout(new BorderLayout());
-        voltagePanel.setToolTipText("Affects how quickly proteins travel across the gel");
-        voltageSub2Panel.setLayout(new GridLayout(1, 4));
+        
         voltage.add(volt1);
         voltage.add(volt2);
         voltage.add(volt3);
@@ -615,41 +616,38 @@ public class Parameters extends JPanel implements Constants {
             // Object item = ev.getItem();
             @SuppressWarnings("unchecked")
 			JComboBox<String> item = (JComboBox<String>) ev.getSource();
+            String selectedName = (String) item.getSelectedItem();
+            System.out.println(selectedName);
+            System.out.println(sample.getSelectedItem());
 
-            if (unknown1.name.equals(item.getSelectedItem())) {
+            if (unknown1.name.equals(selectedName)) {
                 selectedSample = unknown1;
                 parent.displayProtein(unknown1);
-
-            } else if (unknown2.name.equals(sample.getSelectedItem())) {
+            } else if (unknown2.name.equals(selectedName)) {
                 selectedSample = unknown2;
                 parent.displayProtein(unknown2);
-
-            } else if (unknown3.name.equals(sample.getSelectedItem())) {
+            } else if (unknown3.name.equals(selectedName)) {
                 selectedSample = unknown3;
                 parent.displayProtein(unknown3);
-                System.out.println(sample.getSelectedItem());
-
-            } else if (unknown4.name.equals(sample.getSelectedItem())) {
+            } else if (unknown4.name.equals(selectedName)) {
                 selectedSample = unknown4;
                 parent.displayProtein(unknown4);
-            } else if (unknown5.name.equals(sample.getSelectedItem())) {
+            } else if (unknown5.name.equals(selectedName)) {
                 selectedSample = unknown5;
                 parent.displayProtein(unknown5);
-
-            } else if (unknown6.name.equals(sample.getSelectedItem())) {
+            } else if (unknown6.name.equals(selectedName)) {
                 selectedSample = unknown6;
                 parent.displayProtein(unknown6);
-
-            } else if (unknown7.name.equals(sample.getSelectedItem())) {
+            } else if (unknown7.name.equals(selectedName)) {
                 selectedSample = unknown7;
                 parent.displayProtein(unknown7);
-            } else if (unknown8.name.equals(sample.getSelectedItem())) {
+            } else if (unknown8.name.equals(selectedName)) {
                 selectedSample = unknown8;
                 parent.displayProtein(unknown8);
-            } else if (unknown9.name.equals(sample.getSelectedItem())) {
+            } else if (unknown9.name.equals(selectedName)) {
                 selectedSample = unknown9;
                 parent.displayProtein(unknown9);
-            } else if (unknown10.name.equals(sample.getSelectedItem())) {
+            } else if (unknown10.name.equals(selectedName)) {
                 selectedSample = unknown10;
                 parent.displayProtein(unknown10);
             }
@@ -667,25 +665,26 @@ public class Parameters extends JPanel implements Constants {
 
             @SuppressWarnings("unchecked")
 			JComboBox<String> item = (JComboBox<String>) e.getSource();
+            String selectedName = (String) item.getSelectedItem();
 
-            if (gel1.percentGel.equals(item.getSelectedItem())) {
+            if (gel1.percentGel.equals(selectedName)) {
                 selectedGel = gel1;
                 parent.setAcrylamide(gel1);
                 selectedGel.setSuppressor(gel1.getConc());
                 setAcrylamideEffect();
-            } else if (gel2.percentGel.equals(item.getSelectedItem())) {
+            } else if (gel2.percentGel.equals(selectedName)) {
                 selectedGel = gel2;
                 parent.setAcrylamide(gel2);
                 selectedGel.setSuppressor(gel2.getConc());
                 setAcrylamideEffect();
 
-            } else if (gel3.percentGel.equals(item.getSelectedItem())) {
+            } else if (gel3.percentGel.equals(selectedName)) {
                 selectedGel = gel3;
                 parent.setAcrylamide(gel3);
                 selectedGel.setSuppressor(gel3.getConc());
                 setAcrylamideEffect();
 
-            } else if (gel4.percentGel.equals(item.getSelectedItem())) {
+            } else if (gel4.percentGel.equals(selectedName)) {
                 selectedGel = gel4;
                 parent.setAcrylamide(gel4);
                 selectedGel.setSuppressor(gel4.getConc());

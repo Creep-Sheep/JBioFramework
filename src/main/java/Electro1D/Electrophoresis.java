@@ -58,7 +58,6 @@ public class Electrophoresis extends JPanel {
 
 //        super.setSize(20,35);
 		this.setLayout(new GridLayout(0, 2, 5, 0));
-
 		// set up left Panel
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Parameters", paramPanel);
