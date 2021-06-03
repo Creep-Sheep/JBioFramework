@@ -1,6 +1,8 @@
 package main.java.Electro1D;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,28 +51,37 @@ public class Electrophoresis extends JPanel {
 	}
 
 	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(825, 450));//550, 450
-
+		super.setPreferredSize(new Dimension(875, 450));//550(i think i want 825, 450
+		
 		paramPanel = new Parameters(this);
 		simPanel = new Simulation(this);
 		dataPanel = new ProteinData(this);
 		plotPanel = new Plot(this);
 
 //        super.setSize(20,35);
-		this.setLayout(new GridLayout(0, 2, 5, 0));
+		this.setLayout(new GridLayout(1, 2, 5, 0));
 		// set up left Panel
+		
+		JPanel tempPanel = new JPanel();
+		tempPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		tempPanel.setPreferredSize(new Dimension(275, 415));
+		paramPanel.setPreferredSize(new Dimension(275, 415));
+		dataPanel.setPreferredSize(new Dimension(275, 415));
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Parameters", paramPanel);
 		tabPane.addTab("ProteinData", dataPanel);
-		tabPane.setBounds(0, 0, 275, 450);
+		
+		tempPanel.add(tabPane);
+		
 		// set up right Panel
+		JPanel tempPanel2 = new JPanel();
+		
 		tabPane2 = new JTabbedPane();
 		tabPane2.add("Casting Tray ", simPanel);
 		tabPane2.add("Plot", plotPanel);
-		tabPane2.setBounds(275, 0, 550, 450);
 
 //        this.add(headPanel);
-		this.add(tabPane);
+		this.add(tempPanel);//tabPane
 		this.add(tabPane2);
 
 		paramPanel.setDefaults();
