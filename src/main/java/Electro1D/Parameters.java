@@ -560,43 +560,36 @@ public class Parameters extends JPanel implements Constants {
                 stdProteinArray[std1Ref].selected = standard1.isSelected();
                 if (stdProteinArray[std1Ref].selected)
                     parent.displayProtein(stdProteinArray[std1Ref]);
-
             }
             if (source == standard2) {
                 stdProteinArray[std2Ref].selected = standard2.isSelected();
                 if (stdProteinArray[std2Ref].selected)
                     parent.displayProtein(stdProteinArray[std2Ref]);
-
             }
             if (source == standard3) {
                 stdProteinArray[std3Ref].selected = standard3.isSelected();
                 if (stdProteinArray[std3Ref].selected)
                     parent.displayProtein(stdProteinArray[std3Ref]);
-
             }
             if (source == standard4) {
                 stdProteinArray[std4Ref].selected = standard4.isSelected();
                 if (stdProteinArray[std4Ref].selected)
                     parent.displayProtein(stdProteinArray[std4Ref]);
-
             }
             if (source == standard5) {
                 stdProteinArray[std5Ref].selected = standard5.isSelected();
                 if (stdProteinArray[std5Ref].selected)
                     parent.displayProtein(stdProteinArray[std5Ref]);
-
             }
             if (source == standard6) {
                 stdProteinArray[std6Ref].selected = standard6.isSelected();
                 if (stdProteinArray[std6Ref].selected)
                     parent.displayProtein(stdProteinArray[std6Ref]);
-
             }
             if (source == standard7) {
                 stdProteinArray[std7Ref].selected = standard7.isSelected();
                 if (stdProteinArray[std7Ref].selected)
                     parent.displayProtein(stdProteinArray[std7Ref]);
-
             }
             if (e.getStateChange() == ItemEvent.DESELECTED) {
 
@@ -618,36 +611,47 @@ public class Parameters extends JPanel implements Constants {
 			JComboBox<String> item = (JComboBox<String>) ev.getSource();
             String selectedName = (String) item.getSelectedItem();
 
-            if (unknown1.name.equals(selectedName)) {
-                selectedSample = unknown1;
-                parent.displayProtein(unknown1);
-            } else if (unknown2.name.equals(selectedName)) {
-                selectedSample = unknown2;
-                parent.displayProtein(unknown2);
-            } else if (unknown3.name.equals(selectedName)) {
-                selectedSample = unknown3;
-                parent.displayProtein(unknown3);
-            } else if (unknown4.name.equals(selectedName)) {
-                selectedSample = unknown4;
-                parent.displayProtein(unknown4);
-            } else if (unknown5.name.equals(selectedName)) {
-                selectedSample = unknown5;
-                parent.displayProtein(unknown5);
-            } else if (unknown6.name.equals(selectedName)) {
-                selectedSample = unknown6;
-                parent.displayProtein(unknown6);
-            } else if (unknown7.name.equals(selectedName)) {
-                selectedSample = unknown7;
-                parent.displayProtein(unknown7);
-            } else if (unknown8.name.equals(selectedName)) {
-                selectedSample = unknown8;
-                parent.displayProtein(unknown8);
-            } else if (unknown9.name.equals(selectedName)) {
-                selectedSample = unknown9;
-                parent.displayProtein(unknown9);
-            } else if (unknown10.name.equals(selectedName)) {
-                selectedSample = unknown10;
-                parent.displayProtein(unknown10);
+            switch (selectedName) {
+            	case "Unknown #1":
+            		selectedSample = unknown1;
+                    parent.displayProtein(unknown1);
+            		break;
+            	case "Unknown #2":
+            		selectedSample = unknown2;
+                    parent.displayProtein(unknown2);
+            		break;
+            	case "Unknown #3":
+            		selectedSample = unknown3;
+                    parent.displayProtein(unknown3);
+            		break;
+            	case "Unknown #4":
+            		selectedSample = unknown4;
+                    parent.displayProtein(unknown4);
+            		break;
+            	case "Unknown #5":
+            		selectedSample = unknown5;
+                    parent.displayProtein(unknown5);
+            		break;
+            	case "Unknown #6":
+            		selectedSample = unknown6;
+                    parent.displayProtein(unknown6);
+            		break;
+            	case "Unknown #7":
+            		selectedSample = unknown7;
+                    parent.displayProtein(unknown7);
+            		break;
+            	case "Unknown #8":
+            		selectedSample = unknown8;
+                    parent.displayProtein(unknown8);
+            		break;
+            	case "Unknown #9":
+            		selectedSample = unknown9;
+                    parent.displayProtein(unknown9);
+            		break;
+            	case "Unknown #10":
+            		selectedSample = unknown10;
+                    parent.displayProtein(unknown10);
+            		break;
             }
         }
 
