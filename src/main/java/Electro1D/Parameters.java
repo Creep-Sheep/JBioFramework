@@ -617,8 +617,6 @@ public class Parameters extends JPanel implements Constants {
             @SuppressWarnings("unchecked")
 			JComboBox<String> item = (JComboBox<String>) ev.getSource();
             String selectedName = (String) item.getSelectedItem();
-            System.out.println(selectedName);
-            System.out.println(sample.getSelectedItem());
 
             if (unknown1.name.equals(selectedName)) {
                 selectedSample = unknown1;
