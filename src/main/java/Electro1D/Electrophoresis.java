@@ -1,11 +1,11 @@
 package main.java.Electro1D;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.Insets;
+//import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -53,8 +53,8 @@ public class Electrophoresis extends JPanel {
 	}
 
 	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(825, 450));//550(i think i want 825, 450
-		
+		super.setPreferredSize(new Dimension(845, 470));//550(i think i want 825, 450
+
 		paramPanel = new Parameters(this);
 		simPanel = new Simulation(this);
 		dataPanel = new ProteinData(this);
@@ -97,12 +97,13 @@ public class Electrophoresis extends JPanel {
 		this.add(tabPane, c);
 		c.gridx = 1;
 		c.gridy = 0;
+		c.insets = new Insets(0, 7, 0, 0);// insets gives spacing in order of: top,left,bottom,right
 		this.add(tabPane2, c);
 		//this.add(tempPanel2, c);//tabPane2
 		//JPanel testPanel = new JPanel();
 		//this.add(testPanel);
 		//testPanel.setVisible(false);
-
+		
 		paramPanel.setDefaults();
 
 	}
