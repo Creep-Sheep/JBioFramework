@@ -3,6 +3,8 @@ package main.java.Electro1D;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,7 +53,7 @@ public class Electrophoresis extends JPanel {
 	}
 
 	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(875, 450));//550(i think i want 825, 450
+		super.setPreferredSize(new Dimension(825, 450));//550(i think i want 825, 450
 		
 		paramPanel = new Parameters(this);
 		simPanel = new Simulation(this);
@@ -59,15 +61,18 @@ public class Electrophoresis extends JPanel {
 		plotPanel = new Plot(this);
 
 //        super.setSize(20,35);
-		this.setLayout(new GridLayout(1, 2, 5, 0));
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		//this.setLayout(new GridLayout(1, 3, 5, 0));
 		// set up left Panel
 		
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		tempPanel.setPreferredSize(new Dimension(275, 415));
-		paramPanel.setPreferredSize(new Dimension(275, 415));
-		dataPanel.setPreferredSize(new Dimension(275, 415));
+		tempPanel.setPreferredSize(new Dimension(275, 450));
+		paramPanel.setPreferredSize(new Dimension(275, 450));
+		dataPanel.setPreferredSize(new Dimension(275, 450));
 		tabPane = new JTabbedPane();
+		tabPane.setPreferredSize(new Dimension(275, 450));
 		tabPane.addTab("Parameters", paramPanel);
 		tabPane.addTab("ProteinData", dataPanel);
 		
@@ -75,14 +80,28 @@ public class Electrophoresis extends JPanel {
 		
 		// set up right Panel
 		JPanel tempPanel2 = new JPanel();
-		
+		tempPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+		tempPanel2.setPreferredSize(new Dimension(550, 450));
+		simPanel.setPreferredSize(new Dimension(550, 450));
+		plotPanel.setPreferredSize(new Dimension(550, 450));		
 		tabPane2 = new JTabbedPane();
+		tabPane2.setPreferredSize(new Dimension(550, 450));
 		tabPane2.add("Casting Tray ", simPanel);
 		tabPane2.add("Plot", plotPanel);
+		tempPanel2.add(tabPane2);
 
 //        this.add(headPanel);
-		this.add(tempPanel);//tabPane
-		this.add(tabPane2);
+		c.gridx = 0;
+		c.gridy = 0;
+		//this.add(tempPanel, c);//tabPane
+		this.add(tabPane, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		this.add(tabPane2, c);
+		//this.add(tempPanel2, c);//tabPane2
+		//JPanel testPanel = new JPanel();
+		//this.add(testPanel);
+		//testPanel.setVisible(false);
 
 		paramPanel.setDefaults();
 
