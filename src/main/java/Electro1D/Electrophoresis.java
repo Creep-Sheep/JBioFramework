@@ -53,7 +53,7 @@ public class Electrophoresis extends JPanel {
 	}
 
 	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(845, 470));//550(i think i want 825, 450
+		super.setPreferredSize(new Dimension(845, 470));//550(i think i want 825, 450: good size: 845, 470
 
 		paramPanel = new Parameters(this);
 		simPanel = new Simulation(this);
