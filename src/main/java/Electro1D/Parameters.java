@@ -600,9 +600,8 @@ public class Parameters extends JPanel implements Constants {
             // Object item = ev.getItem();
             @SuppressWarnings("unchecked")
 			JComboBox<String> item = (JComboBox<String>) ev.getSource();
-            String selectedName = (String) item.getSelectedItem();
-
-            switch (selectedName) {
+            
+            switch ((String) item.getSelectedItem()) {
             	case "Unknown #1":
             		selectedSample = unknown1;
                     parent.displayProtein(unknown1);
@@ -670,13 +669,11 @@ public class Parameters extends JPanel implements Constants {
                 parent.setAcrylamide(gel2);
                 selectedGel.setSuppressor(gel2.getConc());
                 setAcrylamideEffect();
-
             } else if (gel3.percentGel.equals(selectedName)) {
                 selectedGel = gel3;
                 parent.setAcrylamide(gel3);
                 selectedGel.setSuppressor(gel3.getConc());
                 setAcrylamideEffect();
-
             } else if (gel4.percentGel.equals(selectedName)) {
                 selectedGel = gel4;
                 parent.setAcrylamide(gel4);
