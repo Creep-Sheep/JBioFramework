@@ -150,8 +150,8 @@ public class Electrophoresis extends JPanel {
 	 * @param protein1 is a dye
 	 * @param protein2 is a dye
 	 */
-	public void startRun(Protein aprotein[], Protein protein, Protein protein1, Protein protein2) {
-		simPanel.startRun(aprotein, protein, protein1, protein2);
+	public void startRun(Protein aprotein[], Protein protein, Protein[] proteins) {
+		simPanel.startRun(aprotein, protein, proteins);
 	}
 
 	/**
@@ -181,6 +181,11 @@ public class Electrophoresis extends JPanel {
 		simPanel.addSample();
 	}
 
+	public void addSample2() {
+		
+		simPanel.addSample2();
+	}
+	
 	/**
 	 * configure the animation speed
 	 *

@@ -88,6 +88,9 @@ public class Parameters extends JPanel implements Constants {
                 gel1.percentGel, gel2.percentGel, gel3.percentGel,
                 gel4.percentGel
         };
+        
+        //array of proteins for passing to start run
+        Protein[] dyes = {dye1, dye2, dye3, dye4, dye5, dye6};
 
         acrylamide = new JComboBox<String>(gelList);
         sample = new JComboBox<String>(samples);
@@ -305,7 +308,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton addSample = new JButton("Add Sample");
+        JButton addSample = new JButton("Add Sample 1");
         addSample.setToolTipText("Pipette selected unknown into well 2");
         addSample.addActionListener(new ActionListener() {
 
@@ -313,6 +316,19 @@ public class Parameters extends JPanel implements Constants {
             public void actionPerformed(ActionEvent e) {
 
                 parent.addSample();
+
+            }
+            
+        });
+        
+        JButton addSample2 = new JButton("Add Sample 2");
+        addSample2.setToolTipText("Pipette selected unknown into well 3");
+        addSample2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                parent.addSample2();
 
             }
         });
@@ -324,7 +340,7 @@ public class Parameters extends JPanel implements Constants {
             public void actionPerformed(ActionEvent e) {
 
                 // when click start
-                parent.startRun(stdProteinArray, selectedSample, dye1, dye2);
+                parent.startRun(stdProteinArray, selectedSample, dyes);
 
             }
         });
@@ -343,6 +359,7 @@ public class Parameters extends JPanel implements Constants {
 
         controlPanel.add(addStandard);
         controlPanel.add(addSample);
+        controlPanel.add(addSample2);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
 
@@ -381,7 +398,7 @@ public class Parameters extends JPanel implements Constants {
         dropPanel.add(labelPanel1);
         dropPanel.add(selectionPanel1);
         dropPanel.add(labelPanel2);
-        controlPanel.setLayout(new GridLayout(2, 2, 10, 10));
+        controlPanel.setLayout(new GridLayout(3, 2, 10, 10));//should be 3, 2, 10, 10
 
         // create the control panel buttons & use anonymous inner handling
     }
@@ -459,6 +476,10 @@ public class Parameters extends JPanel implements Constants {
     protected void setSpeed(double d) {
         dye1.speed = 0.94528800000000002D * d;
         dye2.speed = 0.94528800000000002D * d;
+        dye3.speed = 0.94528800000000002D * d;
+        dye4.speed = 0.94528800000000002D * d;
+        dye5.speed = 0.94528800000000002D * d;
+        dye6.speed = 0.94528800000000002D * d;
         stdProteinArray[std1Ref].speed = 0.048245000000000003D * d;
         stdProteinArray[std2Ref].speed = 0.35087200000000002D * d;
         stdProteinArray[std3Ref].speed = 0.46814299999999998D * d;

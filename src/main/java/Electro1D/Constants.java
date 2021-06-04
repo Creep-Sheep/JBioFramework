@@ -27,6 +27,10 @@ public interface Constants {
     public Color dyeColor = new Color(132, 50, 237);
     public Protein dye1 = new Protein("Dye", "Dye", "Dye", 6000, dyeColor);
     public Protein dye2 = new Protein("Dye", "Dye", "Dye", 6000, dyeColor);
+    public Protein dye3 = new Protein("Dye", "Dye", "Dye", 6000, dyeColor);
+    public Protein dye4 = new Protein("Dye", "Dye", "Dye", 6000, dyeColor);
+    public Protein dye5 = new Protein("Dye", "Dye", "Dye", 6000, dyeColor);
+    public Protein dye6 = new Protein("Dye", "Dye", "Dye", 6000, dyeColor);
 
     public Acrylamide gel1 = new Acrylamide("7.5%", 7.5D);
     public Acrylamide gel2 = new Acrylamide("10%", 10D);
