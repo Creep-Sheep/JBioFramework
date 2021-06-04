@@ -31,11 +31,13 @@ public class Parameters extends JPanel implements Constants {
 	 */
 	private static final long serialVersionUID = 5982938969814262007L;
 	// class attributes
-    Protein selectedSample;
+    Protein selectedSample1;
+    Protein selectedSample2;
     Acrylamide selectedGel;
     double selectedSpeed;
     JComboBox<String> acrylamide;
-    JComboBox<String> sample;
+    JComboBox<String> sample1;
+    JComboBox<String> sample2;
     ButtonGroup voltage;
     ButtonGroup speed;
     int std1Ref;
@@ -93,11 +95,14 @@ public class Parameters extends JPanel implements Constants {
         Protein[] dyes = {dye1, dye2, dye3, dye4, dye5, dye6};
 
         acrylamide = new JComboBox<String>(gelList);
-        sample = new JComboBox<String>(samples);
-        UnknownListHandler unl = new UnknownListHandler();
+        sample1 = new JComboBox<String>(samples);
+        sample2 = new JComboBox<String>(samples);
+        UnknownListHandler1 unl1 = new UnknownListHandler1();
+        UnknownListHandler2 unl2 = new UnknownListHandler2();
         GelPercentageHandler gh = new GelPercentageHandler();
 
-        sample.addItemListener(unl);
+        sample1.addItemListener(unl1);
+        sample2.addItemListener(unl2);
         acrylamide.addItemListener(gh);
         // button groups
         voltage = new ButtonGroup();
@@ -195,9 +200,12 @@ public class Parameters extends JPanel implements Constants {
         dropPanel.setLayout(new GridLayout(3, 1));
         labelPanel1.setLayout(new GridLayout(1, 2));
 
-        JLabel unknownLabel = new JLabel("Unknown Proteins");
-        unknownLabel.setToolTipText("Set of unknown samples");
-        labelPanel1.add(unknownLabel);
+        JLabel unknownLabel1 = new JLabel("Well #1");//Unkown Proteins
+        unknownLabel1.setToolTipText("Set of unknown samples for well 1");
+        labelPanel1.add(unknownLabel1);
+        JLabel unknownLabel2 = new JLabel("Well #2");//Unkown Proteins
+        unknownLabel2.setToolTipText("Set of unknown samples for well 2");
+        labelPanel1.add(unknownLabel2);
 
         JLabel percentAcrylamideLabel = new JLabel("% Acrylamide");
         percentAcrylamideLabel.setToolTipText("Affects the density of the gel");
@@ -340,7 +348,7 @@ public class Parameters extends JPanel implements Constants {
             public void actionPerformed(ActionEvent e) {
 
                 // when click start
-                parent.startRun(stdProteinArray, selectedSample, dyes);
+                parent.startRun(stdProteinArray, selectedSample1, dyes);
 
             }
         });
@@ -353,7 +361,7 @@ public class Parameters extends JPanel implements Constants {
 
                 // when click stop
                 parent.stopRun();
-                parent.setPlotData(stdProteinArray, selectedSample, dye1);
+                parent.setPlotData(stdProteinArray, selectedSample1, dye1);
             }
         });
 
@@ -370,7 +378,7 @@ public class Parameters extends JPanel implements Constants {
         add(controlPanel);
 
         setSpeed(selectedSpeed);
-        selectedSample = unknown1;
+        selectedSample1 = unknown1;
     }
 
     private void helperMethod1() {
@@ -438,31 +446,31 @@ public class Parameters extends JPanel implements Constants {
             }
         while (++i < 7);
         if (selectedGel.getConc() > 12D)
-            if (selectedSample.mw > 26000) {
-                selectedSample.SetDecider(selectedGel.suppressor);
+            if (selectedSample1.mw > 26000) {
+                selectedSample1.SetDecider(selectedGel.suppressor);
                 return;
             } else {
-                selectedSample.ResetDecider();
+                selectedSample1.ResetDecider();
                 return;
             }
         if (selectedGel.getConc() > 10D)
-            if (selectedSample.mw > 29000) {
-                selectedSample.SetDecider(selectedGel.suppressor);
+            if (selectedSample1.mw > 29000) {
+                selectedSample1.SetDecider(selectedGel.suppressor);
                 return;
             } else {
-                selectedSample.ResetDecider();
+                selectedSample1.ResetDecider();
                 return;
             }
         if (selectedGel.getConc() > 7.5D) {
-            if (selectedSample.mw > 40000) {
-                selectedSample.SetDecider(selectedGel.suppressor);
+            if (selectedSample1.mw > 40000) {
+                selectedSample1.SetDecider(selectedGel.suppressor);
                 return;
             } else {
-                selectedSample.ResetDecider();
+                selectedSample1.ResetDecider();
                 return;
             }
         } else {
-            selectedSample.ResetDecider();
+            selectedSample1.ResetDecider();
             return;
         }
     }
@@ -614,7 +622,7 @@ public class Parameters extends JPanel implements Constants {
     /**
      * UnknownListHandler, inner class  to handle events invoked by GUI components in parameters panel
      */
-    class UnknownListHandler implements ItemListener {
+    class UnknownListHandler1 implements ItemListener {
 
         @Override
         public void itemStateChanged(ItemEvent ev) {
@@ -624,44 +632,98 @@ public class Parameters extends JPanel implements Constants {
             
             switch ((String) item.getSelectedItem()) {
             	case "Unknown #1":
-            		selectedSample = unknown1;
+            		selectedSample1 = unknown1;
                     parent.displayProtein(unknown1);
             		break;
             	case "Unknown #2":
-            		selectedSample = unknown2;
+            		selectedSample1 = unknown2;
                     parent.displayProtein(unknown2);
             		break;
             	case "Unknown #3":
-            		selectedSample = unknown3;
+            		selectedSample1 = unknown3;
                     parent.displayProtein(unknown3);
             		break;
             	case "Unknown #4":
-            		selectedSample = unknown4;
+            		selectedSample1 = unknown4;
                     parent.displayProtein(unknown4);
             		break;
             	case "Unknown #5":
-            		selectedSample = unknown5;
+            		selectedSample1 = unknown5;
                     parent.displayProtein(unknown5);
             		break;
             	case "Unknown #6":
-            		selectedSample = unknown6;
+            		selectedSample1 = unknown6;
                     parent.displayProtein(unknown6);
             		break;
             	case "Unknown #7":
-            		selectedSample = unknown7;
+            		selectedSample1 = unknown7;
                     parent.displayProtein(unknown7);
             		break;
             	case "Unknown #8":
-            		selectedSample = unknown8;
+            		selectedSample1 = unknown8;
                     parent.displayProtein(unknown8);
             		break;
             	case "Unknown #9":
-            		selectedSample = unknown9;
+            		selectedSample1 = unknown9;
                     parent.displayProtein(unknown9);
             		break;
             	case "Unknown #10":
-            		selectedSample = unknown10;
+            		selectedSample1 = unknown10;
                     parent.displayProtein(unknown10);
+            		break;
+            }
+        }
+
+    }// end inner class UnknownListHandler
+    
+    class UnknownListHandler2 implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent ev) {
+            // Object item = ev.getItem();
+            @SuppressWarnings("unchecked")
+			JComboBox<String> item = (JComboBox<String>) ev.getSource();
+            
+            switch ((String) item.getSelectedItem()) {
+            	case "Unknown #1":
+            		selectedSample2 = unknown1;
+                    //parent.displayProtein(unknown1);
+            		break;
+            	case "Unknown #2":
+            		selectedSample2 = unknown2;
+                    //parent.displayProtein(unknown2);
+            		break;
+            	case "Unknown #3":
+            		selectedSample2 = unknown3;
+                    //parent.displayProtein(unknown3);
+            		break;
+            	case "Unknown #4":
+            		selectedSample2 = unknown4;
+                    //parent.displayProtein(unknown4);
+            		break;
+            	case "Unknown #5":
+            		selectedSample2 = unknown5;
+                    //parent.displayProtein(unknown5);
+            		break;
+            	case "Unknown #6":
+            		selectedSample2 = unknown6;
+                    //parent.displayProtein(unknown6);
+            		break;
+            	case "Unknown #7":
+            		selectedSample2 = unknown7;
+                    //parent.displayProtein(unknown7);
+            		break;
+            	case "Unknown #8":
+            		selectedSample2 = unknown8;
+                    //parent.displayProtein(unknown8);
+            		break;
+            	case "Unknown #9":
+            		selectedSample2 = unknown9;
+                    //parent.displayProtein(unknown9);
+            		break;
+            	case "Unknown #10":
+            		selectedSample2 = unknown10;
+                    //parent.displayProtein(unknown10);
             		break;
             }
         }
