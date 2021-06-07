@@ -73,11 +73,8 @@ public class Parameters extends JPanel implements Constants {
         unknown5 = new Protein("Unknown #5", "Phosphorylase b", "Phos b", 0x172f9, Color.black);
         unknown6 = new Protein("Unknown #6", "Pyruvate Kinase", "Pyr Kin", 56773, Color.black);
         unknown7 = new Protein("Unknown #7", "Ribonuclease A", "Ribo A", 13673, Color.black);
-
         unknown8 = new Protein("Unknown #8", "Chymotrypsinogen", "Chymo", 23564, Color.black);
-
         unknown9 = new Protein("Unknown #9", "p-Hydroxybenzoate", "Hydrox", 43939, Color.black);
-
         unknown10 = new Protein("Unknown #10", "Ribonuclease H", "Ribo H", 16638, Color.black);
 
         // string array, holds unknown proteins names
@@ -379,6 +376,7 @@ public class Parameters extends JPanel implements Constants {
 
         setSpeed(selectedSpeed);
         selectedSample1 = unknown1;
+        selectedSample2 = unknown2;
     }
 
     private void helperMethod1() {

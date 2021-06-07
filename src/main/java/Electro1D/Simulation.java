@@ -311,19 +311,6 @@ public class Simulation extends JPanel implements Runnable {
         dye3.setStartPosition(wellOpening3X, wellBottom);
         dye3.setMaxPosition(plateBottom);
         dye3.SetHostScaleFactor(scaleFactor);
-        /*
-        dye4.setWidth(wellOpeningWidth);
-        dye4.setStartPosition(wellOpening4X, wellBottom);
-        dye4.setMaxPosition(plateBottom);
-        dye4.SetHostScaleFactor(scaleFactor);
-        dye5.setWidth(wellOpeningWidth);
-        dye5.setStartPosition(wellOpening5X, wellBottom);
-        dye5.setMaxPosition(plateBottom);
-        dye5.SetHostScaleFactor(scaleFactor);
-        dye6.setWidth(wellOpeningWidth);
-        dye6.setStartPosition(wellOpening6X, wellBottom);
-        dye6.setMaxPosition(plateBottom);
-        dye6.SetHostScaleFactor(scaleFactor);*/
         
         stdSample.setRatio(0);
         sampSample1.setRatio(0);
@@ -838,6 +825,8 @@ public class Simulation extends JPanel implements Runnable {
                 paintSample(offScreenGraphics);
             else if (addSampleFlag1)
                 paintAddition(offScreenGraphics);
+            else if (addSampleFlag2)
+            	paintAddition(offScreenGraphics);
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
             sampSample2.drawSample(offScreenGraphics);
