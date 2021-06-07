@@ -35,8 +35,16 @@ public class Simulation extends JPanel implements Runnable {
     Protein sample;
     Protein dye1;
     Protein dye2;
+    Protein dye3;
+    Protein dye4;
+    Protein dye5;
+    Protein dye6;
     Sample stdSample;
     Sample sampSample;
+    Sample well3samp;
+    Sample well4samp;
+    Sample well5samp;
+    Sample well6samp;
     Pipette pipette;
     protected int border;
     protected int baseX;
@@ -66,8 +74,18 @@ public class Simulation extends JPanel implements Runnable {
     protected int wellOpening1Width;
     protected int wellOpening2X;
     protected int wellOpening2Y;
-    protected int wellOpening2Height;
+	protected int wellOpening2Height;
     protected int wellOpening2Width;
+    //These are the same for all the wells
+    protected int wellOpeningY;
+    protected int wellOpeningHeight;
+    protected int wellOpeningWidth;
+    
+    protected int wellOpening3X;
+    protected int wellOpening4X;
+    protected int wellOpening5X;
+    protected int wellOpening6X;
+    
     protected int wellBottom;
     protected int halfWellWidth;
     protected int totalElutionDist;
@@ -140,7 +158,7 @@ public class Simulation extends JPanel implements Runnable {
      * @param electrophoresis
      */
     Simulation(Electrophoresis electrophoresis) {
-        this.setPreferredSize(new Dimension(450, 450));
+        this.setPreferredSize(new Dimension(600, 450));//450, 450: i think it is 550, 450
         animationModifier = 1.0F;
         modifier = 1.0F;
         stdSamples = new Protein[7];
@@ -149,6 +167,8 @@ public class Simulation extends JPanel implements Runnable {
         dye2 = new Protein();
         stdSample = new Sample();
         sampSample = new Sample();
+        //well 3 sample declaration
+        well3samp = new Sample();
         pipette = new Pipette();
         ratioModifier = 10;
         scaleDivs = new int[7];
@@ -261,7 +281,7 @@ public class Simulation extends JPanel implements Runnable {
      * @param protein3 is a dye
      */
     public void startRun(Protein aprotein[], Protein protein1,
-                         Protein protein2, Protein protein3) {
+                         Protein[] dyes) {
         stopRun();
         if (stdLoadState == notLoaded || sampLoadState == notLoaded) {
             addInfo = true;
@@ -271,8 +291,13 @@ public class Simulation extends JPanel implements Runnable {
         }
         stdSamples = aprotein;
         sample = protein1;
-        dye1 = protein2;
-        dye2 = protein3;
+        dye1 = dyes[0];
+        dye2 = dyes[1];
+        
+        dye3 = dyes[2];
+        dye4 = dyes[3];
+        dye5 = dyes[4];
+        dye6 = dyes[5];
         int i = 0;
         do {
             if (stdSamples[i].selected) {
@@ -294,6 +319,24 @@ public class Simulation extends JPanel implements Runnable {
         dye2.setStartPosition(wellOpening2X, wellBottom);
         dye2.setMaxPosition(plateBottom);
         dye2.SetHostScaleFactor(scaleFactor);
+        
+        dye3.setWidth(wellOpeningWidth);
+        dye3.setStartPosition(wellOpening3X, wellBottom);
+        dye3.setMaxPosition(plateBottom);
+        dye3.SetHostScaleFactor(scaleFactor);
+        dye4.setWidth(wellOpeningWidth);
+        dye4.setStartPosition(wellOpening4X, wellBottom);
+        dye4.setMaxPosition(plateBottom);
+        dye4.SetHostScaleFactor(scaleFactor);
+        dye5.setWidth(wellOpeningWidth);
+        dye5.setStartPosition(wellOpening5X, wellBottom);
+        dye5.setMaxPosition(plateBottom);
+        dye5.SetHostScaleFactor(scaleFactor);
+        dye6.setWidth(wellOpeningWidth);
+        dye6.setStartPosition(wellOpening6X, wellBottom);
+        dye6.setMaxPosition(plateBottom);
+        dye6.SetHostScaleFactor(scaleFactor);
+        
         stdSample.setRatio(0);
         sampSample.setRatio(0);
         stdSample.drawSwitch(true);
@@ -338,10 +381,12 @@ public class Simulation extends JPanel implements Runnable {
         byte b1 = 2;
         byte b2 = 4;
         float f = 60.0F;
+        System.out.println("Preffered height: "+ this.getPreferredSize().height + ", Preffered width: " + this.getPreferredSize().width);
+        System.out.println("height: "+ getSize().height + ", width: " + getSize().width);
         bottomEdge = getSize().height - 2;
         rightEdge = getSize().width - 2;
         i1 = rightEdge / 2;
-        border = getSize().width / 16;
+        border = getSize().width / 32;//16
         j3 = border / 2;
         k3 = border + border;
         j1 = bottomEdge / 8;
@@ -353,15 +398,15 @@ public class Simulation extends JPanel implements Runnable {
         baseHeight = j1;
         baseWidth = rightEdge - k3;
         topX = leftEdge + border;
-        topY = border + j1;
+        topY = border + j1 -20;//-20 added TB
         topHeight = j1;
         topWidth = rightEdge - k3;
         i3 = baseHeight / 4 * 3 + baseY;
         k2 = topY + topHeight / 4;
-        plateX = i1 - i2 - i2;
+        plateX = i1 - i2 - i2 - 45;//had no -45
         plateY = k2;
         plateHeight = i3 - plateY;
-        plateWidth = i2 * 4;
+        plateWidth = i2 * 5;//was *4
         plateBottom = plateY + plateHeight;
         plateRtEdge = plateX + plateWidth;
         topOpeningX = plateX + j3;
@@ -369,13 +414,26 @@ public class Simulation extends JPanel implements Runnable {
         topOpeningHeight = j3;
         topOpeningWidth = plateWidth - border;
         wellOpening1X = topOpeningX + border;
-        wellOpening1Y = topOpeningY + topOpeningHeight;
+        wellOpening1Y = topOpeningY + topOpeningHeight/3;//added /2 and parenthesis
         wellOpening1Height = k3;
-        wellOpening1Width = i2;
-        wellOpening2X = i1 + (i1 - (wellOpening1X + wellOpening1Width));
-        wellOpening2Y = topOpeningY + topOpeningHeight;
+        wellOpening1Width = i2/2;
+        wellOpening2Y = wellOpening1Y;
         wellOpening2Height = wellOpening1Height;
         wellOpening2Width = wellOpening1Width;
+        wellOpeningY = wellOpening1Y;
+        wellOpeningHeight = wellOpening1Height;
+        wellOpeningWidth = wellOpening1Width;
+        //wellOpening2X = i1 + (i1 - (wellOpening1X + wellOpening1Width));
+        halfWellWidth = wellOpening1Width / 2;
+        int nextWell = halfWellWidth + wellOpening1Width + 4;
+        
+        wellOpening2X = wellOpening1X + nextWell ;
+        //new Wells
+        wellOpening3X = wellOpening2X + nextWell;
+        wellOpening4X = wellOpening3X + nextWell;
+        wellOpening5X = wellOpening4X + nextWell;
+        wellOpening6X = wellOpening5X + nextWell;
+        
         wellBottom = wellOpening1Y + wellOpening1Height;
         halfWellWidth = wellOpening1Width / 2;
         totalElutionDist = plateBottom - wellBottom;
@@ -405,7 +463,7 @@ public class Simulation extends JPanel implements Runnable {
         cellLabelY = baseY + baseHeight + charHeight;
         negProbeX = topX;
         negProbeY = topY - k1;
-        probeWidth = j2;
+        probeWidth = j2/2+4;//had no /2+4
         posProbeX = baseX + baseWidth - probeWidth;
         posProbeY = baseY - k1;
         probeHeight = topY - negProbeY - b1 * 2;
@@ -445,7 +503,7 @@ public class Simulation extends JPanel implements Runnable {
         if (string == "elute")
             modifier = f1;
         else if (string == "fill")
-            modifier = f2;
+        	modifier = f2;
         else if (string.compareTo("Slow") == 0)
             animationModifier = f3;
         else if (string.compareTo("Moderate") == 0)
@@ -480,10 +538,20 @@ public class Simulation extends JPanel implements Runnable {
         g.drawLine(plateRtEdge, plateY, plateRtEdge, plateBottom);
         g.setColor(Color.white);
         g.fillRect(topOpeningX, topOpeningY, topOpeningWidth, topOpeningHeight);
-        g.fillRect(wellOpening1X, wellOpening1Y, wellOpening1Width,
-                wellOpening1Height);
-        g.fillRect(wellOpening2X, wellOpening2Y, wellOpening2Width,
-                wellOpening2Height);
+        g.fillRect(wellOpening1X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening2X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        //new wells, function needs to be added
+        g.fillRect(wellOpening3X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening4X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening5X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening6X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        
         g.setColor(Color.black);
         int i = 0;
         do
@@ -522,7 +590,9 @@ public class Simulation extends JPanel implements Runnable {
 
     /**
      * add sample
-     */
+     *
+     * TB GOING TO MAKE THIS ADD ALL SAMPLES TO EACH WELL JUST TO START,
+     * COME BACK TO THIS LATER!!!!!!
     public void addSample() {
         if (stdLoadState == loading) {
             return;
@@ -544,8 +614,71 @@ public class Simulation extends JPanel implements Runnable {
         sampLoadState = loading;
         setPause("fill");
         start();
-    }
+    }*/
 
+    public void addSample() {
+        if (stdLoadState == loading) {
+            return;
+        }
+        stopRun();
+        sampSample.reset();
+        sampSample.fill();
+        sampSample.setRatio(wellOpening2Height / ratioModifier);
+        sampSample.setXPosition(wellOpening2X);
+        sampSample.setWidth(wellOpening2Width);
+        sampSample.setYPosition(wellBottom);
+        sampSample.setMaxY(wellBottom);
+        pipette.setSample(sampSample);
+        pipette.setStartXPosition(wellOpening2X + halfWellWidth);
+        pipette.setMaxYPosition(wellBottom);
+        pipette.setSampleDepth(wellOpening2Height * 2);
+        
+        /*
+        stopRun();
+        well3samp.reset();
+        well3samp.fill();
+        well3samp.setRatio(wellOpeningHeight / ratioModifier);
+        well3samp.setXPosition(wellOpening3X);
+        well3samp.setWidth(wellOpeningWidth);
+        well3samp.setYPosition(wellBottom);
+        well3samp.setMaxY(wellBottom);
+        pipette.setSample(well3samp);
+        pipette.setStartXPosition(wellOpening3X + halfWellWidth);
+        pipette.setMaxYPosition(wellBottom);
+        pipette.setSampleDepth(wellOpeningHeight * 2);
+        */
+        
+        ResetFlags();
+        addSampleFlag = true;
+        sampLoadState = loading;
+        setPause("fill");
+        start();
+    }
+    
+    public void addSample2() {
+        if (stdLoadState == loading) {
+            return;
+        }
+        stopRun();
+        well3samp.reset();
+        well3samp.fill();
+        well3samp.setRatio(wellOpeningHeight / ratioModifier);
+        well3samp.setXPosition(wellOpening3X);
+        well3samp.setWidth(wellOpeningWidth);
+        well3samp.setYPosition(wellBottom);
+        well3samp.setMaxY(wellBottom);
+        pipette.setSample(well3samp);
+        pipette.setStartXPosition(wellOpening3X + halfWellWidth);
+        pipette.setMaxYPosition(wellBottom);
+        pipette.setSampleDepth(wellOpeningHeight * 2);
+        
+        ResetFlags();
+        addSampleFlag = true;
+        sampLoadState = loading;
+        setPause("fill");
+        start();
+    }
+    
     /**
      * set the acrylamide gel properties
      *
@@ -671,8 +804,9 @@ public class Simulation extends JPanel implements Runnable {
     public void paint(Graphics g) {
         if (!imageCreated) {
             offScreenImage = createImage(getSize().width, getSize().height);
+            Font newFont = new Font("TimesRoman", Font.PLAIN, 9);
             font = getFont();
-            fm = getFontMetrics(font);
+            fm = getFontMetrics(newFont);//font
             calcDimensions();
             imageCreated = true;
         }

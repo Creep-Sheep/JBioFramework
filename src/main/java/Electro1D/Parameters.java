@@ -398,7 +398,7 @@ public class Parameters extends JPanel implements Constants {
         colorPanel.add(color6Panel);
         colorPanel.add(color7Panel);
 
-        selectionPanel1.add(sample);
+        selectionPanel1.add(sample1);
         selectionPanel1.add(acrylamide);
 
         selectionPanel2.add(standardPanel);
