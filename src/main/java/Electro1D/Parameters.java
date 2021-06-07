@@ -348,7 +348,7 @@ public class Parameters extends JPanel implements Constants {
             public void actionPerformed(ActionEvent e) {
 
                 // when click start
-                parent.startRun(stdProteinArray, selectedSample1, dyes);
+                parent.startRun(stdProteinArray, selectedSample1, selectedSample2, dyes);
 
             }
         });
@@ -399,6 +399,7 @@ public class Parameters extends JPanel implements Constants {
         colorPanel.add(color7Panel);
 
         selectionPanel1.add(sample1);
+        selectionPanel1.add(sample2);
         selectionPanel1.add(acrylamide);
 
         selectionPanel2.add(standardPanel);
