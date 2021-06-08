@@ -1,22 +1,28 @@
 package main.java.Electro1D;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.Border;
+
+import javajs.async.AsyncFileChooser;
 
 /**
  * @author Bader Alharbi
@@ -56,6 +62,9 @@ public class Parameters extends JPanel implements Constants {
 
     Electrophoresis parent;
     Protein stdProteinArray[] = new Protein[7];
+	private final String directoryString = "." + File.separator + 
+			//".." + File.separator + 
+			"data";
 
     /**
      * constructor
@@ -337,6 +346,15 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
+        JButton fileSelector = new JButton("Select aFile");
+        fileSelector.setToolTipText("Select a fasta file to be put in well 4");
+        fileSelector.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+            	loadFile();
+            }
+        });
         JButton startButton = new JButton("Start Run");
         startButton.setToolTipText("Powers on the battery to begin run");
         startButton.addActionListener(new ActionListener() {
@@ -365,6 +383,7 @@ public class Parameters extends JPanel implements Constants {
         controlPanel.add(addStandard);
         controlPanel.add(addSample);
         controlPanel.add(addSample2);
+        controlPanel.add(fileSelector);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
 
@@ -533,6 +552,28 @@ public class Parameters extends JPanel implements Constants {
         selectedGel = gel1;
         setAcrylamideEffect();
 
+    }
+    
+    public void loadFile() {
+    	setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    	
+    	//JFrame fileSelctorFrame = this;
+    	
+    	File dir = new File(directoryString);
+		System.out.println(dir.getAbsolutePath());
+		if (!dir.isDirectory())
+			dir = new File("." + File.separator + ".." + File.separator + "data");
+		AsyncFileChooser chooser = new AsyncFileChooser(dir);
+		chooser.showOpenDialog(this, () -> {
+				//electro2D.loadFile(chooser.getSelectedFile(), fileNum);
+				// set the cursor image back to normal
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				// close the frame
+				//dispose();
+			}, () -> {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				//dispose();				
+			});
     }
 
     // GUI attributes
