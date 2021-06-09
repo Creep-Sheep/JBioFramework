@@ -80,9 +80,6 @@ public class Protein {
 
     Protein(String s, String s1, String s2, int i, Color color1) {
         speed = 0.01D;
-        name = "notSet";
-        fullName = "notSet";
-        abbr = "notSet";
         color = Color.blue;
         height = 2;
         decider = 1;

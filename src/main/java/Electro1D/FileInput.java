@@ -1,5 +1,6 @@
 package main.java.Electro1D;
 
+import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -136,6 +137,12 @@ public class FileInput {
 				
 				doubleVal = Double.parseDouble(mWstring);
 				molecularWeightStrings.addElement(mWstring);
+			}
+			//CONTINUE HERE, THIS IS WHERE YOU HAVE MADE A LIST OF PROTEINS TO BE PROCESSED
+			Vector<Protein> protiens = new Vector<>();
+			for(int i = 0; i < sequences.size(); i++) {
+				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
+						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), Color.black));
 			}
 			
 		}
