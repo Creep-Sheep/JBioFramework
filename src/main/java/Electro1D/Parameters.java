@@ -113,7 +113,10 @@ public class Parameters extends JPanel implements Constants {
         UnknownListHandler2 unl2 = new UnknownListHandler2();
         GelPercentageHandler gh = new GelPercentageHandler();
         VoltageListHandler vl = new VoltageListHandler();
-
+        acrylamide.setSelectedItem("7.5%");
+        sample2.setSelectedItem("Unknown #2");
+        voltages.setSelectedItem("150V");
+      
         sample1.addItemListener(unl1);
         sample2.addItemListener(unl2);
         acrylamide.addItemListener(gh);
