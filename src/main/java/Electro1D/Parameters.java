@@ -584,7 +584,7 @@ public class Parameters extends JPanel implements Constants {
     
     public void loadFile() {
     	setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	
+    	FileInput fi = new FileInput();
     	//JFrame fileSelctorFrame = this;
     	
     	File dir = new File(directoryString);
@@ -593,7 +593,7 @@ public class Parameters extends JPanel implements Constants {
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
 		chooser.showOpenDialog(this, () -> {
-				//electro2D.loadFile(chooser.getSelectedFile(), fileNum);
+				fi.LoadFile(chooser.getSelectedFile());
 				// set the cursor image back to normal
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				// close the frame
