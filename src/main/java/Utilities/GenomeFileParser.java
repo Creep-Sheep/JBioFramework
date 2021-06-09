@@ -789,7 +789,7 @@ public class GenomeFileParser {
                 anerror = true;
                 System.err.println("Exception was: " + e);
             }
-        } else { //use data from textarea
+        } else { //use data from text area
             StringTokenizer fileSplitter = new StringTokenizer(data, "\r\n");
             while (fileSplitter.hasMoreTokens()) {
                 fileData.addElement(fileSplitter.nextToken());

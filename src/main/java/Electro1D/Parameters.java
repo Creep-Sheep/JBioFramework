@@ -3,6 +3,7 @@ package main.java.Electro1D;
 import java.awt.BorderLayout;
 import java.awt.Window;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ import javajs.async.AsyncFileChooser;
  *         the parameters defulat values are deleared in the Connstants.java interface
  */
 
+@SuppressWarnings("unused")
 public class Parameters extends JPanel implements Constants {
     /**
 	 * 
@@ -44,6 +46,7 @@ public class Parameters extends JPanel implements Constants {
     JComboBox<String> acrylamide;
     JComboBox<String> sample1;
     JComboBox<String> sample2;
+    JComboBox<String> voltages;
     ButtonGroup voltage;
     ButtonGroup speed;
     int std1Ref;
@@ -62,9 +65,10 @@ public class Parameters extends JPanel implements Constants {
 
     Electrophoresis parent;
     Protein stdProteinArray[] = new Protein[7];
-	private final String directoryString = "." + File.separator + 
+	String directoryString = "." + File.separator + 
 			//".." + File.separator + 
 			"data";
+	
 
     /**
      * constructor
@@ -96,6 +100,7 @@ public class Parameters extends JPanel implements Constants {
                 gel1.percentGel, gel2.percentGel, gel3.percentGel,
                 gel4.percentGel
         };
+        String[] voltageList = {"50V", "100V", "150V", "200V"};
         
         //array of proteins for passing to start run
         Protein[] dyes = {dye1, dye2, dye3, dye4, dye5, dye6};
@@ -103,17 +108,21 @@ public class Parameters extends JPanel implements Constants {
         acrylamide = new JComboBox<String>(gelList);
         sample1 = new JComboBox<String>(samples);
         sample2 = new JComboBox<String>(samples);
+        voltages = new JComboBox<String>(voltageList);
         UnknownListHandler1 unl1 = new UnknownListHandler1();
         UnknownListHandler2 unl2 = new UnknownListHandler2();
         GelPercentageHandler gh = new GelPercentageHandler();
+        VoltageListHandler vl = new VoltageListHandler();
 
         sample1.addItemListener(unl1);
         sample2.addItemListener(unl2);
         acrylamide.addItemListener(gh);
+        voltages.addItemListener(vl);
         // button groups
         voltage = new ButtonGroup();
         speed = new ButtonGroup();
         // panels
+        
         
         headerPanel = new JPanel();
         headerSub1 = new JPanel(new GridLayout(1, 3, 1, 1));
@@ -136,6 +145,7 @@ public class Parameters extends JPanel implements Constants {
         color5Panel = new JPanel();
         color6Panel = new JPanel();
         color7Panel = new JPanel();
+        voltacrPanel = new JPanel();
         parent = electrophoresis;
 
         stdProteinArray[std1Ref] = new Protein("Standard #1",
@@ -159,7 +169,7 @@ public class Parameters extends JPanel implements Constants {
         // helper methods
         setPanelsColors();
 
-        setLayout(new GridLayout(5, 1, 2, 2));
+        setLayout(new GridLayout(4, 1, 2, 2));
         headerPanel.setLayout(new GridLayout(1, 1, 5, 5));
         headerPanel.setBorder(border);
 
@@ -168,8 +178,7 @@ public class Parameters extends JPanel implements Constants {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                selectedSpeed = low;
-                setSpeed(selectedSpeed);
+                setAnimationSpeed(slow);
             }
         });
         JRadioButton speed2button = new JRadioButton(moderate, true);
@@ -213,9 +222,9 @@ public class Parameters extends JPanel implements Constants {
         unknownLabel2.setToolTipText("Set of unknown samples for well 2");
         labelPanel1.add(unknownLabel2);
 
-        JLabel percentAcrylamideLabel = new JLabel("% Acrylamide");
-        percentAcrylamideLabel.setToolTipText("Affects the density of the gel");
-        labelPanel1.add(percentAcrylamideLabel);
+        //JLabel percentAcrylamideLabel = new JLabel("% Acrylamide");
+        //percentAcrylamideLabel.setToolTipText("Affects the density of the gel");
+        //labelPanel1.add(percentAcrylamideLabel);
 
         JLabel standardsLabel = new JLabel("Standards");
         standardsLabel.setToolTipText("Set of known values for comparison");
@@ -280,6 +289,19 @@ public class Parameters extends JPanel implements Constants {
 
         voltagePanel.add(voltageSub1Panel, BorderLayout.NORTH);
         voltagePanel.add(voltageSub2Panel, BorderLayout.CENTER);
+        
+        voltacrPanel.setLayout(new GridLayout(2, 2));
+        voltacrPanel.setBackground(Color.lightGray);
+        //add new section for volatages and acrlyamide percentages
+        //JPanel voltacrLabel = new JPanel();
+        JLabel voltLabel = new JLabel("Voltage");
+        JLabel acrLabel = new JLabel("Acrylamide %");
+        //voltacrLabel.add(voltLabel);
+        //voltacrLabel.add(acrLabel);
+        voltacrPanel.add(voltLabel);
+        voltacrPanel.add(acrLabel);
+        
+        
 
         standardPanel.setLayout(new GridLayout(7, 1, 0, 1));
 
@@ -346,7 +368,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton fileSelector = new JButton("Select aFile");
+        JButton fileSelector = new JButton("Select a File");
         fileSelector.setToolTipText("Select a fasta file to be put in well 4");
         fileSelector.addActionListener(new ActionListener() {
             
@@ -387,10 +409,11 @@ public class Parameters extends JPanel implements Constants {
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
 
-        add(headerPanel);
+        //add(headerPanel);
         add(dropPanel);
         add(selectionPanel2);
-        add(voltagePanel);
+        //add(voltagePanel);
+        add(voltacrPanel);
         add(controlPanel);
 
         setSpeed(selectedSpeed);
@@ -417,7 +440,9 @@ public class Parameters extends JPanel implements Constants {
 
         selectionPanel1.add(sample1);
         selectionPanel1.add(sample2);
-        selectionPanel1.add(acrylamide);
+        //selectionPanel1.add(acrylamide);
+        voltacrPanel.add(voltages);
+        voltacrPanel.add(acrylamide);
 
         selectionPanel2.add(standardPanel);
         selectionPanel2.add(colorPanel);
@@ -587,6 +612,7 @@ public class Parameters extends JPanel implements Constants {
     JPanel selectionPanel2;
     JPanel standardPanel;
     JPanel colorPanel;
+    JPanel voltacrPanel;
     JPanel voltagePanel;
     JPanel voltageSub1Panel;
     JPanel voltageSub2Panel;
@@ -765,6 +791,40 @@ public class Parameters extends JPanel implements Constants {
             		selectedSample2 = unknown10;
                     //parent.displayProtein(unknown10);
             		break;
+            }
+        }
+
+    }// end inner class UnknownListHandler
+    
+    /**
+     * VoltageListHandler, inner class  to handle events invoked by GUI components in parameters panel
+     */
+    class VoltageListHandler implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent ev) {
+            // Object item = ev.getItem();
+            @SuppressWarnings("unchecked")
+			JComboBox<String> item = (JComboBox<String>) ev.getSource();
+            
+            switch ((String) item.getSelectedItem()) {
+            	case "50V":
+            		selectedSpeed = low;
+            		setSpeed(selectedSpeed);
+            		break;
+            	case "100V":
+            		selectedSpeed = medium;
+            		setSpeed(selectedSpeed);
+            		break;
+            	case "150V":
+            		selectedSpeed = high;
+            		setSpeed(selectedSpeed);
+            		break;
+            	case "200V":
+            		selectedSpeed = highX2;
+            		setSpeed(selectedSpeed);
+            		break;
+            	
             }
         }
 
