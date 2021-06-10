@@ -24,7 +24,8 @@ public class FileInput {
 	public void LoadFile(File f) {
 		String filename = (f == null ? null : f.getName());
 		MessageFrame error = null;
-		int n = -1;
+		Vector<Protein> proteins = new Vector<>();
+		int n;
 		if (filename == null || filename.equals("")) {
 			error = new MessageFrame();
 			error.setMessage("Please enter a file name.");
@@ -41,11 +42,12 @@ public class FileInput {
 			switch (extension.toLowerCase()) {
 			case "faa":
 			case "fasta":
-				n = fastaParse(f, data);
+				proteins = fastaParse(f, data);
 			}
 			
 		}
 		if (error == null) {
+			n = proteins.size();
 			// here a dialog pops up
 			JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");					
 			// display the protein titles from the file
@@ -53,7 +55,7 @@ public class FileInput {
 		
 	}
 	
-	private int fastaParse(File f, String data) {
+	private Vector<Protein> fastaParse(File f, String data) {
 		BufferedReader in = null;
 		boolean anerror = false;
 		String temp = "";
@@ -64,7 +66,8 @@ public class FileInput {
         Vector<String> sequences = new Vector<>(); //holds sequence data
         Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
         Vector<String> functions = new Vector<>(); //holds the protein functions
-        Vector<String> molecularWeightStrings = new Vector<>();
+        Vector<String> molecularWeightStrings = new Vector<>(); //hold molecular weights
+        Vector<Protein> protiens = new Vector<>();//holds the list of protiens
 		
 		if (data == null || data.equals("")) {
 			try {
@@ -139,14 +142,20 @@ public class FileInput {
 				molecularWeightStrings.addElement(mWstring);
 			}
 			//CONTINUE HERE, THIS IS WHERE YOU HAVE MADE A LIST OF PROTEINS TO BE PROCESSED
-			Vector<Protein> protiens = new Vector<>();
+			
 			for(int i = 0; i < sequences.size(); i++) {
 				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
 						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), Color.black));
 			}
 			
 		}
-		return 0;
+		try {
+			if(in != null)
+				in.close();
+		} catch(IOException e) {
+		}
+		
+		return protiens;
 	}
 
 	@SuppressWarnings("unused")
