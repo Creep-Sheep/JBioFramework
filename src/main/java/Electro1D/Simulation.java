@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 
@@ -43,10 +44,12 @@ public class Simulation extends JPanel implements Runnable {
     Sample stdSample;
     Sample sampSample1;
     Sample sampSample2;
-    //Sample well3samp;
+    
+    Sample well3samp;
     Sample well4samp;
     Sample well5samp;
     Sample well6samp;
+    
     Pipette pipette;
     protected int border;
     protected int baseX;
@@ -141,6 +144,7 @@ public class Simulation extends JPanel implements Runnable {
     private Graphics offScreenGraphics;
     boolean addSampleFlag1;
     boolean addSampleFlag2;
+    boolean addSampleFileFlag;
     boolean runSampleFlag;
     boolean imageCreated;
     boolean stopAnimation;
@@ -151,6 +155,7 @@ public class Simulation extends JPanel implements Runnable {
     int loaded;
     int samp1LoadState;
     int samp2LoadState;
+    int sampFileLoadState;
     int stdLoadState;
     boolean noLoadError;
     protected DecimalFormat twoDigits;
@@ -173,6 +178,10 @@ public class Simulation extends JPanel implements Runnable {
         stdSample = new Sample();
         sampSample1 = new Sample();
         sampSample2 = new Sample();
+        well3samp = new Sample();
+        well4samp = new Sample();
+        well5samp = new Sample();
+        well6samp = new Sample();
         //well 3 sample declaration
         pipette = new Pipette();
         ratioModifier = 10;
@@ -262,7 +271,7 @@ public class Simulation extends JPanel implements Runnable {
     public void startRun(Protein aprotein[], Protein protein1, Protein protein2, 
                          Protein[] dyes) {
         stopRun();
-        if (stdLoadState == notLoaded || samp1LoadState == notLoaded || samp2LoadState == notLoaded) {
+        if (stdLoadState == notLoaded || samp1LoadState == notLoaded) {//|| samp2LoadState == notLoaded
             addInfo = true;
             noLoadError = true;
             repaint();
@@ -594,34 +603,6 @@ public class Simulation extends JPanel implements Runnable {
         start();
     }
 
-    /**
-     * add sample
-     *
-     * TB GOING TO MAKE THIS ADD ALL SAMPLES TO EACH WELL JUST TO START,
-     * COME BACK TO THIS LATER!!!!!!
-    public void addSample() {
-        if (stdLoadState == loading) {
-            return;
-        }
-        stopRun();
-        sampSample.reset();
-        sampSample.fill();
-        sampSample.setRatio(wellOpening2Height / ratioModifier);
-        sampSample.setXPosition(wellOpening2X);
-        sampSample.setWidth(wellOpening2Width);
-        sampSample.setYPosition(wellBottom);
-        sampSample.setMaxY(wellBottom);
-        pipette.setSample(sampSample);
-        pipette.setStartXPosition(wellOpening2X + halfWellWidth);
-        pipette.setMaxYPosition(wellBottom);
-        pipette.setSampleDepth(wellOpening2Height * 2);
-        ResetFlags();
-        addSampleFlag = true;
-        sampLoadState = loading;
-        setPause("fill");
-        start();
-    }*/
-
     public void addSample() {
         if (stdLoadState == loading || samp2LoadState == loading) {
             return;
@@ -668,6 +649,93 @@ public class Simulation extends JPanel implements Runnable {
         samp2LoadState = loading;
         setPause("fill");
         start();
+    }
+    
+    public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
+    	if (samp1LoadState == loading || stdLoadState == loading) {
+            return;
+        }
+    	switch(wellNum) {
+    	case "Well 3":
+    		stopRun();
+            well3samp.reset();
+            well3samp.fill();
+            well3samp.setRatio(wellOpeningHeight / ratioModifier);
+            well3samp.setXPosition(wellOpening3X);
+            well3samp.setWidth(wellOpeningWidth);
+            well3samp.setYPosition(wellBottom);
+            well3samp.setMaxY(wellBottom);
+            pipette.setSample(well3samp);
+            pipette.setStartXPosition(wellOpening3X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            //TODO THIS DOES NOT PRINT, NEED TO FIND OUT WHY
+            System.out.println("TEST");
+            break;
+    	case "Well 4":
+    		stopRun();
+            well4samp.reset();
+            well4samp.fill();
+            well4samp.setRatio(wellOpeningHeight / ratioModifier);
+            well4samp.setXPosition(wellOpening4X);
+            well4samp.setWidth(wellOpeningWidth);
+            well4samp.setYPosition(wellBottom);
+            well4samp.setMaxY(wellBottom);
+            pipette.setSample(well4samp);
+            pipette.setStartXPosition(wellOpening4X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
+    	case "Well 5":
+    		stopRun();
+            well5samp.reset();
+            well5samp.fill();
+            well5samp.setRatio(wellOpeningHeight / ratioModifier);
+            well5samp.setXPosition(wellOpening5X);
+            well5samp.setWidth(wellOpeningWidth);
+            well5samp.setYPosition(wellBottom);
+            well5samp.setMaxY(wellBottom);
+            pipette.setSample(well5samp);
+            pipette.setStartXPosition(wellOpening5X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
+    	case "Well 6":
+    		stopRun();
+            well6samp.reset();
+            well6samp.fill();
+            well6samp.setRatio(wellOpeningHeight / ratioModifier);
+            well6samp.setXPosition(wellOpening6X);
+            well6samp.setWidth(wellOpeningWidth);
+            well6samp.setYPosition(wellBottom);
+            well6samp.setMaxY(wellBottom);
+            pipette.setSample(well6samp);
+            pipette.setStartXPosition(wellOpening6X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
+    	}
+    	
     }
     
     /**
@@ -770,6 +838,8 @@ public class Simulation extends JPanel implements Runnable {
                 samp1LoadState = loaded;
             else if (samp2LoadState == loading)
             	samp2LoadState = loaded;
+            else if (sampFileLoadState == loading)
+            	sampFileLoadState = loaded;
             stopRun();
         }
     }
@@ -830,6 +900,11 @@ public class Simulation extends JPanel implements Runnable {
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
             sampSample2.drawSample(offScreenGraphics);
+            well3samp.drawSample(offScreenGraphics);
+            well4samp.drawSample(offScreenGraphics);
+            well5samp.drawSample(offScreenGraphics);
+            well6samp.drawSample(offScreenGraphics);
+            
         } else
             drawGraph(offScreenGraphics);
         g.drawImage(offScreenImage, 0, 0, this);
