@@ -218,13 +218,18 @@ public class Parameters extends JPanel implements Constants {
         dropPanel.setLayout(new GridLayout(3, 1));
         labelPanel1.setLayout(new GridLayout(1, 2));
 
-        JLabel unknownLabel1 = new JLabel("Well #1");//Unkown Proteins
-        unknownLabel1.setToolTipText("Set of unknown samples for well 1");
+        JLabel unknownLabel1 = new JLabel("Well 2");//Unkown Proteins
+        unknownLabel1.setToolTipText("Set of unknown samples for well 2");
         labelPanel1.add(unknownLabel1);
-        JLabel unknownLabel2 = new JLabel("Well #2");//Unkown Proteins
-        unknownLabel2.setToolTipText("Set of unknown samples for well 2");
+        JLabel unknownLabel2 = new JLabel("Well 3");//Unkown Proteins
+        unknownLabel2.setToolTipText("Set of unknown samples for well 3");
         labelPanel1.add(unknownLabel2);
-
+        JLabel wellLabel4 = new JLabel("Well 4");
+        JLabel wellLabel5 = new JLabel("Well 5");
+        JLabel wellLabel6 = new JLabel("Well 6");
+        labelPanel1.add(wellLabel4);
+        labelPanel1.add(wellLabel5);
+        labelPanel1.add(wellLabel6);
         //JLabel percentAcrylamideLabel = new JLabel("% Acrylamide");
         //percentAcrylamideLabel.setToolTipText("Affects the density of the gel");
         //labelPanel1.add(percentAcrylamideLabel);
@@ -347,7 +352,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton addSample = new JButton("Add Sample 1");
+        JButton addSample = new JButton("Add Sample");
         addSample.setToolTipText("Pipette selected unknown into well 2");
         addSample.addActionListener(new ActionListener() {
 
@@ -360,7 +365,7 @@ public class Parameters extends JPanel implements Constants {
             
         });
         
-        JButton addSample2 = new JButton("Add Sample 2");
+        JButton addSample2 = new JButton("Samp2");
         addSample2.setToolTipText("Pipette selected unknown into well 3");
         addSample2.addActionListener(new ActionListener() {
 
@@ -371,16 +376,41 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton fileSelector = new JButton("Select a File");
-        fileSelector.setToolTipText("Select a fasta file to be put in well 4");
-        fileSelector.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-            	loadFile();
+        JButton addSample3 = new JButton("Samp3");
+        addSample2.setToolTipText("Pipette selected unknown into well 3");
+        addSample2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //parent.addSample3();
+
             }
         });
-        JButton startButton = new JButton("Start Run");
+        JButton addSample4 = new JButton("Samp 4");
+        addSample2.setToolTipText("Pipette selected unknown into well 3");
+        addSample2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //parent.addSample4();
+
+            }
+        });
+        JButton addSample5 = new JButton("Samp 5");
+        addSample2.setToolTipText("Pipette selected unknown into well 3");
+        addSample2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //parent.addSample5();
+
+            }
+        });
+        
+        JButton startButton = new JButton("Start Run");//Start run
         startButton.setToolTipText("Powers on the battery to begin run");
         startButton.addActionListener(new ActionListener() {
 
@@ -392,7 +422,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton stopButton = new JButton("Stop Run");
+        JButton stopButton = new JButton("Stop Run");//Stop Run
         stopButton.setToolTipText("Ends current to stop the run");
         stopButton.addActionListener(new ActionListener() {
 
@@ -404,13 +434,59 @@ public class Parameters extends JPanel implements Constants {
                 parent.setPlotData(stdProteinArray, selectedSample1, dye1);
             }
         });
+        
+        //The file selectors for the other 4 wells
+        JButton fileSelector1 = new JButton("#3");
+        fileSelector1.setToolTipText("Select a file to be put in well 3");
+        fileSelector1.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+            	loadFile("Well 3");
+            }
+        });
+        JButton fileSelector2 = new JButton("#4");
+        fileSelector2.setToolTipText("Select a file to be put in well 4");
+        fileSelector2.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+            	loadFile("Well 4");
+            }
+        });
+        JButton fileSelector3 = new JButton("#5");
+        fileSelector3.setToolTipText("Select a file to be put in well 5");
+        fileSelector3.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+            	loadFile("Well 5");
+            }
+        });
+        JButton fileSelector4 = new JButton("#6");
+        fileSelector4.setToolTipText("Select a file to be put in well 6");
+        fileSelector4.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+            	loadFile("Well 6");
+            }
+        });
 
         controlPanel.add(addStandard);
         controlPanel.add(addSample);
-        controlPanel.add(addSample2);
-        controlPanel.add(fileSelector);
+        //controlPanel.add(addSample2);
+        //controlPanel.add(addSample3);
+        //controlPanel.add(addSample4);
+        //controlPanel.add(addSample5);
+        //controlPanel.add(fileSelector);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
+        //higher panel for choosing wells
+        selectionPanel1.add(fileSelector1);
+        selectionPanel1.add(fileSelector2);
+        selectionPanel1.add(fileSelector3);
+        selectionPanel1.add(fileSelector4);
 
         //add(headerPanel);
         add(dropPanel);
@@ -442,7 +518,7 @@ public class Parameters extends JPanel implements Constants {
         colorPanel.add(color7Panel);
 
         selectionPanel1.add(sample1);
-        selectionPanel1.add(sample2);
+        //selectionPanel1.add(sample2);
         //selectionPanel1.add(acrylamide);
         voltacrPanel.add(voltages);
         voltacrPanel.add(acrylamide);
@@ -452,7 +528,7 @@ public class Parameters extends JPanel implements Constants {
         dropPanel.add(labelPanel1);
         dropPanel.add(selectionPanel1);
         dropPanel.add(labelPanel2);
-        controlPanel.setLayout(new GridLayout(3, 2, 10, 10));//should be 3, 2, 10, 10
+        controlPanel.setLayout(new GridLayout(2, 2, 10, 10));//should be 3, 2, 10, 10
 
         // create the control panel buttons & use anonymous inner handling
     }
@@ -582,7 +658,7 @@ public class Parameters extends JPanel implements Constants {
 
     }
     
-    public void loadFile() {
+    public void loadFile(String wellNum) {
     	setCursor(new Cursor(Cursor.WAIT_CURSOR));
     	FileInput fi = new FileInput();
     	//JFrame fileSelctorFrame = this;
@@ -593,7 +669,7 @@ public class Parameters extends JPanel implements Constants {
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
 		chooser.showOpenDialog(this, () -> {
-				fi.LoadFile(chooser.getSelectedFile());
+				fi.LoadFile(chooser.getSelectedFile(), wellNum);
 				// set the cursor image back to normal
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				// close the frame
