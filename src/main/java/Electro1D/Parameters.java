@@ -436,7 +436,7 @@ public class Parameters extends JPanel implements Constants {
         });
         
         //The file selectors for the other 4 wells
-        JButton fileSelector1 = new JButton("#3");
+        JButton fileSelector1 = new JButton("3");
         fileSelector1.setToolTipText("Select a file to be put in well 3");
         fileSelector1.addActionListener(new ActionListener() {
             
