@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -669,7 +670,7 @@ public class Parameters extends JPanel implements Constants {
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
 		chooser.showOpenDialog(this, () -> {
-				fi.LoadFile(chooser.getSelectedFile(), wellNum);
+				proteins = fi.LoadFile(chooser.getSelectedFile(), wellNum);
 				// set the cursor image back to normal
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				// close the frame
@@ -678,6 +679,7 @@ public class Parameters extends JPanel implements Constants {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				//dispose();				
 			});
+		parent.addSampleFromFile(proteins, wellNum);
     }
 
     // GUI attributes
@@ -710,6 +712,7 @@ public class Parameters extends JPanel implements Constants {
     JCheckBox standard5;
     JCheckBox standard6;
     JCheckBox standard7;
+    Vector<Protein> proteins;
 
     /**
      * StandardsListListener, inner class  to handle events invoked by GUI components in parameters panel

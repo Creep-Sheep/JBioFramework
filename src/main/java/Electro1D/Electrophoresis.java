@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -186,6 +187,11 @@ public class Electrophoresis extends JPanel {
 		simPanel.addSample2();
 	}
 	
+	public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
+		
+		simPanel.addSampleFromFile(proteins, wellNum);
+	}
+	
 	/**
 	 * configure the animation speed
 	 *
@@ -211,5 +217,7 @@ public class Electrophoresis extends JPanel {
 		f.pack();
 		f.setVisible(true);
 	}
+
+	
 
 }

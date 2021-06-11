@@ -33,6 +33,7 @@ public class Simulation extends JPanel implements Runnable {
     float modifier;
     boolean addInfo;
     Protein stdSamples[];
+    Vector<Protein> well3proteins;
     Protein sample1;
     Protein sample2;
     Protein dye1;
@@ -199,6 +200,7 @@ public class Simulation extends JPanel implements Runnable {
         loaded = 2;
         samp1LoadState = notLoaded;
         samp2LoadState = notLoaded;
+        sampFileLoadState = notLoaded;
         stdLoadState = notLoaded;
         parent = electrophoresis;
         Jlabels[0] = "0";
@@ -296,6 +298,19 @@ public class Simulation extends JPanel implements Runnable {
                 stdSamples[i].SetHostScaleFactor(scaleFactor);
             }
         } while (++i < 7);
+        if(well3proteins != null) {
+            System.out.println("TEST");
+        	for(int x = 0; x < well3proteins.size(); x++) {
+        		well3proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well3proteins.elementAt(x).setStartPosition(wellOpening3X, wellBottom);
+        		well3proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well3proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+        	dye3.setWidth(wellOpeningWidth);
+            dye3.setStartPosition(wellOpening3X, wellBottom);
+            dye3.setMaxPosition(plateBottom);
+            dye3.SetHostScaleFactor(scaleFactor);
+       }
         sample1.setWidth(wellOpening2Width);
         sample1.setStartPosition(wellOpening2X, wellBottom);
         sample1.setMaxPosition(plateBottom);
@@ -310,31 +325,35 @@ public class Simulation extends JPanel implements Runnable {
         dye2.setStartPosition(wellOpening2X, wellBottom);
         dye2.setMaxPosition(plateBottom);
         dye2.SetHostScaleFactor(scaleFactor);
-                
+        /*        
         sample2.setWidth(wellOpeningWidth);
         sample2.setStartPosition(wellOpening3X, wellBottom);
         sample2.setMaxPosition(plateBottom);
         sample2.SetHostScaleFactor(scaleFactor);
+        */
         
-        dye3.setWidth(wellOpeningWidth);
-        dye3.setStartPosition(wellOpening3X, wellBottom);
-        dye3.setMaxPosition(plateBottom);
-        dye3.SetHostScaleFactor(scaleFactor);
         
         stdSample.setRatio(0);
         sampSample1.setRatio(0);
-        sampSample2.setRatio(0);
+        //sampSample2.setRatio(0);
+        well3samp.setRatio(0);
+        
         stdSample.drawSwitch(true);
         sampSample1.drawSwitch(true);
-        sampSample2.drawSwitch(true);
+        //sampSample2.drawSwitch(true);
+        well3samp.drawSwitch(true);
+        
         stdSample.empty();
         sampSample1.empty();
-        sampSample2.empty();
+        //sampSample2.empty();
+        well3samp.empty();
+        
         ResetFlags();
         runSampleFlag = true;
         stdLoadState = notLoaded;
         samp1LoadState = notLoaded;
-        samp2LoadState = notLoaded;
+        //samp2LoadState = notLoaded;
+        sampFileLoadState = notLoaded;
         setPause("elute");
         start();
     }
@@ -670,12 +689,11 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
+            well3proteins = proteins;
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
             start();
-            //TODO THIS DOES NOT PRINT, NEED TO FIND OUT WHY
-            System.out.println("TEST");
             break;
     	case "Well 4":
     		stopRun();
@@ -777,6 +795,12 @@ public class Simulation extends JPanel implements Runnable {
             if (stdSamples[i].selected && stdSamples[i].drawProtein(g))
                 notAtBottom = true;
         while (++i < 7);
+        if(well3proteins != null) {
+        	for(int x = 0; x < well3proteins.size(); x++) {
+        		if (well3proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
         if (sample1.drawProtein(g))
             notAtBottom = true;
         if (sample2.drawProtein(g))
@@ -836,8 +860,8 @@ public class Simulation extends JPanel implements Runnable {
                 stdLoadState = loaded;
             else if (samp1LoadState == loading)
                 samp1LoadState = loaded;
-            else if (samp2LoadState == loading)
-            	samp2LoadState = loaded;
+            //else if (samp2LoadState == loading)
+            	//samp2LoadState = loaded;
             else if (sampFileLoadState == loading)
             	sampFileLoadState = loaded;
             stopRun();
@@ -899,7 +923,7 @@ public class Simulation extends JPanel implements Runnable {
             	paintAddition(offScreenGraphics);
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
-            sampSample2.drawSample(offScreenGraphics);
+            //sampSample2.drawSample(offScreenGraphics);
             well3samp.drawSample(offScreenGraphics);
             well4samp.drawSample(offScreenGraphics);
             well5samp.drawSample(offScreenGraphics);

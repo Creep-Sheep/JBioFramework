@@ -21,7 +21,7 @@ public class FileInput {
 	GenomeFileParser fileparser = new GenomeFileParser();
 	
 	@SuppressWarnings("unused")
-	public void LoadFile(File f, String wellNum) {
+	public Vector<Protein> LoadFile(File f, String wellNum) {
 		String filename = (f == null ? null : f.getName());
 		MessageFrame error = null;
 		Vector<Protein> proteins = new Vector<>();
@@ -54,7 +54,9 @@ public class FileInput {
 			
 			//TODO 
 			//Process the protein list and put in correct well using wellNum
+			
 		}
+		return proteins;
 		
 	}
 	
