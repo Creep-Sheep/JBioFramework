@@ -65,7 +65,7 @@ public class FileInput {
 		boolean anerror = false;
 		String temp = "";
 		String totalChain = "";
-		double doubleVal;
+		//double doubleVal;
 		Vector<String> fileData = new Vector<>();  //holds complete file
         Vector<String> chainData = new Vector<>(); //holds chain designations
         Vector<String> sequences = new Vector<>(); //holds sequence data
@@ -144,7 +144,7 @@ public class FileInput {
 					mWstring = mWstring.substring(0, mWstring.indexOf('.') + 3);
 				}
 				
-				doubleVal = Double.parseDouble(mWstring);
+				//doubleVal = Double.parseDouble(mWstring);
 				molecularWeightStrings.addElement(mWstring);
 			}
 			//CONTINUE HERE, THIS IS WHERE YOU HAVE MADE A LIST OF PROTEINS TO BE PROCESSED

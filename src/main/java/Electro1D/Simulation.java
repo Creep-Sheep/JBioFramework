@@ -34,6 +34,9 @@ public class Simulation extends JPanel implements Runnable {
     boolean addInfo;
     Protein stdSamples[];
     Vector<Protein> well3proteins;
+    Vector<Protein> well4proteins;
+    Vector<Protein> well5proteins;
+    Vector<Protein> well6proteins;
     Protein sample1;
     Protein sample2;
     Protein dye1;
@@ -285,10 +288,9 @@ public class Simulation extends JPanel implements Runnable {
         dye1 = dyes[0];
         dye2 = dyes[1];
         dye3 = dyes[2];
-        /*
         dye4 = dyes[3];
         dye5 = dyes[4];
-        dye6 = dyes[5];*/
+        dye6 = dyes[5];
         int i = 0;
         do {
             if (stdSamples[i].selected) {
@@ -309,7 +311,43 @@ public class Simulation extends JPanel implements Runnable {
             dye3.setStartPosition(wellOpening3X, wellBottom);
             dye3.setMaxPosition(plateBottom);
             dye3.SetHostScaleFactor(scaleFactor);
-       }
+        }
+        if(well4proteins != null) {
+        	for(int x = 0; x < well4proteins.size(); x++) {
+        		well4proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well4proteins.elementAt(x).setStartPosition(wellOpening4X, wellBottom);
+        		well4proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well4proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+        	dye4.setWidth(wellOpeningWidth);
+            dye4.setStartPosition(wellOpening4X, wellBottom);
+            dye4.setMaxPosition(plateBottom);
+            dye4.SetHostScaleFactor(scaleFactor);
+        }
+        if(well5proteins != null) {
+        	for(int x = 0; x < well5proteins.size(); x++) {
+       			well5proteins.elementAt(x).setWidth(wellOpeningWidth);
+       			well5proteins.elementAt(x).setStartPosition(wellOpening5X, wellBottom);
+       			well5proteins.elementAt(x).setMaxPosition(plateBottom);
+       			well5proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+       		}
+       		dye5.setWidth(wellOpeningWidth);
+       		dye5.setStartPosition(wellOpening5X, wellBottom);
+       		dye5.setMaxPosition(plateBottom);
+       		dye5.SetHostScaleFactor(scaleFactor);
+        }
+        if(well6proteins != null) {
+        	for(int x = 0; x < well6proteins.size(); x++) {
+        		well6proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well6proteins.elementAt(x).setStartPosition(wellOpening6X, wellBottom);
+        		well6proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well6proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+        	dye6.setWidth(wellOpeningWidth);
+            dye6.setStartPosition(wellOpening6X, wellBottom);
+            dye6.setMaxPosition(plateBottom);
+            dye6.SetHostScaleFactor(scaleFactor);
+        }
         sample1.setWidth(wellOpening2Width);
         sample1.setStartPosition(wellOpening2X, wellBottom);
         sample1.setMaxPosition(plateBottom);
@@ -323,29 +361,31 @@ public class Simulation extends JPanel implements Runnable {
         dye2.setWidth(wellOpening2Width);
         dye2.setStartPosition(wellOpening2X, wellBottom);
         dye2.setMaxPosition(plateBottom);
-        dye2.SetHostScaleFactor(scaleFactor);
-        /*        
-        sample2.setWidth(wellOpeningWidth);
-        sample2.setStartPosition(wellOpening3X, wellBottom);
-        sample2.setMaxPosition(plateBottom);
-        sample2.SetHostScaleFactor(scaleFactor);
-        */
-        
+        dye2.SetHostScaleFactor(scaleFactor);         
         
         stdSample.setRatio(0);
         sampSample1.setRatio(0);
         //sampSample2.setRatio(0);
         well3samp.setRatio(0);
+        well4samp.setRatio(0);
+        well5samp.setRatio(0);
+        well6samp.setRatio(0);
         
         stdSample.drawSwitch(true);
         sampSample1.drawSwitch(true);
         //sampSample2.drawSwitch(true);
         well3samp.drawSwitch(true);
+        well4samp.drawSwitch(true);
+        well5samp.drawSwitch(true);
+        well6samp.drawSwitch(true);
         
         stdSample.empty();
         sampSample1.empty();
         //sampSample2.empty();
         well3samp.empty();
+        well4samp.empty();
+        well5samp.empty();
+        well6samp.empty();
         
         ResetFlags();
         runSampleFlag = true;
@@ -709,6 +749,8 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
+            well4proteins = proteins;
+            updateSpeed(1);
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -728,6 +770,8 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
+            well5proteins = proteins;
+            updateSpeed(1);
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -747,6 +791,8 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
+            well6proteins = proteins;
+            updateSpeed(1);
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -760,6 +806,21 @@ public class Simulation extends JPanel implements Runnable {
     	if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		well3proteins.elementAt(x).speed = d * well3proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        	}
+    	}
+    	if(well4proteins != null) {
+        	for(int x = 0; x < well4proteins.size(); x++) {
+        		well4proteins.elementAt(x).speed = d * well4proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        	}
+    	}
+    	if(well5proteins != null) {
+        	for(int x = 0; x < well5proteins.size(); x++) {
+        		well5proteins.elementAt(x).speed = d * well5proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        	}
+    	}
+    	if(well6proteins != null) {
+        	for(int x = 0; x < well6proteins.size(); x++) {
+        		well6proteins.elementAt(x).speed = d * well6proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     }
@@ -798,6 +859,9 @@ public class Simulation extends JPanel implements Runnable {
         dye1.drawProtein(g);
         dye2.drawProtein(g);
         dye3.drawProtein(g);
+        dye4.drawProtein(g);
+        dye5.drawProtein(g);
+        dye6.drawProtein(g);
         i = 0;
         do
             if (stdSamples[i].selected && stdSamples[i].drawProtein(g))
@@ -806,6 +870,24 @@ public class Simulation extends JPanel implements Runnable {
         if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		if (well3proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
+        if(well4proteins != null) {
+        	for(int x = 0; x < well4proteins.size(); x++) {
+        		if (well4proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
+        if(well5proteins != null) {
+        	for(int x = 0; x < well5proteins.size(); x++) {
+        		if (well5proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
+        if(well6proteins != null) {
+        	for(int x = 0; x < well6proteins.size(); x++) {
+        		if (well6proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
         	}
         }
