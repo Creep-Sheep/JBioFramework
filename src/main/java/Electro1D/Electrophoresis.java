@@ -56,8 +56,8 @@ public class Electrophoresis extends JPanel {
 	public Electrophoresis() {
 		super.setPreferredSize(new Dimension(845, 470));//550(i think i want 825, 450: good size: 845, 470
 
-		paramPanel = new Parameters(this);
 		simPanel = new Simulation(this);
+		paramPanel = new Parameters(this);
 		dataPanel = new ProteinData(this);
 		plotPanel = new Plot(this);
 
@@ -190,6 +190,11 @@ public class Electrophoresis extends JPanel {
 	public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
 		
 		simPanel.addSampleFromFile(proteins, wellNum);
+	}
+	
+	public void updateSpeed(double d) {
+		
+		simPanel.updateSpeed(d);
 	}
 	
 	/**

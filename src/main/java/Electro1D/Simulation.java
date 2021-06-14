@@ -299,7 +299,6 @@ public class Simulation extends JPanel implements Runnable {
             }
         } while (++i < 7);
         if(well3proteins != null) {
-            System.out.println("TEST");
         	for(int x = 0; x < well3proteins.size(); x++) {
         		well3proteins.elementAt(x).setWidth(wellOpeningWidth);
         		well3proteins.elementAt(x).setStartPosition(wellOpening3X, wellBottom);
@@ -690,6 +689,7 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
             well3proteins = proteins;
+            updateSpeed(1);
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -754,6 +754,14 @@ public class Simulation extends JPanel implements Runnable {
             break;
     	}
     	
+    }
+    
+    public void updateSpeed(double d){
+    	if(well3proteins != null) {
+        	for(int x = 0; x < well3proteins.size(); x++) {
+        		well3proteins.elementAt(x).speed = d * well3proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        	}
+    	}
     }
     
     /**
@@ -920,6 +928,8 @@ public class Simulation extends JPanel implements Runnable {
             else if (addSampleFlag1)
                 paintAddition(offScreenGraphics);
             else if (addSampleFlag2)
+            	paintAddition(offScreenGraphics);
+            else if (addSampleFileFlag)
             	paintAddition(offScreenGraphics);
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
