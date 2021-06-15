@@ -164,6 +164,7 @@ public class Simulation extends JPanel implements Runnable {
     boolean noLoadError;
     protected DecimalFormat twoDigits;
 	private StateHelper stateHelper;
+	private Acrylamide gel;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -730,6 +731,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well3proteins = proteins;
             updateSpeed(1);
+            setAcrylamideEffect(well3proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -751,6 +753,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well4proteins = proteins;
             updateSpeed(1);
+            setAcrylamideEffect(well4proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -772,6 +775,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well5proteins = proteins;
             updateSpeed(1);
+            setAcrylamideEffect(well5proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -793,6 +797,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well6proteins = proteins;
             updateSpeed(1);
+            setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -803,27 +808,123 @@ public class Simulation extends JPanel implements Runnable {
     }
     
     public void updateSpeed(double d){
+    	//TODO
+    	//I have some form of it working, i need it to fall in between ranges and somehow
+    	// calculate a movement value to still fall in those ranges.
+    	int mw;
     	if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
-        		well3proteins.elementAt(x).speed = d * well3proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		mw = well3proteins.get(x).mw;
+        		if(mw < 600)//lighter than dye
+        			well3proteins.get(x).speed = d * 0.945288;
+        		else if(mw < 6500)// less than lightest sample, should go further
+        			well3proteins.get(x).speed = d * mw / 6500 * 0.92105300000000001D;
+        		else if(mw < 14296)
+        			well3proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
+        		else if(mw < 17183)
+        			well3proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
+        		else if(mw < 26527)
+        			well3proteins.get(x).speed = d * mw / 26527 * .495244;
+        		else if(mw < 29011)
+        			well3proteins.get(x).speed = d * mw / 29011 * .465244;
+        		else if(mw < 42734)
+        			well3proteins.get(x).speed = d * mw / 42734 * .350872;
+        		else if(mw < 0x1c58b)
+        			well3proteins.get(x).speed = d * mw / 0x1c58b * .048245;
+        		else
+        			well3proteins.get(x).speed = d * .048245;//slowest band
+        		//well3proteins.elementAt(x).speed = d * well3proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     	if(well4proteins != null) {
         	for(int x = 0; x < well4proteins.size(); x++) {
-        		well4proteins.elementAt(x).speed = d * well4proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		mw = well4proteins.get(x).mw;
+        		if(mw < 6500)
+        			well4proteins.get(x).speed = d * 0.92105300000000001D;
+        		else if(mw < 14296)
+        			well4proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
+        		else if(mw < 17183)
+        			well4proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
+        		else if(mw < 26527)
+        			well4proteins.get(x).speed = d * mw / 26527 * .495244;
+        		else if(mw < 29011)
+        			well4proteins.get(x).speed = d * mw / 29011 * .465244;
+        		else if(mw < 42734)
+        			well4proteins.get(x).speed = d * mw / 42734 * .350872;
+        		else
+        			well4proteins.get(x).speed = d * mw / 0x1c58b * .048245;
+        		//well4proteins.elementAt(x).speed = d * well4proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     	if(well5proteins != null) {
         	for(int x = 0; x < well5proteins.size(); x++) {
-        		well5proteins.elementAt(x).speed = d * well5proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		mw = well5proteins.get(x).mw;
+        		if(mw < 6500)
+        			well5proteins.get(x).speed = d * 0.92105300000000001D;
+        		else if(mw < 14296)
+        			well5proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
+        		else if(mw < 17183)
+        			well5proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
+        		else if(mw < 26527)
+        			well5proteins.get(x).speed = d * mw / 26527 * .495244;
+        		else if(mw < 29011)
+        			well5proteins.get(x).speed = d * mw / 29011 * .465244;
+        		else if(mw < 42734)
+        			well5proteins.get(x).speed = d * mw / 42734 * .350872;
+        		else
+        			well5proteins.get(x).speed = d * mw / 0x1c58b * .048245;
+        		//well5proteins.elementAt(x).speed = d * well5proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     	if(well6proteins != null) {
         	for(int x = 0; x < well6proteins.size(); x++) {
-        		well6proteins.elementAt(x).speed = d * well6proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		mw = well6proteins.get(x).mw;
+        		if(mw < 6500)
+        			well6proteins.get(x).speed = d * 0.92105300000000001D;
+        		else if(mw < 14296)
+        			well6proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
+        		else if(mw < 17183)
+        			well6proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
+        		else if(mw < 26527)
+        			well6proteins.get(x).speed = d * mw / 26527 * .495244;
+        		else if(mw < 29011)
+        			well6proteins.get(x).speed = d * mw / 29011 * .465244;
+        		else if(mw < 42734)
+        			well6proteins.get(x).speed = d * mw / 42734 * .350872;
+        		else
+        			well6proteins.get(x).speed = d * mw / 0x1c58b * .048245;
+        		//well6proteins.elementAt(x).speed = d * well6proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     }
+    
+    /**
+     * set the Acrylamide effect
+     */
+    protected void setAcrylamideEffect(Vector<Protein> protiens) {
+        int i = 0;
+        do
+            if (gel.getConc() > 12D) {
+                if (protiens.get(i).mw > 26000)
+                    protiens.get(i).SetDecider(gel.suppressor);
+                else
+                    protiens.get(i).ResetDecider();
+            } else if (gel.getConc() > 10D) {
+                if (protiens.get(i).mw > 29000)
+                    protiens.get(i).SetDecider(gel.suppressor);
+                else
+                    protiens.get(i).ResetDecider();
+            } else if (gel.getConc() > 7.5D) {
+                if (protiens.get(i).mw > 40000)
+                    protiens.get(i).SetDecider(gel.suppressor);
+                else
+                    protiens.get(i).ResetDecider();
+            } else {
+                protiens.get(i).ResetDecider();
+            }
+        while (++i < protiens.size());
+    }
+
     
     /**
      * set the acrylamide gel properties
@@ -832,6 +933,7 @@ public class Simulation extends JPanel implements Runnable {
      */
     public void setAcrylamide(Acrylamide acrylamide) {
         gelLabel = acrylamide.percentGel + " Acrylamide";
+        gel = acrylamide;
         repaint();
     }
 
