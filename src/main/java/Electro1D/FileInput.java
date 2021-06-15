@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -18,7 +19,39 @@ import main.java.Utilities.MessageFrame;
 
 
 public class FileInput {
+	
 	GenomeFileParser fileparser = new GenomeFileParser();
+	
+	private final static String[] aas = {
+			"alanine","ALA","A",
+			"arginine","ARG","R",
+			"asparagine","ASN","N",
+			"aspartic acid","ASP","D",
+			"asparagine or aspartic acid","ASX","B",
+			"cysteine","CYS","C",
+			"glutamic acid","GLU","E",
+			"glutamine","GLN","Q",
+			"glutamine or glutamic acid","GLX","Z",
+			"glycine","GLY","G",
+			"histidine","HIS","H",
+			"isoleucine","ILE","I",
+			"leucine","LEU","L",
+			"lysine","LYS","K",
+			"methionine","MET","M",
+			"phenylalanine","PHE","F",
+			"proline","PRO","P",
+			"serine","SER","S",
+			"threonine","THR","T",
+			"tryptophan","TRP","W",
+			"tyrosine","TYR","Y",
+			"valine","VAL","V",
+	    };
+	final static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	final static Hashtable<String, String> aminoConversions = new Hashtable<>(); //holds amino conversions
+	static {
+    	for (int i = 1; i < aas.length; i++)
+    		aminoConversions.put(aas[i++], aas[i++]);
+    }
 	
 	@SuppressWarnings("unused")
 	public Vector<Protein> LoadFile(File f, String wellNum) {
@@ -43,6 +76,10 @@ public class FileInput {
 			case "faa":
 			case "fasta":
 				proteins = fastaParse(f, data);
+				break;
+			case "pdb":
+				proteins = pdbParse(f, data);
+				break;
 			}
 			
 		}
@@ -60,6 +97,363 @@ public class FileInput {
 		
 	}
 	
+	/**
+     * This method parses a .pdb file, extracting sequence information and
+     * appropriate descriptor for the sequence.
+     *
+     * @param theFile   file to retrieve sequence data from
+     * @param electro2D reference to calling applet
+     * @param data      user-inputted file data
+     * @param fileNum the file number
+     */
+    public Vector<Protein> pdbParse(File f, String data) {
+    	BufferedReader in = null;
+		boolean anerror = false;
+		String temp = "";
+		String totalChain = "";
+		String theFile = f.getName();
+		//double doubleVal;
+		Vector<String> fileData = new Vector<>();  //holds complete file
+        Vector<String> chainData = new Vector<>(); //holds chain designations
+        Vector<String> sequences = new Vector<>(); //holds sequence data
+        Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
+        Vector<String> functions = new Vector<>(); //holds the protein functions
+        Vector<String> compoundInfo = new Vector<>(); //holds COMPND tag data
+        Vector<String> sequenceInfo = new Vector<>(); //holds SEQRES tag data
+        Vector<String> keywordInfo = new Vector<>(); //holds KEYWDS info
+        Vector<String> moleculeTitles = new Vector<>(); //holds mol. titles
+        Vector<String> molecularWeights = new Vector<>(); //hold molecular weights
+        Vector<Protein> protiens = new Vector<>();//holds the list of protiens
+        String tempLabel = "";
+        String proteinID = "";
+        String chainValue = "";
+        String proteinFunction = ""; //holds the protein function
+        String headerLine = ""; //holds the information from the HEADER line;
+        boolean hasMoleculeTag = true;
+        boolean foundChain = false;
+        //boolean noChainData = false;
+        boolean hasECnumber = false;
+        int foundIndex = 0;
+        
+    	
+        if (data == null || data.equals("")) {
+			try {
+				in = new BufferedReader(new FileReader(f));
+				String temp1;
+				while ((temp1 = in.readLine()) != null) {
+					fileData.addElement(temp1);
+				}
+			}
+			catch (Exception e) {
+				MessageFrame error = new MessageFrame();
+				error.setMessage("Error reading from file. Be sure you typed the name correctly.");
+				error.setVisible(true);
+				anerror = true;
+				System.err.println("Exception was: " + e);
+			}
+		}
+        else {
+        	StringTokenizer fileSplitter = new StringTokenizer(data, "\r\n");
+            while (fileSplitter.hasMoreTokens()) {
+                fileData.addElement(fileSplitter.nextToken());
+            }
+        }
+        if (anerror == false) {
+        	//protienID = file descriptor
+        	proteinID = theFile.substring(0, theFile.indexOf("."));
+        	
+        	//separate compound info and sequence info
+            for (int x = 0; x < fileData.size(); x++) {
+                temp = fileData.elementAt(x);
+                tempLabel = temp.substring(0, 6);
+
+                if (tempLabel.equals("COMPND")) {
+                    compoundInfo.addElement(temp);
+                } else if (tempLabel.equals("SEQRES")) {
+                    sequenceInfo.addElement(temp);
+                }
+                //if the label is KEYWDS store this in the keyword Info vector
+                else if (tempLabel.equals("KEYWDS")) {
+                    keywordInfo.addElement(temp);
+                }
+                //if the label is HEADER, store as the headerLine
+                else if (tempLabel.equals("HEADER")) {
+                    headerLine = temp;
+                }
+            }
+
+            //determine whether or not the protein is an enzyme
+            for (int i = 0; i < compoundInfo.size(); i++) {
+                //if the COMPND section of the file listed an EC number,
+                //the protein is an enzyme.  Store the information accordingly
+                if ((compoundInfo.elementAt(i)).indexOf("EC\u003A") != -1) {
+                    hasECnumber = true;
+                    temp = compoundInfo.elementAt(i);
+                    temp = temp.substring(temp.indexOf("EC:") + 4, temp.indexOf(
+                            "\u003B") + 1);
+                    proteinFunction = proteinFunction + temp;
+                }
+            }
+            if (hasECnumber) {
+                proteinFunction = "Enzyme " + proteinFunction;
+                int index = proteinFunction.indexOf(",");
+                if (index != -1) {
+                    proteinFunction = proteinFunction.replace(',', '\u003B');
+                }
+            }
+
+            //determine the number of molecules
+            for (int x = 0; x < compoundInfo.size(); x++) {
+                temp = compoundInfo.elementAt(x);
+                if (temp.indexOf("MOLECULE:") != -1) {
+                    temp = temp.substring(temp.indexOf("MOLECULE:") + 10);
+                    temp = temp.trim();
+                    moleculeTitles.addElement(temp);
+                }
+            }
+
+            //if moleculeTitles is empty, pull main title from concatenating all
+            //COMPND tags
+            if (moleculeTitles.size() == 0) {
+
+                totalChain = "";
+                hasMoleculeTag = false;
+                for (int x = 0; x < compoundInfo.size(); x++) {
+                    temp = compoundInfo.elementAt(x);
+                    totalChain += (compoundInfo.elementAt(x)).substring
+                            (temp.indexOf("COMPND") + 10, temp.indexOf(proteinID));
+                }
+
+                //remove excess whitespace
+                totalChain = totalChain.trim();
+                for (int x = 0; x < totalChain.length(); x++) {
+                    tempLabel = totalChain.substring(x, x + 1);
+                    if (tempLabel.equals(" ")) {
+                        tempLabel = totalChain.substring(x + 1, x + 2);
+                        if (tempLabel.equals(" ")) {
+                            //remove this extra space
+                            totalChain = totalChain.substring(0, x + 1) +
+                                    totalChain.substring(x + 2);
+
+                            x -= 1;
+                        }
+                    }
+                }
+
+                //add temp to moleculeTitles
+                moleculeTitles.addElement(totalChain);
+
+            } else { //pull chain data
+
+                int counter = 0; //sequenceTitle counter
+
+                for (int x = 0; x < compoundInfo.size(); x++) {
+                    temp = compoundInfo.elementAt(x);
+                    foundIndex = temp.indexOf("CHAIN:");
+                    if (foundIndex != -1) {
+                        //isolate first letter or number
+                        tempLabel = temp.substring(foundIndex + 7, foundIndex + 8);
+                        chainData.addElement(tempLabel);
+
+                        sequenceTitles.addElement(moleculeTitles.
+                                elementAt(counter));
+
+                        while (temp.charAt(foundIndex + 8) == ',') {
+                            temp = temp.substring(0, foundIndex + 7) +
+                                    temp.substring(foundIndex + 10);
+
+                            tempLabel = temp.substring(foundIndex + 7,
+                                    foundIndex + 8);
+                            chainData.addElement(tempLabel);
+                            sequenceTitles.addElement(moleculeTitles.
+                                    elementAt(counter));
+                        }
+                        counter++;
+                    }
+                }
+            }
+
+            //extract sequences
+
+            //handle special case where there is no chain data
+            temp = sequenceInfo.elementAt(0);
+            tempLabel = temp.substring(11, 12);
+            if (tempLabel.equals(" ")) {
+//                noChainData = true;
+                temp = "";
+                //must be only one chain
+                for (int x = 0; x < sequenceInfo.size(); x++) {
+                    //may include whitespace
+                    temp += (sequenceInfo.elementAt(x)).substring(19, 70);
+                    temp += " ";
+                }
+
+                //add sequence
+                if (!(temp = temp.trim()).equals("")) {
+                    sequences.addElement(temp);
+                    sequenceTitles.addElement(moleculeTitles.elementAt(0));
+                }
+
+            } else if (hasMoleculeTag == false) {
+
+	    /* handle special case where chains are lettered, but there
+	       was no chain tag to tell which labels to look for */
+
+                //cycle through the alphabet
+                for (int whichChain = 0; whichChain < 26; whichChain++) {
+                    //find the chain we're looking for
+                    chainValue = alphabet.substring(whichChain, whichChain + 1);
+                    totalChain = "";
+                    foundChain = false;
+                    for (int x = 0; x < sequenceInfo.size(); x++) {
+                        temp = sequenceInfo.elementAt(x);
+                        tempLabel = temp.substring(11, 12);
+                        if (tempLabel.equals(chainValue)) {
+                            foundChain = true;
+                            totalChain += (sequenceInfo.elementAt(x)).
+                                    substring(19, 70);
+                            totalChain += " ";
+                        }
+                    }
+
+                    //add chain data
+                    if (foundChain == true) {
+                        chainData.addElement(alphabet.substring
+                                (whichChain, whichChain + 1));
+                        //should only be one
+                        sequenceTitles.addElement
+                                (moleculeTitles.elementAt(0));
+                    }
+                    //add sequence
+                    if (!(totalChain = totalChain.trim()).equals("")) {
+                        sequences.addElement(totalChain);
+                    }
+                }
+
+            } else { //"normal" case, has predefined chain data
+
+                for (int whichChain = 0; whichChain < chainData.size(); whichChain++) {
+                    //find which chain we're looking for
+                    chainValue = chainData.elementAt(whichChain);
+                    totalChain = "";
+                    for (int x = 0; x < sequenceInfo.size(); x++) {
+                        temp = sequenceInfo.elementAt(x);
+                        tempLabel = temp.substring(11, 12);
+                        if (tempLabel.equals(chainValue)) {
+                            totalChain += (sequenceInfo.elementAt(x)).
+                                    substring(19, 70);
+                            totalChain += " ";
+                        }
+                    }
+
+                    //add sequence
+                    if (!(totalChain = totalChain.trim()).equals("")) {
+                        sequences.addElement(totalChain);
+                    }
+                }
+            }
+            //convert sequence data
+            for (int i = 0; i < sequences.size(); i++) {
+                totalChain = sequences.elementAt(i);
+                int len = totalChain.length();
+                byte[] c = new byte[(len + 1)/4];
+                int pt = 0;
+                for (int j = 0; j < len; j += 4) {
+                	String aaa = totalChain.substring(j, j + 3).toUpperCase();
+                	String s = aminoConversions.get(aaa);
+                    if (s != null)
+                    	c[pt++] = (byte)s.charAt(0);
+                    else
+                    	System.err.println("GenomeFileParser could not convert " + aaa + " to X");
+                }
+                sequences.setElementAt(new String(c, 0, pt), i);
+            }
+
+            //temp data storage
+			double mW = 0.0;
+			String mWstring = "";
+			
+			for (int x = 0; x < sequences.size(); x++) {
+
+                temp = sequences.elementAt(x);
+
+                // Determine the MW from the getMW method
+                mW = GenomeFileParser.getMW(temp);
+                mWstring = String.valueOf(mW);
+                if (mWstring.length() >
+                mWstring.indexOf('.') + 3) {
+                	mWstring = mWstring.substring(0, mWstring.indexOf('.') + 3);
+                }
+                molecularWeights.addElement(mWstring);
+                
+              //if the protein was an enzyme, store the EC number as the function
+                if (hasECnumber) {
+                    for (int fcn = 0; fcn < sequenceTitles.size(); fcn++) {
+                        functions.addElement(proteinFunction);
+                    }
+                }
+              //otherwise if there was a KEYWDS section, store the data from the
+                //section as the protien function
+                else if (keywordInfo.size() > 0) {
+                    for (int fcn = 0; fcn < keywordInfo.size(); fcn++) {
+                        if (fcn == 0) {
+                            temp = (keywordInfo.elementAt(fcn)).substring(10);
+                            //while( (temp.substring( temp.length() - 1 )).equals(" ")){
+                            temp.trim();
+                            // }
+                        } else {
+                            temp = temp +
+                                    (keywordInfo.elementAt(fcn)).substring(10);
+                            //  while((temp.substring(temp.length() - 1)).equals(" ")){
+                            temp.trim();
+                            //   }
+                        }
+                    }
+                    proteinFunction = temp;
+                    for (int fcn = 0; fcn < sequenceTitles.size(); fcn++) {
+                        functions.addElement(proteinFunction);
+                    }
+                }
+                //otherwise, if there was a header line, store the protein function
+                //as the HEADER line
+                else if (!headerLine.equals("")) {
+                    headerLine = headerLine.substring(10, 50);
+                    headerLine.trim();
+                    for (int fcn = 0; fcn < sequenceTitles.size(); fcn++) {
+                        functions.addElement(headerLine);
+                    }
+                }
+                //otherwise, store the function as a null string ("")
+                else {
+                    for (int fcn = 0; fcn < sequenceTitles.size(); fcn++) {
+                        functions.addElement(proteinFunction);
+                    }
+                }
+                
+			}
+			
+			for(int i = 0; i < sequences.size(); i++) {
+				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
+						(int) Double.parseDouble(molecularWeights.elementAt(i)), Color.black));
+			}
+        }
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException e) {
+        }
+        
+        return protiens;
+    }
+	
+	/**
+     * This method parses a FASTA file, extracting sequence information and
+     * appropriate descriptor for the sequence.
+     *
+     * @param f the file
+     * @param data the data
+     */
 	private Vector<Protein> fastaParse(File f, String data) {
 		BufferedReader in = null;
 		boolean anerror = false;
