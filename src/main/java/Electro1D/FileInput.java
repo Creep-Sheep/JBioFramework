@@ -22,6 +22,10 @@ public class FileInput {
 	
 	GenomeFileParser fileparser = new GenomeFileParser();
 	
+	private final static Color[] colors = {
+			Color.black, Color.blue, Color.cyan, Color.green, Color.magenta, Color.orange, Color.pink, Color.red
+	};
+	
 	private final static String[] aas = {
 			"alanine","ALA","A",
 			"arginine","ARG","R",
@@ -434,7 +438,7 @@ public class FileInput {
 			
 			for(int i = 0; i < sequences.size(); i++) {
 				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
-						(int) Double.parseDouble(molecularWeights.elementAt(i)), Color.black));
+						(int) Double.parseDouble(molecularWeights.elementAt(i)), colors[(int)Math.random() * 8]));
 			}
         }
         try {
@@ -545,7 +549,7 @@ public class FileInput {
 			
 			for(int i = 0; i < sequences.size(); i++) {
 				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
-						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), Color.black));
+						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[(int)Math.random() * 8]));
 			}
 			
 		}

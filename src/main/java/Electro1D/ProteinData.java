@@ -1,7 +1,5 @@
 package main.java.Electro1D;
 
-import main.java.Electro1D.Electrophoresis;
-
 import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

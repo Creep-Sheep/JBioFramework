@@ -812,88 +812,69 @@ public class Simulation extends JPanel implements Runnable {
     	//I have some form of it working, i need it to fall in between ranges and somehow
     	// calculate a movement value to still fall in those ranges.
     	int mw;
+    	double slope = -1.351168070689;
+    	double b = 5.130287985031;
+    	double speed;
+    	/*int mwRange;
+    	int mwRemainder; 
+    	double rangeTraveled;
+    	double speedRange;*/
     	if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		mw = well3proteins.get(x).mw;
-        		if(mw < 600)//lighter than dye
+        		speed = (Math.log10(mw) - b) / slope;
+        		well3proteins.get(x).speed = speed;
+        		if(speed > 1)
+        			well3proteins.get(x).speed = .935288;
+        		/*if(mw < 600) {//lighter than dye
         			well3proteins.get(x).speed = d * 0.945288;
-        		else if(mw < 6500)// less than lightest sample, should go further
-        			well3proteins.get(x).speed = d * mw / 6500 * 0.92105300000000001D;
-        		else if(mw < 14296)
+        		} else if(mw < 6500){// less than lightest sample, should go further
+        			
+        			well3proteins.get(x).speed = d * mw / 6500 * 0.921053;
+        		} else if(mw < 14296) {
         			well3proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
-        		else if(mw < 17183)
+        		} else if(mw < 17183) {
         			well3proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
-        		else if(mw < 26527)
+        		} else if(mw < 26527) {
         			well3proteins.get(x).speed = d * mw / 26527 * .495244;
-        		else if(mw < 29011)
+        		} else if(mw < 29011) {
         			well3proteins.get(x).speed = d * mw / 29011 * .465244;
-        		else if(mw < 42734)
+        		} else if(mw < 42734) {
         			well3proteins.get(x).speed = d * mw / 42734 * .350872;
-        		else if(mw < 0x1c58b)
+        		} else if(mw < 0x1c58b) {
         			well3proteins.get(x).speed = d * mw / 0x1c58b * .048245;
-        		else
+        		} else {
         			well3proteins.get(x).speed = d * .048245;//slowest band
+        		}*/
         		//well3proteins.elementAt(x).speed = d * well3proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     	if(well4proteins != null) {
         	for(int x = 0; x < well4proteins.size(); x++) {
         		mw = well4proteins.get(x).mw;
-        		if(mw < 6500)
-        			well4proteins.get(x).speed = d * 0.92105300000000001D;
-        		else if(mw < 14296)
-        			well4proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
-        		else if(mw < 17183)
-        			well4proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
-        		else if(mw < 26527)
-        			well4proteins.get(x).speed = d * mw / 26527 * .495244;
-        		else if(mw < 29011)
-        			well4proteins.get(x).speed = d * mw / 29011 * .465244;
-        		else if(mw < 42734)
-        			well4proteins.get(x).speed = d * mw / 42734 * .350872;
-        		else
-        			well4proteins.get(x).speed = d * mw / 0x1c58b * .048245;
-        		//well4proteins.elementAt(x).speed = d * well4proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		speed = (Math.log10(mw) - b) / slope;
+        		well4proteins.get(x).speed = speed;
+        		if(speed > 1)
+        			well4proteins.get(x).speed = .935288;
         	}
     	}
     	if(well5proteins != null) {
         	for(int x = 0; x < well5proteins.size(); x++) {
         		mw = well5proteins.get(x).mw;
-        		if(mw < 6500)
-        			well5proteins.get(x).speed = d * 0.92105300000000001D;
-        		else if(mw < 14296)
-        			well5proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
-        		else if(mw < 17183)
-        			well5proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
-        		else if(mw < 26527)
-        			well5proteins.get(x).speed = d * mw / 26527 * .495244;
-        		else if(mw < 29011)
-        			well5proteins.get(x).speed = d * mw / 29011 * .465244;
-        		else if(mw < 42734)
-        			well5proteins.get(x).speed = d * mw / 42734 * .350872;
-        		else
-        			well5proteins.get(x).speed = d * mw / 0x1c58b * .048245;
-        		//well5proteins.elementAt(x).speed = d * well5proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		speed = (Math.log10(mw) - b) / slope;
+        		well5proteins.get(x).speed = speed;
+        		if(speed > 1)
+        			well5proteins.get(x).speed = .935288;
         	}
     	}
     	if(well6proteins != null) {
         	for(int x = 0; x < well6proteins.size(); x++) {
         		mw = well6proteins.get(x).mw;
-        		if(mw < 6500)
-        			well6proteins.get(x).speed = d * 0.92105300000000001D;
-        		else if(mw < 14296)
-        			well6proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
-        		else if(mw < 17183)
-        			well6proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
-        		else if(mw < 26527)
-        			well6proteins.get(x).speed = d * mw / 26527 * .495244;
-        		else if(mw < 29011)
-        			well6proteins.get(x).speed = d * mw / 29011 * .465244;
-        		else if(mw < 42734)
-        			well6proteins.get(x).speed = d * mw / 42734 * .350872;
-        		else
-        			well6proteins.get(x).speed = d * mw / 0x1c58b * .048245;
-        		//well6proteins.elementAt(x).speed = d * well6proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
+        		speed = (Math.log10(mw) - b) / slope;
+        		well6proteins.get(x).speed = speed;
+        		if(speed > 1)
+        			well6proteins.get(x).speed = .935288;
+        		
         	}
     	}
     }

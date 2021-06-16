@@ -151,7 +151,7 @@ public class Plot extends JPanel implements Runnable {
         leftGridCol = rightGridCol - gridCols;
         bottomGridRow = rows - 1;
         topGridRow = bottomGridRow - gridRows;
-        twoDigits = new DecimalFormat("0.00");
+        twoDigits = new DecimalFormat("0.000000000000");
 
         // Create mouse listeners for the canvas
         this.addMouseListener(new MouseListener() {
