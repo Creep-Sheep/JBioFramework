@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -25,6 +26,8 @@ public class FileInput {
 	private final static Color[] colors = {
 			Color.black, Color.blue, Color.cyan, Color.green, Color.magenta, Color.orange, Color.pink, Color.red
 	};
+	
+	private Random rand = new Random();
 	
 	private final static String[] aas = {
 			"alanine","ALA","A",
@@ -438,7 +441,7 @@ public class FileInput {
 			
 			for(int i = 0; i < sequences.size(); i++) {
 				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
-						(int) Double.parseDouble(molecularWeights.elementAt(i)), colors[(int)Math.random() * 8]));
+						(int) Double.parseDouble(molecularWeights.elementAt(i)), colors[rand.nextInt(8)]));
 			}
         }
         try {
@@ -549,7 +552,7 @@ public class FileInput {
 			
 			for(int i = 0; i < sequences.size(); i++) {
 				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
-						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[(int)Math.random() * 8]));
+						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[rand.nextInt(8)]));
 			}
 			
 		}

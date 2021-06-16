@@ -824,8 +824,10 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well3proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well3proteins.get(x).speed = speed;
-        		if(speed > 1)
+        		if(speed > 0.945288)
         			well3proteins.get(x).speed = .935288;
+        		if(speed < 0)
+        			well3proteins.get(x).speed *= -1;
         		/*if(mw < 600) {//lighter than dye
         			well3proteins.get(x).speed = d * 0.945288;
         		} else if(mw < 6500){// less than lightest sample, should go further
@@ -854,8 +856,10 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well4proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well4proteins.get(x).speed = speed;
-        		if(speed > 1)
+        		if(speed > 0.945288)
         			well4proteins.get(x).speed = .935288;
+        		if(speed < 0)
+        			well4proteins.get(x).speed *= -1;
         	}
     	}
     	if(well5proteins != null) {
@@ -863,8 +867,10 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well5proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well5proteins.get(x).speed = speed;
-        		if(speed > 1)
+        		if(speed > 0.945288)
         			well5proteins.get(x).speed = .935288;
+        		if(speed < 0)
+        			well5proteins.get(x).speed *= -1;
         	}
     	}
     	if(well6proteins != null) {
@@ -872,8 +878,10 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well6proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well6proteins.get(x).speed = speed;
-        		if(speed > 1)
+        		if(speed > 0.945288)
         			well6proteins.get(x).speed = .935288;
+        		if(speed < 0)
+        			well6proteins.get(x).speed *= -1;
         		
         	}
     	}
