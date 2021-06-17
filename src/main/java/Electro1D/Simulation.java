@@ -644,6 +644,7 @@ public class Simulation extends JPanel implements Runnable {
             return;
         }
         stopRun();
+        resetWell();
         stdSample.reset();
         stdSample.fill();
         stdSample.setRatio(wellOpening1Height / ratioModifier);
@@ -662,7 +663,7 @@ public class Simulation extends JPanel implements Runnable {
         start();
     }
 
-    public void addSample() {
+	public void addSample() {
         if (stdLoadState == loading || samp2LoadState == loading) {
             return;
         }
@@ -807,6 +808,25 @@ public class Simulation extends JPanel implements Runnable {
     	
     }
     
+    /*
+     * resets the wells that files are put into
+     */
+    private void resetWell() {
+		well3proteins = null;
+		well4proteins = null;
+		well5proteins = null;
+		well6proteins = null;
+		dye3 = null;
+		dye4 = null;
+		dye5 = null;
+		dye6 = null;
+	}
+    
+    /*
+     * updates the speeds for each of the file wells
+     * 
+     * @param d the speed coefficient that changes with the voltage
+     */
     public void updateSpeed(double d){
     	//TODO
     	//I have some form of it working, i need it to fall in between ranges and somehow
@@ -823,7 +843,7 @@ public class Simulation extends JPanel implements Runnable {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		mw = well3proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
-        		well3proteins.get(x).speed = speed;
+        		well3proteins.get(x).speed = speed * d;
         		if(speed > 0.945288)
         			well3proteins.get(x).speed = .935288;
         		if(speed < 0)
@@ -855,7 +875,7 @@ public class Simulation extends JPanel implements Runnable {
         	for(int x = 0; x < well4proteins.size(); x++) {
         		mw = well4proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
-        		well4proteins.get(x).speed = speed;
+        		well4proteins.get(x).speed = speed * d;
         		if(speed > 0.945288)
         			well4proteins.get(x).speed = .935288;
         		if(speed < 0)
@@ -866,7 +886,7 @@ public class Simulation extends JPanel implements Runnable {
         	for(int x = 0; x < well5proteins.size(); x++) {
         		mw = well5proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
-        		well5proteins.get(x).speed = speed;
+        		well5proteins.get(x).speed = speed * d;
         		if(speed > 0.945288)
         			well5proteins.get(x).speed = .935288;
         		if(speed < 0)
@@ -877,7 +897,7 @@ public class Simulation extends JPanel implements Runnable {
         	for(int x = 0; x < well6proteins.size(); x++) {
         		mw = well6proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
-        		well6proteins.get(x).speed = speed;
+        		well6proteins.get(x).speed = speed * d;
         		if(speed > 0.945288)
         			well6proteins.get(x).speed = .935288;
         		if(speed < 0)
