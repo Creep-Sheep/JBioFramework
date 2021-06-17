@@ -428,8 +428,6 @@ public class Simulation extends JPanel implements Runnable {
         byte b1 = 2;
         byte b2 = 4;
         float f = 60.0F;
-        System.out.println("Preffered height: "+ this.getPreferredSize().height + ", Preffered width: " + this.getPreferredSize().width);
-        System.out.println("height: "+ getSize().height + ", width: " + getSize().width);
         bottomEdge = getSize().height - 2;
         rightEdge = getSize().width - 2;
         i1 = rightEdge / 2;
@@ -633,6 +631,7 @@ public class Simulation extends JPanel implements Runnable {
                 polarityPlusHorizontalX2, polarityPlusY);
         g.setColor(Color.red);
         g.drawString(" ELECTROPHORESIS CELL", plateX, cellLabelY);
+                
     }
     
     /**
@@ -1153,6 +1152,7 @@ public class Simulation extends JPanel implements Runnable {
         @Override
         public void mouseClicked(MouseEvent e) {
             // System.out.println(e + ", i: " + e.getX() + ", j: " + e.getY());
+        	Protein protein;
             if (stopAnimation && notAtBottom) {
                 for (int k = 0; k < numOfStds; k++) {
                     if (stdSamples[k].matchPosition(e.getX(), e.getY())) {
@@ -1172,6 +1172,67 @@ public class Simulation extends JPanel implements Runnable {
                         break;
                     }
                 }
+                if(well3proteins != null) {
+                	for(int x = 0; x < well3proteins.size(); x++) {
+                		protein = well3proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well4proteins != null) {
+                	for(int x = 0; x < well4proteins.size(); x++) {
+                		protein = well4proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well5proteins != null) {
+                	for(int x = 0; x < well5proteins.size(); x++) {
+                		protein = well5proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well6proteins != null) {
+                	for(int x = 0; x < well6proteins.size(); x++) {
+                		protein = well6proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                
                 if (sample1.matchPosition(e.getX(), e.getY())) {
                     proteinName = sample1.name;
                     proteinMW = "MW = tbd";
@@ -1183,7 +1244,11 @@ public class Simulation extends JPanel implements Runnable {
                     addInfo = true;
                     repaint();
                 } else if (dye1.matchPosition(e.getX(), e.getY())
-                        || dye2.matchPosition(e.getX(), e.getY())) {
+                        || dye2.matchPosition(e.getX(), e.getY())
+                        || dye3.matchPosition(e.getX(), e.getY())
+                        || dye4.matchPosition(e.getX(), e.getY())
+                        || dye5.matchPosition(e.getX(), e.getY())
+                        || dye6.matchPosition(e.getX(), e.getY())) {
                     proteinName = dye1.name;
                     proteinMW = "";
                     proteinDist = "mm Travel = "
