@@ -377,40 +377,6 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton addSample3 = new JButton("Samp3");
-        addSample2.setToolTipText("Pipette selected unknown into well 3");
-        addSample2.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //parent.addSample3();
-
-            }
-        });
-        JButton addSample4 = new JButton("Samp 4");
-        addSample2.setToolTipText("Pipette selected unknown into well 3");
-        addSample2.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //parent.addSample4();
-
-            }
-        });
-        JButton addSample5 = new JButton("Samp 5");
-        addSample2.setToolTipText("Pipette selected unknown into well 3");
-        addSample2.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //parent.addSample5();
-
-            }
-        });
-        
         JButton startButton = new JButton("Start Run");//Start run
         startButton.setToolTipText("Powers on the battery to begin run");
         startButton.addActionListener(new ActionListener() {

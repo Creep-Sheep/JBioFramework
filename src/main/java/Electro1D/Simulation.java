@@ -923,6 +923,14 @@ public class Simulation extends JPanel implements Runnable {
     public void setAcrylamide(Acrylamide acrylamide) {
         gelLabel = acrylamide.percentGel + " Acrylamide";
         gel = acrylamide;
+        if(well3proteins != null)
+        	setAcrylamideEffect(well3proteins);
+        if(well4proteins != null)
+        	setAcrylamideEffect(well4proteins);
+        if(well5proteins != null)
+        	setAcrylamideEffect(well5proteins);
+        if(well6proteins != null)
+        	setAcrylamideEffect(well6proteins);
         repaint();
     }
 
