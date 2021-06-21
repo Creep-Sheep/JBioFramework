@@ -6,12 +6,19 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;
+import javax.swing.TransferHandler;
 
 import javajs.async.SwingJSUtils.StateHelper;
 import javajs.async.SwingJSUtils.StateMachine;
@@ -171,7 +178,8 @@ public class Simulation extends JPanel implements Runnable {
      *
      * @param electrophoresis
      */
-    Simulation(Electrophoresis electrophoresis) {
+    @SuppressWarnings("serial")
+	Simulation(Electrophoresis electrophoresis) {
         this.setPreferredSize(new Dimension(600, 450));//450, 450: i think it is 550, 450
         animationModifier = 1.0F;
         modifier = 1.0F;
@@ -215,12 +223,51 @@ public class Simulation extends JPanel implements Runnable {
         Jlabels[5] = "5";
         Jlabels[6] = "6";
         twoDigits = new DecimalFormat("0.00");
-
+        
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
+    
+        setTransferHandler(new TransferHandler() {
+			
+			  @Override
+			  public boolean canImport(TransferHandler.TransferSupport support) {
+				  return true;
+			  }
+
+
+			@Override
+			public boolean importData(TransferHandler.TransferSupport support) {
+				System.out.println(support.getComponent());
+				Transferable tr = support.getTransferable();
+				DataFlavor[] flavors = tr.getTransferDataFlavors();
+				try {
+					for (int i = 0; i < flavors.length; i++) {
+						if (flavors[i].isFlavorJavaFileListType()) {
+							@SuppressWarnings("unchecked")
+							List<File> list = (List<File>) tr.getTransferData(flavors[i]);
+							// BH for now we just load one if multiple are picked
+							for (int j = 0; j < Math.max(1, list.size()); j++) {
+								loadFile(list.get(j), "Well 1");
+							}
+							return true;
+						}
+					}
+				} catch (UnsupportedFlavorException | IOException e) {
+					e.printStackTrace();
+				}
+				return false;
+			}	
+			  
+		});
+        
     }
 
-    /**
+    protected void loadFile(File file, String string) {
+		
+		
+	}
+
+	/**
      * start thread
      */
     public void start() {

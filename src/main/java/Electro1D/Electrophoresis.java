@@ -60,7 +60,7 @@ public class Electrophoresis extends JPanel {
 		paramPanel = new Parameters(this);
 		dataPanel = new ProteinData(this);
 		plotPanel = new Plot(this);
-
+		
 //        super.setSize(20,35);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
