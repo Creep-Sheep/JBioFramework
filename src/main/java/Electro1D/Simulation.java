@@ -227,7 +227,7 @@ public class Simulation extends JPanel implements Runnable {
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
     
-        setTransferHandler(new TransferHandler() {
+        this.setTransferHandler(new TransferHandler() {
 			
 			  @Override
 			  public boolean canImport(TransferHandler.TransferSupport support) {
@@ -247,7 +247,7 @@ public class Simulation extends JPanel implements Runnable {
 							List<File> list = (List<File>) tr.getTransferData(flavors[i]);
 							// BH for now we just load one if multiple are picked
 							for (int j = 0; j < Math.max(1, list.size()); j++) {
-								loadFile(list.get(j), "Well 1");
+								loadFile(list.get(j), 1);
 							}
 							return true;
 						}
@@ -262,7 +262,7 @@ public class Simulation extends JPanel implements Runnable {
         
     }
 
-    protected void loadFile(File file, String string) {
+    protected void loadFile(File file, int fileNum) {
 		
 		
 	}
