@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Random;
@@ -87,6 +88,9 @@ public class FileInput {
 			case "pdb":
 				proteins = pdbParse(f, data);
 				break;
+			case "gbk":
+				proteins = gbkParse(f, data);
+				break;
 			}
 			
 		}
@@ -108,10 +112,8 @@ public class FileInput {
      * This method parses a .pdb file, extracting sequence information and
      * appropriate descriptor for the sequence.
      *
-     * @param theFile   file to retrieve sequence data from
-     * @param electro2D reference to calling applet
+     * @param f   file to retrieve sequence data from
      * @param data      user-inputted file data
-     * @param fileNum the file number
      */
     public Vector<Protein> pdbParse(File f, String data) {
     	BufferedReader in = null;
@@ -130,7 +132,7 @@ public class FileInput {
         Vector<String> keywordInfo = new Vector<>(); //holds KEYWDS info
         Vector<String> moleculeTitles = new Vector<>(); //holds mol. titles
         Vector<String> molecularWeights = new Vector<>(); //hold molecular weights
-        Vector<Protein> protiens = new Vector<>();//holds the list of protiens
+        Vector<Protein> proteins = new Vector<>();//holds the list of protiens
         String tempLabel = "";
         String proteinID = "";
         String chainValue = "";
@@ -440,7 +442,7 @@ public class FileInput {
 			}
 			
 			for(int i = 0; i < sequences.size(); i++) {
-				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
+				proteins.add(new Protein(sequenceTitles.elementAt(i), "", "",
 						(int) Double.parseDouble(molecularWeights.elementAt(i)), colors[rand.nextInt(8)]));
 			}
         }
@@ -451,7 +453,7 @@ public class FileInput {
         } catch (IOException e) {
         }
         
-        return protiens;
+        return proteins;
     }
 	
 	/**
@@ -473,7 +475,7 @@ public class FileInput {
         Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
         Vector<String> functions = new Vector<>(); //holds the protein functions
         Vector<String> molecularWeightStrings = new Vector<>(); //hold molecular weights
-        Vector<Protein> protiens = new Vector<>();//holds the list of protiens
+        Vector<Protein> proteins = new Vector<>();//holds the list of protiens
 		
 		if (data == null || data.equals("")) {
 			try {
@@ -551,7 +553,7 @@ public class FileInput {
 			//CONTINUE HERE, THIS IS WHERE YOU HAVE MADE A LIST OF PROTEINS TO BE PROCESSED
 			
 			for(int i = 0; i < sequences.size(); i++) {
-				protiens.add(new Protein(sequenceTitles.elementAt(i), "", "",
+				proteins.add(new Protein(sequenceTitles.elementAt(i), "", "",
 						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[rand.nextInt(8)]));
 			}
 			
@@ -562,7 +564,311 @@ public class FileInput {
 		} catch(IOException e) {
 		}
 		
-		return protiens;
+		return proteins;
+	}
+	
+	/**
+     * This method parses a gbk file, extracting sequence information and
+     * appropriate descriptor for the sequence.
+     *
+     * @param f the file
+     * @param data the data
+     */
+	private Vector<Protein> gbkParse(File f, String data) {
+		BufferedReader in = null;
+		boolean anerror = false;
+		String temp = "";
+		String totalChain = "";
+		boolean foundTranslation = false;
+        boolean foundGene = false;
+        String function = "";
+		//double doubleVal;
+		Vector<String> fileData = new Vector<>();  //holds complete file
+		Vector<String> sequences = new Vector<>(); //holds sequence data
+        Vector<String> sequenceTitles = new Vector<>(); //holds sequence titles
+        Vector<String> functions = new Vector<>(); //holds the protein functions
+        Vector<String> molecularWeightStrings = new Vector<>(); //hold molecular weights
+        Vector<Protein> proteins = new Vector<>();//holds the list of protiens
+        if (data == null || data.equals("")) {  //read from server
+            try {
+//                File f = new File("data" + File.separator + theFile);
+                in = new BufferedReader
+                        (new InputStreamReader((/*electro2D.getCodeBase()*/
+						   /* "data/" + theFile*/
+                                f.toURI().toURL()).openStream()));
+                String temp1;
+
+                while ((temp1 = in.readLine()) != null) {
+
+                    fileData.addElement(temp1);
+                }
+            } catch (Exception e) {
+                MessageFrame error = new MessageFrame();
+                error.setMessage("Error reading from file.  Be sure you " +
+                        "typed the name correctly.");
+                error.setVisible(true);
+
+                anerror = true;
+                System.err.println("Exception was: " + e);
+            }
+        } else { //use data from textarea
+            StringTokenizer fileSplitter = new StringTokenizer(data, "\r\n");
+            while (fileSplitter.hasMoreTokens()) {
+                fileData.addElement(fileSplitter.nextToken());
+            }
+        }
+
+        if (anerror == false) {
+        	for (int x = 0; x < fileData.size(); x++) {
+
+                temp = fileData.elementAt(x);
+
+                if (temp.length() >= 10 &&
+                        temp.substring(0, 10).equals("DEFINITION")) {
+                    //assign organism title
+                    //organismTitle = temp.substring(12);
+                }
+                //look for a title for this sequence
+                if (temp.length() >= 9 && temp.substring(5, 9).equals("gene")) {
+
+                    //check to see if there was a translation for previous gene;
+                    //if not, replace old gene with this gene
+                    if (foundTranslation == false && sequenceTitles.size() >= 1) {
+                        sequenceTitles.removeElementAt(sequenceTitles.size() - 1);
+                    }
+                    //add sequence title
+                    while (foundGene == false) {
+                        if (temp.length() >= 26 &&
+                                temp.substring(21, 26).equals("/gene")) {
+                            foundGene = true;
+                        } else {
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.out.println("ERROR"); //error code
+                            }
+                        }
+                    }
+                    sequenceTitles.addElement(temp.substring
+                            (28, temp.lastIndexOf("\"")));
+                    foundGene = false;
+                    foundTranslation = false;
+                }
+                //here is where the sequence data should be
+                //as well as information about the protein function
+                if (temp.length() >= 8 && temp.substring(5, 8).equals("CDS")) {
+
+                    while (foundTranslation == false) {
+                        if (temp.length() >= 33 &&
+                                temp.substring(21, 33).equals("/translation")) {
+                            foundTranslation = true;
+                        }
+                        //if the line contains the enzyme commission number
+                        //the protein function is an Enzyme
+                        else if (temp.length() >= 33 &&
+                                temp.substring(21, 31).equals("/EC_number")) {
+                            if (function.equals("")) {
+                                temp = temp.substring(33, temp.lastIndexOf("\""));
+                                function = "Enzyme " + temp + "\u003B";
+                            } else {
+                                temp = temp.substring(33, temp.lastIndexOf("\""));
+                                function = function + " " + temp + "\u003B";
+                            }
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.out.println("ERROR"); //error code
+                            }
+                        }
+                        //if the line is the function line then its contents are
+                        //included in the protein function
+                        else if (temp.length() >= 30 &&
+                                temp.substring(21, 30).equals("/function")) {
+                            //hadFunctionLine = true;
+                            if (temp.substring(32).lastIndexOf("\"") != -1) {
+                                temp = temp.substring(32);
+                                function = function + " " + temp.substring(0,
+                                        temp.lastIndexOf("\"")) + ".";
+                            } else {
+                                temp = temp.substring(32);
+                                function = function + " " + temp;
+                                x = x + 1; //jump to next line
+                                temp = fileData.elementAt(x);
+                                while (temp.lastIndexOf("\"") == -1) {
+                                    function = function + " " +
+                                            temp.substring(21);
+                                    x = x + 1;
+                                    if (x < fileData.size()) {
+                                        temp = fileData.elementAt(x);
+                                    } else {
+                                        System.out.println("ERROR"); //error code
+                                    }
+                                }
+                                function = function + temp.substring(21,
+                                        temp.lastIndexOf("\"")) + ".";
+                            }
+
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.out.println("ERROR"); //error code
+                            }
+                        }
+                        //if the line is the section containing notes about the
+                        //protein, its contents are included in the function
+                        else if (temp.length() >= 27 &&
+                                temp.substring(21, 26).equals("/note")) {
+                            if ((function.indexOf("unknown.") != -1) ||
+                                    function.equals("")) {
+                                //hadFunctionLine = false;
+                                function = "";
+                            }
+                            if (temp.substring(28).lastIndexOf("\"") != -1) {
+                                temp = temp.substring(28);
+                                function = function + " " + temp.substring(0,
+                                        temp.lastIndexOf("\"")) + ".";
+                            } else {
+                                temp = temp.substring(28);
+                                function = function + " " + temp;
+                                x = x + 1;
+                                temp = fileData.elementAt(x);
+                                while (temp.lastIndexOf("\"") == -1) {
+                                    function = function + " " +
+                                            temp.substring(21);
+                                    x = x + 1;
+                                    if (x < fileData.size()) {
+                                        temp = fileData.elementAt(x);
+                                    } else {
+                                        System.out.println("ERROR"); //error code
+                                    }
+                                }
+                                function = function + " " + temp.substring(21,
+                                        temp.lastIndexOf("\"")) + ".";
+                            }
+
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.out.println("ERROR"); //error code
+                            }
+                        }
+                        //if the line is the product information of the protein,
+                        //its contents are included in the function
+                        else if (temp.length() >= 30 &&
+                                temp.substring(21, 29).equals("/product")) {
+                            if (temp.substring(31).lastIndexOf("\"") != -1) {
+                                temp = temp.substring(31);
+                                function = function + " " + temp.substring(0,
+                                        temp.lastIndexOf("\"")) + ".";
+                            } else {
+                                temp = temp.substring(31);
+                                function = function + " " + temp;
+                                x = x + 1;
+                                temp = fileData.elementAt(x);
+                                while (temp.lastIndexOf("\"") == -1) {
+                                    function = function + " " +
+                                            temp.substring(21);
+                                    x = x + 1;
+                                    if (x < fileData.size()) {
+                                        temp = fileData.elementAt(x);
+                                    } else {
+                                        System.out.println("ERROR");
+                                    }
+                                }
+                                function = function + " " + temp.substring(21,
+                                        temp.lastIndexOf("\"")) + ".";
+                            }
+
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.out.println("ERROR"); //error code
+                            }
+                        }
+
+                        //otherwise move to next line
+                        else {
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.err.println("Error! Protein lacking " +
+                                        "sequence.");
+                                System.out.println("ERROR"); //error code
+                            }
+                        }
+                    }
+                    if (temp.length() >= 35 && temp.substring(35).lastIndexOf("\"") != -1) {
+                        temp = temp.substring(35);
+                        //add first line
+                        totalChain += temp.substring(0, temp.lastIndexOf("\""));
+                    } else /*if( temp.length() >= 35 )*/ {
+
+                        //add first line
+                        totalChain += temp.substring(35);
+                        x++; //jump to next line
+                        temp = fileData.elementAt(x);
+
+                        //add remaining lines
+                        while (temp.lastIndexOf("\"") == -1) {
+
+                            totalChain += temp.substring(21);
+                            x++;
+                            if (x < fileData.size()) {
+                                temp = fileData.elementAt(x);
+                            } else {
+                                System.out.println("ERROR");
+                            }
+                        }
+
+                        //add last line
+                        totalChain += temp.substring(21, temp.lastIndexOf("\""));
+                    }
+
+                    sequences.addElement(totalChain); //add the sequence
+                    totalChain = ""; //reset for next chain
+                    functions.addElement(function); //add the function
+                    function = ""; //reset for next chain
+//                    hadEnzymeClassNumber = false;
+//                    hadFunctionLine = false;
+                }
+            }
+        	//temp data storage
+			double mW = 0.0;
+			String mWstring = "";
+			
+			for(int i = 0; i < sequences.size(); i++) {
+				temp = sequences.elementAt(i);
+				//get the mw for the sequence
+				mW = GenomeFileParser.getMW(temp);
+				System.out.println(mW);
+				mWstring = String.valueOf(mW);
+				if(mWstring.length() > mWstring.indexOf('.') + 3) {
+					mWstring = mWstring.substring(0, mWstring.indexOf('.') + 3);
+				}
+				
+				//doubleVal = Double.parseDouble(mWstring);
+				molecularWeightStrings.addElement(mWstring);
+			}
+			//CONTINUE HERE, THIS IS WHERE YOU HAVE MADE A LIST OF PROTEINS TO BE PROCESSED
+			
+			for(int i = 0; i < sequences.size(); i++) {
+				proteins.add(new Protein(sequenceTitles.elementAt(i), "", "",
+						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[rand.nextInt(8)]));
+			}
+			
+		}
+		try {
+			if(in != null)
+				in.close();
+		} catch(IOException e) {
+		}
+         return proteins;
 	}
 
 	@SuppressWarnings("unused")
