@@ -161,6 +161,7 @@ public class Simulation extends JPanel implements Runnable {
     boolean stopAnimation;
     boolean notAtBottom;
     boolean runExperiment;
+    int ddNum;
     int notLoaded;
     int loading;
     int loaded;
@@ -223,6 +224,7 @@ public class Simulation extends JPanel implements Runnable {
         Jlabels[5] = "5";
         Jlabels[6] = "6";
         twoDigits = new DecimalFormat("0.00");
+        ddNum = 1;
         
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
@@ -259,10 +261,35 @@ public class Simulation extends JPanel implements Runnable {
 			}	
 			  
 		});
-        
-    }
-
-    protected void loadFile(File file, int fileNum) {
+	}
+	
+	public void loadFile(File f, int fileNum) {
+		FileInput fi = new FileInput();
+		Vector<Protein> proteinTemp;
+		switch(ddNum) {
+		case 1:
+			proteinTemp = fi.LoadFile(f, "Well 1");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 1");
+			break;
+		case 2:
+			proteinTemp = fi.LoadFile(f, "Well 2");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 2");
+			break;
+		case 3:
+			proteinTemp = fi.LoadFile(f, "Well 3");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 3");
+			break;
+		case 4:
+			proteinTemp = fi.LoadFile(f, "Well 4");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 4");
+			break;
+		case 5:
+			System.out.println("TOO MANY FILES INPUTED");
+		}
 		
 		
 	}
@@ -866,6 +893,7 @@ public class Simulation extends JPanel implements Runnable {
 		dye4 = null;
 		dye5 = null;
 		dye6 = null;
+		ddNum = 1;
 	}
     
     /*

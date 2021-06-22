@@ -112,65 +112,9 @@ public class Electrophoresis extends JPanel {
 		//testPanel.setVisible(false);
 		
 		paramPanel.setDefaults();
-
-		simPanel.setTransferHandler(new TransferHandler() {
-			
-			  @Override
-			  public boolean canImport(TransferHandler.TransferSupport support) {
-				  return true;
-			  }
-
-
-			@Override
-			public boolean importData(TransferHandler.TransferSupport support) {
-				System.out.println(support.getComponent());
-				Transferable tr = support.getTransferable();
-				DataFlavor[] flavors = tr.getTransferDataFlavors();
-				try {
-					for (int i = 0; i < flavors.length; i++) {
-						if (flavors[i].isFlavorJavaFileListType()) {
-							@SuppressWarnings("unchecked")
-							List<File> list = (List<File>) tr.getTransferData(flavors[i]);
-							// BH for now we just load one if multiple are picked
-							for (int j = 0; j < Math.max(1, list.size()); j++) {
-								loadFile(list.get(j), 1);
-							}
-							return true;
-						}
-					}
-				} catch (UnsupportedFlavorException | IOException e) {
-					e.printStackTrace();
-				}
-				return false;
-			}	
-			  
-		});
 	}
-	
-	public void loadFile(File f, int fileNum) {
-		int count = 1;
-		FileInput fi = new FileInput();
-		switch(count) {
-		case 1:
-			fi.LoadFile(f, "Well 1");
-			count++;
-			break;
-		case 2:
-			fi.LoadFile(f, "Well 2");
-			count++;
-			break;
-		case 3:
-			fi.LoadFile(f, "Well 3");
-			count++;
-			break;
-		case 4:
-			fi.LoadFile(f, "Well 4");
-			count++;
-			break;
-		}
+
 		
-		
-	}
 
 	/**
 	 * addStandard() add standards proteins
