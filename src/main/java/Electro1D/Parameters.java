@@ -571,12 +571,12 @@ public class Parameters extends JPanel implements Constants {
      * @param d the speed of the protein bands
      */
     protected void setSpeed(double d) {
-        dye1.speed = 0.94528800000000002D * d;
-        dye2.speed = 0.94528800000000002D * d;
-        dye3.speed = 0.94528800000000002D * d;
-        dye4.speed = 0.94528800000000002D * d;
-        dye5.speed = 0.94528800000000002D * d;
-        dye6.speed = 0.94528800000000002D * d;
+        dye1.speed = d;
+        dye2.speed = d;
+        dye3.speed = d;
+        dye4.speed = d;
+        dye5.speed = d;
+        dye6.speed = d;
         stdProteinArray[std1Ref].speed = 0.048245000000000003D * d;
         stdProteinArray[std2Ref].speed = 0.35087200000000002D * d;
         stdProteinArray[std3Ref].speed = 0.46814299999999998D * d;

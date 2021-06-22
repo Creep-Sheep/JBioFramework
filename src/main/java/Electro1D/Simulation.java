@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -680,6 +682,7 @@ public class Simulation extends JPanel implements Runnable {
         do
             g.drawLine(divStart, scaleHalfDivs[i], divXLine, scaleHalfDivs[i]);
         while (++i < 13);
+        //TEXT
         g.drawString(gelLabel, gelLabelX, gelLabelY);
         g.setColor(Color.gray);
         g.fillRect(endPosX, endPosY, endWidth, endHeight);
@@ -704,7 +707,12 @@ public class Simulation extends JPanel implements Runnable {
         g.drawLine(polarityPlusHorizontalX1, polarityPlusY,
                 polarityPlusHorizontalX2, polarityPlusY);
         g.setColor(Color.red);
-        g.drawString(" ELECTROPHORESIS CELL", plateX, cellLabelY);
+        //TEXT
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+        g2.drawString(" ELECTROPHORESIS CELL", plateX, cellLabelY);
                 
     }
     
@@ -918,8 +926,8 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well3proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well3proteins.get(x).speed = speed * d;
-        		if(speed > 0.945288)
-        			well3proteins.get(x).speed = .935288;
+        		if(speed > 1)
+        			well3proteins.get(x).speed = .97;
         		if(speed < 0)
         			well3proteins.get(x).speed *= -1;
         		/*if(mw < 600) {//lighter than dye
@@ -950,8 +958,8 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well4proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well4proteins.get(x).speed = speed * d;
-        		if(speed > 0.945288)
-        			well4proteins.get(x).speed = .935288;
+        		if(speed > 1)
+        			well4proteins.get(x).speed = .98;
         		if(speed < 0)
         			well4proteins.get(x).speed *= -1;
         	}
@@ -961,8 +969,8 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well5proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well5proteins.get(x).speed = speed * d;
-        		if(speed > 0.945288)
-        			well5proteins.get(x).speed = .935288;
+        		if(speed > 1)
+        			well5proteins.get(x).speed = .98;
         		if(speed < 0)
         			well5proteins.get(x).speed *= -1;
         	}
@@ -972,8 +980,8 @@ public class Simulation extends JPanel implements Runnable {
         		mw = well6proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well6proteins.get(x).speed = speed * d;
-        		if(speed > 0.945288)
-        			well6proteins.get(x).speed = .935288;
+        		if(speed > 1)
+        			well6proteins.get(x).speed = .98;
         		if(speed < 0)
         			well6proteins.get(x).speed *= -1;
         		
