@@ -268,24 +268,24 @@ public class Simulation extends JPanel implements Runnable {
 		Vector<Protein> proteinTemp;
 		switch(ddNum) {
 		case 1:
-			proteinTemp = fi.LoadFile(f, "Well 1");
-			ddNum++;
-			addSampleFromFile(proteinTemp, "Well 1");
-			break;
-		case 2:
-			proteinTemp = fi.LoadFile(f, "Well 2");
-			ddNum++;
-			addSampleFromFile(proteinTemp, "Well 2");
-			break;
-		case 3:
 			proteinTemp = fi.LoadFile(f, "Well 3");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 3");
 			break;
-		case 4:
+		case 2:
 			proteinTemp = fi.LoadFile(f, "Well 4");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 4");
+			break;
+		case 3:
+			proteinTemp = fi.LoadFile(f, "Well 5");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 5");
+			break;
+		case 4:
+			proteinTemp = fi.LoadFile(f, "Well 6");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 6");
 			break;
 		case 5:
 			System.out.println("TOO MANY FILES INPUTED");
