@@ -462,6 +462,7 @@ public class Parameters extends JPanel implements Constants {
         add(voltacrPanel);
         add(controlPanel);
 
+        selectedGel = gel1;
         setSpeed(selectedSpeed);
         selectedSample1 = unknown1;
         selectedSample2 = unknown2;
@@ -594,7 +595,7 @@ public class Parameters extends JPanel implements Constants {
         unknown8.speed = 0.53110599999999997D * d;
         unknown9.speed = 0.34245300000000001D * d;
         unknown10.speed = 0.63648000000000005D * d;
-        parent.updateSpeed(d);
+        parent.updateSpeed(d, selectedGel);
     }
 
     /**

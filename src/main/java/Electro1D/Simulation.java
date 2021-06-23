@@ -822,7 +822,7 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
             well3proteins = proteins;
-            updateSpeed(1);
+            updateSpeed(1, null);
             setAcrylamideEffect(well3proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -844,7 +844,7 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
             well4proteins = proteins;
-            updateSpeed(1);
+            updateSpeed(1, null);
             setAcrylamideEffect(well4proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -866,7 +866,7 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
             well5proteins = proteins;
-            updateSpeed(1);
+            updateSpeed(1, null);
             setAcrylamideEffect(well5proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -888,7 +888,7 @@ public class Simulation extends JPanel implements Runnable {
             pipette.setSampleDepth(wellOpeningHeight * 2);
             ResetFlags();
             well6proteins = proteins;
-            updateSpeed(1);
+            updateSpeed(1, null);
             setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -919,13 +919,28 @@ public class Simulation extends JPanel implements Runnable {
      * 
      * @param d the speed coefficient that changes with the voltage
      */
-    public void updateSpeed(double d){
+    public void updateSpeed(double d, Acrylamide acrgel){
     	//TODO
     	//I have some form of it working, i need it to fall in between ranges and somehow
     	// calculate a movement value to still fall in those ranges.
+    	if(gel == null)
+    		gel = acrgel;
     	int mw;
-    	double slope = -1.351168070689;
-    	double b = 5.130287985031;
+    	double slope;
+    	double b;
+    	if(gel.getConc() == 7.5) {
+    		slope = -1.351168070689;
+    		b = 5.130287985031;
+    	} else if(gel.getConc() == 10) {
+    		slope = -1.26337886495;
+    		b = 5.008386491966;
+    	} else if(gel.getConc() == 12) {
+    		slope = -1.077057455865;
+    		b = 4.859468868697;
+    	} else {
+    		slope = -0.906781981037;
+    		b = 4.714783861725;
+    	}
     	double speed;
     	/*int mwRange;
     	int mwRemainder; 
@@ -1014,14 +1029,14 @@ public class Simulation extends JPanel implements Runnable {
     public void setAcrylamide(Acrylamide acrylamide) {
         gelLabel = acrylamide.percentGel + " Acrylamide";
         gel = acrylamide;
-        if(well3proteins != null)
+        /*if(well3proteins != null)
         	setAcrylamideEffect(well3proteins);
         if(well4proteins != null)
         	setAcrylamideEffect(well4proteins);
         if(well5proteins != null)
         	setAcrylamideEffect(well5proteins);
         if(well6proteins != null)
-        	setAcrylamideEffect(well6proteins);
+        	setAcrylamideEffect(well6proteins);*/
         repaint();
     }
 
@@ -1250,7 +1265,7 @@ public class Simulation extends JPanel implements Runnable {
                 		if (protein.matchPosition(e.getX(), e.getY())) {
                 			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
                 			proteinName = protein.fullName;
-                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
                             relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
                             addInfo = true;
@@ -1265,7 +1280,7 @@ public class Simulation extends JPanel implements Runnable {
                 		if (protein.matchPosition(e.getX(), e.getY())) {
                 			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
                 			proteinName = protein.fullName;
-                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
                             relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
                             addInfo = true;
@@ -1280,7 +1295,7 @@ public class Simulation extends JPanel implements Runnable {
                 		if (protein.matchPosition(e.getX(), e.getY())) {
                 			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
                 			proteinName = protein.fullName;
-                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
                             relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
                             addInfo = true;
@@ -1295,7 +1310,7 @@ public class Simulation extends JPanel implements Runnable {
                 		if (protein.matchPosition(e.getX(), e.getY())) {
                 			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
                 			proteinName = protein.fullName;
-                			proteinMW = "MW = " + String.valueOf((int) protein.mw);
+                			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
                             relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
                             addInfo = true;

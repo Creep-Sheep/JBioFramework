@@ -203,9 +203,9 @@ public class Electrophoresis extends JPanel {
 		return simPanel.isReady();
 	}
 	
-	public void updateSpeed(double d) {
+	public void updateSpeed(double d, Acrylamide acrgel) {
 		
-		simPanel.updateSpeed(d);
+		simPanel.updateSpeed(d, acrgel);
 	}
 	
 	/**
