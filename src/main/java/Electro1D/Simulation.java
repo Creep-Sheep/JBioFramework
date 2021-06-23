@@ -270,22 +270,22 @@ public class Simulation extends JPanel implements Runnable {
 		Vector<Protein> proteinTemp;
 		switch(ddNum) {
 		case 1:
-			proteinTemp = fi.LoadFile(f, "Well 3");
+			proteinTemp = fi.loadFile(f, "Well 3");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 3");
 			break;
 		case 2:
-			proteinTemp = fi.LoadFile(f, "Well 4");
+			proteinTemp = fi.loadFile(f, "Well 4");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 4");
 			break;
 		case 3:
-			proteinTemp = fi.LoadFile(f, "Well 5");
+			proteinTemp = fi.loadFile(f, "Well 5");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 5");
 			break;
 		case 4:
-			proteinTemp = fi.LoadFile(f, "Well 6");
+			proteinTemp = fi.loadFile(f, "Well 6");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 6");
 			break;
@@ -483,6 +483,16 @@ public class Simulation extends JPanel implements Runnable {
         	stateHelper.interrupt();
         stop();
     }
+    
+    public boolean isReady() {
+    	if (stdLoadState == notLoaded || samp1LoadState == notLoaded) {//|| samp2LoadState == notLoaded
+            addInfo = true;
+            noLoadError = true;
+            repaint();
+            return false;
+        }
+        return true;
+	}
 
     /**
      * calculate the dimension of the simulation panel, the location of the
@@ -930,27 +940,6 @@ public class Simulation extends JPanel implements Runnable {
         			well3proteins.get(x).speed = .97;
         		if(speed < 0)
         			well3proteins.get(x).speed *= -1;
-        		/*if(mw < 600) {//lighter than dye
-        			well3proteins.get(x).speed = d * 0.945288;
-        		} else if(mw < 6500){// less than lightest sample, should go further
-        			
-        			well3proteins.get(x).speed = d * mw / 6500 * 0.921053;
-        		} else if(mw < 14296) {
-        			well3proteins.get(x).speed = d * mw / 14296 * .6824139999999997;
-        		} else if(mw < 17183) {
-        			well3proteins.get(x).speed = d * mw / 17183 * .6267209999999997;
-        		} else if(mw < 26527) {
-        			well3proteins.get(x).speed = d * mw / 26527 * .495244;
-        		} else if(mw < 29011) {
-        			well3proteins.get(x).speed = d * mw / 29011 * .465244;
-        		} else if(mw < 42734) {
-        			well3proteins.get(x).speed = d * mw / 42734 * .350872;
-        		} else if(mw < 0x1c58b) {
-        			well3proteins.get(x).speed = d * mw / 0x1c58b * .048245;
-        		} else {
-        			well3proteins.get(x).speed = d * .048245;//slowest band
-        		}*/
-        		//well3proteins.elementAt(x).speed = d * well3proteins.elementAt(x).mw / 10000; //* something to do with the molecular weight
         	}
     	}
     	if(well4proteins != null) {
@@ -1369,4 +1358,5 @@ public class Simulation extends JPanel implements Runnable {
         }
 
     }
+
 }

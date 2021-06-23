@@ -199,6 +199,10 @@ public class Electrophoresis extends JPanel {
 		simPanel.addSampleFromFile(proteins, wellNum);
 	}
 	
+	public boolean isReady() {
+		return simPanel.isReady();
+	}
+	
 	public void updateSpeed(double d) {
 		
 		simPanel.updateSpeed(d);
@@ -229,6 +233,8 @@ public class Electrophoresis extends JPanel {
 		f.pack();
 		f.setVisible(true);
 	}
+
+	
 
 	
 

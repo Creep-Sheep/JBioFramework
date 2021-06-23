@@ -14,6 +14,8 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import main.java.Utilities.GenomeFileParser;
@@ -62,7 +64,8 @@ public class FileInput {
     }
 	
 	@SuppressWarnings("unused")
-	public Vector<Protein> LoadFile(File f, String wellNum) {
+	public Vector<Protein> loadFile(File f, String wellNum) {
+		JOptionPane.showMessageDialog(null, "Proteins Loading");
 		String filename = (f == null ? null : f.getName());
 		MessageFrame error = null;
 		Vector<Protein> proteins = new Vector<>();

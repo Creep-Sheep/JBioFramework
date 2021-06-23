@@ -636,17 +636,19 @@ public class Parameters extends JPanel implements Constants {
 		if (!dir.isDirectory())
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
-		chooser.showOpenDialog(this, () -> {
-				proteins = fi.LoadFile(chooser.getSelectedFile(), wellNum);
+		if(parent.isReady()) {
+			chooser.showOpenDialog(this, () -> {
+				proteins = fi.loadFile(chooser.getSelectedFile(), wellNum);
 				// set the cursor image back to normal
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				// close the frame
 				//dispose();
-			}, () -> {
+				}, () -> {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				//dispose();				
 			});
-		parent.addSampleFromFile(proteins, wellNum);
+			parent.addSampleFromFile(proteins, wellNum);
+		}
     }
 
     // GUI attributes
