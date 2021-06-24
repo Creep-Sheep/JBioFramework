@@ -175,6 +175,8 @@ public class Simulation extends JPanel implements Runnable {
     protected DecimalFormat twoDigits;
 	private StateHelper stateHelper;
 	private Acrylamide gel;
+	Sample well2samp;
+	Vector<Protein> well2proteins;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -194,6 +196,7 @@ public class Simulation extends JPanel implements Runnable {
         stdSample = new Sample();
         sampSample1 = new Sample();
         sampSample2 = new Sample();
+        well2samp = new Sample();
         well3samp = new Sample();
         well4samp = new Sample();
         well5samp = new Sample();
@@ -270,26 +273,31 @@ public class Simulation extends JPanel implements Runnable {
 		Vector<Protein> proteinTemp;
 		switch(ddNum) {
 		case 1:
+			proteinTemp = fi.loadFile(f, "Well 2");
+			ddNum++;
+			addSampleFromFile(proteinTemp, "Well 2");
+			break;
+		case 2:
 			proteinTemp = fi.loadFile(f, "Well 3");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 3");
 			break;
-		case 2:
+		case 3:
 			proteinTemp = fi.loadFile(f, "Well 4");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 4");
 			break;
-		case 3:
+		case 4:
 			proteinTemp = fi.loadFile(f, "Well 5");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 5");
 			break;
-		case 4:
+		case 5:
 			proteinTemp = fi.loadFile(f, "Well 6");
 			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 6");
 			break;
-		case 5:
+		case 6:
 			System.out.println("TOO MANY FILES INPUTED");
 		}
 		
@@ -328,7 +336,7 @@ public class Simulation extends JPanel implements Runnable {
         int charSpacing = (int) (0.9 * charHeight);
         if (noLoadError) {
             i += charHeight * 2;
-            g.drawString("Add Standard  & Sample", plateX, i);
+            g.drawString("Add Standard", plateX, i);
             noLoadError = false;
         } else {
             g.drawString(proteinName, plateX, i);
@@ -353,7 +361,7 @@ public class Simulation extends JPanel implements Runnable {
     public void startRun(Protein aprotein[], Protein protein1, Protein protein2, 
                          Protein[] dyes) {
         stopRun();
-        if (stdLoadState == notLoaded || samp1LoadState == notLoaded) {//|| samp2LoadState == notLoaded
+        if (stdLoadState == notLoaded) {//|| samp2LoadState == notLoaded
             addInfo = true;
             noLoadError = true;
             repaint();
@@ -377,6 +385,18 @@ public class Simulation extends JPanel implements Runnable {
                 stdSamples[i].SetHostScaleFactor(scaleFactor);
             }
         } while (++i < 7);
+        if(well2proteins != null) {
+        	for(int x = 0; x < well2proteins.size(); x++) {
+        		well2proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well2proteins.elementAt(x).setStartPosition(wellOpening2X, wellBottom);
+        		well2proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well2proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+        	dye2.setWidth(wellOpeningWidth);
+            dye2.setStartPosition(wellOpening2X, wellBottom);
+            dye2.setMaxPosition(plateBottom);
+            dye2.SetHostScaleFactor(scaleFactor);
+        }
         if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		well3proteins.elementAt(x).setWidth(wellOpeningWidth);
@@ -425,40 +445,44 @@ public class Simulation extends JPanel implements Runnable {
             dye6.setMaxPosition(plateBottom);
             dye6.SetHostScaleFactor(scaleFactor);
         }
+        /*
         sample1.setWidth(wellOpening2Width);
         sample1.setStartPosition(wellOpening2X, wellBottom);
         sample1.setMaxPosition(plateBottom);
         sample1.SetHostScaleFactor(scaleFactor);
-        
+        */
         dye1.setWidth(wellOpening1Width);
         dye1.setStartPosition(wellOpening1X, wellBottom);
         dye1.setMaxPosition(plateBottom);
         dye1.SetHostScaleFactor(scaleFactor);
-        
+        /*
         dye2.setWidth(wellOpening2Width);
         dye2.setStartPosition(wellOpening2X, wellBottom);
         dye2.setMaxPosition(plateBottom);
         dye2.SetHostScaleFactor(scaleFactor);         
-        
+        */
         stdSample.setRatio(0);
-        sampSample1.setRatio(0);
+        //sampSample1.setRatio(0);
         //sampSample2.setRatio(0);
+        well2samp.setRatio(0);
         well3samp.setRatio(0);
         well4samp.setRatio(0);
         well5samp.setRatio(0);
         well6samp.setRatio(0);
         
         stdSample.drawSwitch(true);
-        sampSample1.drawSwitch(true);
+        //sampSample1.drawSwitch(true);
         //sampSample2.drawSwitch(true);
+        well2samp.drawSwitch(true);
         well3samp.drawSwitch(true);
         well4samp.drawSwitch(true);
         well5samp.drawSwitch(true);
         well6samp.drawSwitch(true);
         
         stdSample.empty();
-        sampSample1.empty();
+        //sampSample1.empty();
         //sampSample2.empty();
+        well2samp.empty();
         well3samp.empty();
         well4samp.empty();
         well5samp.empty();
@@ -467,7 +491,7 @@ public class Simulation extends JPanel implements Runnable {
         ResetFlags();
         runSampleFlag = true;
         stdLoadState = notLoaded;
-        samp1LoadState = notLoaded;
+        //samp1LoadState = notLoaded;
         //samp2LoadState = notLoaded;
         sampFileLoadState = notLoaded;
         setPause("elute");
@@ -485,7 +509,7 @@ public class Simulation extends JPanel implements Runnable {
     }
     
     public boolean isReady() {
-    	if (stdLoadState == notLoaded || samp1LoadState == notLoaded) {//|| samp2LoadState == notLoaded
+    	if (stdLoadState == notLoaded) {//|| samp2LoadState == notLoaded
             addInfo = true;
             noLoadError = true;
             repaint();
@@ -803,10 +827,32 @@ public class Simulation extends JPanel implements Runnable {
     }
     
     public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
-    	if (samp1LoadState == loading || stdLoadState == loading) {
+    	if (stdLoadState == loading) {
             return;
         }
     	switch(wellNum) {
+    	case "Well 2":
+    		stopRun();
+            well2samp.reset();
+            well2samp.fill();
+            well2samp.setRatio(wellOpeningHeight / ratioModifier);
+            well2samp.setXPosition(wellOpening2X);
+            well2samp.setWidth(wellOpeningWidth);
+            well2samp.setYPosition(wellBottom);
+            well2samp.setMaxY(wellBottom);
+            pipette.setSample(well2samp);
+            pipette.setStartXPosition(wellOpening2X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            well2proteins = proteins;
+            updateSpeed(1, null);
+            //setAcrylamideEffect(well2proteins); 
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
     	case "Well 3":
     		stopRun();
             well3samp.reset();
@@ -823,7 +869,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well3proteins = proteins;
             updateSpeed(1, null);
-            setAcrylamideEffect(well3proteins); 
+            //setAcrylamideEffect(well3proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -845,7 +891,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well4proteins = proteins;
             updateSpeed(1, null);
-            setAcrylamideEffect(well4proteins); 
+            //setAcrylamideEffect(well4proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -867,7 +913,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well5proteins = proteins;
             updateSpeed(1, null);
-            setAcrylamideEffect(well5proteins); 
+            //setAcrylamideEffect(well5proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -889,7 +935,7 @@ public class Simulation extends JPanel implements Runnable {
             ResetFlags();
             well6proteins = proteins;
             updateSpeed(1, null);
-            setAcrylamideEffect(well6proteins); 
+            //setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
             setPause("fill");
@@ -903,6 +949,7 @@ public class Simulation extends JPanel implements Runnable {
      * resets the wells that files are put into
      */
     private void resetWell() {
+    	well2proteins = null;
 		well3proteins = null;
 		well4proteins = null;
 		well5proteins = null;
@@ -946,13 +993,24 @@ public class Simulation extends JPanel implements Runnable {
     	int mwRemainder; 
     	double rangeTraveled;
     	double speedRange;*/
+    	if(well2proteins != null) {
+        	for(int x = 0; x < well2proteins.size(); x++) {
+        		mw = well2proteins.get(x).mw;
+        		speed = (Math.log10(mw) - b) / slope;
+        		well2proteins.get(x).speed = speed * d;
+        		if(speed > 1)
+        			well2proteins.get(x).speed = .95;
+        		if(speed < 0)
+        			well2proteins.get(x).speed *= -1;
+        	}
+    	}
     	if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		mw = well3proteins.get(x).mw;
         		speed = (Math.log10(mw) - b) / slope;
         		well3proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well3proteins.get(x).speed = .97;
+        			well3proteins.get(x).speed = .95;
         		if(speed < 0)
         			well3proteins.get(x).speed *= -1;
         	}
@@ -963,7 +1021,7 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well4proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well4proteins.get(x).speed = .98;
+        			well4proteins.get(x).speed = .95;
         		if(speed < 0)
         			well4proteins.get(x).speed *= -1;
         	}
@@ -974,7 +1032,7 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well5proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well5proteins.get(x).speed = .98;
+        			well5proteins.get(x).speed = .95;
         		if(speed < 0)
         			well5proteins.get(x).speed *= -1;
         	}
@@ -985,7 +1043,7 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well6proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well6proteins.get(x).speed = .98;
+        			well6proteins.get(x).speed = .95;
         		if(speed < 0)
         			well6proteins.get(x).speed *= -1;
         		
@@ -1072,6 +1130,12 @@ public class Simulation extends JPanel implements Runnable {
             if (stdSamples[i].selected && stdSamples[i].drawProtein(g))
                 notAtBottom = true;
         while (++i < 7);
+        if(well2proteins != null) {
+        	for(int x = 0; x < well2proteins.size(); x++) {
+        		if (well2proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
         if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		if (well3proteins.elementAt(x).drawProtein(g))
@@ -1221,6 +1285,7 @@ public class Simulation extends JPanel implements Runnable {
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
             //sampSample2.drawSample(offScreenGraphics);
+            well2samp.drawSample(offScreenGraphics);
             well3samp.drawSample(offScreenGraphics);
             well4samp.drawSample(offScreenGraphics);
             well5samp.drawSample(offScreenGraphics);
@@ -1259,6 +1324,21 @@ public class Simulation extends JPanel implements Runnable {
                         break;
                     }
                 }
+                if(well2proteins != null) {
+                	for(int x = 0; x < well2proteins.size(); x++) {
+                		protein = well2proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye2.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = tbd";
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
                 if(well3proteins != null) {
                 	for(int x = 0; x < well3proteins.size(); x++) {
                 		protein = well3proteins.get(x);
@@ -1278,7 +1358,7 @@ public class Simulation extends JPanel implements Runnable {
                 	for(int x = 0; x < well4proteins.size(); x++) {
                 		protein = well4proteins.get(x);
                 		if (protein.matchPosition(e.getX(), e.getY())) {
-                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			protein.relativeMigration = protein.GetDistance() / dye4.GetDistance();
                 			proteinName = protein.fullName;
                 			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
@@ -1293,7 +1373,7 @@ public class Simulation extends JPanel implements Runnable {
                 	for(int x = 0; x < well5proteins.size(); x++) {
                 		protein = well5proteins.get(x);
                 		if (protein.matchPosition(e.getX(), e.getY())) {
-                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			protein.relativeMigration = protein.GetDistance() / dye5.GetDistance();
                 			proteinName = protein.fullName;
                 			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
@@ -1308,7 +1388,7 @@ public class Simulation extends JPanel implements Runnable {
                 	for(int x = 0; x < well6proteins.size(); x++) {
                 		protein = well6proteins.get(x);
                 		if (protein.matchPosition(e.getX(), e.getY())) {
-                			protein.relativeMigration = protein.GetDistance() / dye3.GetDistance();
+                			protein.relativeMigration = protein.GetDistance() / dye6.GetDistance();
                 			proteinName = protein.fullName;
                 			proteinMW = "MW = tbd";
                 			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());

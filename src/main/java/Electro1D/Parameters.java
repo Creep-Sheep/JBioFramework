@@ -402,6 +402,15 @@ public class Parameters extends JPanel implements Constants {
             }
         });
         
+        JButton fileSelector = new JButton("#2");
+        fileSelector.setToolTipText("Select a file to be put in well 2");
+        fileSelector.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+            	loadFile("Well 2");
+            }
+        });
         //The file selectors for the other 4 wells
         JButton fileSelector1 = new JButton("#3");
         fileSelector1.setToolTipText("Select a file to be put in well 3");
@@ -441,7 +450,7 @@ public class Parameters extends JPanel implements Constants {
         });
 
         controlPanel.add(addStandard);
-        controlPanel.add(addSample);
+        //controlPanel.add(addSample);
         //controlPanel.add(addSample2);
         //controlPanel.add(addSample3);
         //controlPanel.add(addSample4);
@@ -450,6 +459,7 @@ public class Parameters extends JPanel implements Constants {
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
         //higher panel for choosing wells
+        selectionPanel1.add(fileSelector);
         selectionPanel1.add(fileSelector1);
         selectionPanel1.add(fileSelector2);
         selectionPanel1.add(fileSelector3);
@@ -485,7 +495,7 @@ public class Parameters extends JPanel implements Constants {
         colorPanel.add(color6Panel);
         colorPanel.add(color7Panel);
 
-        selectionPanel1.add(sample1);
+        //selectionPanel1.add(sample1);
         //selectionPanel1.add(sample2);
         //selectionPanel1.add(acrylamide);
         voltacrPanel.add(voltages);
@@ -496,7 +506,7 @@ public class Parameters extends JPanel implements Constants {
         dropPanel.add(labelPanel1);
         dropPanel.add(selectionPanel1);
         dropPanel.add(labelPanel2);
-        controlPanel.setLayout(new GridLayout(2, 2, 10, 10));//should be 3, 2, 10, 10
+        controlPanel.setLayout(new GridLayout(3, 1, 0, 5));//should be 3, 2, 10, 10
 
         // create the control panel buttons & use anonymous inner handling
     }
