@@ -408,7 +408,8 @@ public class Parameters extends JPanel implements Constants {
             
         	@Override
         	public void actionPerformed(ActionEvent e) {
-            	loadFile("Well 2");
+        		if(parent.isReady()) 
+        			loadFile("Well 2");
             }
         });
         //The file selectors for the other 4 wells
@@ -418,7 +419,8 @@ public class Parameters extends JPanel implements Constants {
             
         	@Override
         	public void actionPerformed(ActionEvent e) {
-            	loadFile("Well 3");
+        		if(parent.isReady()) 
+        			loadFile("Well 3");
             }
         });
         JButton fileSelector2 = new JButton("#4");
@@ -427,7 +429,8 @@ public class Parameters extends JPanel implements Constants {
             
         	@Override
         	public void actionPerformed(ActionEvent e) {
-            	loadFile("Well 4");
+        		if(parent.isReady()) 
+        			loadFile("Well 4");
             }
         });
         JButton fileSelector3 = new JButton("#5");
@@ -436,7 +439,8 @@ public class Parameters extends JPanel implements Constants {
             
         	@Override
         	public void actionPerformed(ActionEvent e) {
-            	loadFile("Well 5");
+        		if(parent.isReady()) 
+        			loadFile("Well 5");
             }
         });
         JButton fileSelector4 = new JButton("#6");
@@ -445,7 +449,8 @@ public class Parameters extends JPanel implements Constants {
             
         	@Override
         	public void actionPerformed(ActionEvent e) {
-            	loadFile("Well 6");
+        		if(parent.isReady()) 
+        			loadFile("Well 6");
             }
         });
 
@@ -647,7 +652,6 @@ public class Parameters extends JPanel implements Constants {
 		if (!dir.isDirectory())
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
-		if(parent.isReady()) {
 			chooser.showOpenDialog(this, () -> {
 				proteins = fi.loadFile(chooser.getSelectedFile(), wellNum);
 				// set the cursor image back to normal
@@ -660,7 +664,7 @@ public class Parameters extends JPanel implements Constants {
 			});
 			parent.addSampleFromFile(proteins, wellNum);
 		}
-    }
+    
 
     // GUI attributes
     JPanel headerPanel;

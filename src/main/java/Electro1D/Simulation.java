@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
 
@@ -177,6 +178,7 @@ public class Simulation extends JPanel implements Runnable {
 	private Acrylamide gel;
 	Sample well2samp;
 	Vector<Protein> well2proteins;
+	FileInput fi;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -230,7 +232,7 @@ public class Simulation extends JPanel implements Runnable {
         Jlabels[6] = "6";
         twoDigits = new DecimalFormat("0.00");
         ddNum = 1;
-        
+        fi = new FileInput();
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
     
@@ -248,6 +250,7 @@ public class Simulation extends JPanel implements Runnable {
 				Transferable tr = support.getTransferable();
 				DataFlavor[] flavors = tr.getTransferDataFlavors();
 				try {
+					if(isReady()) {
 					for (int i = 0; i < flavors.length; i++) {
 						if (flavors[i].isFlavorJavaFileListType()) {
 							@SuppressWarnings("unchecked")
@@ -259,6 +262,7 @@ public class Simulation extends JPanel implements Runnable {
 							return true;
 						}
 					}
+					}
 				} catch (UnsupportedFlavorException | IOException e) {
 					e.printStackTrace();
 				}
@@ -269,7 +273,9 @@ public class Simulation extends JPanel implements Runnable {
 	}
 	
 	public void loadFile(File f, int fileNum) {
-		FileInput fi = new FileInput();
+		if (stdLoadState == loading || sampFileLoadState == loading) {
+            return;
+        }
 		Vector<Protein> proteinTemp;
 		switch(ddNum) {
 		case 1:
@@ -298,7 +304,7 @@ public class Simulation extends JPanel implements Runnable {
 			addSampleFromFile(proteinTemp, "Well 6");
 			break;
 		case 6:
-			System.out.println("TOO MANY FILES INPUTED");
+			JOptionPane.showMessageDialog(null, "TOO MANY FILES INPUTED");
 		}
 		
 		
@@ -827,7 +833,7 @@ public class Simulation extends JPanel implements Runnable {
     }
     
     public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
-    	if (stdLoadState == loading) {
+    	if (stdLoadState == loading || sampFileLoadState == loading) {
             return;
         }
     	switch(wellNum) {
@@ -1453,5 +1459,6 @@ public class Simulation extends JPanel implements Runnable {
         }
 
     }
+    public void increaseDDNum() { ddNum++; }
 
 }
