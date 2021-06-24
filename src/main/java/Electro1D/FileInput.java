@@ -94,6 +94,10 @@ public class FileInput {
 			case "gbk":
 				proteins = gbkParse(f, data);
 				break;
+			default:
+				error = new MessageFrame();
+				error.setMessage("File extension is not valid: " + filename);
+				break;
 			}
 			
 		}

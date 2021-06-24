@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -235,6 +236,7 @@ public class Simulation extends JPanel implements Runnable {
         fi = new FileInput();
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
+        resetWell();
     
         this.setTransferHandler(new TransferHandler() {
 			
@@ -249,15 +251,17 @@ public class Simulation extends JPanel implements Runnable {
 				System.out.println(support.getComponent());
 				Transferable tr = support.getTransferable();
 				DataFlavor[] flavors = tr.getTransferDataFlavors();
+				Point loc = null;
 				try {
 					if(isReady()) {
 					for (int i = 0; i < flavors.length; i++) {
 						if (flavors[i].isFlavorJavaFileListType()) {
 							@SuppressWarnings("unchecked")
 							List<File> list = (List<File>) tr.getTransferData(flavors[i]);
+							loc = support.getDropLocation().getDropPoint();
 							// BH for now we just load one if multiple are picked
 							for (int j = 0; j < Math.max(1, list.size()); j++) {
-								loadFile(list.get(j), 1);
+								loadFile(list.get(j), 1, loc);
 							}
 							return true;
 						}
@@ -272,42 +276,64 @@ public class Simulation extends JPanel implements Runnable {
 		});
 	}
 	
-	public void loadFile(File f, int fileNum) {
-		if (stdLoadState == loading || sampFileLoadState == loading) {
+	public void loadFile(File f, int fileNum, Point p) {
+		if (stdLoadState == loading || sampFileLoadState == loading) 
             return;
-        }
+     
+		
 		Vector<Protein> proteinTemp;
-		switch(ddNum) {
-		case 1:
+		if(p.x > wellOpening2X && p.x < wellOpening2X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
 			proteinTemp = fi.loadFile(f, "Well 2");
-			ddNum++;
 			addSampleFromFile(proteinTemp, "Well 2");
-			break;
-		case 2:
-			proteinTemp = fi.loadFile(f, "Well 3");
-			ddNum++;
-			addSampleFromFile(proteinTemp, "Well 3");
-			break;
-		case 3:
-			proteinTemp = fi.loadFile(f, "Well 4");
-			ddNum++;
-			addSampleFromFile(proteinTemp, "Well 4");
-			break;
-		case 4:
-			proteinTemp = fi.loadFile(f, "Well 5");
-			ddNum++;
-			addSampleFromFile(proteinTemp, "Well 5");
-			break;
-		case 5:
-			proteinTemp = fi.loadFile(f, "Well 6");
-			ddNum++;
-			addSampleFromFile(proteinTemp, "Well 6");
-			break;
-		case 6:
-			JOptionPane.showMessageDialog(null, "TOO MANY FILES INPUTED");
 		}
-		
-		
+		if(p.x > wellOpening3X && p.x < wellOpening3X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			proteinTemp = fi.loadFile(f, "Well 3");
+			addSampleFromFile(proteinTemp, "Well 3");
+		}
+		if(p.x > wellOpening4X && p.x < wellOpening4X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			proteinTemp = fi.loadFile(f, "Well 4");
+			addSampleFromFile(proteinTemp, "Well 4");
+		}
+		if(p.x > wellOpening5X && p.x < wellOpening5X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			proteinTemp = fi.loadFile(f, "Well 5");
+			addSampleFromFile(proteinTemp, "Well 5");
+		}
+		if(p.x > wellOpening6X && p.x < wellOpening6X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			proteinTemp = fi.loadFile(f, "Well 6");
+			addSampleFromFile(proteinTemp, "Well 6");
+		}
+		/*
+		switch(ddNum) {
+			case 1:
+				proteinTemp = fi.loadFile(f, "Well 2");
+				ddNum++;
+				addSampleFromFile(proteinTemp, "Well 2");
+				break;
+			case 2:
+				proteinTemp = fi.loadFile(f, "Well 3");
+				ddNum++;
+				addSampleFromFile(proteinTemp, "Well 3");
+				break;
+			case 3:
+				proteinTemp = fi.loadFile(f, "Well 4");
+				ddNum++;
+				addSampleFromFile(proteinTemp, "Well 4");
+				break;
+			case 4:
+				proteinTemp = fi.loadFile(f, "Well 5");
+				ddNum++;
+				addSampleFromFile(proteinTemp, "Well 5");
+				break;
+			case 5:
+				proteinTemp = fi.loadFile(f, "Well 6");
+				ddNum++;
+				addSampleFromFile(proteinTemp, "Well 6");
+				break;
+			case 6:
+				JOptionPane.showMessageDialog(null, "TOO MANY FILES INPUTED");
+		}*/
+	
+	
 	}
 
 	/**

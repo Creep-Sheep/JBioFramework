@@ -646,24 +646,23 @@ public class Parameters extends JPanel implements Constants {
     	setCursor(new Cursor(Cursor.WAIT_CURSOR));
     	FileInput fi = new FileInput();
     	//JFrame fileSelctorFrame = this;
-    	
     	File dir = new File(directoryString);
 		System.out.println(dir.getAbsolutePath());
 		if (!dir.isDirectory())
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
-			chooser.showOpenDialog(this, () -> {
-				proteins = fi.loadFile(chooser.getSelectedFile(), wellNum);
-				// set the cursor image back to normal
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				// close the frame
-				//dispose();
-				}, () -> {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				//dispose();				
-			});
-			parent.addSampleFromFile(proteins, wellNum);
-		}
+		chooser.showOpenDialog(this, () -> {
+			proteins = fi.loadFile(chooser.getSelectedFile(), wellNum);
+			// set the cursor image back to normal
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			// close the frame
+			//dispose();
+		}, () -> {
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			//dispose();				
+		});
+		parent.addSampleFromFile(proteins, wellNum);
+	}
     
 
     // GUI attributes
