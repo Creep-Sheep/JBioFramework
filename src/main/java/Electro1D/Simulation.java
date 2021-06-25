@@ -364,20 +364,23 @@ public class Simulation extends JPanel implements Runnable {
      */
     private void paintData(Graphics g) {
         g.setColor(Color.black);
-        int i = charHeight - 3;
+        int i = charHeight + 17;
         int charSpacing = (int) (0.9 * charHeight);
         if (noLoadError) {
-            i += charHeight * 2;
+            //i += charHeight * 2;
             g.drawString("Add Standard", plateX, i);
             noLoadError = false;
         } else {
-            g.drawString(proteinName, plateX, i);
-            i += charSpacing;
-            g.drawString(proteinMW, plateX, i);
-            i += charSpacing;
-            g.drawString(proteinDist, plateX, i);
-            i += charSpacing;
-            g.drawString(relMigration, plateX, i);
+        	g.drawString(proteinName, plateX, i);
+            //i += charSpacing + 2;
+        	
+            g.drawString(proteinMW, plateX + 150, i);
+            //i += charSpacing + 2;
+            
+            g.drawString(proteinDist, plateX + 240, i);
+            //i += charSpacing + 2;
+            
+            g.drawString(relMigration, plateX + 350, i);
         }
         addInfo = false;
     }
