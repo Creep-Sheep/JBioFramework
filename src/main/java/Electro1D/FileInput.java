@@ -64,7 +64,7 @@ public class FileInput {
     }
 	
 	@SuppressWarnings("unused")
-	public Vector<Protein> loadFile(File f, String wellNum) {
+	public void loadFile(File f, String wellNum, Simulation simPanel) {
 		JOptionPane.showMessageDialog(null, "Proteins Loading");
 		String filename = (f == null ? null : f.getName());
 		MessageFrame error = null;
@@ -111,8 +111,7 @@ public class FileInput {
 			//Process the protein list and put in correct well using wellNum
 			
 		}
-		return proteins;
-		
+		simPanel.addSampleFromFile(proteins, wellNum);
 	}
 	
 	/**
@@ -876,7 +875,7 @@ public class FileInput {
 				in.close();
 		} catch(IOException e) {
 		}
-         return proteins;
+        return proteins;
 	}
 
 	@SuppressWarnings("unused")

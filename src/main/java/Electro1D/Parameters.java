@@ -652,7 +652,7 @@ public class Parameters extends JPanel implements Constants {
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
 		chooser.showOpenDialog(this, () -> {
-			proteins = fi.loadFile(chooser.getSelectedFile(), wellNum);
+			fi.loadFile(chooser.getSelectedFile(), wellNum, parent.simPanel);
 			// set the cursor image back to normal
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			// close the frame
@@ -661,7 +661,7 @@ public class Parameters extends JPanel implements Constants {
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			//dispose();				
 		});
-		parent.addSampleFromFile(proteins, wellNum);
+		//parent.addSampleFromFile(proteins, wellNum);
 	}
     
 
