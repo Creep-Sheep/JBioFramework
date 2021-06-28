@@ -500,7 +500,6 @@ public class FileInput {
 			}
 		}
 		else { //use data from text area
-			System.out.println("TESTTESTTEST");
             StringTokenizer fileSplitter = new StringTokenizer(data, "\r\n");
             while (fileSplitter.hasMoreTokens()) {
                 fileData.addElement(fileSplitter.nextToken());
