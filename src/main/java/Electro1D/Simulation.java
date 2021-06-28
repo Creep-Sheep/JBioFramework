@@ -342,13 +342,13 @@ public class Simulation extends JPanel implements Runnable {
         	g.drawString(proteinName, plateX, i);
             //i += charSpacing + 2;
         	
-            g.drawString(proteinMW, plateX + 150, i);
+            g.drawString(proteinMW, plateX + 180, i);
             //i += charSpacing + 2;
             
-            g.drawString(proteinDist, plateX + 240, i);
+            g.drawString(proteinDist, plateX + 260, i);
             //i += charSpacing + 2;
             
-            g.drawString(relMigration, plateX + 350, i);
+            g.drawString(relMigration, plateX + 370, i);
         }
         addInfo = false;
     }
