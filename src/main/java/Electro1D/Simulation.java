@@ -370,11 +370,6 @@ public class Simulation extends JPanel implements Runnable {
         sample1 = protein1;
         sample2 = protein2;
         dye1 = dyes[0];
-        dye2 = dyes[1];
-        dye3 = dyes[2];
-        dye4 = dyes[3];
-        dye5 = dyes[4];
-        dye6 = dyes[5];
         int i = 0;
         do {
             if (stdSamples[i].selected) {
@@ -391,6 +386,7 @@ public class Simulation extends JPanel implements Runnable {
         		well2proteins.elementAt(x).setMaxPosition(plateBottom);
         		well2proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
         	}
+        	dye2 = dyes[1];
         	dye2.setWidth(wellOpeningWidth);
             dye2.setStartPosition(wellOpening2X, wellBottom);
             dye2.setMaxPosition(plateBottom);
@@ -403,6 +399,7 @@ public class Simulation extends JPanel implements Runnable {
         		well3proteins.elementAt(x).setMaxPosition(plateBottom);
         		well3proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
         	}
+        	dye3 = dyes[2];
         	dye3.setWidth(wellOpeningWidth);
             dye3.setStartPosition(wellOpening3X, wellBottom);
             dye3.setMaxPosition(plateBottom);
@@ -415,6 +412,7 @@ public class Simulation extends JPanel implements Runnable {
         		well4proteins.elementAt(x).setMaxPosition(plateBottom);
         		well4proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
         	}
+        	dye4 = dyes[3];
         	dye4.setWidth(wellOpeningWidth);
             dye4.setStartPosition(wellOpening4X, wellBottom);
             dye4.setMaxPosition(plateBottom);
@@ -427,6 +425,7 @@ public class Simulation extends JPanel implements Runnable {
        			well5proteins.elementAt(x).setMaxPosition(plateBottom);
        			well5proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
        		}
+        	dye5 = dyes[4];
        		dye5.setWidth(wellOpeningWidth);
        		dye5.setStartPosition(wellOpening5X, wellBottom);
        		dye5.setMaxPosition(plateBottom);
@@ -439,6 +438,7 @@ public class Simulation extends JPanel implements Runnable {
         		well6proteins.elementAt(x).setMaxPosition(plateBottom);
         		well6proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
         	}
+            dye6 = dyes[5];
         	dye6.setWidth(wellOpeningWidth);
             dye6.setStartPosition(wellOpening6X, wellBottom);
             dye6.setMaxPosition(plateBottom);
@@ -953,6 +953,7 @@ public class Simulation extends JPanel implements Runnable {
 		well4proteins = null;
 		well5proteins = null;
 		well6proteins = null;
+		dye2 = null;
 		dye3 = null;
 		dye4 = null;
 		dye5 = null;
@@ -1121,41 +1122,41 @@ public class Simulation extends JPanel implements Runnable {
         int i = 0;
         notAtBottom = false;
         dye1.drawProtein(g);
-        dye2.drawProtein(g);
-        dye3.drawProtein(g);
-        dye4.drawProtein(g);
-        dye5.drawProtein(g);
-        dye6.drawProtein(g);
         i = 0;
         do
             if (stdSamples[i].selected && stdSamples[i].drawProtein(g))
                 notAtBottom = true;
         while (++i < 7);
         if(well2proteins != null) {
+        	dye2.drawProtein(g);
         	for(int x = 0; x < well2proteins.size(); x++) {
         		if (well2proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
         	}
         }
         if(well3proteins != null) {
+            dye3.drawProtein(g);
         	for(int x = 0; x < well3proteins.size(); x++) {
         		if (well3proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
         	}
         }
         if(well4proteins != null) {
+            dye4.drawProtein(g);
         	for(int x = 0; x < well4proteins.size(); x++) {
         		if (well4proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
         	}
         }
         if(well5proteins != null) {
+            dye5.drawProtein(g);
         	for(int x = 0; x < well5proteins.size(); x++) {
         		if (well5proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
         	}
         }
         if(well6proteins != null) {
+            dye6.drawProtein(g);
         	for(int x = 0; x < well6proteins.size(); x++) {
         		if (well6proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
