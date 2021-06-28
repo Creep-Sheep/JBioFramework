@@ -75,11 +75,11 @@ public class Electrophoresis extends JPanel {
 		
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		tempPanel.setPreferredSize(new Dimension(275, 450));
-		paramPanel.setPreferredSize(new Dimension(275, 450));
-		dataPanel.setPreferredSize(new Dimension(275, 450));
+		tempPanel.setPreferredSize(new Dimension(185, 450));
+		paramPanel.setPreferredSize(new Dimension(185, 450));
+		dataPanel.setPreferredSize(new Dimension(185, 450));
 		tabPane = new JTabbedPane();
-		tabPane.setPreferredSize(new Dimension(275, 450));
+		tabPane.setPreferredSize(new Dimension(185, 450));
 		tabPane.addTab("Parameters", paramPanel);
 		tabPane.addTab("ProteinData", dataPanel);
 		
@@ -88,11 +88,11 @@ public class Electrophoresis extends JPanel {
 		// set up right Panel
 		JPanel tempPanel2 = new JPanel();
 		tempPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
-		tempPanel2.setPreferredSize(new Dimension(550, 450));
-		simPanel.setPreferredSize(new Dimension(550, 450));
-		plotPanel.setPreferredSize(new Dimension(550, 450));		
+		tempPanel2.setPreferredSize(new Dimension(650, 450));
+		simPanel.setPreferredSize(new Dimension(650, 450));
+		plotPanel.setPreferredSize(new Dimension(650, 450));		
 		tabPane2 = new JTabbedPane();
-		tabPane2.setPreferredSize(new Dimension(550, 450));
+		tabPane2.setPreferredSize(new Dimension(650, 450));
 		tabPane2.add("Casting Tray ", simPanel);
 		tabPane2.add("Plot", plotPanel);
 		tempPanel2.add(tabPane2);
@@ -104,7 +104,7 @@ public class Electrophoresis extends JPanel {
 		this.add(tabPane, c);
 		c.gridx = 1;
 		c.gridy = 0;
-		c.insets = new Insets(0, 7, 0, 0);// insets gives spacing in order of: top,left,bottom,right
+		c.insets = new Insets(0, 5, 0, 0);// insets gives spacing in order of: top,left,bottom,right
 		this.add(tabPane2, c);
 		//this.add(tempPanel2, c);//tabPane2
 		//JPanel testPanel = new JPanel();

@@ -105,6 +105,10 @@ public class Simulation extends JPanel implements Runnable {
     protected int wellOpening4X;
     protected int wellOpening5X;
     protected int wellOpening6X;
+    protected int wellOpening7X;
+    protected int wellOpening8X;
+    protected int wellOpening9X;
+    protected int wellOpening10X;
     
     protected int wellBottom;
     protected int halfWellWidth;
@@ -561,10 +565,10 @@ public class Simulation extends JPanel implements Runnable {
         topWidth = rightEdge - k3;
         i3 = baseHeight / 4 * 3 + baseY;
         k2 = topY + topHeight / 4;
-        plateX = i1 - i2 - i2 - 45;//had no -45
+        plateX = i1 - i2 - i2 - 63;//had no -45
         plateY = k2;
         plateHeight = i3 - plateY;
-        plateWidth = i2 * 5;//was *4
+        plateWidth = i2 * 5 + 20;//was *4
         plateBottom = plateY + plateHeight;
         plateRtEdge = plateX + plateWidth;
         topOpeningX = plateX + j3;
@@ -574,16 +578,13 @@ public class Simulation extends JPanel implements Runnable {
         wellOpening1X = topOpeningX + border;
         wellOpening1Y = topOpeningY + topOpeningHeight/3;//added /2 and parenthesis
         wellOpening1Height = k3;
-        wellOpening1Width = i2/2;
-        wellOpening2Y = wellOpening1Y;
-        wellOpening2Height = wellOpening1Height;
-        wellOpening2Width = wellOpening1Width;
+        wellOpening1Width = i2/3;
         wellOpeningY = wellOpening1Y;
         wellOpeningHeight = wellOpening1Height;
         wellOpeningWidth = wellOpening1Width;
         //wellOpening2X = i1 + (i1 - (wellOpening1X + wellOpening1Width));
         halfWellWidth = wellOpening1Width / 2;
-        int nextWell = halfWellWidth + wellOpening1Width + 4;
+        int nextWell = halfWellWidth + wellOpening1Width;
         
         wellOpening2X = wellOpening1X + nextWell ;
         //new Wells
@@ -591,6 +592,11 @@ public class Simulation extends JPanel implements Runnable {
         wellOpening4X = wellOpening3X + nextWell;
         wellOpening5X = wellOpening4X + nextWell;
         wellOpening6X = wellOpening5X + nextWell;
+        wellOpening7X = wellOpening6X + nextWell;
+        wellOpening8X = wellOpening7X + nextWell;
+        wellOpening9X = wellOpening8X + nextWell;
+        wellOpening10X = wellOpening9X + nextWell;
+        
         
         wellBottom = wellOpening1Y + wellOpening1Height;
         halfWellWidth = wellOpening1Width / 2;
@@ -708,6 +714,14 @@ public class Simulation extends JPanel implements Runnable {
         g.fillRect(wellOpening5X, wellOpeningY, wellOpeningWidth,
                 wellOpeningHeight);
         g.fillRect(wellOpening6X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening7X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening8X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening9X, wellOpeningY, wellOpeningWidth,
+                wellOpeningHeight);
+        g.fillRect(wellOpening10X, wellOpeningY, wellOpeningWidth,
                 wellOpeningHeight);
         
         g.setColor(Color.black);
