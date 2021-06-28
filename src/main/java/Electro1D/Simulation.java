@@ -180,6 +180,7 @@ public class Simulation extends JPanel implements Runnable {
 	Sample well2samp;
 	Vector<Protein> well2proteins;
 	FileInput fi;
+	double speed;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -280,7 +281,6 @@ public class Simulation extends JPanel implements Runnable {
 		if (stdLoadState == loading || sampFileLoadState == loading) 
             return;
      
-		
 		Vector<Protein> proteinTemp;
 		if(p.x > wellOpening2X && p.x < wellOpening2X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
 			fi.loadFile(f, "Well 2", this);
@@ -969,6 +969,7 @@ public class Simulation extends JPanel implements Runnable {
     	//TODO
     	//I have some form of it working, i need it to fall in between ranges and somehow
     	// calculate a movement value to still fall in those ranges.
+    	speed = d;
     	if(gel == null)
     		gel = acrgel;
     	int mw;
@@ -1086,6 +1087,7 @@ public class Simulation extends JPanel implements Runnable {
     public void setAcrylamide(Acrylamide acrylamide) {
         gelLabel = acrylamide.percentGel + " Acrylamide";
         gel = acrylamide;
+        updateSpeed(speed, gel);
         /*if(well3proteins != null)
         	setAcrylamideEffect(well3proteins);
         if(well4proteins != null)
