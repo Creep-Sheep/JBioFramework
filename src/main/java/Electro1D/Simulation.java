@@ -197,6 +197,10 @@ public class Simulation extends JPanel implements Runnable {
         sample2 = new Protein();
         dye1 = new Protein();
         dye2 = new Protein();
+        dye3 = new Protein();
+        dye4 = new Protein();
+        dye5 = new Protein();
+        dye6 = new Protein();
         stdSample = new Sample();
         sampSample1 = new Sample();
         sampSample2 = new Sample();
@@ -953,11 +957,11 @@ public class Simulation extends JPanel implements Runnable {
 		well4proteins = null;
 		well5proteins = null;
 		well6proteins = null;
-		dye2 = null;
-		dye3 = null;
-		dye4 = null;
-		dye5 = null;
-		dye6 = null;
+		dye2 = dye1; //setting the dyes to dye1 prevents null exceptions
+		dye3 = dye1;
+		dye4 = dye1;
+		dye5 = dye1;
+		dye6 = dye1;
 		ddNum = 1;
 	}
     
