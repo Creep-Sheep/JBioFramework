@@ -348,9 +348,9 @@ public class Parameters extends JPanel implements Constants {
             
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			parent.resetWells();
-            }
+        		parent.resetWells();
+        	}
+            
         });
         colorPanel.add(resetwells);
         helperMethod1();

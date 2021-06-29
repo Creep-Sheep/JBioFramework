@@ -196,6 +196,7 @@ public class Simulation extends JPanel implements Runnable {
 	private Acrylamide gel;
 	FileInput fi;
 	double speed;
+	boolean shouldReset;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -264,6 +265,7 @@ public class Simulation extends JPanel implements Runnable {
         fi = new FileInput();
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
+        shouldReset = true;
         resetWell();
     
         this.setTransferHandler(new TransferHandler() {
@@ -870,7 +872,8 @@ public class Simulation extends JPanel implements Runnable {
             return;
         }
         stopRun();
-        resetWell();
+        if(shouldReset)
+        	resetWell();
         stdSample.reset();
         stdSample.fill();
         stdSample.setRatio(wellOpening1Height / ratioModifier);
@@ -1144,9 +1147,33 @@ public class Simulation extends JPanel implements Runnable {
     	
     }
     
+    /*
+     * Keep working on this, harder than expected
+     * redoWells resets the wells with the same files, so easy to repeat
+     */
     public void redoWells() {
-		// TODO Auto-generated method stub
-		
+    	shouldReset = false;
+    	addStandard();
+    	if(well2proteins != null)
+    		addSampleFromFile(well2proteins, "Well 2");
+    	if(well3proteins != null)
+    		addSampleFromFile(well3proteins, "Well 3");
+    	if(well4proteins != null)
+    		addSampleFromFile(well4proteins, "Well 4");
+    	if(well5proteins != null)
+    		addSampleFromFile(well5proteins, "Well 5");
+    	if(well6proteins != null)
+    		addSampleFromFile(well6proteins, "Well 6");
+    	if(well7proteins != null)
+    		addSampleFromFile(well7proteins, "Well 7");
+    	if(well8proteins != null)
+    		addSampleFromFile(well8proteins, "Well 8");
+    	if(well9proteins != null)
+    		addSampleFromFile(well9proteins, "Well 9");
+    	if(well10proteins != null)
+    		addSampleFromFile(well10proteins, "Well 10");
+    	
+		shouldReset = true;
 	}
     
     /*
