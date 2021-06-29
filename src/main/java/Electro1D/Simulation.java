@@ -1144,6 +1144,11 @@ public class Simulation extends JPanel implements Runnable {
     	
     }
     
+    public void redoWells() {
+		// TODO Auto-generated method stub
+		
+	}
+    
     /*
      * resets the wells that files are put into
      */
@@ -1803,5 +1808,6 @@ public class Simulation extends JPanel implements Runnable {
 
     }
     public void increaseDDNum() { ddNum++; }
+
 
 }

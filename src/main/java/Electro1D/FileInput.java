@@ -88,15 +88,15 @@ public class FileInput {
 			case "fasta":
 				proteins = fastaParse(f, data);
 				break;
-			case "pdb":
+			/*case "pdb":
 				proteins = pdbParse(f, data);
 				break;
 			case "gbk":
 				proteins = gbkParse(f, data);
-				break;
+				break;*/
 			default:
 				error = new MessageFrame();
-				error.setMessage("File extension is not valid: " + filename);
+				error.setMessage("File extension is not valid. You inputed a " + extension + " file, please input a fasta file");
 				break;
 			}
 			
@@ -109,9 +109,9 @@ public class FileInput {
 			
 			//TODO 
 			//Process the protein list and put in correct well using wellNum
-			
+			simPanel.addSampleFromFile(proteins, wellNum);
 		}
-		simPanel.addSampleFromFile(proteins, wellNum);
+		
 	}
 	
 	/**
