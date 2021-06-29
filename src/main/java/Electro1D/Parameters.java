@@ -104,7 +104,7 @@ public class Parameters extends JPanel implements Constants {
         String[] voltageList = {"50V", "100V", "150V", "200V"};
         
         //array of proteins for passing to start run
-        Protein[] dyes = {dye1, dye2, dye3, dye4, dye5, dye6};
+        Protein[] dyes = {dye1, dye2, dye3, dye4, dye5, dye6, dye7, dye8, dye9, dye10};
 
         acrylamide = new JComboBox<String>(gelList);
         sample1 = new JComboBox<String>(samples);
@@ -593,6 +593,10 @@ public class Parameters extends JPanel implements Constants {
         dye4.speed = d;
         dye5.speed = d;
         dye6.speed = d;
+        dye7.speed = d;
+        dye8.speed = d;
+        dye9.speed = d;
+        dye10.speed = d;
         stdProteinArray[std1Ref].speed = 0.048245000000000003D * d;
         stdProteinArray[std2Ref].speed = 0.35087200000000002D * d;
         stdProteinArray[std3Ref].speed = 0.46814299999999998D * d;

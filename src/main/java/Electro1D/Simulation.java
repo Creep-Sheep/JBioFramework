@@ -44,10 +44,15 @@ public class Simulation extends JPanel implements Runnable {
     float modifier;
     boolean addInfo;
     Protein stdSamples[];
+    Vector<Protein> well2proteins;
     Vector<Protein> well3proteins;
     Vector<Protein> well4proteins;
     Vector<Protein> well5proteins;
     Vector<Protein> well6proteins;
+    Vector<Protein> well7proteins;
+    Vector<Protein> well8proteins;
+    Vector<Protein> well9proteins;
+    Vector<Protein> well10proteins;
     Protein sample1;
     Protein sample2;
     Protein dye1;
@@ -56,14 +61,22 @@ public class Simulation extends JPanel implements Runnable {
     Protein dye4;
     Protein dye5;
     Protein dye6;
+    Protein dye7;
+    Protein dye8;
+    Protein dye9;
+    Protein dye10;
     Sample stdSample;
     Sample sampSample1;
     Sample sampSample2;
-    
-    Sample well3samp;
+    Sample well2samp;
+	Sample well3samp;
     Sample well4samp;
     Sample well5samp;
     Sample well6samp;
+    Sample well7samp;
+    Sample well8samp;
+    Sample well9samp;
+    Sample well10samp;
     
     Pipette pipette;
     protected int border;
@@ -181,8 +194,6 @@ public class Simulation extends JPanel implements Runnable {
     protected DecimalFormat twoDigits;
 	private StateHelper stateHelper;
 	private Acrylamide gel;
-	Sample well2samp;
-	Vector<Protein> well2proteins;
 	FileInput fi;
 	double speed;
 
@@ -205,6 +216,10 @@ public class Simulation extends JPanel implements Runnable {
         dye4 = new Protein();
         dye5 = new Protein();
         dye6 = new Protein();
+        dye7 = new Protein();
+        dye8 = new Protein();
+        dye9 = new Protein();
+        dye10 = new Protein();
         stdSample = new Sample();
         sampSample1 = new Sample();
         sampSample2 = new Sample();
@@ -213,6 +228,10 @@ public class Simulation extends JPanel implements Runnable {
         well4samp = new Sample();
         well5samp = new Sample();
         well6samp = new Sample();
+        well7samp = new Sample();
+        well8samp = new Sample();
+        well9samp = new Sample();
+        well10samp = new Sample();
         //well 3 sample declaration
         pipette = new Pipette();
         ratioModifier = 10;
@@ -305,6 +324,18 @@ public class Simulation extends JPanel implements Runnable {
 		if(p.x > wellOpening6X && p.x < wellOpening6X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
 			fi.loadFile(f, "Well 6", this);
 		}
+		if(p.x > wellOpening7X && p.x < wellOpening7X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			fi.loadFile(f, "Well 7", this);
+		}
+		if(p.x > wellOpening8X && p.x < wellOpening8X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			fi.loadFile(f, "Well 8", this);
+		}
+		if(p.x > wellOpening9X && p.x < wellOpening9X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			fi.loadFile(f, "Well 9", this);
+		}
+		if(p.x > wellOpening10X && p.x < wellOpening10X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
+			fi.loadFile(f, "Well 10", this);
+		}
 		
 	}
 
@@ -378,15 +409,14 @@ public class Simulation extends JPanel implements Runnable {
         sample1 = protein1;
         sample2 = protein2;
         dye1 = dyes[0];
-        int i = 0;
-        do {
+        for(int i = 0; i < stdSamples.length; i++) {
             if (stdSamples[i].selected) {
                 stdSamples[i].setWidth(wellOpening1Width);
                 stdSamples[i].setStartPosition(wellOpening1X, wellBottom);
                 stdSamples[i].setMaxPosition(plateBottom);
                 stdSamples[i].SetHostScaleFactor(scaleFactor);
             }
-        } while (++i < 7);
+        }
         if(well2proteins != null) {
         	for(int x = 0; x < well2proteins.size(); x++) {
         		well2proteins.elementAt(x).setWidth(wellOpeningWidth);
@@ -452,6 +482,58 @@ public class Simulation extends JPanel implements Runnable {
             dye6.setMaxPosition(plateBottom);
             dye6.SetHostScaleFactor(scaleFactor);
         }
+        if(well7proteins != null) {
+        	for(int x = 0; x < well7proteins.size(); x++) {
+        		well7proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well7proteins.elementAt(x).setStartPosition(wellOpening7X, wellBottom);
+        		well7proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well7proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+            dye7 = dyes[6];
+        	dye7.setWidth(wellOpeningWidth);
+            dye7.setStartPosition(wellOpening7X, wellBottom);
+            dye7.setMaxPosition(plateBottom);
+            dye7.SetHostScaleFactor(scaleFactor);
+        }
+        if(well8proteins != null) {
+        	for(int x = 0; x < well8proteins.size(); x++) {
+        		well8proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well8proteins.elementAt(x).setStartPosition(wellOpening8X, wellBottom);
+        		well8proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well8proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+            dye8 = dyes[7];
+        	dye8.setWidth(wellOpeningWidth);
+            dye8.setStartPosition(wellOpening8X, wellBottom);
+            dye8.setMaxPosition(plateBottom);
+            dye8.SetHostScaleFactor(scaleFactor);
+        }
+        if(well9proteins != null) {
+        	for(int x = 0; x < well9proteins.size(); x++) {
+        		well9proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well9proteins.elementAt(x).setStartPosition(wellOpening9X, wellBottom);
+        		well9proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well9proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+            dye9 = dyes[8];
+        	dye9.setWidth(wellOpeningWidth);
+            dye9.setStartPosition(wellOpening9X, wellBottom);
+            dye9.setMaxPosition(plateBottom);
+            dye9.SetHostScaleFactor(scaleFactor);
+        }
+        if(well10proteins != null) {
+        	for(int x = 0; x < well10proteins.size(); x++) {
+        		well10proteins.elementAt(x).setWidth(wellOpeningWidth);
+        		well10proteins.elementAt(x).setStartPosition(wellOpening10X, wellBottom);
+        		well10proteins.elementAt(x).setMaxPosition(plateBottom);
+        		well10proteins.elementAt(x).SetHostScaleFactor(scaleFactor);
+        	}
+            dye10 = dyes[9];
+        	dye10.setWidth(wellOpeningWidth);
+            dye10.setStartPosition(wellOpening10X, wellBottom);
+            dye10.setMaxPosition(plateBottom);
+            dye10.SetHostScaleFactor(scaleFactor);
+        }
         /*
         sample1.setWidth(wellOpening2Width);
         sample1.setStartPosition(wellOpening2X, wellBottom);
@@ -476,6 +558,10 @@ public class Simulation extends JPanel implements Runnable {
         well4samp.setRatio(0);
         well5samp.setRatio(0);
         well6samp.setRatio(0);
+        well7samp.setRatio(0);
+        well8samp.setRatio(0);
+        well9samp.setRatio(0);
+        well10samp.setRatio(0);
         
         stdSample.drawSwitch(true);
         //sampSample1.drawSwitch(true);
@@ -485,6 +571,10 @@ public class Simulation extends JPanel implements Runnable {
         well4samp.drawSwitch(true);
         well5samp.drawSwitch(true);
         well6samp.drawSwitch(true);
+        well7samp.drawSwitch(true);
+        well8samp.drawSwitch(true);
+        well9samp.drawSwitch(true);
+        well10samp.drawSwitch(true);
         
         stdSample.empty();
         //sampSample1.empty();
@@ -494,6 +584,10 @@ public class Simulation extends JPanel implements Runnable {
         well4samp.empty();
         well5samp.empty();
         well6samp.empty();
+        well7samp.empty();
+        well8samp.empty();
+        well9samp.empty();
+        well10samp.empty();
         
         ResetFlags();
         runSampleFlag = true;
@@ -958,6 +1052,94 @@ public class Simulation extends JPanel implements Runnable {
             setPause("fill");
             start();
             break;
+    	case "Well 7":
+    		stopRun();
+            well7samp.reset();
+            well7samp.fill();
+            well7samp.setRatio(wellOpeningHeight / ratioModifier);
+            well7samp.setXPosition(wellOpening7X);
+            well7samp.setWidth(wellOpeningWidth);
+            well7samp.setYPosition(wellBottom);
+            well7samp.setMaxY(wellBottom);
+            pipette.setSample(well7samp);
+            pipette.setStartXPosition(wellOpening7X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            well7proteins = proteins;
+            updateSpeed(1, null);
+            //setAcrylamideEffect(well6proteins); 
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
+    	case "Well 8":
+    		stopRun();
+            well8samp.reset();
+            well8samp.fill();
+            well8samp.setRatio(wellOpeningHeight / ratioModifier);
+            well8samp.setXPosition(wellOpening8X);
+            well8samp.setWidth(wellOpeningWidth);
+            well8samp.setYPosition(wellBottom);
+            well8samp.setMaxY(wellBottom);
+            pipette.setSample(well8samp);
+            pipette.setStartXPosition(wellOpening8X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            well8proteins = proteins;
+            updateSpeed(1, null);
+            //setAcrylamideEffect(well6proteins); 
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
+    	case "Well 9":
+    		stopRun();
+            well9samp.reset();
+            well9samp.fill();
+            well9samp.setRatio(wellOpeningHeight / ratioModifier);
+            well9samp.setXPosition(wellOpening9X);
+            well9samp.setWidth(wellOpeningWidth);
+            well9samp.setYPosition(wellBottom);
+            well9samp.setMaxY(wellBottom);
+            pipette.setSample(well9samp);
+            pipette.setStartXPosition(wellOpening9X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            well9proteins = proteins;
+            updateSpeed(1, null);
+            //setAcrylamideEffect(well6proteins); 
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
+    	case "Well 10":
+    		stopRun();
+            well10samp.reset();
+            well10samp.fill();
+            well10samp.setRatio(wellOpeningHeight / ratioModifier);
+            well10samp.setXPosition(wellOpening10X);
+            well10samp.setWidth(wellOpeningWidth);
+            well10samp.setYPosition(wellBottom);
+            well10samp.setMaxY(wellBottom);
+            pipette.setSample(well10samp);
+            pipette.setStartXPosition(wellOpening10X + halfWellWidth);
+            pipette.setMaxYPosition(wellBottom);
+            pipette.setSampleDepth(wellOpeningHeight * 2);
+            ResetFlags();
+            well10proteins = proteins;
+            updateSpeed(1, null);
+            //setAcrylamideEffect(well6proteins); 
+            addSampleFileFlag = true;
+            sampFileLoadState = loading;
+            setPause("fill");
+            start();
+            break;
     	}
     	
     }
@@ -971,11 +1153,19 @@ public class Simulation extends JPanel implements Runnable {
 		well4proteins = null;
 		well5proteins = null;
 		well6proteins = null;
+		well7proteins = null;
+		well8proteins = null;
+		well9proteins = null;
+		well10proteins = null;
 		dye2 = dye1; //setting the dyes to dye1 prevents null exceptions
 		dye3 = dye1;
 		dye4 = dye1;
 		dye5 = dye1;
 		dye6 = dye1;
+		dye7 = dye1;
+		dye8 = dye1;
+		dye9 = dye1;
+		dye10 = dye1;
 		ddNum = 1;
 	}
     
@@ -1065,6 +1255,54 @@ public class Simulation extends JPanel implements Runnable {
         			well6proteins.get(x).speed = .95;
         		if(speed < 0)
         			well6proteins.get(x).speed *= -1;
+        		
+        	}
+    	}
+    	if(well7proteins != null) {
+        	for(int x = 0; x < well7proteins.size(); x++) {
+        		mw = well7proteins.get(x).mw;
+        		speed = (Math.log10(mw) - b) / slope;
+        		well7proteins.get(x).speed = speed * d;
+        		if(speed > 1)
+        			well7proteins.get(x).speed = .95;
+        		if(speed < 0)
+        			well7proteins.get(x).speed *= -1;
+        		
+        	}
+    	}
+    	if(well8proteins != null) {
+        	for(int x = 0; x < well8proteins.size(); x++) {
+        		mw = well8proteins.get(x).mw;
+        		speed = (Math.log10(mw) - b) / slope;
+        		well8proteins.get(x).speed = speed * d;
+        		if(speed > 1)
+        			well8proteins.get(x).speed = .95;
+        		if(speed < 0)
+        			well8proteins.get(x).speed *= -1;
+        		
+        	}
+    	}
+    	if(well9proteins != null) {
+        	for(int x = 0; x < well9proteins.size(); x++) {
+        		mw = well9proteins.get(x).mw;
+        		speed = (Math.log10(mw) - b) / slope;
+        		well9proteins.get(x).speed = speed * d;
+        		if(speed > 1)
+        			well9proteins.get(x).speed = .95;
+        		if(speed < 0)
+        			well9proteins.get(x).speed *= -1;
+        		
+        	}
+    	}
+    	if(well10proteins != null) {
+        	for(int x = 0; x < well10proteins.size(); x++) {
+        		mw = well10proteins.get(x).mw;
+        		speed = (Math.log10(mw) - b) / slope;
+        		well10proteins.get(x).speed = speed * d;
+        		if(speed > 1)
+        			well10proteins.get(x).speed = .95;
+        		if(speed < 0)
+        			well10proteins.get(x).speed *= -1;
         		
         	}
     	}
@@ -1177,6 +1415,33 @@ public class Simulation extends JPanel implements Runnable {
             dye6.drawProtein(g);
         	for(int x = 0; x < well6proteins.size(); x++) {
         		if (well6proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }if(well7proteins != null) {
+            dye7.drawProtein(g);
+        	for(int x = 0; x < well7proteins.size(); x++) {
+        		if (well7proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
+        if(well8proteins != null) {
+            dye8.drawProtein(g);
+        	for(int x = 0; x < well8proteins.size(); x++) {
+        		if (well8proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
+        if(well9proteins != null) {
+            dye9.drawProtein(g);
+        	for(int x = 0; x < well9proteins.size(); x++) {
+        		if (well9proteins.elementAt(x).drawProtein(g))
+        			notAtBottom = true;
+        	}
+        }
+        if(well10proteins != null) {
+            dye10.drawProtein(g);
+        	for(int x = 0; x < well10proteins.size(); x++) {
+        		if (well10proteins.elementAt(x).drawProtein(g))
         			notAtBottom = true;
         	}
         }
@@ -1310,6 +1575,10 @@ public class Simulation extends JPanel implements Runnable {
             well4samp.drawSample(offScreenGraphics);
             well5samp.drawSample(offScreenGraphics);
             well6samp.drawSample(offScreenGraphics);
+            well7samp.drawSample(offScreenGraphics);
+            well8samp.drawSample(offScreenGraphics);
+            well9samp.drawSample(offScreenGraphics);
+            well10samp.drawSample(offScreenGraphics);
             
         } else
             drawGraph(offScreenGraphics);
@@ -1407,6 +1676,66 @@ public class Simulation extends JPanel implements Runnable {
                 if(well6proteins != null) {
                 	for(int x = 0; x < well6proteins.size(); x++) {
                 		protein = well6proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye6.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = tbd";
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well7proteins != null) {
+                	for(int x = 0; x < well7proteins.size(); x++) {
+                		protein = well7proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye6.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = tbd";
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well8proteins != null) {
+                	for(int x = 0; x < well8proteins.size(); x++) {
+                		protein = well8proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye6.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = tbd";
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well9proteins != null) {
+                	for(int x = 0; x < well9proteins.size(); x++) {
+                		protein = well9proteins.get(x);
+                		if (protein.matchPosition(e.getX(), e.getY())) {
+                			protein.relativeMigration = protein.GetDistance() / dye6.GetDistance();
+                			proteinName = protein.fullName;
+                			proteinMW = "MW = tbd";
+                			proteinDist = "mm travel = " + twoDigits.format(protein.GetDistance());
+                            relMigration = "RM = " + twoDigits.format(protein.relativeMigration);
+                            addInfo = true;
+                            repaint();
+                            break;
+                		}
+                	}
+                }
+                if(well10proteins != null) {
+                	for(int x = 0; x < well10proteins.size(); x++) {
+                		protein = well10proteins.get(x);
                 		if (protein.matchPosition(e.getX(), e.getY())) {
                 			protein.relativeMigration = protein.GetDistance() / dye6.GetDistance();
                 			proteinName = protein.fullName;
