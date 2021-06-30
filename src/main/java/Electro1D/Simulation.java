@@ -868,9 +868,7 @@ public class Simulation extends JPanel implements Runnable {
      * invoked by the Add standard button
      */
     public void addStandard() {
-        if (samp1LoadState == loading || samp2LoadState == loading) {
-            return;
-        }
+        
         stopRun();
         if(shouldReset)
         	resetWell();
@@ -941,9 +939,9 @@ public class Simulation extends JPanel implements Runnable {
     }
     
     public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
-    	if (stdLoadState == loading || sampFileLoadState == loading) {
-            return;
-        }
+    	//if (stdLoadState == loading || sampFileLoadState == loading) {
+        //    return;
+        //}
     	switch(wellNum) {
     	case "Well 2":
     		stopRun();
@@ -1154,6 +1152,7 @@ public class Simulation extends JPanel implements Runnable {
     public void redoWells() {
     	shouldReset = false;
     	addStandard();
+    	
     	if(well2proteins != null)
     		addSampleFromFile(well2proteins, "Well 2");
     	if(well3proteins != null)
