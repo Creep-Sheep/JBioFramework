@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import javajs.async.AsyncFileChooser;
@@ -342,7 +343,7 @@ public class Parameters extends JPanel implements Constants {
         standard7.addItemListener(sll);
         // end check boxes
         
-        JButton resetwells = new JButton("Reset");
+        JButton resetwells = new JButton("Redo Wells");
         resetwells.setToolTipText("Reset wells with the same samples");
         resetwells.addActionListener(new ActionListener() {
             
@@ -355,7 +356,7 @@ public class Parameters extends JPanel implements Constants {
         colorPanel.add(resetwells);
         helperMethod1();
 
-        JButton addStandard = new JButton("Stnd");
+        JButton addStandard = new JButton("Add");
         addStandard.setToolTipText("Pipette selected standards into well 1");
         addStandard.addActionListener(new ActionListener() {
 
@@ -389,7 +390,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton startButton = new JButton("Srt");//Start run
+        JButton startButton = new JButton("Start");//Start run
         startButton.setToolTipText("Powers on the battery to begin run");
         startButton.addActionListener(new ActionListener() {
 
@@ -401,7 +402,7 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
-        JButton stopButton = new JButton("Stp");//Stop Run
+        JButton stopButton = new JButton("Stop");//Stop Run
         stopButton.setToolTipText("Ends current to stop the run");
         stopButton.addActionListener(new ActionListener() {
 
@@ -414,7 +415,7 @@ public class Parameters extends JPanel implements Constants {
             }
         });
         
-        JButton fileSelector = new JButton("2");
+        JButton fileSelector = new JButton("Well 2");
         fileSelector.setToolTipText("Select a file to be put in well 2");
         fileSelector.addActionListener(new ActionListener() {
             
@@ -425,7 +426,7 @@ public class Parameters extends JPanel implements Constants {
             }
         });
         //The file selectors for the other 4 wells
-        JButton fileSelector1 = new JButton("3");
+        JButton fileSelector1 = new JButton("Well 3");
         fileSelector1.setToolTipText("Select a file to be put in well 3");
         fileSelector1.addActionListener(new ActionListener() {
             
@@ -435,7 +436,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 3");
             }
         });
-        JButton fileSelector2 = new JButton("4");
+        JButton fileSelector2 = new JButton("Well 4");
         fileSelector2.setToolTipText("Select a file to be put in well 4");
         fileSelector2.addActionListener(new ActionListener() {
             
@@ -445,7 +446,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 4");
             }
         });
-        JButton fileSelector3 = new JButton("5");
+        JButton fileSelector3 = new JButton("Well 5");
         fileSelector3.setToolTipText("Select a file to be put in well 5");
         fileSelector3.addActionListener(new ActionListener() {
             
@@ -455,7 +456,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 5");
             }
         });
-        JButton fileSelector4 = new JButton("6");
+        JButton fileSelector4 = new JButton("Well 6");
         fileSelector4.setToolTipText("Select a file to be put in well 6");
         fileSelector4.addActionListener(new ActionListener() {
             
@@ -465,7 +466,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 6");
             }
         });
-        JButton fileSelector5 = new JButton("7");
+        JButton fileSelector5 = new JButton("Well 7");
         fileSelector5.setToolTipText("Select a file to be put in well 7");
         fileSelector5.addActionListener(new ActionListener() {
             
@@ -475,7 +476,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 7");
             }
         });
-        JButton fileSelector6 = new JButton("8");
+        JButton fileSelector6 = new JButton("Well 8");
         fileSelector6.setToolTipText("Select a file to be put in well 8");
         fileSelector6.addActionListener(new ActionListener() {
             
@@ -485,7 +486,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 8");
             }
         });
-        JButton fileSelector7 = new JButton("9");
+        JButton fileSelector7 = new JButton("Well 9");
         fileSelector7.setToolTipText("Select a file to be put in well 9");
         fileSelector7.addActionListener(new ActionListener() {
             
@@ -495,7 +496,7 @@ public class Parameters extends JPanel implements Constants {
         			loadFile("Well 9");
             }
         });
-        JButton fileSelector8 = new JButton("10");
+        JButton fileSelector8 = new JButton("Well 10");
         fileSelector8.setToolTipText("Select a file to be put in well 10");
         fileSelector8.addActionListener(new ActionListener() {
             
@@ -508,7 +509,14 @@ public class Parameters extends JPanel implements Constants {
         
         controlPanel.add(voltacrPanel);
         JPanel contr = new JPanel();
-        contr.setLayout(new GridLayout(1,3,0,2));
+        contr.setLayout(new GridLayout(2,3,0,5));
+        contr.setBackground(Color.lightGray);
+        JLabel stds = new JLabel("Standards", SwingConstants.CENTER);
+        JLabel strt = new JLabel("Start", SwingConstants.CENTER);
+        JLabel stp = new JLabel("Stop", SwingConstants.CENTER);
+        contr.add(stds);
+        contr.add(strt);
+        contr.add(stp);
         contr.add(addStandard);
         contr.add(startButton);
         contr.add(stopButton);

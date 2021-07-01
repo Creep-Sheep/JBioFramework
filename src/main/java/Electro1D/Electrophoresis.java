@@ -60,7 +60,7 @@ public class Electrophoresis extends JPanel {
 	}
 
 	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(845, 470));//550(i think i want 825, 450: good size: 845, 470
+		super.setPreferredSize(new Dimension(900, 470));//550(i think i want 825, 450: good size: 845, 470
 
 		simPanel = new Simulation(this);
 		paramPanel = new Parameters(this);
@@ -75,11 +75,11 @@ public class Electrophoresis extends JPanel {
 		
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		tempPanel.setPreferredSize(new Dimension(185, 450));
-		paramPanel.setPreferredSize(new Dimension(185, 450));
-		dataPanel.setPreferredSize(new Dimension(185, 450));
+		tempPanel.setPreferredSize(new Dimension(240, 450));
+		paramPanel.setPreferredSize(new Dimension(240, 450));
+		dataPanel.setPreferredSize(new Dimension(240, 450));
 		tabPane = new JTabbedPane();
-		tabPane.setPreferredSize(new Dimension(185, 450));
+		tabPane.setPreferredSize(new Dimension(240, 450));
 		tabPane.addTab("Parameters", paramPanel);
 		tabPane.addTab("ProteinData", dataPanel);
 		

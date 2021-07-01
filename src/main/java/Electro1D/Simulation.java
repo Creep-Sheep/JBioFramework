@@ -797,7 +797,7 @@ public class Simulation extends JPanel implements Runnable {
         g.drawLine(plateX, plateY, plateX, plateBottom);
         g.drawLine(plateRtEdge, plateY, plateRtEdge, plateBottom);
         g.setColor(Color.white);
-        g.fillRect(topOpeningX, topOpeningY, topOpeningWidth, topOpeningHeight+5);//not sure if this looks nice
+        g.fillRect(topOpeningX+2, topOpeningY, topOpeningWidth, topOpeningHeight+5);//not sure if this looks nice
         g.fillRect(wellOpening1X, wellOpeningY, wellOpeningWidth,
                 wellOpeningHeight);
         g.fillRect(wellOpening2X, wellOpeningY, wellOpeningWidth,
