@@ -79,6 +79,7 @@ public class Simulation extends JPanel implements Runnable {
     Sample well10samp;
     
     Pipette pipette;
+    Pipette pipette2;
     protected int border;
     protected int baseX;
     protected int baseY;
@@ -235,6 +236,7 @@ public class Simulation extends JPanel implements Runnable {
         well10samp = new Sample();
         //well 3 sample declaration
         pipette = new Pipette();
+        pipette2 = new Pipette();
         ratioModifier = 10;
         scaleDivs = new int[7];
         scaleHalfDivs = new int[13];
@@ -384,7 +386,7 @@ public class Simulation extends JPanel implements Runnable {
             
             g.drawString(proteinDist, plateX + 260, i);
             //i += charSpacing + 2;
-            
+             
             g.drawString(relMigration, plateX + 370, i);
         }
         addInfo = false;
@@ -879,10 +881,12 @@ public class Simulation extends JPanel implements Runnable {
         stdSample.setWidth(wellOpening1Width);
         stdSample.setYPosition(wellBottom);
         stdSample.setMaxY(wellBottom);
-        pipette.setSample(stdSample);
-        pipette.setStartXPosition(wellOpening1X + halfWellWidth);
-        pipette.setMaxYPosition(wellBottom);
-        pipette.setSampleDepth(wellOpening1Height * 2);
+        if(shouldReset) {
+        	pipette.setSample(stdSample);
+        	pipette.setStartXPosition(wellOpening1X + halfWellWidth);
+        	pipette.setMaxYPosition(wellBottom);
+        	pipette.setSampleDepth(wellOpening1Height * 2);
+        }
         ResetFlags();
         addSampleFlag1 = true;
         stdLoadState = loading;
@@ -952,10 +956,12 @@ public class Simulation extends JPanel implements Runnable {
             well2samp.setWidth(wellOpeningWidth);
             well2samp.setYPosition(wellBottom);
             well2samp.setMaxY(wellBottom);
-            pipette.setSample(well2samp);
-            pipette.setStartXPosition(wellOpening2X + halfWellWidth);
-            pipette.setMaxYPosition(wellBottom);
-            pipette.setSampleDepth(wellOpeningHeight * 2);
+            if(shouldReset) {
+            	pipette.setSample(well2samp);
+            	pipette.setStartXPosition(wellOpening2X + halfWellWidth);
+            	pipette.setMaxYPosition(wellBottom);
+            	pipette.setSampleDepth(wellOpeningHeight * 2);
+            }	
             ResetFlags();
             well2proteins = proteins;
             updateSpeed(1, null);
@@ -974,10 +980,12 @@ public class Simulation extends JPanel implements Runnable {
             well3samp.setWidth(wellOpeningWidth);
             well3samp.setYPosition(wellBottom);
             well3samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well3samp);
             pipette.setStartXPosition(wellOpening3X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well3proteins = proteins;
             updateSpeed(1, null);
@@ -996,10 +1004,12 @@ public class Simulation extends JPanel implements Runnable {
             well4samp.setWidth(wellOpeningWidth);
             well4samp.setYPosition(wellBottom);
             well4samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well4samp);
             pipette.setStartXPosition(wellOpening4X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well4proteins = proteins;
             updateSpeed(1, null);
@@ -1018,10 +1028,12 @@ public class Simulation extends JPanel implements Runnable {
             well5samp.setWidth(wellOpeningWidth);
             well5samp.setYPosition(wellBottom);
             well5samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well5samp);
             pipette.setStartXPosition(wellOpening5X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well5proteins = proteins;
             updateSpeed(1, null);
@@ -1040,10 +1052,12 @@ public class Simulation extends JPanel implements Runnable {
             well6samp.setWidth(wellOpeningWidth);
             well6samp.setYPosition(wellBottom);
             well6samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well6samp);
             pipette.setStartXPosition(wellOpening6X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well6proteins = proteins;
             updateSpeed(1, null);
@@ -1062,10 +1076,12 @@ public class Simulation extends JPanel implements Runnable {
             well7samp.setWidth(wellOpeningWidth);
             well7samp.setYPosition(wellBottom);
             well7samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well7samp);
             pipette.setStartXPosition(wellOpening7X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well7proteins = proteins;
             updateSpeed(1, null);
@@ -1084,10 +1100,12 @@ public class Simulation extends JPanel implements Runnable {
             well8samp.setWidth(wellOpeningWidth);
             well8samp.setYPosition(wellBottom);
             well8samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well8samp);
             pipette.setStartXPosition(wellOpening8X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well8proteins = proteins;
             updateSpeed(1, null);
@@ -1106,10 +1124,12 @@ public class Simulation extends JPanel implements Runnable {
             well9samp.setWidth(wellOpeningWidth);
             well9samp.setYPosition(wellBottom);
             well9samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well9samp);
             pipette.setStartXPosition(wellOpening9X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well9proteins = proteins;
             updateSpeed(1, null);
@@ -1128,10 +1148,12 @@ public class Simulation extends JPanel implements Runnable {
             well10samp.setWidth(wellOpeningWidth);
             well10samp.setYPosition(wellBottom);
             well10samp.setMaxY(wellBottom);
+            if(shouldReset) {
             pipette.setSample(well10samp);
             pipette.setStartXPosition(wellOpening10X + halfWellWidth);
             pipette.setMaxYPosition(wellBottom);
             pipette.setSampleDepth(wellOpeningHeight * 2);
+            }
             ResetFlags();
             well10proteins = proteins;
             updateSpeed(1, null);
@@ -1151,9 +1173,9 @@ public class Simulation extends JPanel implements Runnable {
      */
     public void redoWells() {
     	shouldReset = false;
-    	addStandard();
     	
-    	if(well2proteins != null)
+    	addStandard();
+       	if(well2proteins != null)
     		addSampleFromFile(well2proteins, "Well 2");
     	if(well3proteins != null)
     		addSampleFromFile(well3proteins, "Well 3");
@@ -1171,9 +1193,41 @@ public class Simulation extends JPanel implements Runnable {
     		addSampleFromFile(well9proteins, "Well 9");
     	if(well10proteins != null)
     		addSampleFromFile(well10proteins, "Well 10");
-    	
+    	repaint();
 		shouldReset = true;
 	}
+    
+    public void paintReset(Graphics g) {
+    	g.setColor(Color.blue);
+    	g.drawRect(wellOpening1X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	if(well2proteins != null){
+    		g.drawRect(wellOpening2X, wellOpeningY + wellOpeningHeight/4, wellOpeningWidth, wellOpeningHeight/4);
+    	}
+    	if(well3proteins != null){
+    		g.drawRect(wellOpening3X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well4proteins != null) {
+    		g.drawRect(wellOpening4X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well5proteins != null){
+    		g.drawRect(wellOpening5X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well6proteins != null){
+    		g.drawRect(wellOpening6X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well7proteins != null){
+    		g.drawRect(wellOpening7X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well8proteins != null){
+    		g.drawRect(wellOpening8X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well9proteins != null){
+    		g.drawRect(wellOpening9X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    	if(well10proteins != null){
+    		g.drawRect(wellOpening10X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	}
+    }
     
     /*
      * resets the wells that files are put into
@@ -1206,9 +1260,6 @@ public class Simulation extends JPanel implements Runnable {
      * @param d the speed coefficient that changes with the voltage
      */
     public void updateSpeed(double d, Acrylamide acrgel){
-    	//TODO
-    	//I have some form of it working, i need it to fall in between ranges and somehow
-    	// calculate a movement value to still fall in those ranges.
     	speed = d;
     	if(gel == null)
     		gel = acrgel;
@@ -1610,6 +1661,10 @@ public class Simulation extends JPanel implements Runnable {
             well8samp.drawSample(offScreenGraphics);
             well9samp.drawSample(offScreenGraphics);
             well10samp.drawSample(offScreenGraphics);
+            if(!shouldReset) {
+            	System.out.println("TEST-----");
+            	paintReset(offScreenGraphics);
+            }
             
         } else
             drawGraph(offScreenGraphics);
