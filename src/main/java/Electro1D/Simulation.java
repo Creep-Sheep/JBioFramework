@@ -1195,6 +1195,8 @@ public class Simulation extends JPanel implements Runnable {
     		addSampleFromFile(well9proteins, "Well 9");
     	if(well10proteins != null)
     		addSampleFromFile(well10proteins, "Well 10");
+    	updateSpeed(speed, gel);
+    	
     	paintRedoWells = true;
     	validate();
     	repaint();
@@ -1204,33 +1206,33 @@ public class Simulation extends JPanel implements Runnable {
     public void paintReset(Graphics g) {
     	//super.paintComponent(g);
     	g.setColor(Color.blue);
-    	g.fillRect(wellOpening1X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    	g.fillRect(wellOpening1X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	if(well2proteins != null){
-    		g.fillRect(wellOpening2X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening2X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well3proteins != null){
-    		g.fillRect(wellOpening3X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    	if(well3proteins != null) {
+    		g.fillRect(wellOpening3X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well4proteins != null) {
-    		g.fillRect(wellOpening4X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening4X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well5proteins != null){
-    		g.fillRect(wellOpening5X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening5X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well6proteins != null){
-    		g.fillRect(wellOpening6X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening6X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well7proteins != null){
-    		g.fillRect(wellOpening7X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening7X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well8proteins != null){
-    		g.fillRect(wellOpening8X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening8X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well9proteins != null){
-    		g.fillRect(wellOpening9X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening9X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	if(well10proteins != null){
-    		g.fillRect(wellOpening10X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
+    		g.fillRect(wellOpening10X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	
     }

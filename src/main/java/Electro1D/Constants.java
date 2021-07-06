@@ -13,7 +13,7 @@ import java.awt.Color;
 public interface Constants {
 
 	//Why is low 8x10^16 or something like that, it should not be that high I dont think
-    public final double low = 80000000000000004D;
+    public final double low = 0.5D;// why is it 80000000000000004D
     public final double medium = 1.0D;
     public final double high = 1.5D;
     public final double highX2 = 2D;
