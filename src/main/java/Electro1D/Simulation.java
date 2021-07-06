@@ -198,6 +198,7 @@ public class Simulation extends JPanel implements Runnable {
 	FileInput fi;
 	double speed;
 	boolean shouldReset;
+	boolean paintRedoWells;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -268,6 +269,7 @@ public class Simulation extends JPanel implements Runnable {
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
         shouldReset = true;
+        paintRedoWells = false;
         resetWell();
     
         this.setTransferHandler(new TransferHandler() {
@@ -1193,40 +1195,44 @@ public class Simulation extends JPanel implements Runnable {
     		addSampleFromFile(well9proteins, "Well 9");
     	if(well10proteins != null)
     		addSampleFromFile(well10proteins, "Well 10");
+    	paintRedoWells = true;
+    	validate();
     	repaint();
 		shouldReset = true;
 	}
     
     public void paintReset(Graphics g) {
+    	//super.paintComponent(g);
     	g.setColor(Color.blue);
-    	g.drawRect(wellOpening1X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    	g.fillRect(wellOpening1X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	if(well2proteins != null){
-    		g.drawRect(wellOpening2X, wellOpeningY + wellOpeningHeight/4, wellOpeningWidth, wellOpeningHeight/4);
+    		g.fillRect(wellOpening2X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well3proteins != null){
-    		g.drawRect(wellOpening3X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening3X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well4proteins != null) {
-    		g.drawRect(wellOpening4X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening4X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well5proteins != null){
-    		g.drawRect(wellOpening5X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening5X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well6proteins != null){
-    		g.drawRect(wellOpening6X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening6X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well7proteins != null){
-    		g.drawRect(wellOpening7X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening7X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well8proteins != null){
-    		g.drawRect(wellOpening8X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening8X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well9proteins != null){
-    		g.drawRect(wellOpening9X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening9X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
     	if(well10proteins != null){
-    		g.drawRect(wellOpening10X, wellOpeningY + wellOpeningHeight/2, wellOpeningWidth, wellOpeningHeight/2);
+    		g.fillRect(wellOpening10X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/5, wellOpeningWidth, wellOpeningHeight/5);
     	}
+    	
     }
     
     /*
@@ -1649,6 +1655,10 @@ public class Simulation extends JPanel implements Runnable {
             	paintAddition(offScreenGraphics);
             else if (addSampleFileFlag)
             	paintAddition(offScreenGraphics);
+            if(paintRedoWells) 	{
+            	paintReset(offScreenGraphics);
+            	paintRedoWells = false;
+        	}
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
             //sampSample2.drawSample(offScreenGraphics);
@@ -1661,10 +1671,6 @@ public class Simulation extends JPanel implements Runnable {
             well8samp.drawSample(offScreenGraphics);
             well9samp.drawSample(offScreenGraphics);
             well10samp.drawSample(offScreenGraphics);
-            if(!shouldReset) {
-            	System.out.println("TEST-----");
-            	paintReset(offScreenGraphics);
-            }
             
         } else
             drawGraph(offScreenGraphics);
