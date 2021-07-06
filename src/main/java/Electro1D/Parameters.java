@@ -512,8 +512,8 @@ public class Parameters extends JPanel implements Constants {
         contr.setLayout(new GridLayout(2,3,0,5));
         contr.setBackground(Color.lightGray);
         JLabel stds = new JLabel("Standards", SwingConstants.CENTER);
-        JLabel strt = new JLabel("Start", SwingConstants.CENTER);
-        JLabel stp = new JLabel("Stop", SwingConstants.CENTER);
+        JLabel strt = new JLabel("Start Run", SwingConstants.CENTER);
+        JLabel stp = new JLabel("Stop Run", SwingConstants.CENTER);
         contr.add(stds);
         contr.add(strt);
         contr.add(stp);
