@@ -56,6 +56,10 @@ public class Protein {
     public void setMaxPosition(int i) {
         maxPosition = i;
     }
+    
+    public void setConcentration(int i) {
+    	concentration = i;
+    }
 
     boolean matchPlotPosition(int i, int j) {
         byte byte0 = 3;
@@ -102,6 +106,7 @@ public class Protein {
         }
     }
 
+    int concentration;
     int startY;
     public float scaleFactor;
     public double relativeMigration;

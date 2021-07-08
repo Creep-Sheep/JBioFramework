@@ -482,7 +482,8 @@ public class FileInput {
         Vector<String> functions = new Vector<>(); //holds the protein functions
         Vector<String> molecularWeightStrings = new Vector<>(); //hold molecular weights
         Vector<Protein> proteins = new Vector<>();//holds the list of protiens
-		
+        Vector<String> concentrations = new Vector<>();
+        
 		if (data == null || data.equals("")) {
 			try {
 				in = new BufferedReader(new FileReader(f));
@@ -507,7 +508,6 @@ public class FileInput {
         }
 		
 		if (anerror == false) {
-			
 			for (int x = 0; x < fileData.size(); x++) {
 				temp = fileData.elementAt(x);
 				if(temp.substring(0, 1).equals(">")) {
@@ -531,6 +531,11 @@ public class FileInput {
                     functions.addElement(temp.substring(temp.lastIndexOf("|")
                             + 1));
                     totalChain = "";
+                    if(temp.indexOf("|$#") != -1) {
+                    	concentrations.add(temp.substring(temp.indexOf("|$#") + 3, temp.indexOf("|$#") + 4));
+                    }
+                    else
+                    	concentrations.add("1");
 				}
 				else {
 					totalChain += temp;
@@ -561,6 +566,8 @@ public class FileInput {
 			for(int i = 0; i < sequences.size(); i++) {
 				proteins.add(new Protein(sequenceTitles.elementAt(i), "", "",
 						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[rand.nextInt(8)]));
+				proteins.get(i).setConcentration(Integer.parseInt(concentrations.elementAt(i)));
+				System.out.println(proteins.get(i).concentration);
 			}
 			
 		}
