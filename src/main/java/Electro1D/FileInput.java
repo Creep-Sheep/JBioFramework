@@ -532,8 +532,7 @@ public class FileInput {
                             + 1));
                     totalChain = "";
                     if(temp.indexOf("|$#") != -1) {
-                    	concentrations.add(temp.substring(temp.indexOf("|$#") + 3, temp.indexOf("|$#") + 4));
-                    }
+                    	concentrations.add(temp.substring(temp.indexOf("|$#") + 3, temp.indexOf("|$#") + 4));                    }
                     else
                     	concentrations.add("1");
 				}
@@ -567,7 +566,6 @@ public class FileInput {
 				proteins.add(new Protein(sequenceTitles.elementAt(i), "", "",
 						(int) Double.parseDouble(molecularWeightStrings.elementAt(i)), colors[rand.nextInt(8)]));
 				proteins.get(i).setConcentration(Integer.parseInt(concentrations.elementAt(i)));
-				System.out.println(proteins.get(i).concentration);
 			}
 			
 		}

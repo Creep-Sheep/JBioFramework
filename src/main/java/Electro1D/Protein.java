@@ -80,6 +80,7 @@ public class Protein {
         height = 2;
         decider = 1;
         counter = 1;
+        concentration = 1;
     }
 
     Protein(String s, String s1, String s2, int i, Color color1) {
@@ -93,12 +94,13 @@ public class Protein {
         abbr = s2;
         mw = i;
         color = color1;
+        concentration = 1;
     }
 
     public boolean drawProtein(Graphics g) {
         if (y1 < maxPosition) {
             g.setColor(color);
-            g.fillRect(x1, y1, width, height);
+            g.fillRect(x1 - concentration * 2, y1, width + concentration * 4, height + concentration - 1);
             IncrPosition();
             return true;
         } else {
