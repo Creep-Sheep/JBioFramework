@@ -558,25 +558,12 @@ public class Simulation extends JPanel implements Runnable {
             dye10.setMaxPosition(plateBottom);
             dye10.SetHostScaleFactor(scaleFactor);
         }
-        /*
-        sample1.setWidth(wellOpening2Width);
-        sample1.setStartPosition(wellOpening2X, wellBottom);
-        sample1.setMaxPosition(plateBottom);
-        sample1.SetHostScaleFactor(scaleFactor);
-        */
         dye1.setWidth(wellOpening1Width);
         dye1.setStartPosition(wellOpening1X, wellBottom);
         dye1.setMaxPosition(plateBottom);
         dye1.SetHostScaleFactor(scaleFactor);
-        /*
-        dye2.setWidth(wellOpening2Width);
-        dye2.setStartPosition(wellOpening2X, wellBottom);
-        dye2.setMaxPosition(plateBottom);
-        dye2.SetHostScaleFactor(scaleFactor);         
-        */
+        
         stdSample.setRatio(0);
-        //sampSample1.setRatio(0);
-        //sampSample2.setRatio(0);
         well2samp.setRatio(0);
         well3samp.setRatio(0);
         well4samp.setRatio(0);
@@ -588,8 +575,6 @@ public class Simulation extends JPanel implements Runnable {
         well10samp.setRatio(0);
         
         stdSample.drawSwitch(true);
-        //sampSample1.drawSwitch(true);
-        //sampSample2.drawSwitch(true);
         well2samp.drawSwitch(true);
         well3samp.drawSwitch(true);
         well4samp.drawSwitch(true);
@@ -601,8 +586,6 @@ public class Simulation extends JPanel implements Runnable {
         well10samp.drawSwitch(true);
         
         stdSample.empty();
-        //sampSample1.empty();
-        //sampSample2.empty();
         well2samp.empty();
         well3samp.empty();
         well4samp.empty();
@@ -618,8 +601,6 @@ public class Simulation extends JPanel implements Runnable {
         ResetFlags();
         runSampleFlag = true;
         stdLoadState = notLoaded;
-        //samp1LoadState = notLoaded;
-        //samp2LoadState = notLoaded;
         sampFileLoadState = notLoaded;
         setPause("elute");
         start();
@@ -1342,6 +1323,7 @@ public class Simulation extends JPanel implements Runnable {
     	int mwRemainder; 
     	double rangeTraveled;
     	double speedRange;*/
+    	
     	if(well2proteins != null) {
         	for(int x = 0; x < well2proteins.size(); x++) {
         		mw = well2proteins.get(x).mw;
