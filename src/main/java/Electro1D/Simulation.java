@@ -199,6 +199,15 @@ public class Simulation extends JPanel implements Runnable {
 	double speed;
 	boolean shouldReset;
 	boolean paintRedoWells;
+	boolean redoWell2;
+	boolean redoWell3;
+	boolean redoWell4;
+	boolean redoWell5;
+	boolean redoWell6;
+	boolean redoWell7;
+	boolean redoWell8;
+	boolean redoWell9;
+	boolean redoWell10;
 
     /**
      * constructor that take instant of the Electro1D parent class
@@ -270,6 +279,15 @@ public class Simulation extends JPanel implements Runnable {
         this.addMouseListener(msl);
         shouldReset = true;
         paintRedoWells = false;
+        redoWell2 = false;
+        redoWell3 = false;
+        redoWell4 = false;
+        redoWell5 = false;
+        redoWell6 = false;
+        redoWell7 = false;
+        redoWell8 = false;
+        redoWell9 = false;
+        redoWell10 = false;
         resetWell();
     
         this.setTransferHandler(new TransferHandler() {
@@ -595,6 +613,8 @@ public class Simulation extends JPanel implements Runnable {
         well9samp.empty();
         well10samp.empty();
         
+        paintRedoWells = false;
+        updateRedo();
         ResetFlags();
         runSampleFlag = true;
         stdLoadState = notLoaded;
@@ -1177,24 +1197,42 @@ public class Simulation extends JPanel implements Runnable {
     	shouldReset = false;
     	
     	addStandard();
-       	if(well2proteins != null)
+       	if(well2proteins != null) {
     		addSampleFromFile(well2proteins, "Well 2");
-    	if(well3proteins != null)
+    		redoWell2 = true;
+       	}
+    	if(well3proteins != null) {
     		addSampleFromFile(well3proteins, "Well 3");
-    	if(well4proteins != null)
+    		redoWell3 = true;
+    	}
+    	if(well4proteins != null) {
     		addSampleFromFile(well4proteins, "Well 4");
-    	if(well5proteins != null)
+    		redoWell4 = true;
+    	}
+    	if(well5proteins != null) {
     		addSampleFromFile(well5proteins, "Well 5");
-    	if(well6proteins != null)
+    		redoWell5 = true;
+    	}
+    	if(well6proteins != null) {
     		addSampleFromFile(well6proteins, "Well 6");
-    	if(well7proteins != null)
+    		redoWell6 = true;
+    	}
+    	if(well7proteins != null) {
     		addSampleFromFile(well7proteins, "Well 7");
-    	if(well8proteins != null)
+    		redoWell7 = true;
+    	}
+    	if(well8proteins != null) {
     		addSampleFromFile(well8proteins, "Well 8");
-    	if(well9proteins != null)
+    		redoWell8 = true;
+    	}
+    	if(well9proteins != null) {
     		addSampleFromFile(well9proteins, "Well 9");
-    	if(well10proteins != null)
+    		redoWell9 = true;
+    	}
+    	if(well10proteins != null) {
     		addSampleFromFile(well10proteins, "Well 10");
+    		redoWell10 = true;
+    	}
     	updateSpeed(speed, gel);
     	
     	paintRedoWells = true;
@@ -1207,34 +1245,46 @@ public class Simulation extends JPanel implements Runnable {
     	//super.paintComponent(g);
     	g.setColor(Color.blue);
     	g.fillRect(wellOpening1X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
-    	if(well2proteins != null){
+    	if(redoWell2){
     		g.fillRect(wellOpening2X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well3proteins != null) {
+    	if(redoWell3) {
     		g.fillRect(wellOpening3X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well4proteins != null) {
+    	if(redoWell4) {
     		g.fillRect(wellOpening4X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well5proteins != null){
+    	if(redoWell5){
     		g.fillRect(wellOpening5X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well6proteins != null){
+    	if(redoWell6){
     		g.fillRect(wellOpening6X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well7proteins != null){
+    	if(redoWell7){
     		g.fillRect(wellOpening7X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well8proteins != null){
+    	if(redoWell8){
     		g.fillRect(wellOpening8X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well9proteins != null){
+    	if(redoWell9){
     		g.fillRect(wellOpening9X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
-    	if(well10proteins != null){
+    	if(redoWell10){
     		g.fillRect(wellOpening10X, wellOpeningY + wellOpeningHeight - wellOpeningHeight/6, wellOpeningWidth, wellOpeningHeight/6);
     	}
     	
+    }
+    
+    public void updateRedo() {
+    	redoWell2 = false;
+    	redoWell3 = false;
+    	redoWell4 = false;
+    	redoWell5 = false;
+    	redoWell6 = false;
+    	redoWell7 = false;
+    	redoWell8 = false;
+    	redoWell9 = false;
+    	redoWell10 = false;
     }
     
     /*
@@ -1659,7 +1709,6 @@ public class Simulation extends JPanel implements Runnable {
             	paintAddition(offScreenGraphics);
             if(paintRedoWells) 	{
             	paintReset(offScreenGraphics);
-            	paintRedoWells = false;
         	}
             stdSample.drawSample(offScreenGraphics);
             sampSample1.drawSample(offScreenGraphics);
