@@ -100,7 +100,10 @@ public class Protein {
     public boolean drawProtein(Graphics g) {
         if (y1 < maxPosition) {
             g.setColor(color);
-            g.fillRect(x1 - concentration * 2, y1, width + concentration * 4, height + concentration - 1);
+            if(concentration == 1)
+            	g.fillRect(x1, y1, width, height);
+            else
+            	g.fillRect(x1 - concentration, y1, width + concentration * 2, height + concentration);
             IncrPosition();
             return true;
         } else {
