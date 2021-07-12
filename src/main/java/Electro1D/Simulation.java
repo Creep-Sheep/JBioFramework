@@ -897,10 +897,11 @@ public class Simulation extends JPanel implements Runnable {
         start();
     }
 
-	public void addSample() {
+	public void addSample(Protein[] stds) {
         if (stdLoadState == loading || samp2LoadState == loading) {
             return;
         }
+        stdSamples = stds;
         stopRun();
         sampSample1.reset();
         sampSample1.fill();
@@ -1323,6 +1324,13 @@ public class Simulation extends JPanel implements Runnable {
     	int mwRemainder; 
     	double rangeTraveled;
     	double speedRange;*/
+    	stdSamples[0].speed = 0.048245000000000003D * d;
+    	stdSamples[1].speed = 0.35087200000000002D * d;
+    	stdSamples[2].speed = 0.46814299999999998D * d;
+    	stdSamples[3].speed = 0.49524400000000002D * d;
+    	stdSamples[4].speed = 0.62672099999999997D * d;
+    	stdSamples[5].speed = 0.68241399999999997D * d;
+    	stdSamples[6].speed = 0.92105300000000001D * d;
     	
     	if(well2proteins != null) {
         	for(int x = 0; x < well2proteins.size(); x++) {
@@ -1928,6 +1936,10 @@ public class Simulation extends JPanel implements Runnable {
 
     }
     public void increaseDDNum() { ddNum++; }
+
+	public void setStandards(Protein[] stds) {
+		stdSamples = stds;
+	}
 
 
 }

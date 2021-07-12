@@ -184,9 +184,9 @@ public class Electrophoresis extends JPanel {
 	/**
 	 * adding the sample
 	 */
-	public void addSample() {
+	public void addSample(Protein[] stds) {
 
-		simPanel.addSample();
+		simPanel.addSample(stds);
 	}
 
 	public void addSample2() {
@@ -206,6 +206,10 @@ public class Electrophoresis extends JPanel {
 	public void updateSpeed(double d, Acrylamide acrgel) {
 		
 		simPanel.updateSpeed(d, acrgel);
+	}
+	
+	public void setStandards(Protein[] stds) {
+		simPanel.setStandards(stds);
 	}
 	
 	public void resetWells() {
@@ -238,4 +242,4 @@ public class Electrophoresis extends JPanel {
 		f.setVisible(true);
 	}
 
-	}
+}
