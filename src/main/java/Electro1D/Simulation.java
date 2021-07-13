@@ -429,6 +429,7 @@ public class Simulation extends JPanel implements Runnable {
             repaint();
             return;
         }
+        updateSpeed(speed, gel);
         stdSamples = aprotein;
         sample1 = protein1;
         sample2 = protein2;
@@ -1338,9 +1339,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well2proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well2proteins.get(x).speed = .95;
+        			well2proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well2proteins.get(x).speed *= -1;
+        			well2proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well3proteins != null) {
@@ -1349,9 +1350,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well3proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well3proteins.get(x).speed = .95;
+        			well3proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well3proteins.get(x).speed *= -1;
+        			well3proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well4proteins != null) {
@@ -1360,9 +1361,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well4proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well4proteins.get(x).speed = .95;
+        			well4proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well4proteins.get(x).speed *= -1;
+        			well4proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well5proteins != null) {
@@ -1371,9 +1372,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well5proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well5proteins.get(x).speed = .95;
+        			well5proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well5proteins.get(x).speed *= -1;
+        			well5proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well6proteins != null) {
@@ -1382,9 +1383,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well6proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well6proteins.get(x).speed = .95;
+        			well6proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well6proteins.get(x).speed *= -1;
+        			well6proteins.get(x).speed *= -1 * d;
         		
         	}
     	}
@@ -1394,9 +1395,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well7proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well7proteins.get(x).speed = .95;
+        			well7proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well7proteins.get(x).speed *= -1;
+        			well7proteins.get(x).speed *= -1 * d;
         		
         	}
     	}
@@ -1406,9 +1407,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well8proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well8proteins.get(x).speed = .95;
+        			well8proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well8proteins.get(x).speed *= -1;
+        			well8proteins.get(x).speed *= -1 * d;
         		
         	}
     	}
@@ -1418,9 +1419,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well9proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well9proteins.get(x).speed = .95;
+        			well9proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well9proteins.get(x).speed *= -1;
+        			well9proteins.get(x).speed *= -1 * d;
         		
         	}
     	}
@@ -1430,9 +1431,9 @@ public class Simulation extends JPanel implements Runnable {
         		speed = (Math.log10(mw) - b) / slope;
         		well10proteins.get(x).speed = speed * d;
         		if(speed > 1)
-        			well10proteins.get(x).speed = .95;
+        			well10proteins.get(x).speed = .95 * d;
         		if(speed < 0)
-        			well10proteins.get(x).speed *= -1;
+        			well10proteins.get(x).speed *= -1 * d;
         		
         	}
     	}
