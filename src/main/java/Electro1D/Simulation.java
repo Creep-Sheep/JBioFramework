@@ -969,7 +969,7 @@ public class Simulation extends JPanel implements Runnable {
             }	
             ResetFlags();
             well2proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well2proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -993,7 +993,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well3proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well3proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1017,7 +1017,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well4proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well4proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1041,7 +1041,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well5proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well5proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1065,7 +1065,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well6proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1089,7 +1089,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well7proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1113,7 +1113,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well8proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1137,7 +1137,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well9proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1161,7 +1161,7 @@ public class Simulation extends JPanel implements Runnable {
             }
             ResetFlags();
             well10proteins = proteins;
-            updateSpeed(1, null);
+            updateSpeed(speed, gel);
             //setAcrylamideEffect(well6proteins); 
             addSampleFileFlag = true;
             sampFileLoadState = loading;
@@ -1302,8 +1302,7 @@ public class Simulation extends JPanel implements Runnable {
      */
     public void updateSpeed(double d, Acrylamide acrgel){
     	speed = d;
-    	if(gel == null)
-    		gel = acrgel;
+    	gel = acrgel;
     	int mw;
     	double slope;
     	double b;
@@ -1320,7 +1319,7 @@ public class Simulation extends JPanel implements Runnable {
     		slope = -0.906781981037;
     		b = 4.714783861725;
     	}
-    	double speed;
+    	double speedTemp;
     	/*int mwRange;
     	int mwRemainder; 
     	double rangeTraveled;
@@ -1336,55 +1335,55 @@ public class Simulation extends JPanel implements Runnable {
     	if(well2proteins != null) {
         	for(int x = 0; x < well2proteins.size(); x++) {
         		mw = well2proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well2proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well2proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well2proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well2proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well3proteins != null) {
         	for(int x = 0; x < well3proteins.size(); x++) {
         		mw = well3proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well3proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well3proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well3proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well3proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well4proteins != null) {
         	for(int x = 0; x < well4proteins.size(); x++) {
         		mw = well4proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well4proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well4proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well4proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well4proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well5proteins != null) {
         	for(int x = 0; x < well5proteins.size(); x++) {
         		mw = well5proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well5proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well5proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well5proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well5proteins.get(x).speed *= -1 * d;
         	}
     	}
     	if(well6proteins != null) {
         	for(int x = 0; x < well6proteins.size(); x++) {
         		mw = well6proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well6proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well6proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well6proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well6proteins.get(x).speed *= -1 * d;
         		
         	}
@@ -1392,11 +1391,11 @@ public class Simulation extends JPanel implements Runnable {
     	if(well7proteins != null) {
         	for(int x = 0; x < well7proteins.size(); x++) {
         		mw = well7proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well7proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well7proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well7proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well7proteins.get(x).speed *= -1 * d;
         		
         	}
@@ -1404,11 +1403,11 @@ public class Simulation extends JPanel implements Runnable {
     	if(well8proteins != null) {
         	for(int x = 0; x < well8proteins.size(); x++) {
         		mw = well8proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well8proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well8proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well8proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well8proteins.get(x).speed *= -1 * d;
         		
         	}
@@ -1416,11 +1415,11 @@ public class Simulation extends JPanel implements Runnable {
     	if(well9proteins != null) {
         	for(int x = 0; x < well9proteins.size(); x++) {
         		mw = well9proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well9proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well9proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well9proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well9proteins.get(x).speed *= -1 * d;
         		
         	}
@@ -1428,11 +1427,11 @@ public class Simulation extends JPanel implements Runnable {
     	if(well10proteins != null) {
         	for(int x = 0; x < well10proteins.size(); x++) {
         		mw = well10proteins.get(x).mw;
-        		speed = (Math.log10(mw) - b) / slope;
-        		well10proteins.get(x).speed = speed * d;
-        		if(speed > 1)
+        		speedTemp = (Math.log10(mw) - b) / slope;
+        		well10proteins.get(x).speed = speedTemp * d;
+        		if(speedTemp > 1)
         			well10proteins.get(x).speed = .95 * d;
-        		if(speed < 0)
+        		if(speedTemp < 0)
         			well10proteins.get(x).speed *= -1 * d;
         		
         	}
