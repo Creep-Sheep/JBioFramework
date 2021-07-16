@@ -332,7 +332,6 @@ public class Simulation extends JPanel implements Runnable {
 		if (stdLoadState == loading || sampFileLoadState == loading) 
             return;
      
-		Vector<Protein> proteinTemp;
 		if(p.x > wellOpening2X && p.x < wellOpening2X+wellOpeningWidth && p.y > wellOpeningY && p.y < wellOpeningY+wellOpeningHeight) {
 			fi.loadFile(f, "Well 2", this);
 		}
@@ -386,9 +385,9 @@ public class Simulation extends JPanel implements Runnable {
     /**
      * paintData(Graphics g)
      * draw protein info on the simulation panel
-     *
+     * TODO
      * @param g
-     */
+     */ 
     private void paintData(Graphics g) {
         g.setColor(Color.black);
         int i = charHeight + 17;

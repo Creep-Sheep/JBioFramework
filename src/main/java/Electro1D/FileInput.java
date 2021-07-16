@@ -551,7 +551,7 @@ public class FileInput {
 				temp = sequences.elementAt(i);
 				//get the mw for the sequence
 				mW = GenomeFileParser.getMW(temp);
-				System.out.println(mW);
+				//System.out.println(mW);
 				mWstring = String.valueOf(mW);
 				if(mWstring.length() > mWstring.indexOf('.') + 3) {
 					mWstring = mWstring.substring(0, mWstring.indexOf('.') + 3);
