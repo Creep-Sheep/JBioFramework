@@ -143,6 +143,7 @@ public class Parameters extends JPanel implements Constants {
         voltageSub1Panel = new JPanel();
         voltageSub2Panel = new JPanel();
         controlPanel = new JPanel();
+        colorPanelTop = new JPanel();
         color1Panel = new JPanel();
         color2Panel = new JPanel();
         color3Panel = new JPanel();
@@ -151,6 +152,7 @@ public class Parameters extends JPanel implements Constants {
         color6Panel = new JPanel();
         color7Panel = new JPanel();
         voltacrPanel = new JPanel();
+        resetPanel = new JPanel();
         parent = electrophoresis;
 
         stdProteinArray[std1Ref] = new Protein("Standard #1",
@@ -217,7 +219,7 @@ public class Parameters extends JPanel implements Constants {
         // headerPanel.add(headerSub1);
         headerPanel.add(headerSub2);
 
-        dropPanel.setLayout(new GridLayout(1, 1));
+        dropPanel.setLayout(new GridLayout(2, 1));
         labelPanel1.setLayout(new GridLayout(1, 2));
 
         JLabel unknownLabel1 = new JLabel("Well 2");//Unkown Proteins
@@ -343,7 +345,7 @@ public class Parameters extends JPanel implements Constants {
         standard7.addItemListener(sll);
         // end check boxes
         
-        JButton resetwells = new JButton("Redo Wells");
+        JButton resetwells = new JButton("Refill Wells");
         resetwells.setToolTipText("Reset wells with the same samples");
         resetwells.addActionListener(new ActionListener() {
             
@@ -353,7 +355,18 @@ public class Parameters extends JPanel implements Constants {
         	}
             
         });
-        colorPanel.add(resetwells);
+        resetPanel.add(resetwells);
+        JButton clearwells = new JButton("Clear Wells");
+        clearwells.setToolTipText("Clear the wells");
+        clearwells.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		parent.clearWells();
+        	}
+            
+        });
+        resetPanel.add(clearwells);
         helperMethod1();
 
         JButton addStandard = new JButton("Add");
@@ -550,6 +563,7 @@ public class Parameters extends JPanel implements Constants {
     }
 
     private void helperMethod1() {
+    	colorPanelTop.setBackground(Color.lightGray);
         color1Panel.setBackground(stdProteinArray[std1Ref].color);
         color2Panel.setBackground(stdProteinArray[std2Ref].color);
         color3Panel.setBackground(stdProteinArray[std3Ref].color);
@@ -562,6 +576,7 @@ public class Parameters extends JPanel implements Constants {
         //colorbuffer.setOpaque(true);
         colorbuffer.setBackground(Color.lightGray);
         //colorPanel.add(colorbuffer);
+        colorPanel.add(colorPanelTop);
         colorPanel.add(color1Panel);
         colorPanel.add(color2Panel);
         colorPanel.add(color3Panel);
@@ -579,6 +594,8 @@ public class Parameters extends JPanel implements Constants {
         selectionPanel2.add(standardPanel);
         selectionPanel2.add(colorPanel);
         //dropPanel.add(labelPanel1);
+        // THIS IS WHERE THE GRID OF BUTTONS TO ADD GETS ADDED
+        dropPanel.add(resetPanel);
         dropPanel.add(selectionPanel1);
         //dropPanel.add(labelPanel2);
         controlPanel.setLayout(new GridLayout(2, 1, 0, 5));//should be 3, 2, 10, 10
@@ -761,6 +778,7 @@ public class Parameters extends JPanel implements Constants {
     JPanel voltageSub1Panel;
     JPanel voltageSub2Panel;
     JPanel controlPanel;
+    JPanel colorPanelTop;
     JPanel color1Panel;
     JPanel color2Panel;
     JPanel color3Panel;
@@ -768,6 +786,7 @@ public class Parameters extends JPanel implements Constants {
     JPanel color5Panel;
     JPanel color6Panel;
     JPanel color7Panel;
+    JPanel resetPanel;
     JCheckBox standard1;
     JCheckBox standard2;
     JCheckBox standard3;

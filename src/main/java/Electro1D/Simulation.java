@@ -1294,6 +1294,13 @@ public class Simulation extends JPanel implements Runnable {
 		ddNum = 1;
 	}
     
+    public void clearWells() {
+    	resetWell();
+    	stdSample.reset();
+    	ResetFlags();
+    	repaint();
+	}
+    
     /*
      * updates the speeds for each of the file wells
      * 
@@ -1931,6 +1938,5 @@ public class Simulation extends JPanel implements Runnable {
 	public void setStandards(Protein[] stds) {
 		stdSamples = stds;
 	}
-
 
 }

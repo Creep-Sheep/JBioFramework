@@ -216,6 +216,10 @@ public class Electrophoresis extends JPanel {
 		simPanel.redoWells();
 	}
 	
+	public void clearWells() {
+		simPanel.clearWells();
+	}
+	
 	/**
 	 * configure the animation speed
 	 *
@@ -241,5 +245,7 @@ public class Electrophoresis extends JPanel {
 		f.pack();
 		f.setVisible(true);
 	}
+
+	
 
 }
