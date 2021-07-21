@@ -345,6 +345,7 @@ public class Parameters extends JPanel implements Constants {
         standard7.addItemListener(sll);
         // end check boxes
         
+        resetPanel.setLayout(new GridLayout(2, 1));
         JButton resetwells = new JButton("Refill Wells");
         resetwells.setToolTipText("Reset wells with the same samples");
         resetwells.addActionListener(new ActionListener() {
@@ -355,6 +356,7 @@ public class Parameters extends JPanel implements Constants {
         	}
             
         });
+        //resetwells.setBackground(Color.orange);
         resetPanel.add(resetwells);
         JButton clearwells = new JButton("Clear Wells");
         clearwells.setToolTipText("Clear the wells");
