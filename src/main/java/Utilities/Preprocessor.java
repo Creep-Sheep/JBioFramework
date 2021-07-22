@@ -51,6 +51,8 @@ public class Preprocessor {
 	
 	private static Random rand = new Random();
 
+	private final static double[] partialCharges = new double[256];
+
 	private final static double[] mws = new double[256];
 
 	static {
@@ -83,7 +85,7 @@ public class Preprocessor {
 	}
 
 	private static final String EXTENTION = ".e2d";
-	private static final int HEADER_LENGTH = 12;
+	private static final int HEADER_WIDTH = 12;
 	private final int lineLength = 50;
 
 	private final String FILE_HEADER = "FILE:       ";
@@ -105,8 +107,6 @@ public class Preprocessor {
 	private String inputName;
 	private double[] minmax;
 	private boolean is1D;
-
-	private int headWidth;
 
 	private String line;
 
@@ -171,12 +171,7 @@ public class Preprocessor {
 		}
 	}
 
-	public static int getHeaderLength() {
-		return HEADER_LENGTH;
-	}
-
 	public int readFromFile(BufferedReader reader, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
-		headWidth = getHeaderLength();
 		String err = null;
 		isE2D = true;
 		StringBuffer buf = new StringBuffer();
@@ -187,7 +182,7 @@ public class Preprocessor {
 					break;
 				}
 				if (electro2D != null)
-					electro2D.setLastFileLoaded(line.substring(headWidth));
+					electro2D.setLastFileLoaded(line.substring(HEADER_WIDTH));
 				while ((line = reader.readLine()) != null) {
 					if (line.startsWith("-"))
 						continue;
@@ -227,7 +222,7 @@ public class Preprocessor {
 	private String readE2D(BufferedReader reader, String key, StringBuffer buf) throws IOException {
 		buf.setLength(0);
 		while (line.startsWith(key)) {
-			buf.append(line.substring(headWidth));
+			buf.append(line.substring(HEADER_WIDTH));
 			line = reader.readLine();
 		}
 		return buf.toString();
@@ -385,8 +380,6 @@ public class Preprocessor {
 		htPIcache.put(pro, s);
 		return s; // Method returns the pH at which charge is 0 (pI)
 	}
-
-	final static double[] partialCharges = new double['Z' + 1];
 
 	private static void calculatePartialCharges(double pH) {
 
