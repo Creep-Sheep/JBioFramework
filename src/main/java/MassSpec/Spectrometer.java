@@ -32,7 +32,7 @@ public class Spectrometer {
         sequence = sequence.trim();
         sequence = sequence.toUpperCase();
         if (sequence.matches(".*\\d.*")) {
-            System.out.println("Protein sequence must not contain digits.");
+            System.out.println("Spectrometer.runAnalysis Protein sequence must not contain digits.");
         } else {
             //Code to get rid of any whitespace in the sequence.
             String[] splitSequence = sequence.split("\\s");
@@ -71,7 +71,7 @@ public class Spectrometer {
                     }
                 }
             } catch (ProteaseException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Spectrometer.runAnalysis " + ex.getMessage());
             }
 
             //Count up the number of ions with the same mass charge rotios to

@@ -18,6 +18,7 @@ import javax.swing.JTabbedPane;
 
 //
 import main.java.Utilities.BrowserLauncher;
+import main.java.Utilities.GenomeFileParser;
 
 /**
  * @author Bader Alharbi Desktop application The Swing version 1D
@@ -33,6 +34,7 @@ public class Electrophoresis extends JPanel {
 	Simulation simPanel;
 	ProteinData dataPanel;
 	Plot plotPanel;
+	JFrame parentFrame;
 
 	public void Header() {
 		// @TODO: figure out where we want to put the help button on E1D
@@ -53,9 +55,13 @@ public class Electrophoresis extends JPanel {
 		super.add(headPanel);
 	}
 
-	public Electrophoresis() {
-		super.setPreferredSize(new Dimension(900, 470));//550(i think i want 825, 450: good size: 845, 470
+	public Electrophoresis(JFrame parentFrame) {
+		super.setPreferredSize(new Dimension(900, 470));
+		//550(i think i want 825, 450: good size: 845, 470
 
+    	GenomeFileParser.init();
+
+		this.parentFrame = parentFrame;
 		simPanel = new Simulation(this);
 		paramPanel = new Parameters(this);
 		dataPanel = new ProteinData(this);
@@ -235,7 +241,7 @@ public class Electrophoresis extends JPanel {
 	static public void main(String[] args) {
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		f.add(new Electrophoresis());
+		f.add(new Electrophoresis(f));
 		f.pack();
 		f.setVisible(true);
 	}

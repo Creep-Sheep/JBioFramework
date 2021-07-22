@@ -21,7 +21,7 @@ public class BrowserLauncher {
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("BrowserLauncher.openURL " + e.getMessage());
         }
     }
 

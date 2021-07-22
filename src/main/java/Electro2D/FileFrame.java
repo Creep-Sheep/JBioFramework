@@ -26,21 +26,17 @@ public class FileFrame extends JFrame {
 
 	/** variables for the file reading pop-up frame **/
 	private Electro2D electro2D; // reference to calling applet
-//	private WindowListener ffwl; // listen for window closing, etc.
-	private final String directoryString = "." + File.separator + 
-			//".." + File.separator + 
+	private final String directoryString = "." + File.separator +
+	// ".." + File.separator +
 			"data";
 	private JTextArea instructions;
-//	private JLabel select;
-//    private JComboBox choice;
 	private JButton button;
-//	private JPanel center;
 	private JPanel south;
-//	private String[] sa;
 	private int fileNum;
+	private JFrame parentFrame;
 
-	public FileFrame(Electro2D e, int i) {
-
+	public FileFrame(JFrame parentFrame, Electro2D e, int i) {
+		this.parentFrame = parentFrame;
 		fileNum = i;
 		electro2D = e;
 
@@ -88,6 +84,19 @@ public class FileFrame extends JFrame {
 //		refreshFileList();
 	}
 
+	boolean haveShown = false;
+	
+	public void setVisible(boolean b) {
+		if (b) {
+			setLocationRelativeTo(parentFrame);
+		}
+		super.setVisible(b);
+		if (haveShown) {
+			loadFile();
+		}
+		haveShown = true;
+	}
+
 //    public void refreshFileList() {
 //
 //        choice.removeAllItems();
@@ -110,26 +119,25 @@ public class FileFrame extends JFrame {
 		// change the cursor image
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 //      filename = sa[choice.getSelectedIndex()];
-		
+
 		JFrame frame = this;
-		
+
 		// BH using the AsyncFileChooser for Java and JavaScript
 		File dir = new File(directoryString);
-		System.out.println(dir.getAbsolutePath());
+		// System.out.println(dir.getAbsolutePath());
 		if (!dir.isDirectory())
 			dir = new File("." + File.separator + ".." + File.separator + "data");
 		AsyncFileChooser chooser = new AsyncFileChooser(dir);
 		chooser.showOpenDialog(this, () -> {
-				electro2D.loadFile(chooser.getSelectedFile(), fileNum);
-				// set the cursor image back to normal
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				// close the frame
-				dispose();
-			}, () -> {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				dispose();				
-			});
+			electro2D.loadFile(chooser.getSelectedFile(), fileNum);
+			// set the cursor image back to normal
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			// close the frame
+			dispose();
+		}, () -> {
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			dispose();
+		});
 	}
 
-		
 }

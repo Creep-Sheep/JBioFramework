@@ -29,7 +29,7 @@ public class Converter {
                 SpecAminoAcid newAcid = new SpecAminoAcid(acid);
                 ion.add(newAcid);
             } catch (AminoException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Converter.convert " + ex.getMessage());
             }
         }
         return ion;

@@ -32,6 +32,11 @@ import main.java.Electro2D.Electro2D;
 
 public class GenomeFileParser {
     
+	public static void init() {
+		Preprocessor.init();
+		// just initialize this class to speed later class loading
+	}
+	
     private final static Map<String, String> aminoConversions = new Hashtable<>(); //holds amino conversions
 
     private final static String[] aas = {
@@ -64,253 +69,6 @@ public class GenomeFileParser {
     		aminoConversions.put(aas[i++], aas[i++]);
     }
 
-    private final static Map<String, String> htPIcache = new Hashtable<>();
-    private final static Map<String, String> htMWcache = new Hashtable<>();
-
-    /**
-     * This method calculates the pI from inputed sequence
-     *
-     * @param pro protein sequence
-     * @return returns the pI value
-     */
-    public static String getpI(String pro) {
-
-    	String pi = htPIcache.get(pro);
-    	if (pi != null)
-    		return pi;
-    	
-        // Calculate charge at a certain pH, starting with a pH of 7
-        double pH = 7;
-
-        // pH boundaries used to determine pH where charge is 0
-        double lowpH = 0, highpH = 14;
-
-        // Length of protein sequence
-        int plen = pro.length();
-
-        // Total charge on the protein at specified pH, initialize to 1
-        double charge = 1;
-
-        // Type of AA: a - acid, b - base, n - neutral
-        char type = 'n';
-
-        // pK value of specified AA
-        double pK = 0;
-
-        // Calculate total charge at varying pH values until the
-        // charge is within 0.005 of 0
-        while (Math.abs(charge) >= .005) {
-
-            // Reset charge to 0
-            charge = 0;
-
-            // Calculate the charge for each AA until reach end of sequence
-            // Add the charge for each AA to the value of total charge
-            for (int a = 0; a < plen; a++) {
-
-                // Determine appropriate pK value for current AA
-                // If AA not acid or base, set to neutral
-                // and give default pK of 0
-
-                // pK values were obtained from Bjellqvist, B., Basse, B., Olsen, E.,
-                // Celis, J., Reference points for comparisons of two-dimensional
-                // maps of proteins from different human cell types defined in a
-                // pH scale where isoelectric points correlate with polypeptide
-                // compositions, Electro1DMain 1994, 15, 529-539.
-                switch (pro.charAt(a)) {
-                    case 'R':
-                        type = 'b';
-                        pK = 12;
-                        break;
-                    case 'D':
-                        type = 'a';
-                        pK = 4.05;
-                        break;
-                    case 'C':
-                        type = 'a';
-                        pK = 9;
-                        break;
-                    case 'E':
-                        type = 'a';
-                        pK = 4.75;
-                        break;//pK = 4.45; break;
-                    case 'H':
-                        type = 'b';
-                        pK = 5.98;
-                        break;
-                    case 'K':
-                        type = 'b';
-                        pK = 10;
-                        break;
-                    case 'Y':
-                        type = 'a';
-                        pK = 10;
-                        break;
-                    default:
-                        type = 'n';
-                        pK = 0;
-                        break;
-                }
-
-                // Calculate charge for acids, then add to total charge
-                if (type == 'a') {
-                    charge += -1 /
-                            (1 + Math.pow(10, pK - pH));
-                }
-
-                // Calculate charge for bases, then add to total charge
-                if (type == 'b') {
-                    charge += 1 / (1 + Math.pow(10, pH - pK));
-                }
-            }
-
-            // Calculate charge on C-terminus and add to total charge
-            charge += -1 /
-                    (1 + Math.pow(10, 3.2 - pH));
-
-            // Calculate charge on N-terminus and add to total charge
-            charge += 1 / (1 + Math.pow(10, pH -/*9.53*/8.2));
-
-            // If total charge is greater than +0.005, then
-            // set pH to a higher value and recalculate charge
-            if (charge > 0.005) {
-
-                // Set lower pH limit to value of current pH
-                lowpH = pH;
-
-                // Set new pH to a value midway between current pH
-                // and upper pH limit
-                pH = (lowpH + highpH) / 2;
-            }
-
-            // If total charge is less than -0.005, then
-            // set pH to a lower value and recalculate charge
-            if (charge < -0.005) {
-
-                // Set upper pH limit to value of current pH
-                highpH = pH;
-
-                // Set new pH to a value midway between current
-                // pH and lower pH limit
-                pH = (lowpH + highpH) / 2;
-            }
-        }
-        String s = roundOff(pH, 2);
-        htPIcache.put(pro, s);
-        return s; // Method returns the pH at which charge is 0 (pI)
-    }
-
-	/**
-	 * This method calculates the molecular weight from inputed sequence
-	 *
-	 * @param pro protein sequence
-	 *
-	 * @return returns the molecular weight
-	 */
-	public static String getMW(String pro) {
-		String wt = htMWcache.get(pro);
-		if (wt != null)
-			return wt;
-		// Length of protein sequence
-		int len = pro.length();
-
-		// Molecular weight of protein
-		double mW = 18; // Include molecular weight of water
-
-//     Determine the molecular weight for each AA until reach
-//     end of sequence. Add the weight for each AA to the value
-//	   of total weight. Since a water molecule (MW 18) is lost with
-//	   each bond, the weight given for each AA is its molecular
-//	   weight minus that of water. The MW of one water molecule is
-//	   then added to the total molecular weight of the protein sequence.
-//	   If the AA character does not match one of the 20 accepted
-//	   abbreviations, then a weight of 0 is given for that AA.
-
-		for (int f = 0; f < len; f++) {
-			switch (pro.charAt(f)) {
-			case 'A':
-				mW += 71.0938;
-				break;
-			case 'R':
-				mW += 156.2022;
-				break;
-			case 'N':
-				mW += 114.1188;
-				break;
-			case 'D':
-				mW += 115.1036;
-				break;
-			case 'C':
-				mW += 103.1538;
-				break;
-			case 'Q':
-				mW += 128.1456;
-				break;
-			case 'E':
-				mW += 129.1304;
-				break;
-			case 'G':
-				mW += 57.067;
-				break;
-			case 'H':
-				mW += 137.156;
-				break;
-			case 'I':
-				mW += 113.1742;
-				break;
-			case 'L':
-				mW += 113.1742;
-				break;
-			case 'K':
-				mW += 128.1888;
-				break;
-			case 'M':
-				mW += 131.2074;
-				break;
-			case 'F':
-				mW += 147.1914;
-				break;
-			case 'P':
-				mW += 97.1316;
-				break;
-			case 'S':
-				mW += 87.0932;
-				break;
-			case 'T':
-				mW += 101.12;
-				break;
-			case 'W':
-				mW += 186.228;
-				break;
-			case 'Y':
-				mW += 163.1908;
-				break;
-			case 'V':
-				mW += 99.1474;
-				break;
-			default:
-				break;
-			}
-		}
-
-		// Return the molecular weight of the protein
-		String mWstring = roundOff(mW, 2);
-		htMWcache.put(pro, mWstring);
-		return mWstring;
-	}
-
-    /**
-     * Round off a value to n decimal digits maximum
-     * @param mW
-     * @param n
-     * @return
-     */
-    private static String roundOff(double mW, int n) {
-    	String s = "" + mW;
-    	int pt = s.indexOf('.') + n + 1;
-		return (s.length() > pt ? s.substring(0, pt) : s);
-	}
-
     /**
      * This method parses a .e2d file, extracting sequence information and
      * appropriate descriptor for the sequence.
@@ -324,9 +82,10 @@ public class GenomeFileParser {
      */
     public static int e2dParse(File f, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
         try {
+        	Preprocessor p = new Preprocessor(f, fileNum == 0);
 			BufferedReader reader = new BufferedReader(
 					data == null || data.equals("") ? new FileReader(f) : new StringReader(data));
-	        return Preprocessor.readFromFile(reader, electro2D, fileNum);
+	        return p.readFromFile(reader, proteins, electro2D, fileNum);
         } catch (Exception e) {
             System.err.println("Error reading from file.  Double-check the file name and try again.");
             return 0;
@@ -337,16 +96,16 @@ public class GenomeFileParser {
 	 * This method parses a FASTA file, extracting sequence information and
 	 * appropriate descriptor for the sequence.
 	 *
-	 * @param f    file to retrieve sequence data from
-	 * @param data user-inputed file data
-	 * @param proteins output vector if 1D
+	 * @param f         file to retrieve sequence data from
+	 * @param data      user-inputed file data
+	 * @param proteins  output vector if 1D
 	 * @param electro2D the applet, if 2D
-	 * @param fileNum 0 for 1D, 1 or 2 for 2D
+	 * @param fileNum   0 for 1D, 1 or 2 for 2D
 	 * @return the number of sequences
 	 */
 	public static int fastaParse(File f, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		Preprocessor p = new Preprocessor(f, fileNum == 0);
-		List<String> chainData = new ArrayList<>(); // holds chain designations
+		StringBuffer chainData = new StringBuffer(); // holds chain designations
 		try {
 			BufferedReader reader = new BufferedReader(
 					data == null || data.equals("") ? new FileReader(f) : new StringReader(data));
@@ -361,11 +120,9 @@ public class GenomeFileParser {
 					if (totalChain.length() > 0) {
 						p.sequences.addElement(totalChain);
 					}
-					if (ptCO != 1) {
-						if (ptBAR < 0 || ptBAR >= ptCO) {
-							// this is most likely chain data
-							chainData.add(line.substring(ptCO + 1, ptCO + 2));
-						}
+					if (ptCO > 0 && (ptBAR < 0 || ptBAR > ptCO)) {
+						// this is most likely chain data
+						chainData.append(line.charAt(ptCO + 1));
 					}
 					// add sequence title
 					// just add the whole line
@@ -752,7 +509,7 @@ public class GenomeFileParser {
 	 * @return raw sequence data, or null if the file fails to read
 	 */
 	public static String getFASTASequenceAsSingleLine(File file) {
-		// using Java 8 automatic resource closing 
+		// using Java 8 automatic resource closing
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 			String line;
 			char c;
@@ -764,11 +521,60 @@ public class GenomeFileParser {
 			}
 			return sb.toString();
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage() + " trying to open " + file);
+			System.out.println(
+					"GenomeFileParser.getFASTSequenceAsSingleLine " + ex.getMessage() + " trying to open " + file);
 			return null;
 		}
 	}
-	
+
+	@SuppressWarnings("unused")
+	public static MessageFrame loadFile(File f, Vector<Protein> proteins, Electro2D electro2d, int fileNum) {
+		MessageFrame error = null;
+		String filename = (f == null ? null : f.getName());
+		if (filename == null || filename.equals("")) {
+			error = new MessageFrame();
+			error.setMessage("Please enter a file name.");
+			return error;
+		} 
+		// if the file's extention is not one of the supported types
+		// display an error message
+		String data = null;
+		if (/** @j2sNative true || */
+		false) {
+			data = FileUtils.getStringForFile(f);
+		} else {
+			// In Java we work with the filename.
+		}
+		// call the proper method to read the file depending on
+		// its type
+		// BH using Java 8 switch here
+		int n = 0;
+		long t0 = System.currentTimeMillis();
+		String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+		switch (extension) {
+		case "faa":
+		case "fasta":
+			n = GenomeFileParser.fastaParse(f, data, proteins, electro2d, fileNum);
+			break;
+		case "pdb":
+			n = GenomeFileParser.pdbParse(f, data, proteins, electro2d, fileNum);
+			break;
+		case "gbk":
+			n = GenomeFileParser.gbkParse(f, data, proteins, electro2d, fileNum);
+			break;
+		case "e2d":
+			n = GenomeFileParser.e2dParse(f, data, proteins, electro2d, fileNum);
+			break;
+		default:
+			error = new MessageFrame();
+			error.setMessage("File extension is not valid: " + filename);
+			break;
+		}
+		System.out.println("Time to load " + f + " = " + ((System.currentTimeMillis() - t0)/1000.) + " s with " + n + " proteins");
+
+		return error;
+	}
+
 // BH -- old code was duplicated and not particularly efficient
 //	final static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //

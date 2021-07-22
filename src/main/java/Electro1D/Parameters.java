@@ -743,7 +743,7 @@ public class Parameters extends JPanel implements Constants {
     	setCursor(new Cursor(Cursor.WAIT_CURSOR));
     	//JFrame fileSelctorFrame = this;
     	File dir = new File(directoryString);
-		System.out.println(dir.getAbsolutePath());
+		System.out.println("Parametsers.loadFile " + dir.getAbsolutePath());
 		
 			if (!dir.isDirectory())
 				dir = new File("." + File.separator + ".." + File.separator + "data");

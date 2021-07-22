@@ -78,8 +78,8 @@ public class JBioFrameworkMain extends JFrame {
         //add all of the relevant panels for each application's GUI to tabbedPane
         tabbedPane.addTab("Welcome", new Welcome());
         //tabbedPane.addTab("IonExchange", new Ionex()); //Not working at the current moment
-        tabbedPane.addTab("Electro1D", new Electrophoresis());
-        tabbedPane.addTab("Electro2D", new Electro2D());
+        tabbedPane.addTab("Electro1D", new Electrophoresis(this));
+        tabbedPane.addTab("Electro2D", new Electro2D(this));
         tabbedPane.addTab("Spectrometer", new MassSpecMain());
         /**
          * @j2sIgnore

@@ -64,8 +64,8 @@ import javax.swing.JPanel;
 import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 
+import main.java.Electro1D.Protein;
 import main.java.Utilities.BrowserLauncher;
-import main.java.Utilities.FileUtils;
 import main.java.Utilities.GenomeFileParser;
 import main.java.Utilities.MessageFrame;
 
@@ -135,12 +135,14 @@ public class Electro2D extends JPanel implements ActionListener {
      * This method initializes all GUI components.
      */
 	public int fileNum;
+	private JFrame parentFrame;
 
-    public Electro2D() {
-
+    public Electro2D(JFrame parentFrame) {
+    	GenomeFileParser.init();
+    	this.parentFrame = parentFrame;
         proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
-        fileFrame = new FileFrame(this, 1);                            //init frame
-        fileFrame2 = new FileFrame(this, 2);
+        fileFrame = new FileFrame(parentFrame, this, 1);                            //init frame
+        fileFrame2 = new FileFrame(parentFrame, this, 2);
         fileFrame.setResizable(false); //don't allow user to change size
         proteinList = new java.awt.List();
         proteinList2 = new java.awt.List();
@@ -174,7 +176,7 @@ public class Electro2D extends JPanel implements ActionListener {
 
 			@Override
 			public boolean importData(TransferHandler.TransferSupport support) {
-				System.out.println(support.getComponent());
+				//System.out.println(support.getComponent());
 				Transferable tr = support.getTransferable();
 				DataFlavor[] flavors = tr.getTransferDataFlavors();
 				try {
@@ -732,7 +734,7 @@ public class Electro2D extends JPanel implements ActionListener {
             InputStreamReader inputStream = new InputStreamReader(fileStream);
             buffer = new BufferedReader(inputStream);
         } catch (IOException ex) {
-            System.out.println("File not found.");
+            System.out.println("Electro2D.showSwsSearchPage File not found.");
         }
 
         if (buffer != null) {
@@ -744,7 +746,7 @@ public class Electro2D extends JPanel implements ActionListener {
                 searchID = new String(brokenLine[4] + id);
                 buffer.close();
             } catch (IOException ex) {
-                System.out.println("Problem with reading buffer.");
+                System.out.println("Electro2D.showSwsSearchPage Problem with reading buffer.");
             }
         }
 
@@ -785,7 +787,7 @@ public class Electro2D extends JPanel implements ActionListener {
             InputStreamReader inputStream = new InputStreamReader(fileStream);
             buffer = new BufferedReader(inputStream);
         } catch (IOException ex) {
-            System.out.println("File not found.");
+            System.out.println("Electro2D.showBlastSearchPage File not found.");
         }
 
         if (buffer != null) {
@@ -796,7 +798,7 @@ public class Electro2D extends JPanel implements ActionListener {
                 searchID = new String(brokenLine[4] + seq);
                 buffer.close();
             } catch (IOException ex) {
-                System.out.println("Problem with reading buffer.");
+                System.out.println("Electro2D.showBlastSearchPage Problem with reading buffer.");
             }
         }
 
@@ -837,7 +839,7 @@ public class Electro2D extends JPanel implements ActionListener {
             InputStreamReader inputStream = new InputStreamReader(fileStream);
             buffer = new BufferedReader(inputStream);
         } catch (IOException ex) {
-            System.out.println("File not found.");
+            System.out.println("Electro2D.showSearchPage File not found.");
         }
 
         if (buffer != null) {
@@ -865,7 +867,7 @@ public class Electro2D extends JPanel implements ActionListener {
                 }
                 buffer.close();
             } catch (IOException ex) {
-                System.out.println("Problem with reading buffer.");
+                System.out.println("Electro2D.ShowSearchPage Problem with reading buffer.");
             }
         }
 
@@ -1744,7 +1746,7 @@ public class Electro2D extends JPanel implements ActionListener {
 		} else {
 			// Java ....
 			// here a dialog pops up
-			JOptionPane.showMessageDialog(null, "Webpage created in 'HTML Files/' subdirectory");
+			JOptionPane.showMessageDialog(parentFrame, "Webpage created in 'HTML Files/' subdirectory");
 		}
 	}
 
@@ -1758,59 +1760,17 @@ public class Electro2D extends JPanel implements ActionListener {
     static public void main(String[] args) {
     	JFrame f = new JFrame();
     	f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    	f.add(new Electro2D());
+    	f.add(new Electro2D(f));
     	f.pack();
     	f.setVisible(true);
     	
     }
 
-	@SuppressWarnings("unused")
 	public void loadFile(File f, int fileNum) {
-		String filename = (f == null ? null : f.getName());
-		MessageFrame error = null;
-		int n = -1;
-		if (filename == null || filename.equals("")) {
-			error = new MessageFrame();
-			error.setMessage("Please enter a file name.");
-		} else {
-			filename = f.getAbsolutePath();
-			String extension = filename.substring(filename.lastIndexOf(".") + 1);
-			// if the file's extention is not one of the supported types
-			// display an error message
-			String data = null;
-			if (/** @j2sNative true || */
-			false) {
-				data = FileUtils.getStringForFile(f);
-			} else {
-				// In Java we work with the filename.
-			}
-			// call the proper method to read the file depending on
-			// its type
-			// BH using Java 8 switch here
-			switch (extension.toLowerCase()) {
-			case "faa":
-			case "fasta":
-				n = GenomeFileParser.fastaParse(f, data, null, this, fileNum);
-				break;
-			case "pdb":
-				n = GenomeFileParser.pdbParse(f, data, null, this, fileNum);
-				break;
-			case "gbk":
-				n = GenomeFileParser.gbkParse(f, data, null, this, fileNum);
-				break;
-			case "e2d":
-				n = GenomeFileParser.e2dParse(f, data, null, this, fileNum);
-				break;
-			default:
-				error = new MessageFrame();
-				error.setMessage("File extension is not valid: " + filename);
-				break;
-			}
-		}
+		MessageFrame error = GenomeFileParser.loadFile(f, (Vector<Protein>)null, this, fileNum);
 		if (error == null) {
-			// here a dialog pops up
+			int n = sequences.size();
 			JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");					
-			// display the protein titles from the file
 			if (fileNum == 1) {
 				refreshProteinList();
 			} else if (fileNum == 2) {

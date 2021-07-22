@@ -150,7 +150,7 @@ public class Ionex extends Applet //implements Runnable
         if (this.m_imageCanvas != null)
             this.m_imageCanvas.paint(g);
         else
-            System.out.println("imagecanvas Doesn't exist!");
+            System.out.println("Ionex.paint imagecanvas Doesn't exist!");
     }
 
     //	The start() method is called when the page containing the applet

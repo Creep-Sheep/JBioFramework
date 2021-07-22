@@ -107,13 +107,7 @@ public class ProteinFrame extends JFrame {
         blstSearch.setToolTipText("Performs BLAST search for the protein sequence");
         blstSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String urlPre = "http://web.expasy.org/cgi-bin/blast/blast.pl?sequence=";
-                String url = urlPre + sequenceString;
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException ex) {
-                    System.out.println("URL did not work");
-                }
+            	search("blast");
             }
         });
 
@@ -153,14 +147,7 @@ public class ProteinFrame extends JFrame {
         ncbiSearch.setToolTipText("Performs NCBI search for the protein sequence");
         ncbiSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String urlPre = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=protein&cmd=search&term=";
-                ;
-                String url = urlPre + searchID;
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException ex) {
-                    System.out.println("URL did not work");
-                }
+            	search("entrez");
             }
         });
 
@@ -182,13 +169,7 @@ public class ProteinFrame extends JFrame {
         uniSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String urlPre = "http://www.uniprot.org/uniprot/?query=";
-                String url = urlPre + swsSearchID;
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException ex) {
-                    System.out.println("URL did not work");
-                }
+            	search("uniprot");
             }
         });
 
@@ -228,5 +209,28 @@ public class ProteinFrame extends JFrame {
         pack();
         //setSize(420, 150);
     }
+
+	protected void search(String type) {
+		String url;
+		switch (type) {
+		case "uniprot":
+	    	url = "http://www.uniprot.org/uniprot/?query=" + swsSearchID;
+			break;
+		case "blast":
+			url = "http://web.expasy.org/cgi-bin/blast/blast.pl?sequence=" + sequenceString;
+			break;
+		case "entrez":
+			url = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=protein&cmd=search&term=" + searchID;
+			break;
+		default:
+			System.err.println("ProteinFrame.search " + type + " invalid type");
+			return;
+		}
+		try {
+			BrowserLauncher.openURL(url);
+		} catch (IOException ex) {
+			System.out.println("ProteinFrame.search URL did not work for " + url);
+		}
+	}
 
 }
