@@ -12,8 +12,10 @@ package main.java.Utilities;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -727,7 +729,47 @@ public class GenomeFileParser {
 		}
 	}
 
-	// BH -- old code was duplicated and not particularly efficient
+	/**
+	 * Strip out an return a single "sequence" from a FASTA file containing only the
+	 * characters [a-zA-Z_0-9] (that is, no "-", no white space, and no separation
+	 * of sequences).
+	 * 
+	 * OLD doc, for FastaParser.parse:
+	 * 
+	 * The parse method is given a file to read from, line by line. It passes each
+	 * line to the process static method to get rid of any white spaces and to check
+	 * if the line is a comment. Parse returns the sequence to the MainPanelGUI to
+	 * be put into the inputArea.
+	 * 
+	 * BH note: But, actually, it doesn't do this, because line.indexOf("[^\\w]")
+	 * was looking for that exact set of characters -- [ ^ \ w ], not using a
+	 * RegExp. So instead it was just leaving the '-' characters in there.
+	 *
+	 * Also, this method does more than that. It removes all line endings, returning
+	 * a single line that is all sequences in the FASTA file concatenated.
+	 * 
+	 * @param file Selected by the user in MassSpec.MassSpecMain
+	 * @return raw sequence data, or null if the file fails to read
+	 */
+	public static String getFASTASequenceAsSingleLine(File file) {
+		// using Java 8 automatic resource closing 
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+			String line;
+			char c;
+			StringBuffer sb = new StringBuffer();
+			while ((line = reader.readLine()) != null) {
+				if (line.length() > 0 && (c = line.charAt(0)) != ';' && c != '>') {
+					sb.append(line.replaceAll("\\W+", ""));
+				}
+			}
+			return sb.toString();
+		} catch (IOException ex) {
+			System.out.println(ex.getMessage() + " trying to open " + file);
+			return null;
+		}
+	}
+	
+// BH -- old code was duplicated and not particularly efficient
 //	final static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //
 
@@ -1621,5 +1663,13 @@ public class GenomeFileParser {
 //        Preprocessor.process(electro2D);
 //        return sequences.size();
 //    }
+
+//	static {
+//		File f = new File("data/jpred_msa.fasta");
+//		System.out.println(f.getAbsolutePath());
+////		String s= FastaParser.parse(f);
+//		String s = getSequenceAsSingleLine(f);
+//		System.out.println(s);
+//	}
 
 } 

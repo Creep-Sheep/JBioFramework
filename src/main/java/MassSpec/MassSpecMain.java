@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 import main.java.Utilities.BrowserLauncher;
-import main.java.Utilities.FastaParser;
+import main.java.Utilities.GenomeFileParser;
 
 /**
  *
@@ -166,7 +166,7 @@ public class MassSpecMain extends JPanel {
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(chooser);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    String parsedSequence = FastaParser.parse(chooser.getSelectedFile());
+                    String parsedSequence = GenomeFileParser.getFASTASequenceAsSingleLine(chooser.getSelectedFile());
                     inputArea.setText(parsedSequence);
                 }
             }

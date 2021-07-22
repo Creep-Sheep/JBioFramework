@@ -29,10 +29,14 @@ import main.java.Electro2D.Electro2D;
 
 
 /**
- * This class generates the preprocessed proteome files created after a
- * genBank, fasta, or protein database file has been run.  In doing this
- * the time to load a proteome (if already loaded once) will be cut down.
- * (Hopefully...)
+ * This class generates the preprocessed proteome files created after a genBank,
+ * fasta, or protein database file has been run. In doing this the time to load
+ * a proteome (if already loaded once) will be cut down. (Hopefully...)
+ * 
+ * BH Note: In addition, the class serves as a temporary container for several
+ * data vectors that are used in Electro1D and Electro2D.
+ * 
+ * 
  *
  * @author Jill Zapoticznyj
  */
