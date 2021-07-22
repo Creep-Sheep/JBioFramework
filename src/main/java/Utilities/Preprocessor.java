@@ -14,15 +14,18 @@ package main.java.Utilities;
  * See the GNU General Public License for more details.
  */
 
-import main.java.Electro2D.Electro2D;
-
+import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
+import java.util.Random;
 import java.util.Vector;
+
+import main.java.Electro1D.Protein;
+import main.java.Electro2D.Electro2D;
 
 
 /**
@@ -35,6 +38,18 @@ import java.util.Vector;
  */
 
 public class Preprocessor {
+	
+	private static Random rand = new Random();
+	
+	private final static Color[] colors = { 
+			Color.black, Color.blue, Color.cyan, 
+			Color.green, Color.magenta, Color.orange, 
+			Color.pink, Color.red 
+	};
+	
+	private static Color randomColor() {
+		return colors[rand.nextInt(colors.length)];
+	}
 
     private static final String EXTENTION = ".e2d";
     private static final int HEADER_LENGTH = 12;
@@ -49,33 +64,48 @@ public class Preprocessor {
     private final String PIVAL_HEADER = "PIVAL:      ";
     private final String LINE_SEPARATOR = "-----";
 
-    private Vector<String> sequence;
-    private Vector<String> sequenceTitle;
-    private Vector<String> piVals;
-    private Vector<String> molwts;
-    private Vector<String> functions;
-    private String fileName;
-
+    Vector<String> sequences;
+    Vector<String> sequenceTitles;
+    Vector<String> piValues;
+    Vector<String> molecularWeights;
+    Vector<String> functions;
+    Vector<String> concentrations;
+    
+    private String inputName;
+	private double[] minmax;
+	private boolean is1D;
+	
 	public static void process(Electro2D electro2D) {
 		/** @j2sNative return; */
-		
-        new Preprocessor(electro2D).writeToFile();
+		// SwingJS could write to a temp file if desired, just not a regular file
+        new Preprocessor(electro2D, null, false).writeToFile();
 	}
 
-	private Preprocessor(Electro2D e) {
-        sequence = e.getSequences();
-        sequenceTitle = e.getSequenceTitles();
-        molwts = e.getMolecularWeights();
-        piVals = e.getPiValues();
-        functions = e.getFunctions();
-        fileName = e.getLastFileLoaded();
+	Preprocessor(File inputFile, boolean is1D) {
+		this(null, inputFile, is1D);
+	}
+
+	/**
+	 * 
+	 * @param e an Electro2D object or null if Electro1D
+	 * @param inputFile
+	 * @param fileNum 0 (Electro1D) or 1 or 2
+	 */
+	Preprocessor(Electro2D e, File inputFile, boolean is1D) {
+        sequences = (e == null ? new Vector<>() : e.getSequences());
+        sequenceTitles = (e == null ? new Vector<>() : e.getSequenceTitles());
+        molecularWeights = (e == null ? new Vector<>() : e.getMolecularWeights());
+        piValues = (is1D ? null : e == null ? new Vector<>() : e.getPiValues());
+        functions = (e == null ? new Vector<>() : e.getFunctions());
+        inputName = (e == null ? inputFile.getName() : e.getLastFileLoaded());
+		concentrations = (e == null ? new Vector<>() : null);
     }
 
 	public void writeToFile() {
 		int length = 0;
 		String fcn = "";
 		String seq = "";
-		String tmp = fileName.substring(0, fileName.indexOf(".")) + "_" + fileName.substring(fileName.indexOf(".") + 1);
+		String tmp = inputName.substring(0, inputName.indexOf(".")) + "_" + inputName.substring(inputName.indexOf(".") + 1);
 		File theFile = new File("data" + File.separator + tmp + EXTENTION);
 		System.out.println("Preprocessor creating " + theFile);
 		if (theFile.exists())
@@ -87,11 +117,11 @@ public class Preprocessor {
 			System.err.println("Error writing to file");
 			return;
 		}
-		out.println(FILE_HEADER + fileName);
+		out.println(FILE_HEADER + inputName);
 		out.println(LINE_SEPARATOR);
 
-		for (int i = 0; i < sequenceTitle.size(); i++) {
-			out.println(PROTTITLE_HEADER + sequenceTitle.elementAt(i));
+		for (int i = 0; i < sequenceTitles.size(); i++) {
+			out.println(PROTTITLE_HEADER + sequenceTitles.elementAt(i));
 			fcn = functions.elementAt(i);
 			length = fcn.length();
 			while (length >= 0) {
@@ -105,7 +135,7 @@ public class Preprocessor {
 				}
 			}
 
-			seq = sequence.elementAt(i);
+			seq = sequences.elementAt(i);
 			length = seq.length();
 
 			while (length >= 0) {
@@ -119,8 +149,8 @@ public class Preprocessor {
 				}
 			}
 
-			out.println(MOLWT_HEADER + molwts.elementAt(i));
-			out.println(PIVAL_HEADER + piVals.elementAt(i));
+			out.println(MOLWT_HEADER + molecularWeights.elementAt(i));
+			out.println(PIVAL_HEADER + piValues.elementAt(i));
 			out.println(LINE_SEPARATOR);
 		}
 		out.close();
@@ -130,7 +160,7 @@ public class Preprocessor {
         return HEADER_LENGTH;
     }
 
-    public static int readFromFile(BufferedReader in, Electro2D electro2D,
+    public static int readFromFile(BufferedReader reader, Electro2D electro2D,
                                     int fileNum) {
         int fileNameLoc = 0;
         int endofHeader = 1;
@@ -155,7 +185,7 @@ public class Preprocessor {
         double minPi = -1;
 
         try {
-            while ((line1 = in.readLine()) != null) {
+            while ((line1 = reader.readLine()) != null) {
                 fileData.add(line1);
             }
         } catch (Exception e) {
@@ -238,6 +268,8 @@ public class Preprocessor {
                 functions.add(function);
                 title = seq = molwt = pI = function = "";
             }
+            
+            
             if (fileNum == 1) {
                 electro2D.setSequences(sequences);
                 electro2D.setFunctionValues(functions);
@@ -255,11 +287,73 @@ public class Preprocessor {
             }
             // electro2D.setLastFileLoaded(
             try {
-                in.close();
+                reader.close();
             } catch (Exception e) {
             }
         }
         return sequences.size();
     }
+
+	private void getPIandMW() {
+		minmax = (is1D ? null : new double[] { -1, Double.MAX_VALUE, -1, Double.MAX_VALUE });
+		for (int x = 0; x < sequences.size(); x++) {
+			String temp = sequences.elementAt(x);
+			String mw = GenomeFileParser.getMW(temp);
+			double d = Double.parseDouble(mw);
+			molecularWeights.addElement(mw);
+			if (piValues != null) {
+				if (d <= minmax[0]) {
+					minmax[0] = d;
+				}
+				if (d >= minmax[1]) {
+					minmax[1] = d;
+				}
+				String pI = GenomeFileParser.getpI(temp);
+				d = Double.parseDouble(pI);
+				if (d <= minmax[2]) {
+					minmax[2] = d;
+				}
+				if (d >= minmax[3]) {
+					minmax[3] = d;
+				}
+				piValues.addElement(pI);
+			}
+		}
+	}
+
+	int finalizeRead(Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+		getPIandMW();
+		int nSeq = sequences.size();
+		switch (fileNum) {
+		case 0:
+			// Electro1D
+			for (int i = 0; i < nSeq; i++) {
+				proteins.add(new Protein(sequenceTitles.elementAt(i), "", "",
+						(int) Double.parseDouble(molecularWeights.get(i)), randomColor()));
+				if (concentrations.size() > 0)
+					proteins.get(i).setConcentration(Integer.parseInt(concentrations.elementAt(i)));
+			}
+			return nSeq;
+		case 1:
+            electro2D.setSequences(sequences);
+            electro2D.setSequenceTitles(sequenceTitles);
+            electro2D.setMolecularWeights(molecularWeights);
+            electro2D.setPiValues(piValues);
+            electro2D.setFunctionValues(functions);
+            break;
+		case 2:
+            electro2D.setSequences2(sequences);
+            electro2D.setSequenceTitles2(sequenceTitles);
+            electro2D.setMolecularWeights2(molecularWeights);
+            electro2D.setPiValues2(piValues);
+            electro2D.setFunctionValues2(functions);
+			break;
+		}
+        electro2D.setLastFileLoaded(inputName);
+        electro2D.setMaxAndMinVals(minmax[1], minmax[0], minmax[3], minmax[2]);
+        Preprocessor.process(electro2D);
+        return nSeq;
+	}
+
 
 }

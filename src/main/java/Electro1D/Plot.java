@@ -507,7 +507,7 @@ public class Plot extends JPanel implements Runnable {
         resetSums();
         for (int i = 0; i < numberOfStds; i++) {
             if (stds[i].selected) {
-                stds[i].relativeMigration = stds[i].GetDistance() / dye.GetDistance();
+                stds[i].relativeMigration = stds[i].getDistance() / dye.getDistance();
                 sumXs(stds[i].relativeMigration);
                 sumXsqs(stds[i].relativeMigration);
                 double d = Math.log(stds[i].mw) / ln10;
@@ -519,7 +519,7 @@ public class Plot extends JPanel implements Runnable {
         }
         calcLine();
         calcFit();
-        sample.relativeMigration = sample.GetDistance() / dye.GetDistance();
+        sample.relativeMigration = sample.getDistance() / dye.getDistance();
         calcMaxMinLogs();
         standardsSet = true;
         graphVerticalLine = false;

@@ -41,7 +41,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,7 +50,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -67,6 +65,7 @@ import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 
 import main.java.Utilities.BrowserLauncher;
+import main.java.Utilities.FileUtils;
 import main.java.Utilities.GenomeFileParser;
 import main.java.Utilities.MessageFrame;
 
@@ -1485,9 +1484,9 @@ public class Electro2D extends JPanel implements ActionListener {
     public void setMaxAndMinVals(double maxmw, double minmw, double maxpi,
                                  double minpi) {
         maxMW = maxmw;
-        minMW = minmw;
+        minMW = (minmw == Double.MAX_VALUE ? -1 : minmw);
         maxPi = maxpi;
-        minPi = minpi;
+        minPi = (minpi == Double.MAX_VALUE ? -1 : minpi);
     }
 
     public double getMaxPi() {
@@ -1781,7 +1780,7 @@ public class Electro2D extends JPanel implements ActionListener {
 			String data = null;
 			if (/** @j2sNative true || */
 			false) {
-				data = getStringForFile(f);
+				data = FileUtils.getStringForFile(f);
 			} else {
 				// In Java we work with the filename.
 			}
@@ -1791,16 +1790,16 @@ public class Electro2D extends JPanel implements ActionListener {
 			switch (extension.toLowerCase()) {
 			case "faa":
 			case "fasta":
-				n = GenomeFileParser.fastaParse(f, this, data, fileNum);
+				n = GenomeFileParser.fastaParse(f, data, null, this, fileNum);
 				break;
 			case "pdb":
-				n = GenomeFileParser.pdbParse(f, this, data, fileNum);
+				n = GenomeFileParser.pdbParse(f, data, null, this, fileNum);
 				break;
 			case "gbk":
-				n = GenomeFileParser.gbkParse(f, this, data, fileNum);
+				n = GenomeFileParser.gbkParse(f, data, null, this, fileNum);
 				break;
 			case "e2d":
-				n = GenomeFileParser.e2dParse(f, this, data, fileNum);
+				n = GenomeFileParser.e2dParse(f, data, null, this, fileNum);
 				break;
 			default:
 				error = new MessageFrame();
@@ -1823,33 +1822,5 @@ public class Electro2D extends JPanel implements ActionListener {
 		}
 	}
     
-	@SuppressWarnings("unused")
-	public static String getStringForFile(File f) {
-		// In JavaScript we get the data directly from the File object
-		swingjs.api.JSUtilI jsutil = (/** @j2sNative new swingjs.JSUtil() || */
-		null);
-		if (jsutil != null) {
-			return new String(jsutil.getBytes(f));
-		}
-		try {
-			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));
-			byte[] buf = new byte[1024];
-			byte[] bytes = new byte[4096];
-			int len = 0;
-			int totalLen = 0;
-			while ((len = bis.read(buf, 0, 1024)) > 0) {
-				totalLen += len;
-				if (totalLen >= bytes.length)
-					bytes = Arrays.copyOf(bytes, totalLen * 2);
-				System.arraycopy(buf, 0, bytes, totalLen - len, len);
-			}
-			bis.close();
-			return new String(totalLen < bytes.length ? Arrays.copyOf(bytes,  totalLen) : bytes);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 }
 

@@ -622,49 +622,49 @@ public class Parameters extends JPanel implements Constants {
         do
             if (selectedGel.getConc() > 12D) {
                 if (stdProteinArray[i].mw > 26000)
-                    stdProteinArray[i].SetDecider(selectedGel.suppressor);
+                    stdProteinArray[i].setDecider(selectedGel.suppressor);
                 else
-                    stdProteinArray[i].ResetDecider();
+                    stdProteinArray[i].resetDecider();
             } else if (selectedGel.getConc() > 10D) {
                 if (stdProteinArray[i].mw > 29000)
-                    stdProteinArray[i].SetDecider(selectedGel.suppressor);
+                    stdProteinArray[i].setDecider(selectedGel.suppressor);
                 else
-                    stdProteinArray[i].ResetDecider();
+                    stdProteinArray[i].resetDecider();
             } else if (selectedGel.getConc() > 7.5D) {
                 if (stdProteinArray[i].mw > 40000)
-                    stdProteinArray[i].SetDecider(selectedGel.suppressor);
+                    stdProteinArray[i].setDecider(selectedGel.suppressor);
                 else
-                    stdProteinArray[i].ResetDecider();
+                    stdProteinArray[i].resetDecider();
             } else {
-                stdProteinArray[i].ResetDecider();
+                stdProteinArray[i].resetDecider();
             }
         while (++i < 7);
         if (selectedGel.getConc() > 12D)
             if (selectedSample1.mw > 26000) {
-                selectedSample1.SetDecider(selectedGel.suppressor);
+                selectedSample1.setDecider(selectedGel.suppressor);
                 return;
             } else {
-                selectedSample1.ResetDecider();
+                selectedSample1.resetDecider();
                 return;
             }
         if (selectedGel.getConc() > 10D)
             if (selectedSample1.mw > 29000) {
-                selectedSample1.SetDecider(selectedGel.suppressor);
+                selectedSample1.setDecider(selectedGel.suppressor);
                 return;
             } else {
-                selectedSample1.ResetDecider();
+                selectedSample1.resetDecider();
                 return;
             }
         if (selectedGel.getConc() > 7.5D) {
             if (selectedSample1.mw > 40000) {
-                selectedSample1.SetDecider(selectedGel.suppressor);
+                selectedSample1.setDecider(selectedGel.suppressor);
                 return;
             } else {
-                selectedSample1.ResetDecider();
+                selectedSample1.resetDecider();
                 return;
             }
         } else {
-            selectedSample1.ResetDecider();
+            selectedSample1.resetDecider();
             return;
         }
     }
@@ -741,7 +741,6 @@ public class Parameters extends JPanel implements Constants {
     
     public void loadFile(String wellNum) {
     	setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	FileInput fi = new FileInput();
     	//JFrame fileSelctorFrame = this;
     	File dir = new File(directoryString);
 		System.out.println(dir.getAbsolutePath());
@@ -750,7 +749,7 @@ public class Parameters extends JPanel implements Constants {
 				dir = new File("." + File.separator + ".." + File.separator + "data");
 			AsyncFileChooser chooser = new AsyncFileChooser(dir);
 			chooser.showOpenDialog(this, () -> {
-				fi.loadFile(chooser.getSelectedFile(), wellNum, parent.simPanel);
+				new FileInput().loadFile(chooser.getSelectedFile(), wellNum, parent.simPanel);
 				// set the cursor image back to normal
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				// close the frame
