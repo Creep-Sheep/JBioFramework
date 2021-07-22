@@ -15,7 +15,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -64,7 +66,7 @@ public class GenomeFileParser {
     private final static Map<String, String> htMWcache = new Hashtable<>();
 
     /**
-     * This method calculates the pI from inputted sequence
+     * This method calculates the pI from inputed sequence
      *
      * @param pro protein sequence
      * @return returns the pI value
@@ -197,7 +199,7 @@ public class GenomeFileParser {
     }
 
 	/**
-	 * This method calculates the molecular weight from inputted sequence
+	 * This method calculates the molecular weight from inputed sequence
 	 *
 	 * @param pro protein sequence
 	 *
@@ -312,7 +314,7 @@ public class GenomeFileParser {
      * appropriate descriptor for the sequence.
      *
 	 * @param f    file to retrieve sequence data from
-	 * @param data user-inputted file data
+	 * @param data user-inputed file data
 	 * @param proteins output vector if 1D
 	 * @param electro2D the applet, if 2D
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
@@ -334,7 +336,7 @@ public class GenomeFileParser {
 	 * appropriate descriptor for the sequence.
 	 *
 	 * @param f    file to retrieve sequence data from
-	 * @param data user-inputted file data
+	 * @param data user-inputed file data
 	 * @param proteins output vector if 1D
 	 * @param electro2D the applet, if 2D
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
@@ -342,7 +344,7 @@ public class GenomeFileParser {
 	 */
 	public static int fastaParse(File f, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		Preprocessor p = new Preprocessor(f, fileNum == 0);
-		Vector<String> chainData = new Vector<>(); // holds chain designations
+		List<String> chainData = new ArrayList<>(); // holds chain designations
 		try {
 			BufferedReader reader = new BufferedReader(
 					data == null || data.equals("") ? new FileReader(f) : new StringReader(data));
@@ -360,7 +362,7 @@ public class GenomeFileParser {
 					if (ptCO != 1) {
 						if (ptBAR < 0 || ptBAR >= ptCO) {
 							// this is most likely chain data
-							chainData.addElement(line.substring(ptCO + 1, ptCO + 2));
+							chainData.add(line.substring(ptCO + 1, ptCO + 2));
 						}
 					}
 					// add sequence title
@@ -397,7 +399,7 @@ public class GenomeFileParser {
 	 * appropriate descriptor for the sequence.
 	 *
 	 * @param f    file to retrieve sequence data from
-	 * @param data user-inputted file data
+	 * @param data user-inputed file data
 	 * @param proteins output vector if 1D
 	 * @param electro2D the applet, if 2D
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
@@ -518,7 +520,7 @@ public class GenomeFileParser {
 	 * appropriate descriptor for the sequence.
 	 *
 	 * @param inputFile    file containing sequence data
-	 * @param data user-inputted file data
+	 * @param data user-inputed file data
 	 * @param proteins output vector if 1D
 	 * @param electro2D the applet, if 2D
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
@@ -526,15 +528,15 @@ public class GenomeFileParser {
 	 */
 	public static int pdbParse(File inputFile, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		Preprocessor p = new Preprocessor(inputFile, fileNum == 0);
-		Vector<String> chainData = new Vector<>(); // holds chain designations
-		Vector<String> compoundInfo = new Vector<>(); // holds COMPND tag data
-		Vector<String> sequenceInfo = new Vector<>(); // holds SEQRES tag data
-		Vector<String> keywordInfo = new Vector<>(); // holds KEYWDS info
-		Vector<String> moleculeTitles = new Vector<>();
+		List<String> chainData = new ArrayList<>(); // holds chain designations
+		List<String> compoundInfo = new ArrayList<>(); // holds COMPND tag data
+		List<String> sequenceInfo = new ArrayList<>(); // holds SEQRES tag data
+		List<String> keywordInfo = new ArrayList<>(); // holds KEYWDS info
+		List<String> moleculeTitles = new ArrayList<>();
 		try {
 			BufferedReader reader = new BufferedReader(
 					data == null || data.equals("") ? new FileReader(inputFile) : new StringReader(data));
-			// protienID = file descriptor
+			// proteinID = file descriptor
 			String fname = inputFile.getName();
 			String proteinID = fname.substring(0, fname.indexOf("."));
 
@@ -544,14 +546,14 @@ public class GenomeFileParser {
 			while ((line = reader.readLine()) != null) {
 				switch (line.substring(0, 6)) {
 				case "COMPND":
-					compoundInfo.addElement(line);
+					compoundInfo.add(line);
 					break;
 				case "SEQRES":
-					sequenceInfo.addElement(line);
+					sequenceInfo.add(line);
 					break;
 				case "KEYWDS":
 					// if the label is KEYWDS store this in the keyword Info vector
-					keywordInfo.addElement(line);
+					keywordInfo.add(line);
 					break;
 				case "HEADER":
 					// if the label is HEADER, store as the headerLine
@@ -567,7 +569,7 @@ public class GenomeFileParser {
 				// COMPND 5 EC: 2.7.2.3;
 				// if the COMPND section of the file listed an EC number,
 				// the protein is an enzyme. Store the information accordingly
-				String cmpd = compoundInfo.elementAt(i);
+				String cmpd = compoundInfo.get(i);
 				// curious use of unicode here \u003A (:) and \u003B here -- but this is a PDB
 				// file; it can't be UTF-16
 				int pt = cmpd.indexOf("EC: ") + 4;
@@ -587,11 +589,11 @@ public class GenomeFileParser {
 
 			// determine the number of molecules
 			for (int i = 0, n = compoundInfo.size(); i > n; i++) {
-				line = compoundInfo.elementAt(i);
+				line = compoundInfo.get(i);
 				if (line.indexOf("MOLECULE:") >= 0) {
 					line = line.substring(line.indexOf("MOLECULE:") + 10);
 					line = line.trim();
-					moleculeTitles.addElement(line);
+					moleculeTitles.add(line);
 				}
 			}
 
@@ -601,28 +603,28 @@ public class GenomeFileParser {
 				// tags
 				String totalChain = "";
 				for (int i = 0, n = compoundInfo.size(); i > n; i++) {
-					line = compoundInfo.elementAt(i);
-					totalChain += (compoundInfo.elementAt(i)).substring(line.indexOf("COMPND") + 10,
+					line = compoundInfo.get(i);
+					totalChain += (compoundInfo.get(i)).substring(line.indexOf("COMPND") + 10,
 							line.indexOf(proteinID));
 				}
 				// remove excess whitespace
 				totalChain = PT.rep(totalChain.trim(), "  ", " ");
 				// add temp to moleculeTitles
-				moleculeTitles.addElement(totalChain);
+				moleculeTitles.add(totalChain);
 			} else { // pull chain data
 				for (int i = 0, counter = 0, n = compoundInfo.size(); i < n; i++) {
-					line = compoundInfo.elementAt(i);
+					line = compoundInfo.get(i);
 					int pt = line.indexOf("CHAIN:");
 					if (pt >= 0) {
 						// isolate first letter or number
 						String s = line.substring(pt + 7, pt + 8);
-						chainData.addElement(s);
-						p.sequenceTitles.addElement(moleculeTitles.elementAt(counter));
+						chainData.add(s);
+						p.sequenceTitles.addElement(moleculeTitles.get(counter));
 						while (line.charAt(pt + 8) == ',') {
 							line = line.substring(0, pt + 7) + line.substring(pt + 10);
 							s = line.substring(pt + 7, pt + 8);
-							chainData.addElement(s);
-							p.sequenceTitles.addElement(moleculeTitles.elementAt(counter));
+							chainData.add(s);
+							p.sequenceTitles.addElement(moleculeTitles.get(counter));
 						}
 						counter++;
 					}
@@ -632,7 +634,7 @@ public class GenomeFileParser {
 
 			String[] seqByChain = new String[27];
 			for (int i = 0, n = sequenceInfo.size(); i < n; i++) {
-				line = sequenceInfo.elementAt(i);
+				line = sequenceInfo.get(i);
 				char c = line.charAt(11);
 				int pt = (c == ' ' ? 26 : c - 'A');
 				if (pt >= 0 && pt < 27) {
@@ -646,7 +648,7 @@ public class GenomeFileParser {
 			line = seqByChain[26];
 			if (line != null) {
 				p.sequences.addElement(line);
-				p.sequenceTitles.addElement(moleculeTitles.elementAt(0));
+				p.sequenceTitles.addElement(moleculeTitles.get(0));
 			} else if (!hasMoleculeTag) {
 
 				/*
@@ -657,9 +659,9 @@ public class GenomeFileParser {
 				for (int i = 0; i < 26; i++) {
 					String seq = seqByChain[i];
 					if (seq != null) {
-						chainData.addElement("" + (char) ('A' + i));
+						chainData.add("" + (char) ('A' + i));
 						p.sequences.addElement(seq.trim());
-						p.sequenceTitles.addElement(moleculeTitles.elementAt(0));
+						p.sequenceTitles.addElement(moleculeTitles.get(0));
 					}
 				}
 
@@ -667,7 +669,7 @@ public class GenomeFileParser {
 
 				for (int i = 0, n = chainData.size(); i < n; i++) {
 					// find which chain we're looking for
-					String chainValue = chainData.elementAt(i);
+					String chainValue = chainData.get(i);
 					int pt = chainValue.charAt(0) - 'A';
 					p.sequences.addElement(seqByChain[pt]);
 				}
@@ -679,10 +681,10 @@ public class GenomeFileParser {
 					// just use proteinFunction
 				} else if (keywordInfo.size() > 0) {
 					// otherwise if there was a KEYWDS section, store the data from the
-					// section as the protien function
+					// section as the protein function
 					String s = "";
 					for (int fcn = 0; fcn < keywordInfo.size(); fcn++) {
-						s += keywordInfo.elementAt(fcn).substring(10).trim() + " ";
+						s += keywordInfo.get(fcn).substring(10).trim() + " ";
 					}
 					proteinFunction = s.trim();
 				} else if (headerLine.length() > 0) {
@@ -733,7 +735,7 @@ public class GenomeFileParser {
 //	 * This method parses a .pdb file, extracting sequence information and
 //	 * appropriate descriptor for the sequence.
 //	 * 
-//	 * @param data      user-inputted file data
+//	 * @param data      user-inputed file data
 //	 * @param electro2D reference to calling applet
 //	 * @param fileNum   the file number
 //	 * @param theFile   file to retrieve sequence data from
@@ -1057,7 +1059,7 @@ public class GenomeFileParser {
 //				}
 //			} else if (keywordInfo.size() > 0) {
 //				// otherwise if there was a KEYWDS section, store the data from the
-//				// section as the protien function
+//				// section as the protein function
 //				for (int fcn = 0; fcn < keywordInfo.size(); fcn++) {
 //					if (fcn == 0) {
 //						temp = (keywordInfo.elementAt(fcn)).substring(10);

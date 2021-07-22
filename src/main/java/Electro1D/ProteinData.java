@@ -87,7 +87,6 @@ public class ProteinData extends JPanel {
         abbr.setText(protein.abbr);
         mw = String.valueOf(protein.mw);
         molwt.setText(mw);
-        double d = Math.log(protein.mw) / Math.log(10D);
-        logMolWt.setText(String.valueOf(d));
+        logMolWt.setText(String.valueOf(Math.log(protein.mw) / Math.log(10)));
     }
 }

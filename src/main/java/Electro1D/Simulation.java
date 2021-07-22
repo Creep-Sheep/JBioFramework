@@ -21,11 +21,15 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
 
 import javajs.async.SwingJSUtils.StateHelper;
 import javajs.async.SwingJSUtils.StateMachine;
+import main.java.Utilities.FileUtils;
+import main.java.Utilities.GenomeFileParser;
+import main.java.Utilities.MessageFrame;
 
 /**
  * @author Bader AlHarbi
@@ -45,7 +49,7 @@ public class Simulation extends JPanel implements Runnable {
     float animationModifier;
     float modifier;
     boolean addInfo;
-    Protein stdSamples[];
+    Protein[] stdSamples;
     @SuppressWarnings("unchecked")
 	Vector<Protein>[] wellProteins = new Vector[wellCount + 1];
     Protein[] dyes = new Protein[wellCount + 1];
@@ -100,9 +104,9 @@ public class Simulation extends JPanel implements Runnable {
     int divLabelX;
     int charHalfHeight;
     int charHeight;
-    int scaleDivs[];
-    int scaleHalfDivs[];
-    String Jlabels[];
+    int[] scaleDivs;
+    int[] scaleHalfDivs;
+    String[] Jlabels;
     FontMetrics fm;
     Font font;
     int gelLabelX;
@@ -161,7 +165,6 @@ public class Simulation extends JPanel implements Runnable {
     protected DecimalFormat twoDigits;
 	private StateHelper stateHelper;
 	private Acrylamide gel;
-	FileInput fi;
 	double speed;
 	boolean shouldReset;
 	boolean paintRedoWells;
@@ -218,7 +221,6 @@ public class Simulation extends JPanel implements Runnable {
         Jlabels[6] = "6";
         twoDigits = new DecimalFormat("0.00");
         ddNum = 1;
-        fi = new FileInput();
         MouseClickListener msl = new MouseClickListener();
         this.addMouseListener(msl);
         this.addMouseMotionListener(msl);
@@ -271,7 +273,7 @@ public class Simulation extends JPanel implements Runnable {
 			return;
 		for (int i = 2; i < 10; i++) {
 			if (p.x > wellOpeningX[i] && p.x < wellOpeningX[i] + wellOpeningWidth) {
-				fi.loadFile(f, "Well " + i, this);
+				loadFile(f, "Well " + i);
 				break;
 			}
 		}
@@ -848,28 +850,28 @@ public class Simulation extends JPanel implements Runnable {
     /**
      * set the Acrylamide effect
      */
-    protected void setAcrylamideEffect(Vector<Protein> protiens) {
+    protected void setAcrylamideEffect(Vector<Protein> proteins) {
         int i = 0;
         do
             if (gel.getConc() > 12D) {
-                if (protiens.get(i).mw > 26000)
-                    protiens.get(i).setDecider(gel.suppressor);
+                if (proteins.get(i).mw > 26000)
+                    proteins.get(i).setDecider(gel.suppressor);
                 else
-                    protiens.get(i).resetDecider();
+                    proteins.get(i).resetDecider();
             } else if (gel.getConc() > 10D) {
-                if (protiens.get(i).mw > 29000)
-                    protiens.get(i).setDecider(gel.suppressor);
+                if (proteins.get(i).mw > 29000)
+                    proteins.get(i).setDecider(gel.suppressor);
                 else
-                    protiens.get(i).resetDecider();
+                    proteins.get(i).resetDecider();
             } else if (gel.getConc() > 7.5D) {
-                if (protiens.get(i).mw > 40000)
-                    protiens.get(i).setDecider(gel.suppressor);
+                if (proteins.get(i).mw > 40000)
+                    proteins.get(i).setDecider(gel.suppressor);
                 else
-                    protiens.get(i).resetDecider();
+                    proteins.get(i).resetDecider();
             } else {
-                protiens.get(i).resetDecider();
+                proteins.get(i).resetDecider();
             }
-        while (++i < protiens.size());
+        while (++i < proteins.size());
     }
 
     
@@ -1128,5 +1130,57 @@ public class Simulation extends JPanel implements Runnable {
 	public void setStandards(Protein[] stds) {
 		stdSamples = stds;
 	}
+
+	@SuppressWarnings("unused")
+	public void loadFile(File f, String wellNum) {
+		JOptionPane.showMessageDialog(null, "Proteins Loading");
+		String filename = (f == null ? null : f.getName());
+		MessageFrame error = null;
+		Vector<Protein> proteins = new Vector<>();
+		if (filename == null || filename.equals("")) {
+			error = new MessageFrame();
+			error.setMessage("Please enter a file name.");
+		} else {
+			filename = f.getAbsolutePath();
+			String extension = filename.substring(filename.lastIndexOf(".") + 1);
+			String data = null;
+			if (/** @j2sNative true || */
+			false) {
+				data = FileUtils.getStringForFile(f);
+			} else {
+				// In Java we work with the filename.
+			}
+			int n = 0;
+			switch (extension.toLowerCase()) {
+			case "faa":
+			case "fasta":
+				n = GenomeFileParser.fastaParse(f, data, proteins, null, 0);
+				break;
+			case "pdb":
+				n = GenomeFileParser.pdbParse(f, data, proteins, null, 0);
+				break;
+			case "gbk":
+				n = GenomeFileParser.gbkParse(f, data, proteins, null, 0);
+				break;
+			default:
+				error = new MessageFrame();
+				error.setMessage(
+						"File extension is not valid. You inputed a " + extension + " file, please input a fasta file");
+				break;
+			}
+		}
+		if (error == null) {
+			int n = proteins.size();
+			// here a dialog pops up
+			JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");
+			// display the protein titles from the file
+
+			// TODO
+			// Process the protein list and put in correct well using wellNum
+			addSampleFromFile(proteins, wellNum);
+		}
+
+	}
+
 
 }

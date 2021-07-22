@@ -33,28 +33,14 @@ public class Acrylamide {
         return concentration;
     }
 
-    /**
-     * set the numerical factor (suppressor)
-     *
-     * @param d concentration
-     */
-    public void setSuppressor(double d) {
-        if (d > 12D) {
-            suppressor = 6;
-            return;
-        }
-        if (d > 10D) {
-            suppressor = 3;
-            return;
-        }
-        if (d > 7.5D) {
-            suppressor = 2;
-            return;
-        } else {
-            suppressor = 1;
-            return;
-        }
-    }
+	/**
+	 * set the numerical factor (suppressor)
+	 *
+	 * @param d concentration
+	 */
+	public void setSuppressor(double d) {
+		suppressor = (d > 12 ? 6 : d > 10 ? 3 : d > 7.5 ? 2 : 1);
+	}
 
     private double concentration; // gel concentration in double
     public String percentGel; // gel percentage

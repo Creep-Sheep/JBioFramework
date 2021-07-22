@@ -54,11 +54,11 @@ public class Protein {
 		y1 = (int) y1float;
 	}
 
-	public boolean matchPosition(int i, int j) {
-		int k = x1 + width;
-		int l = y1 + height;
-		byte byte0 = 2;
-		return i >= x1 - byte0 && i <= k + byte0 && j >= y1 - byte0 && j <= l + byte0;
+	public boolean matchPosition(int x, int y) {
+		int x2 = x1 + width;
+		int y2 = y1 + height;
+		int range = 2;
+		return (x >= x1 - range && x <= x2 + range && y >= y1 - range && y <= y2 + range);
 	}
 
 	public void setWidth(int i) {
@@ -85,9 +85,9 @@ public class Protein {
 		concentration = i;
 	}
 
-	boolean matchPlotPosition(int i, int j) {
-		byte byte0 = 3;
-		return i >= plotXPos - byte0 && i <= plotXPos + byte0 && j >= plotYPos - byte0 && j <= plotYPos + byte0;
+	boolean matchPlotPosition(int x, int y) {
+		int range = 3;
+		return (x >= plotXPos - range && x <= plotXPos + range && y >= plotYPos - range && y <= plotYPos + range);
 	}
 
 	public double getDistance() {
@@ -126,10 +126,11 @@ public class Protein {
 			return false;
 		}
 		g.setColor(color);
-		if (concentration == 1)
+		if (concentration == 1) {
 			g.fillRect(x1, y1, width, height);
-		else
+		} else {
 			g.fillRect(x1 - concentration, y1, width + concentration * 2, height + concentration);
+		}
 		incrPosition();
 		return true;
 	}

@@ -26,5 +26,5 @@ public class Electro1DMain extends JFrame {
         frame.setPreferredSize(new Dimension(622, 500));
         frame.pack();
         frame.setVisible(true);
-    }*/
+    }*/ 
 }

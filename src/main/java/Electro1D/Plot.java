@@ -157,32 +157,7 @@ public class Plot extends JPanel implements Runnable {
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Grab the x/y position
-                int x = e.getX();
-                int y = e.getY();
-
-                if (standardsSet) {
-                    for (int k = 0; k < numberOfStds; k++) {
-                        if (stds[k].matchPlotPosition(x, y)) {
-                            parent.displayProtein(stds[k]);
-                            return;
-                        }
-                    }
-                    if (mouseOnXAxis(x, y)) {
-                        xPlot = xMouse;
-                        plotRM = mouseRM;
-                        paintUserRM = true;
-                        stopAnimation = false;
-                        showExperimentalMW = false;
-                        showSampleMW = false;
-                        questionRCorr = false;
-                        showLogMW = false;
-                        showNotBracketed = false;
-                        graphVerticalLine = false;
-                        graphHorizontalLine = false;
-                        start();
-                    }
-                }
+            	doMouseClicked(e.getX(), e.getY());
             }
 
             @Override
@@ -216,9 +191,35 @@ public class Plot extends JPanel implements Runnable {
                 }
             }
         });
-    } // Plot
+	} // Plot
 
-    public void start() {
+	protected void doMouseClicked(int x, int y) {
+		if (!standardsSet) {
+			return;
+		}
+		for (int k = 0; k < numberOfStds; k++) {
+			if (stds[k].matchPlotPosition(x, y)) {
+				parent.displayProtein(stds[k]);
+				return;
+			}
+		}
+		if (mouseOnXAxis(x, y)) {
+			xPlot = xMouse;
+			plotRM = mouseRM;
+			paintUserRM = true;
+			stopAnimation = false;
+			showExperimentalMW = false;
+			showSampleMW = false;
+			questionRCorr = false;
+			showLogMW = false;
+			showNotBracketed = false;
+			graphVerticalLine = false;
+			graphHorizontalLine = false;
+			start();
+		}
+	}
+
+	public void start() {
         if (runner == null) {
             runner = new Thread(this);
             runner.start();
