@@ -347,12 +347,15 @@ public class Simulation extends JPanel implements Runnable {
     public void startRun(Protein aprotein[], Protein protein1, Protein protein2, 
                          Protein[] dyes) {
         stopRun();
+        
         if (stdLoadState == notLoaded) {//|| samp2LoadState == notLoaded
             addInfo = true;
             noLoadError = true;
             repaint();
             return;
         }
+        //if(isReady())
+        //	return;
         updateSpeed(speed, gel);
         stdSamples = aprotein;
         sample1 = protein1;
@@ -818,6 +821,7 @@ public class Simulation extends JPanel implements Runnable {
     	resetWell();
     	stdSample.reset();
     	ResetFlags();
+    	stdLoadState = notLoaded;
     	needCleared = false;
     	repaint();
 	}

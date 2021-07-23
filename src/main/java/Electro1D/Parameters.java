@@ -372,7 +372,7 @@ public class Parameters extends JPanel implements Constants {
         resetPanel.add(clearwells);
 
         JPanel tempStandWells = new JPanel();
-        JLabel wellsLabel = new JLabel("Select the Well to Add a Sample to", SwingConstants.CENTER);
+        JLabel wellsLabel = new JLabel("Select the Well to add a Sample to", SwingConstants.CENTER);
         JButton addStandard = new JButton("Add Standards");
         addStandard.setToolTipText("Pipette selected standards into well 1");
         addStandard.addActionListener(new ActionListener() {
