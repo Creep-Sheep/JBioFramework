@@ -436,99 +436,7 @@ public class Parameters extends JPanel implements Constants {
                 parent.setPlotData(stdProteinArray, selectedSample1, dye1);
             }
         });
-        
-        JButton fileSelector = new JButton("Well 2");
-        fileSelector.setToolTipText("Select a file to be put in well 2");
-        fileSelector.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 2");
-            }
-        });
-        //The file selectors for the other 4 wells
-        JButton fileSelector1 = new JButton("Well 3");
-        fileSelector1.setToolTipText("Select a file to be put in well 3");
-        fileSelector1.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 3");
-            }
-        });
-        JButton fileSelector2 = new JButton("Well 4");
-        fileSelector2.setToolTipText("Select a file to be put in well 4");
-        fileSelector2.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 4");
-            }
-        });
-        JButton fileSelector3 = new JButton("Well 5");
-        fileSelector3.setToolTipText("Select a file to be put in well 5");
-        fileSelector3.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 5");
-            }
-        });
-        JButton fileSelector4 = new JButton("Well 6");
-        fileSelector4.setToolTipText("Select a file to be put in well 6");
-        fileSelector4.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 6");
-            }
-        });
-        JButton fileSelector5 = new JButton("Well 7");
-        fileSelector5.setToolTipText("Select a file to be put in well 7");
-        fileSelector5.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 7");
-            }
-        });
-        JButton fileSelector6 = new JButton("Well 8");
-        fileSelector6.setToolTipText("Select a file to be put in well 8");
-        fileSelector6.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 8");
-            }
-        });
-        JButton fileSelector7 = new JButton("Well 9");
-        fileSelector7.setToolTipText("Select a file to be put in well 9");
-        fileSelector7.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 9");
-            }
-        });
-        JButton fileSelector8 = new JButton("Well 10");
-        fileSelector8.setToolTipText("Select a file to be put in well 10");
-        fileSelector8.addActionListener(new ActionListener() {
-            
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if(parent.isReady()) 
-        			loadFile("Well 10");
-            }
-        });
-        
+                
         //dropPanel.add(voltacrPanel);
         JPanel contr = new JPanel();
         contr.setLayout(new GridLayout(1,2,5,5));
@@ -549,15 +457,9 @@ public class Parameters extends JPanel implements Constants {
         controlPanel.add(startButton);
         controlPanel.add(stopButton);*/
         //higher panel for choosing wells
-        selectionPanel1.add(fileSelector);
-        selectionPanel1.add(fileSelector1);
-        selectionPanel1.add(fileSelector2);
-        selectionPanel1.add(fileSelector3);
-        selectionPanel1.add(fileSelector4);
-        selectionPanel1.add(fileSelector5);
-        selectionPanel1.add(fileSelector6);
-        selectionPanel1.add(fileSelector7);
-        selectionPanel1.add(fileSelector8);
+
+        for (int i = 2; i <= Simulation.wellCount; i++)
+        	selectionPanel1.add(newFileButton(i));
 
         //add(headerPanel);
         add(selectionPanel2);
@@ -574,7 +476,21 @@ public class Parameters extends JPanel implements Constants {
         selectedSample2 = unknown2;
     }
 
-    private void helperMethod1() {
+    private JButton newFileButton(int i) {
+    	JButton b = new JButton("Well " + i);
+        b.setToolTipText("Select a file to be put in well " + i);
+        b.addActionListener(new ActionListener() {
+            
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(parent.isReady()) 
+        			loadFile(i);
+            }
+        });
+		return b;
+	}
+
+	private void helperMethod1() {
     	colorPanelTop.setBackground(Color.lightGray);
         color1Panel.setBackground(stdProteinArray[std1Ref].color);
         color2Panel.setBackground(stdProteinArray[std2Ref].color);
@@ -750,7 +666,7 @@ public class Parameters extends JPanel implements Constants {
 
     }
     
-	public void loadFile(String wellNum) {
+	public void loadFile(int wellNum) {
 		FileUtils.openFile(this, (file) -> {
 			parent.simPanel.loadFile(file, wellNum);
 			return null;

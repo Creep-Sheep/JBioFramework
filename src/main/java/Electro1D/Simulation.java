@@ -236,7 +236,7 @@ public class Simulation extends JPanel implements Runnable {
 			return;
 		for (int i = 2; i <= wellCount; i++) {
 			if (p.x > wellOpeningX[i] && p.x < wellOpeningX[i] + wellOpeningWidth) {
-				loadFile(f, "Well " + i);
+				loadFile(f, i);
 				break;
 			}
 		}
@@ -686,11 +686,10 @@ public class Simulation extends JPanel implements Runnable {
 		start();
 	}
 
-	public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
+	public void addSampleFromFile(Vector<Protein> proteins, int n) {
 		// if (stdLoadState == loading || sampFileLoadState == loading) {
 		// return;
 		// }
-		int n = Integer.parseInt(wellNum.substring(5));
 		if (n > 1 && n <= wellCount) {
 			stopRun();
 			wellSamples[n].reset();
@@ -731,7 +730,7 @@ public class Simulation extends JPanel implements Runnable {
 		addStandard();
 		for (int i = 2; i <= wellCount; i++) {
 			if (wellProteins[i] != null) {
-				addSampleFromFile(wellProteins[i], "Well " + i);
+				addSampleFromFile(wellProteins[i], i);
 				bsRedoWell.set(i);
 			}
 		}
@@ -1113,7 +1112,7 @@ public class Simulation extends JPanel implements Runnable {
 	}
 
 	@SuppressWarnings("unused")
-	public void loadFile(File f, String wellNum) {
+	public void loadFile(File f, int wellNum) {
 		// BH modal dialog blocks. JOptionPane.showMessageDialog(null, "Proteins Loading");
 		String filename = (f == null ? null : f.getName());
 		Vector<Protein> proteins = new Vector<>();
