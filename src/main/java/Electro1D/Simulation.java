@@ -270,7 +270,7 @@ public class Simulation extends JPanel implements Runnable {
 		if (stdLoadState == loading || sampFileLoadState == loading || p.y <= wellOpeningY
 				|| p.y >= wellOpeningY + wellOpeningHeight)
 			return;
-		for (int i = 2; i < 10; i++) {
+		for (int i = 2; i < 11; i++) {
 			if (p.x > wellOpeningX[i] && p.x < wellOpeningX[i] + wellOpeningWidth) {
 				loadFile(f, "Well " + i);
 				break;
@@ -1085,18 +1085,18 @@ public class Simulation extends JPanel implements Runnable {
 		// System.out.println(e + ", i: " + e.getX() + ", j: " + e.getY());
 		if (clicked && (!stopAnimation || !notAtBottom))
 			return;
-		if (sample1.matchPosition(x, y)) {
+		if (sample1.matchPosition(x, y) && clicked) {
 			announce(sample1, sample1.name, 1);
 			return;
 		}
 		for (int i = 1; i <= wellCount; i++) { /// BH ??? was 6? not wellCount?
-			if (dyes[i].matchPosition(x, y)) {
+			if (dyes[i].matchPosition(x, y) && clicked) {
 				announce(dyes[i], dyes[i].name, 1);
 				return;
 			}
 		}
 		for (int i = 0; i < numOfStds; i++) {
-			if (stdSamples[i].matchPosition(x, y)) {
+			if (stdSamples[i].matchPosition(x, y) && clicked) {
 				stdSamples[i].relativeMigration = stdSamples[i].getDistance() / dyes[1].getDistance();
 				announce(stdSamples[i], stdSamples[i].fullName, 1);
 				return;
@@ -1107,7 +1107,7 @@ public class Simulation extends JPanel implements Runnable {
 			if (proteins != null) {
 				for (int j = 0, n = proteins.size(); j < n; j++) {
 					Protein protein = proteins.get(j);
-					if (protein.matchPosition(x, y)) {
+					if (protein.matchPosition(x, y) && clicked) {
 						protein.relativeMigration = protein.getDistance() / dyes[i].getDistance();
 						announce(protein, protein.fullName, i);
 						return;
