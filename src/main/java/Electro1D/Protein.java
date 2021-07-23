@@ -32,9 +32,9 @@ public class Protein {
 	public int plotYPos;
 	public int plotXPos;
 
-	public void setStartPosition(int i, int j) {
-		x1 = i;
-		y1 = j;
+	public void setStartPosition(int x, int y) {
+		x1 = x;
+		y1 = y;
 		startY = y1;
 		y1float = y1;
 	}
@@ -61,8 +61,8 @@ public class Protein {
 		return (x >= x1 - range && x <= x2 + range && y >= y1 - range && y <= y2 + range);
 	}
 
-	public void setWidth(int i) {
-		width = i;
+	public void setWidth(int w) {
+		width = w;
 	}
 
 	public int getDecider() {

@@ -29,13 +29,11 @@ import main.java.Utilities.MessageFrame;
  * @author Bader AlHarbi Simulation class to initiate the simulation panel GUI
  */
 public class Simulation extends JPanel implements Runnable {
-	protected final static int wellCount = 10;
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4599259684085322211L;
-	private final int numOfStds = 7;
+
 	Thread runner;
 	Electrophoresis parent;
 	int pause;
@@ -44,14 +42,15 @@ public class Simulation extends JPanel implements Runnable {
 	boolean addInfo;
 	Protein[] stdSamples;
 	@SuppressWarnings("unchecked")
-	Vector<Protein>[] wellProteins = new Vector[wellCount + 1];
-	Protein[] dyes = new Protein[wellCount + 1];
+	Vector<Protein>[] wellProteins = new Vector[Constants.wellCount + 1];
+	Sample[] wellSamples = new Sample[Constants.wellCount + 1];
+	protected int[] wellOpeningX = new int[Constants.wellCount + 1];
+	Protein[] dyes = new Protein[Constants.wellCount + 1];
 	Protein sample1;
 	Protein sample2;
 	Sample stdSample;
 	Sample sampSample1;
 	Sample sampSample2;
-	Sample[] wellSamples = new Sample[wellCount + 1];
 
 	Pipette pipette;
 	Pipette pipette2;
@@ -77,7 +76,6 @@ public class Simulation extends JPanel implements Runnable {
 	protected int topOpeningY;
 	protected int topOpeningHeight;
 	protected int topOpeningWidth;
-	protected int[] wellOpeningX = new int[wellCount + 1];
 	protected int wellOpening1Height;
 	protected int wellOpening1Width;
 	protected int wellOpening2Height;
@@ -179,7 +177,7 @@ public class Simulation extends JPanel implements Runnable {
 		stdSamples = new Protein[7];
 		sample1 = new Protein();
 		sample2 = new Protein();
-		for (int i = 1; i <= wellCount; i++) {
+		for (int i = 1; i <= Constants.wellCount; i++) {
 			dyes[i] = new Protein();
 			if (i > 1)
 				wellSamples[i] = new Sample();
@@ -234,7 +232,7 @@ public class Simulation extends JPanel implements Runnable {
 		if (stdLoadState == loading || sampFileLoadState == loading || p.y <= wellOpeningY
 				|| p.y >= wellOpeningY + wellOpeningHeight)
 			return;
-		for (int i = 2; i <= wellCount; i++) {
+		for (int i = 2; i <= Constants.wellCount; i++) {
 			if (p.x > wellOpeningX[i] && p.x < wellOpeningX[i] + wellOpeningWidth) {
 				loadFile(f, i);
 				break;
@@ -332,7 +330,7 @@ public class Simulation extends JPanel implements Runnable {
 		this.dyes[1].setStartPosition(wellOpeningX[1], wellBottom);
 		this.dyes[1].setMaxPosition(plateBottom);
 		this.dyes[1].setHostScaleFactor(scaleFactor);
-		for (int i = 2; i <= wellCount; i++) {
+		for (int i = 2; i <= Constants.wellCount; i++) {
 			Vector<Protein> proteins = wellProteins[i];
 			if (proteins != null) {
 				for (int x = 0; x < proteins.size(); x++) {
@@ -449,7 +447,7 @@ public class Simulation extends JPanel implements Runnable {
 		halfWellWidth = wellOpening1Width / 2;
 		int nextWell = halfWellWidth + wellOpening1Width;
 
-		for (int i = 2; i <= wellCount; i++)
+		for (int i = 2; i <= Constants.wellCount; i++)
 			wellOpeningX[i] = wellOpeningX[i - 1] + nextWell;
 
 		wellBottom = wellOpeningY + wellOpening1Height;
@@ -556,7 +554,7 @@ public class Simulation extends JPanel implements Runnable {
 		g.drawLine(plateRtEdge, plateY, plateRtEdge, plateBottom);
 		g.setColor(Color.white);
 		g.fillRect(topOpeningX + 2, topOpeningY, topOpeningWidth, topOpeningHeight + 5);// not sure if this looks nice
-		for (int i = 1; i <= wellCount; i++) {
+		for (int i = 1; i <= Constants.wellCount; i++) {
             g.fillRect(wellOpeningX[i], wellOpeningY, wellOpeningWidth,
                     wellOpeningHeight);        	
 		}
@@ -690,7 +688,7 @@ public class Simulation extends JPanel implements Runnable {
 		// if (stdLoadState == loading || sampFileLoadState == loading) {
 		// return;
 		// }
-		if (n > 1 && n <= wellCount) {
+		if (n > 1 && n <= Constants.wellCount) {
 			stopRun();
 			wellSamples[n].reset();
 			wellSamples[n].fill();
@@ -728,7 +726,7 @@ public class Simulation extends JPanel implements Runnable {
     	else
     		return;
 		addStandard();
-		for (int i = 2; i <= wellCount; i++) {
+		for (int i = 2; i <= Constants.wellCount; i++) {
 			if (wellProteins[i] != null) {
 				addSampleFromFile(wellProteins[i], i);
 				bsRedoWell.set(i);
@@ -748,7 +746,7 @@ public class Simulation extends JPanel implements Runnable {
 		g.setColor(Color.blue);
 		g.fillRect(wellOpeningX[1], wellOpeningY + wellOpeningHeight - wellOpeningHeight / 6, wellOpeningWidth,
 				wellOpeningHeight / 6);
-		for (int i = 2; i <= wellCount; i++) {
+		for (int i = 2; i <= Constants.wellCount; i++) {
 			if (bsRedoWell.get(i)) {
 				g.fillRect(wellOpeningX[i], wellOpeningY + wellOpeningHeight - wellOpeningHeight / 6, wellOpeningWidth,
 						wellOpeningHeight / 6);
@@ -764,7 +762,7 @@ public class Simulation extends JPanel implements Runnable {
 	 * resets the wells that files are put into
 	 */
 	private void resetWell() {
-		for (int i = 2; i <= wellCount; i++) {
+		for (int i = 2; i <= Constants.wellCount; i++) {
 			wellProteins[i] = null;
 			dyes[i] = dyes[1];
 		}
@@ -813,7 +811,7 @@ public class Simulation extends JPanel implements Runnable {
 		 * stdSamples[6].speed = 0.92105300000000001D * d;
 		 */
 
-		for (int i = 2; i <= wellCount; i++) {
+		for (int i = 2; i <= Constants.wellCount; i++) {
 			Vector<Protein> proteins = wellProteins[i];
 			if (proteins != null) {
 				for (int x = 0, n = proteins.size(); x < n; x++) {
@@ -895,7 +893,7 @@ public class Simulation extends JPanel implements Runnable {
 			if (stdSamples[i].selected && stdSamples[i].drawProtein(g))
 				notAtBottom = true;
 		while (++i < 7);
-		for (i = 2; i <= wellCount; i++) {
+		for (i = 2; i <= Constants.wellCount; i++) {
 			Vector<Protein> proteins = wellProteins[i];
 			if (proteins != null) {
 				dyes[i].drawProtein(g);
@@ -1032,7 +1030,7 @@ public class Simulation extends JPanel implements Runnable {
 			stdSample.drawSample(offScreenGraphics);
 			sampSample1.drawSample(offScreenGraphics);
 			// sampSample2.drawSample(offScreenGraphics);
-			for (int i = 2; i <= wellCount; i++) {
+			for (int i = 2; i <= Constants.wellCount; i++) {
 				wellSamples[i].drawSample(offScreenGraphics);
 			}
 		} else {
@@ -1066,43 +1064,81 @@ public class Simulation extends JPanel implements Runnable {
 		// System.out.println(e + ", i: " + e.getX() + ", j: " + e.getY());
 		if (clicked && (!stopAnimation || !notAtBottom))
 			return;
-		if (sample1.matchPosition(x, y) && clicked) {
-			announce(sample1, sample1.name, 1);
+		if (sample1.matchPosition(x, y)) {
+			announce(sample1, sample1.name, 1, clicked);
 			return;
 		}
-		for (int i = 1; i <= wellCount; i++) { /// BH ??? was 6? not wellCount?
-			if (dyes[i].matchPosition(x, y) && clicked) {
-				announce(dyes[i], dyes[i].name, 1);
-				return;
-			}
-		}
-		for (int i = 0; i < numOfStds; i++) {
-			if (stdSamples[i].matchPosition(x, y) && clicked) {
-				stdSamples[i].relativeMigration = stdSamples[i].getDistance() / dyes[1].getDistance();
-				announce(stdSamples[i], stdSamples[i].fullName, 1);
-				return;
-			}
-		}
-		for (int i = 2; i <= wellCount; i++) {
-			Vector<Protein> proteins = wellProteins[i];
-			if (proteins != null) {
-				for (int j = 0, n = proteins.size(); j < n; j++) {
-					Protein protein = proteins.get(j);
-					if (protein.matchPosition(x, y) && clicked) {
-						protein.relativeMigration = protein.getDistance() / dyes[i].getDistance();
-						announce(protein, protein.fullName, i);
-						return;
-					}
+		int w = findWell(x);
+		switch (w) {
+		case 0:
+			return;
+		case 1:
+			for (int i = 0; i < stdSamples.length; i++) {
+				if (stdSamples[i].matchPosition(x, y)) {
+					stdSamples[i].relativeMigration = stdSamples[i].getDistance() / dyes[1].getDistance();
+					announce(stdSamples[i], stdSamples[i].fullName, 1, clicked);
+					return;
 				}
 			}
+			break;
+		}
+		Protein dye = dyes[w];
+		if (dye.matchPosition(x, y)) {
+			announce(dye, dye.name, 1, clicked);
+			return;
+		}
+		Protein protein = (clicked ? findProtein(x, y, w) : null);
+		if (protein != null) {
+			protein.relativeMigration = protein.getDistance() / dyes[w].getDistance();
+			announce(protein, protein.fullName, w, clicked);
 		}
 	}
 
-	public void announce(Protein p, String name, int dyeIndex) {
+	/**
+	 * Find the well number for this x position.
+	 * 
+	 * @param x
+	 * @return 1...n, or 0 if under this well or not proteins there
+	 */
+	private int findWell(int x) {	
+		for (int i = 1; i < wellOpeningX.length; i++) {
+			int wx = wellOpeningX[i];
+			if (x <= wx + wellOpeningWidth + 2)
+				return (x >= wx - 2  && (i < 2 || wellProteins[i] != null) ? i : 0);
+		}
+		return 0;
+	}
+
+	/**
+	 * First check by x to see what well it is in, if that is not already known. Then check proteins in that well for y.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @return
+	 */
+	protected Protein findProtein(int x, int y, int w) {
+		if (w < 0)
+			w = findWell(x);
+		if (w < 2)
+			return null;
+		Vector<Protein> proteins = wellProteins[w];
+		for (int j = 0, n = proteins.size(); j < n; j++) {
+			Protein protein = proteins.get(j);
+			if (protein.matchPosition(x, y)) {
+				return protein;
+			}
+		}
+		return null;
+	}
+
+	public void announce(Protein p, String name, int refDye, boolean clicked) {
+		if (!clicked)
+			return;
 		proteinName = name;
 		proteinMW = "MW = tbd";
 		proteinDist = "mm travel = " + twoDigits.format(p.getDistance());
-		relMigration = "RM = " + twoDigits.format(p.getDistance() / dyes[dyeIndex].getDistance());
+		relMigration = "RM = " + twoDigits.format(p.getDistance() / dyes[refDye].getDistance());
 		addInfo = true;
 		repaint();
 	}
