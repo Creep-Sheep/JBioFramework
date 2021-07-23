@@ -163,6 +163,10 @@ public class Simulation extends JPanel implements Runnable {
 	boolean paintRedoWells;
 	BitSet bsRedoWell = new BitSet();
 
+	private boolean needCleared;
+
+	private boolean needClearedError;
+
 	/**
 	 * constructor that take instant of the Electro1D parent class
 	 *
@@ -230,7 +234,7 @@ public class Simulation extends JPanel implements Runnable {
 		if (stdLoadState == loading || sampFileLoadState == loading || p.y <= wellOpeningY
 				|| p.y >= wellOpeningY + wellOpeningHeight)
 			return;
-		for (int i = 2; i < 10; i++) {
+		for (int i = 2; i <= wellCount; i++) {
 			if (p.x > wellOpeningX[i] && p.x < wellOpeningX[i] + wellOpeningWidth) {
 				loadFile(f, "Well " + i);
 				break;
@@ -259,8 +263,9 @@ public class Simulation extends JPanel implements Runnable {
 	}
 
 	/**
-	 * paintData(Graphics g) draw protein info on the simulation panel TODO
-	 * 
+     * paintData(Graphics g)
+     * draw protein info on the simulation panel
+     * TODO
 	 * @param g
 	 */
 	private void paintData(Graphics g) {
@@ -271,6 +276,9 @@ public class Simulation extends JPanel implements Runnable {
 			// i += charHeight * 2;
 			g.drawString("Add Standard", plateX, i);
 			noLoadError = false;
+        } else if(needClearedError) {
+        	g.drawString("Clear the gel", plateX, i);
+        	needClearedError = false;
 		} else {
 			g.drawString(proteinName, plateX, i);
 			// i += charSpacing + 2;
@@ -287,15 +295,15 @@ public class Simulation extends JPanel implements Runnable {
 	}
 
 	/**
-	 * start the simulation on the gel panel , the protein bands moves after
-	 * invoking this method
+     * start the simulation on the gel panel , the protein bands moves after invoking this method
 	 *
 	 * @param aprotein is an array of standard proteins (known)
 	 * @param protein1 is a unknown protein for well 1 (sample)
 	 * @param protein2 is a unknown protein for well 2
 	 * @param protein3 is a dye
 	 */
-	public void startRun(Protein aprotein[], Protein protein1, Protein protein2, Protein[] dyes) {
+    public void startRun(Protein aprotein[], Protein protein1, Protein protein2, 
+                         Protein[] dyes) {
 		stopRun();
 		if (stdLoadState == notLoaded) {// || samp2LoadState == notLoaded
 			addInfo = true;
@@ -347,6 +355,7 @@ public class Simulation extends JPanel implements Runnable {
 		paintRedoWells = false;
 		updateRedo();
 		ResetFlags();
+        needCleared = true;
 		runSampleFlag = true;
 		stdLoadState = notLoaded;
 		sampFileLoadState = notLoaded;
@@ -365,6 +374,12 @@ public class Simulation extends JPanel implements Runnable {
 	}
 
 	public boolean isReady() {
+    	if (needCleared) {
+    		addInfo = true;
+    		needClearedError = true;
+    		repaint();
+    		return false;
+    	}
 		if (stdLoadState == notLoaded) {// || samp2LoadState == notLoaded
 			addInfo = true;
 			noLoadError = true;
@@ -375,8 +390,8 @@ public class Simulation extends JPanel implements Runnable {
 	}
 
 	/**
-	 * calculate the dimension of the simulation panel, the location of the proteins
-	 * bands relative to other panel edges
+     * calculate the dimension of the simulation panel, the location of the
+     * proteins bands relative to other panel edges
 	 */
 	private void calcDimensions() {
 		int i1 = 0;
@@ -542,7 +557,8 @@ public class Simulation extends JPanel implements Runnable {
 		g.setColor(Color.white);
 		g.fillRect(topOpeningX + 2, topOpeningY, topOpeningWidth, topOpeningHeight + 5);// not sure if this looks nice
 		for (int i = 1; i <= wellCount; i++) {
-			g.fillRect(wellOpeningX[i], wellOpeningY, wellOpeningWidth, wellOpeningHeight);
+            g.fillRect(wellOpeningX[i], wellOpeningY, wellOpeningWidth,
+                    wellOpeningHeight);        	
 		}
 		g.setColor(Color.black);
 		int i = 0;
@@ -559,21 +575,30 @@ public class Simulation extends JPanel implements Runnable {
 		g.fillRect(endPosX, endPosY, endWidth, endHeight);
 		g.fillRect(endNegX, endNegY, endWidth, endHeight);
 		g.setColor(Color.black);
-		g.drawRoundRect(negProbeX, negProbeY, probeWidth, probeHeight, probeWidth, probeWidth);
-		g.fillRoundRect(negProbeX, negProbeY, probeWidth, probeHeight, probeWidth, probeWidth);
+        g.drawRoundRect(negProbeX, negProbeY, probeWidth, probeHeight,
+                probeWidth, probeWidth);
+        g.fillRoundRect(negProbeX, negProbeY, probeWidth, probeHeight,
+                probeWidth, probeWidth);
 		g.fillRect(negLineX, 0, powerLineWidth, negProbeY);
 		g.setColor(Color.white);
-		g.drawLine(polarityNegHorizontalX1, polarityNegHorizontalY, polarityNegHorizontalX2, polarityNegHorizontalY);
+        g.drawLine(polarityNegHorizontalX1, polarityNegHorizontalY,
+                polarityNegHorizontalX2, polarityNegHorizontalY);
 		g.setColor(Color.red);
-		g.drawRoundRect(posProbeX, posProbeY, probeWidth, probeHeight, probeWidth, probeWidth);
-		g.fillRoundRect(posProbeX, posProbeY, probeWidth, probeHeight, probeWidth, probeWidth);
+        g.drawRoundRect(posProbeX, posProbeY, probeWidth, probeHeight,
+                probeWidth, probeWidth);
+        g.fillRoundRect(posProbeX, posProbeY, probeWidth, probeHeight,
+                probeWidth, probeWidth);
 		g.setColor(Color.black);
-		g.drawLine(posProbeCenterX, polarityPlusVerticalY1, posProbeCenterX, polarityPlusVerticalY2);
-		g.drawLine(polarityPlusHorizontalX1, polarityPlusY, polarityPlusHorizontalX2, polarityPlusY);
+        g.drawLine(posProbeCenterX, polarityPlusVerticalY1, posProbeCenterX,
+                polarityPlusVerticalY2);
+        g.drawLine(polarityPlusHorizontalX1, polarityPlusY,
+                polarityPlusHorizontalX2, polarityPlusY);
 		g.setColor(Color.red);
 		// TEXT
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+        g2.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
 		g2.drawString(" ELECTROPHORESIS CELL", plateX, cellLabelY);
 
 	}
@@ -583,7 +608,12 @@ public class Simulation extends JPanel implements Runnable {
 	 * invoked by the Add standard button
 	 */
 	public void addStandard() {
-
+        if(needCleared) {
+        	addInfo = true;
+        	needClearedError = true;
+        	repaint();
+        	return;
+        }
 		stopRun();
 		if (shouldReset)
 			resetWell();
@@ -689,12 +719,15 @@ public class Simulation extends JPanel implements Runnable {
 	}
 
 	/*
-	 * Keep working on this, harder than expected redoWells resets the wells with
-	 * the same files, so easy to repeat
+     * Keep working on this, harder than expected
+     * redoWells resets the wells with the same files, so easy to repeat
 	 */
 	public void redoWells() {
 		shouldReset = false;
-
+    	if(needCleared)
+    		needCleared = false;
+    	else
+    		return;
 		addStandard();
 		for (int i = 2; i <= wellCount; i++) {
 			if (wellProteins[i] != null) {
@@ -708,6 +741,7 @@ public class Simulation extends JPanel implements Runnable {
 		validate();
 		repaint();
 		shouldReset = true;
+		needCleared = true;
 	}
 
 	public void paintReset(Graphics g) {
@@ -742,6 +776,7 @@ public class Simulation extends JPanel implements Runnable {
 		resetWell();
 		stdSample.reset();
 		ResetFlags();
+    	needCleared = false;
 		repaint();
 	}
 
@@ -1022,11 +1057,9 @@ public class Simulation extends JPanel implements Runnable {
 			checkMouse(e.getX(), e.getY(), false);
 		}
 
-	}
 
-	public void increaseDDNum() {
-		ddNum++;
 	}
+    public void increaseDDNum() { ddNum++; }
 
 	public void checkMouse(int x, int y, boolean clicked) {
 		// BH -- suggestion to think about whether it could work with a mouse move and
@@ -1034,18 +1067,18 @@ public class Simulation extends JPanel implements Runnable {
 		// System.out.println(e + ", i: " + e.getX() + ", j: " + e.getY());
 		if (clicked && (!stopAnimation || !notAtBottom))
 			return;
-		if (sample1.matchPosition(x, y)) {
+		if (sample1.matchPosition(x, y) && clicked) {
 			announce(sample1, sample1.name, 1);
 			return;
 		}
 		for (int i = 1; i <= wellCount; i++) { /// BH ??? was 6? not wellCount?
-			if (dyes[i].matchPosition(x, y)) {
+			if (dyes[i].matchPosition(x, y) && clicked) {
 				announce(dyes[i], dyes[i].name, 1);
 				return;
 			}
 		}
 		for (int i = 0; i < numOfStds; i++) {
-			if (stdSamples[i].matchPosition(x, y)) {
+			if (stdSamples[i].matchPosition(x, y) && clicked) {
 				stdSamples[i].relativeMigration = stdSamples[i].getDistance() / dyes[1].getDistance();
 				announce(stdSamples[i], stdSamples[i].fullName, 1);
 				return;
@@ -1056,7 +1089,7 @@ public class Simulation extends JPanel implements Runnable {
 			if (proteins != null) {
 				for (int j = 0, n = proteins.size(); j < n; j++) {
 					Protein protein = proteins.get(j);
-					if (protein.matchPosition(x, y)) {
+					if (protein.matchPosition(x, y) && clicked) {
 						protein.relativeMigration = protein.getDistance() / dyes[i].getDistance();
 						announce(protein, protein.fullName, i);
 						return;
@@ -1081,8 +1114,7 @@ public class Simulation extends JPanel implements Runnable {
 
 	@SuppressWarnings("unused")
 	public void loadFile(File f, String wellNum) {
-		// BH modal dialog blocks. JOptionPane.showMessageDialog(null, "Proteins
-		// Loading");
+		// BH modal dialog blocks. JOptionPane.showMessageDialog(null, "Proteins Loading");
 		String filename = (f == null ? null : f.getName());
 		Vector<Protein> proteins = new Vector<>();
 		MessageFrame error = GenomeFileParser.loadFile(f, null, proteins, null, GenomeFileParser.PROTEINS_ONLY);
