@@ -372,7 +372,7 @@ public class Parameters extends JPanel implements Constants {
         resetPanel.add(clearwells);
 
         JPanel tempStandWells = new JPanel();
-        JLabel wellsLabel = new JLabel("Select The Well to Add a Sample too", SwingConstants.CENTER);
+        JLabel wellsLabel = new JLabel("Select the Well to Add a Sample to", SwingConstants.CENTER);
         JButton addStandard = new JButton("Add Standards");
         addStandard.setToolTipText("Pipette selected standards into well 1");
         addStandard.addActionListener(new ActionListener() {
@@ -587,6 +587,7 @@ public class Parameters extends JPanel implements Constants {
         color6Panel.setBackground(stdProteinArray[std6Ref].color);
         color7Panel.setBackground(stdProteinArray[std7Ref].color);
         colorPanel.setLayout(new GridLayout(8, 1, 1, 3));
+        colorPanel.setBackground(Color.lightGray);
         JLabel colorbuffer = new JLabel();
         //colorbuffer.setOpaque(true);
         colorbuffer.setBackground(Color.lightGray);

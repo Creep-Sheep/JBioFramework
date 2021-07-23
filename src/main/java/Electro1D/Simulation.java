@@ -169,6 +169,10 @@ public class Simulation extends JPanel implements Runnable {
 	boolean paintRedoWells;
 	BitSet bsRedoWell = new BitSet();
 
+	private boolean needCleared;
+
+	private boolean needClearedError;
+
     /**
      * constructor that take instant of the Electro1D parent class
      *
@@ -225,6 +229,8 @@ public class Simulation extends JPanel implements Runnable {
         this.addMouseMotionListener(msl);
         shouldReset = true;
         paintRedoWells = false;
+        needCleared = false;
+        needClearedError = false;
         bsRedoWell.clear();
         resetWell();
     
@@ -312,6 +318,9 @@ public class Simulation extends JPanel implements Runnable {
             //i += charHeight * 2;
             g.drawString("Add Standard", plateX, i);
             noLoadError = false;
+        } else if(needClearedError) {
+        	g.drawString("Clear the gel", plateX, i);
+        	needClearedError = false;
         } else {
         	g.drawString(proteinName, plateX, i);
             //i += charSpacing + 2;
@@ -388,6 +397,7 @@ public class Simulation extends JPanel implements Runnable {
         paintRedoWells = false;
         updateRedo();
         ResetFlags();
+        needCleared = true;
         runSampleFlag = true;
         stdLoadState = notLoaded;
         sampFileLoadState = notLoaded;
@@ -406,6 +416,12 @@ public class Simulation extends JPanel implements Runnable {
     }
     
     public boolean isReady() {
+    	if (needCleared) {
+    		addInfo = true;
+    		needClearedError = true;
+    		repaint();
+    		return false;
+    	}
     	if (stdLoadState == notLoaded) {//|| samp2LoadState == notLoaded
             addInfo = true;
             noLoadError = true;
@@ -634,7 +650,12 @@ public class Simulation extends JPanel implements Runnable {
      * invoked by the Add standard button
      */
     public void addStandard() {
-        
+        if(needCleared) {
+        	addInfo = true;
+        	needClearedError = true;
+        	repaint();
+        	return;
+        }
         stopRun();
         if(shouldReset)
         	resetWell();
@@ -745,7 +766,10 @@ public class Simulation extends JPanel implements Runnable {
      */
     public void redoWells() {
     	shouldReset = false;
-    	
+    	if(needCleared)
+    		needCleared = false;
+    	else
+    		return;
     	addStandard();
     	for (int i = 2; i <= wellCount; i++) {
           	if(wellProteins[i] != null) {
@@ -759,6 +783,7 @@ public class Simulation extends JPanel implements Runnable {
     	validate();
     	repaint();
 		shouldReset = true;
+		needCleared = true;
 	}
     
 	public void paintReset(Graphics g) {
@@ -793,6 +818,7 @@ public class Simulation extends JPanel implements Runnable {
     	resetWell();
     	stdSample.reset();
     	ResetFlags();
+    	needCleared = false;
     	repaint();
 	}
     
