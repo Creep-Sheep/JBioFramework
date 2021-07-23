@@ -12,7 +12,6 @@ package main.java.Electro2D;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,15 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import javajs.async.AsyncFileChooser;
+import main.java.Utilities.FileUtils;
 
 @SuppressWarnings("serial")
 public class FileFrame extends JFrame {
 
 	/** variables for the file reading pop-up frame **/
 	private Electro2D electro2D; // reference to calling applet
-	private final String directoryString = "." + File.separator +
-	// ".." + File.separator +
-			"data";
 	private JTextArea instructions;
 	private JButton button;
 	private JPanel south;
@@ -114,29 +111,11 @@ public class FileFrame extends JFrame {
 //        }
 //    }
 
-	@SuppressWarnings("unused")
 	public void loadFile() {
-		// change the cursor image
-		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-//      filename = sa[choice.getSelectedIndex()];
-
-		JFrame frame = this;
-
-		// BH using the AsyncFileChooser for Java and JavaScript
-		File dir = new File(directoryString);
-		// System.out.println(dir.getAbsolutePath());
-		if (!dir.isDirectory())
-			dir = new File("." + File.separator + ".." + File.separator + "data");
-		AsyncFileChooser chooser = new AsyncFileChooser(dir);
-		chooser.showOpenDialog(this, () -> {
-			electro2D.loadFile(chooser.getSelectedFile(), fileNum);
-			// set the cursor image back to normal
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			// close the frame
+		FileUtils.openFile(this, (file) -> {
+			electro2D.loadFile(file, fileNum);
 			dispose();
-		}, () -> {
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			dispose();
+			return null;
 		});
 	}
 

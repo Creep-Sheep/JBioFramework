@@ -43,17 +43,17 @@ public class Spectrometer {
 
             //Figure out which protease the user wants.
             Protease protease;
-            if (proteaseChoice.equals("MassSpec.Trypsin")) {
+            if (proteaseChoice.equals("Trypsin")) {
                 protease = new Trypsin();
-            } else if (proteaseChoice.equals("MassSpec.Chymotrypsin")) {
+            } else if (proteaseChoice.equals("Chymotrypsin")) {
                 protease = new Chymotrypsin();
             } else if (proteaseChoice.equals("Proteinase K")) {
                 protease = new ProteinaseK();
-            } else if (proteaseChoice.equals("MassSpec.Thermolysin")) {
+            } else if (proteaseChoice.equals("Thermolysin")) {
                 protease = new Thermolysin();
             } else {
                 System.err.println("Did not recognize protease choice.");
-                System.err.println("Defaulting to MassSpec.Trypsin selection.");
+                System.err.println("Defaulting to Trypsin.");
                 protease = new Trypsin();
             }
 
@@ -74,7 +74,7 @@ public class Spectrometer {
                 System.out.println("Spectrometer.runAnalysis " + ex.getMessage());
             }
 
-            //Count up the number of ions with the same mass charge rotios to
+            //Count up the number of ions with the same mass charge ratios to
             //find intensity of each peak.
             int mostHits = 0;
             for (int i = 0; i < ions.size(); i++) {

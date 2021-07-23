@@ -34,9 +34,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -50,7 +47,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -61,11 +57,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 
 import main.java.Electro1D.Protein;
 import main.java.Utilities.BrowserLauncher;
+import main.java.Utilities.FileUtils;
 import main.java.Utilities.GenomeFileParser;
 import main.java.Utilities.MessageFrame;
 
@@ -137,347 +133,319 @@ public class Electro2D extends JPanel implements ActionListener {
 	public int fileNum;
 	private JFrame parentFrame;
 
-    public Electro2D(JFrame parentFrame) {
-    	GenomeFileParser.init();
-    	this.parentFrame = parentFrame;
-        proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
-        fileFrame = new FileFrame(parentFrame, this, 1);                            //init frame
-        fileFrame2 = new FileFrame(parentFrame, this, 2);
-        fileFrame.setResizable(false); //don't allow user to change size
-        proteinList = new java.awt.List();
-        proteinList2 = new java.awt.List();
+	public Electro2D(JFrame parentFrame) {
+		GenomeFileParser.init();
+		this.parentFrame = parentFrame;
+		proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
+		fileFrame = new FileFrame(parentFrame, this, GenomeFileParser.ELECTRO2D_FILE_1); // init frame
+		fileFrame2 = new FileFrame(parentFrame, this, GenomeFileParser.ELECTRO2D_FILE_2);
+		fileFrame.setResizable(false); // don't allow user to change size
+		proteinList = new java.awt.List();
+		proteinList2 = new java.awt.List();
 
-        web = new WebGenerator(this);
-        JButton webButton = new JButton("Generate HTML Page");
-        webButton.setToolTipText("Creates an HTML file of proteins and values");
-        webButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new HTMLGenScreen(Electro2D.this);
-            }
-        });
-
-        //read in deactivated range Image
-        rangeImage = new RangeImage(
-                Toolkit.getDefaultToolkit().getImage(
-                        "rangeSelectDeactivated.jpg"));
-
-        rangeLabels = new Vector<JLabel>();
-        mwLabels = new Vector<JLabel>();
-        resetPressed = false;
-        rangeReload = false;
-        gelCanvas = new GelCanvas(this);
-		setTransferHandler(new TransferHandler() {
-			
-			  @Override
-			  public boolean canImport(TransferHandler.TransferSupport support) {
-				  return true;
-			  }
-
-
-			@Override
-			public boolean importData(TransferHandler.TransferSupport support) {
-				//System.out.println(support.getComponent());
-				Transferable tr = support.getTransferable();
-				DataFlavor[] flavors = tr.getTransferDataFlavors();
-				try {
-					for (int i = 0; i < flavors.length; i++) {
-						if (flavors[i].isFlavorJavaFileListType()) {
-							@SuppressWarnings("unchecked")
-							List<File> list = (List<File>) tr.getTransferData(flavors[i]);
-							// BH for now we just load one if multiple are picked
-							for (int j = 0; j < Math.max(1, list.size()); j++) {
-								loadFile(list.get(j), 1);
-							}
-							return true;
-						}
-					}
-				} catch (UnsupportedFlavorException | IOException e) {
-					e.printStackTrace();
-				}
-				return false;
-			}	
-			  
+		web = new WebGenerator(this);
+		JButton webButton = new JButton("Generate HTML Page");
+		webButton.setToolTipText("Creates an HTML file of proteins and values");
+		webButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new HTMLGenScreen(Electro2D.this);
+			}
 		});
 
+		// read in deactivated range Image
+		rangeImage = new RangeImage(Toolkit.getDefaultToolkit().getImage("rangeSelectDeactivated.jpg"));
 
-		
-        JButton compareButton = new JButton("Compare Proteins");
-        compareButton.setToolTipText("Compares multiple proteins to each other");
-        compareButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                getSequenceData2();
-                PlayE2AnimationButton.setCompare(true);
-            }
-        });
+		rangeLabels = new Vector<JLabel>();
+		mwLabels = new Vector<JLabel>();
+		resetPressed = false;
+		rangeReload = false;
+		gelCanvas = new GelCanvas(this);
+		FileUtils.setFileDropper(this, (file, loc) -> {
+			loadFile(file, GenomeFileParser.ELECTRO2D_FILE_1);
+			return null;
+		});
 
-        csvButton = new JButton("Record to CSV");
-        csvButton.setToolTipText("Creates a spreadsheet of proteins and their values");
-        csvButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                writeToCSV(); //really confused as to why we don't put the logic right here
-            }
-        });
+		JButton compareButton = new JButton("Compare Proteins");
+		compareButton.setToolTipText("Compares multiple proteins to each other");
+		compareButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getSequenceData2();
+				PlayE2AnimationButton.setCompare(true);
+			}
+		});
 
-        // Help/About buttons
-        JButton aboutButton = new JButton("About");
-        aboutButton.setToolTipText("About the program");
-        aboutButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+		csvButton = new JButton("Record to CSV");
+		csvButton.setToolTipText("Creates a spreadsheet of proteins and their values");
+		csvButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				writeToCSV(); // really confused as to why we don't put the logic right here
+			}
+		});
+
+		// Help/About buttons
+		JButton aboutButton = new JButton("About");
+		aboutButton.setToolTipText("About the program");
+		aboutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 //                File f = new File( "HTML Files" + File.separator + "Help" + File.separator + "help.html" );
-                try {
-                    BrowserLauncher.openURL("https://sourceforge.net/projects/jbf/");
-                } catch (IOException i) {
-                    System.err.println(i.getMessage());
-                }
-            }
-        });
+				try {
+					BrowserLauncher.openURL("https://sourceforge.net/projects/jbf/");
+				} catch (IOException i) {
+					System.err.println(i.getMessage());
+				}
+			}
+		});
 
-        JButton helpButton = new JButton("Help");
-        helpButton.setToolTipText("Opens help wiki for Electro2D.Electro2D");
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+		JButton helpButton = new JButton("Help");
+		helpButton.setToolTipText("Opens help wiki for Electro2D.Electro2D");
+		helpButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 //                File f = new File( "HTML Files" + File.separator + "Help" + File.separator + "help.html" );
-                String url = "https://sourceforge.net/p/jbf/wiki/Electro2D.Electro2D/";
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException i) {
-                    System.err.println(i.getMessage());
-                }
-            }
-        });
+				String url = "https://sourceforge.net/p/jbf/wiki/Electro2D.Electro2D/";
+				try {
+					BrowserLauncher.openURL(url);
+				} catch (IOException i) {
+					System.err.println(i.getMessage());
+				}
+			}
+		});
 
-        // Add/Remove/List/Search protein buttons
-        // @TODO: Consider consolidating all protein actions into a singular dialog for protein "Management"
-        JButton addProteinButton = new JButton("Add Proteins");
-        addProteinButton.setToolTipText("Load proteins from file");
-        addProteinButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                getSequenceData();
-            }
-        });
+		// Add/Remove/List/Search protein buttons
+		// @TODO: Consider consolidating all protein actions into a singular dialog for
+		// protein "Management"
+		JButton addProteinButton = new JButton("Add Proteins");
+		addProteinButton.setToolTipText("Load proteins from file");
+		addProteinButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				getSequenceData();
+			}
+		});
 
-        JButton removeProteinButton = new JButton("Remove Proteins");
-        removeProteinButton.setToolTipText("Remove unwanted proteins from field by name");
-        removeProteinButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                removeHighlightedProteins();
-            }
-        });
+		JButton removeProteinButton = new JButton("Remove Proteins");
+		removeProteinButton.setToolTipText("Remove unwanted proteins from field by name");
+		removeProteinButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				removeHighlightedProteins();
+			}
+		});
 
-        JButton searchButton = new JButton("Search Protein Field");
-        searchButton.setToolTipText("Refine protein field with these search options");
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                openProteinSearch();
-            }
-        });
+		JButton searchButton = new JButton("Search Protein Field");
+		searchButton.setToolTipText("Refine protein field with these search options");
+		searchButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				openProteinSearch();
+			}
+		});
 
-        JButton displayProteinsButton = new JButton("Display Protein List");
-        displayProteinsButton.setToolTipText("Display editable list of all the proteins in field");
-        displayProteinsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                displayProteinList();
-            }
-        });
+		JButton displayProteinsButton = new JButton("Display Protein List");
+		displayProteinsButton.setToolTipText("Display editable list of all the proteins in field");
+		displayProteinsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				displayProteinList();
+			}
+		});
 
-        JButton colorKey = new JButton("Color Key");
-        colorKey.setToolTipText("Pop-up color key explaining dots in field");
-        colorKey.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                new ColorFrame().showKey();
-            }
-        });
+		JButton colorKey = new JButton("Color Key");
+		colorKey.setToolTipText("Pop-up color key explaining dots in field");
+		colorKey.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				new ColorFrame().showKey();
+			}
+		});
 
-        playButton = new PlayE2AnimationButton(this);
-        restartButton = new RestartE2DAnimationButton(this);
+		playButton = new PlayE2AnimationButton(this);
+		restartButton = new RestartE2DAnimationButton(this);
 
-        animationChooser = new JLabel("IEF");
+		animationChooser = new JLabel("IEF");
 
-        // Add the pH range chooser
-        rangeChooser = new JComboBox<String>();
-        rangeChooser.addItem("3 - 10");
-        rangeChooser.addItem("4 - 7");
-        rangeChooser.addItem("Enter A Range");
-        rangeChooser.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (rangeChooser.getSelectedItem().equals("Enter A Range")) {
-                    rangeChooser.setEditable(true);
-                } else {
-                    rangeChooser.setEditable(false);
-                }
-            }
-        });
+		// Add the pH range chooser
+		rangeChooser = new JComboBox<String>();
+		rangeChooser.addItem("3 - 10");
+		rangeChooser.addItem("4 - 7");
+		rangeChooser.addItem("Enter A Range");
+		rangeChooser.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (rangeChooser.getSelectedItem().equals("Enter A Range")) {
+					rangeChooser.setEditable(true);
+				} else {
+					rangeChooser.setEditable(false);
+				}
+			}
+		});
 
-        // init %Acrylamide field and set initial value to 15
-        percentAcrylamide = new JComboBox<String>();
-        percentAcrylamide.addItem("5");
-        percentAcrylamide.addItem("7.5");
-        percentAcrylamide.addItem("10");
-        percentAcrylamide.addItem("15");
-        percentAcrylamide.addItem("18");
-        percentAcrylamide.addItem("4 - 15");
-        percentAcrylamide.addItem("4 - 20");
-        percentAcrylamide.addItem("8 - 16");
-        percentAcrylamide.addItem("10 - 20");
-        percentAcrylamide.setSelectedItem("15");
+		// init %Acrylamide field and set initial value to 15
+		percentAcrylamide = new JComboBox<String>();
+		percentAcrylamide.addItem("5");
+		percentAcrylamide.addItem("7.5");
+		percentAcrylamide.addItem("10");
+		percentAcrylamide.addItem("15");
+		percentAcrylamide.addItem("18");
+		percentAcrylamide.addItem("4 - 15");
+		percentAcrylamide.addItem("4 - 20");
+		percentAcrylamide.addItem("8 - 16");
+		percentAcrylamide.addItem("10 - 20");
+		percentAcrylamide.setSelectedItem("15");
 
-        sequences = new Vector<String>();
-        sequenceTitles = new Vector<String>();
-        molecularWeights = new Vector<String>();
-        piValues = new Vector<String>();
-        sequencesReady = false;
+		sequences = new Vector<String>();
+		sequenceTitles = new Vector<String>();
+		molecularWeights = new Vector<String>();
+		piValues = new Vector<String>();
+		sequencesReady = false;
 
-        proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
+		proteinListFrame = new SingleProteinListFrame("Protein Lists", this);
 
+		/*
+		 * new code for designing a Swing GUI; uses JPanels and layout managers to
+		 * arrange the buttons and labels to look similar to how the old awt code did it
+		 */
 
-       /*
-        * new code for designing a Swing GUI; uses JPanels and layout managers
-        * to arrange the buttons and labels to look similar to how the old awt
-        * code did it
-        */
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+		leftPanel = new JPanel();
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		JPanel rightPanel = new JPanel();
+		rightPanel.setLayout(new GridBagLayout());
 
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new GridBagLayout());
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = (new Insets(0, 10, 0, 10));
+		this.add(leftPanel, c);
 
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = (new Insets(0, 10, 0, 10));
-        this.add(leftPanel, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		this.add(rightPanel, c);
 
-        c.gridx = 1;
-        c.gridy = 0;
-        this.add(rightPanel, c);
+		GridBagConstraints constraint = new GridBagConstraints();
 
-        GridBagConstraints constraint = new GridBagConstraints();
+		constraint.gridx = 1;
+		constraint.gridy = 0;
+		constraint.fill = GridBagConstraints.BOTH;
+		constraint.ipady = 50;
+		constraint.ipadx = 650;
+		pHPanel = new JPanel();
+		pHPanel.setLayout(null);
+		rightPanel.add(pHPanel, constraint);
 
-        constraint.gridx = 1;
-        constraint.gridy = 0;
-        constraint.fill = GridBagConstraints.BOTH;
-        constraint.ipady = 50;
-        constraint.ipadx = 650;
-        pHPanel = new JPanel();
-        pHPanel.setLayout(null);
-        rightPanel.add(pHPanel, constraint);
+		constraint.gridx = 0;
+		constraint.gridy = 1;
+		constraint.ipady = 10;
+		constraint.ipadx = 15;
+		mWPanel = new JPanel();
+		mWPanel.setLayout(null);
+		rightPanel.add(mWPanel, constraint);
 
-        constraint.gridx = 0;
-        constraint.gridy = 1;
-        constraint.ipady = 10;
-        constraint.ipadx = 15;
-        mWPanel = new JPanel();
-        mWPanel.setLayout(null);
-        rightPanel.add(mWPanel, constraint);
+		constraint.gridx = 1;
+		constraint.gridy = 1;
+		constraint.ipady = 450;
+		constraint.ipadx = 650;
+		rightPanel.add(gelCanvas, constraint);
 
-        constraint.gridx = 1;
-        constraint.gridy = 1;
-        constraint.ipady = 450;
-        constraint.ipadx = 650;
-        rightPanel.add(gelCanvas, constraint);
+		// header panel: label
+		JPanel header = new JPanel(new GridBagLayout());
+		c.gridy = 0;
+		header0 = new JLabel("2D Electrophoresis");
+		header0.setFont(new Font("SansSerif", Font.BOLD, 18));
+		header.add(header0, c);
+		leftPanel.add(header);
 
-        //header panel: label
-        JPanel header = new JPanel(new GridBagLayout());
-        c.gridy = 0;
-        header0 = new JLabel("2D Electrophoresis");
-        header0.setFont(new Font("SansSerif", Font.BOLD, 18));
-        header.add(header0, c);
-        leftPanel.add(header);
+		// first panel: help and about buttons
+		JPanel firstPanel = new JPanel();
+		c.gridy = 1;
+		firstPanel.add(helpButton);
+		firstPanel.add(aboutButton);
+		leftPanel.add(firstPanel);
 
-        //first panel: help and about buttons
-        JPanel firstPanel = new JPanel();
-        c.gridy = 1;
-        firstPanel.add(helpButton);
-        firstPanel.add(aboutButton);
-        leftPanel.add(firstPanel);
+		// second panel: protein buttons
+		JPanel secondPanel = new JPanel();
+		secondPanel.add(addProteinButton);
+		leftPanel.add(secondPanel);
 
-        //second panel: protein buttons
-        JPanel secondPanel = new JPanel();
-        secondPanel.add(addProteinButton);
-        leftPanel.add(secondPanel);
+		// third panel: animation information panel
+		JPanel thirdPanel = new JPanel();
+		thirdPanel.setLayout(new GridLayout(1, 1, 0, 0));
+		JPanel innerPanel = new JPanel();
+		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+		thirdPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray),
+				"Current Animation", TitledBorder.CENTER, TitledBorder.TOP));
+		innerPanel.add(animationChooser);
+		thirdPanel.add(innerPanel);
+		leftPanel.add(thirdPanel);
 
-        //third panel: animation information panel
-        JPanel thirdPanel = new JPanel();
-        thirdPanel.setLayout(new GridLayout(1, 1, 0, 0));
-        JPanel innerPanel = new JPanel();
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-        thirdPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray), "Current Animation", TitledBorder.CENTER, TitledBorder.TOP));
-        innerPanel.add(animationChooser);
-        thirdPanel.add(innerPanel);
-        leftPanel.add(thirdPanel);
-
-        //fourth panel: animation control buttons
-        JPanel fourthPanel = new JPanel();
-        fourthPanel.setLayout(new GridLayout(1, 2, 2, 2));
-        fourthPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray), "Animation Buttons", TitledBorder.CENTER, TitledBorder.TOP));
-        fourthPanel.add(playButton);
+		// fourth panel: animation control buttons
+		JPanel fourthPanel = new JPanel();
+		fourthPanel.setLayout(new GridLayout(1, 2, 2, 2));
+		fourthPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray),
+				"Animation Buttons", TitledBorder.CENTER, TitledBorder.TOP));
+		fourthPanel.add(playButton);
 //        fourthPanel.add(stopButton   );
-        fourthPanel.add(restartButton);
-        leftPanel.add(fourthPanel);
+		fourthPanel.add(restartButton);
+		leftPanel.add(fourthPanel);
 
-        //fifth panel: ph selection
-        JPanel fifthPanel = new JPanel();
-        fifthPanel.setLayout(new GridLayout(1, 1, 0, 0));
-        fifthPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray), "Choose pH", TitledBorder.CENTER, TitledBorder.TOP));
-        fifthPanel.add(rangeChooser);
-        leftPanel.add(fifthPanel);
+		// fifth panel: ph selection
+		JPanel fifthPanel = new JPanel();
+		fifthPanel.setLayout(new GridLayout(1, 1, 0, 0));
+		fifthPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray), "Choose pH",
+				TitledBorder.CENTER, TitledBorder.TOP));
+		fifthPanel.add(rangeChooser);
+		leftPanel.add(fifthPanel);
 
-        //sixth panel: acrylamide selection
-        JPanel sixthPanel = new JPanel();
-        sixthPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray), "Choose Acrylamide %", TitledBorder.CENTER, TitledBorder.TOP));
-        sixthPanel.setLayout(new GridLayout(1, 1, 0, 0));
-        sixthPanel.add(percentAcrylamide);
-        leftPanel.add(sixthPanel);
+		// sixth panel: acrylamide selection
+		JPanel sixthPanel = new JPanel();
+		sixthPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray),
+				"Choose Acrylamide %", TitledBorder.CENTER, TitledBorder.TOP));
+		sixthPanel.setLayout(new GridLayout(1, 1, 0, 0));
+		sixthPanel.add(percentAcrylamide);
+		leftPanel.add(sixthPanel);
 
-        //seventh panel: additional options label (AO)
-        JPanel seventhPanel = new JPanel();
-        JLabel additionalOptions = new JLabel("Additional Options");
-        additionalOptions.setFont(new Font("SansSerif", Font.BOLD, 16));
-        seventhPanel.add(additionalOptions);
-        leftPanel.add(seventhPanel);
+		// seventh panel: additional options label (AO)
+		JPanel seventhPanel = new JPanel();
+		JLabel additionalOptions = new JLabel("Additional Options");
+		additionalOptions.setFont(new Font("SansSerif", Font.BOLD, 16));
+		seventhPanel.add(additionalOptions);
+		leftPanel.add(seventhPanel);
 
-        //eigth panel: AO 'display proteins' button
-        JPanel eighthPanel = new JPanel();
-        eighthPanel.add(displayProteinsButton);
-        leftPanel.add(eighthPanel);
+		// eigth panel: AO 'display proteins' button
+		JPanel eighthPanel = new JPanel();
+		eighthPanel.add(displayProteinsButton);
+		leftPanel.add(eighthPanel);
 
-        //ninth panel: AO 'compare proteins' button [inactive]
-        JPanel ninthPanel = new JPanel();
-        ninthPanel.add(compareButton);
-        //leftPanel.add(ninthPanel); Removed compare protein functionality until it is useful.
+		// ninth panel: AO 'compare proteins' button [inactive]
+		JPanel ninthPanel = new JPanel();
+		ninthPanel.add(compareButton);
+		// leftPanel.add(ninthPanel); Removed compare protein functionality until it is
+		// useful.
 
-        //tenth panel: AO 'search' button
-        JPanel tenthPanel = new JPanel();
-        tenthPanel.add(searchButton);
-        leftPanel.add(tenthPanel);
+		// tenth panel: AO 'search' button
+		JPanel tenthPanel = new JPanel();
+		tenthPanel.add(searchButton);
+		leftPanel.add(tenthPanel);
 
-        //eleventh panel: AO 'generate html page' button
-        JPanel eleventhPanel = new JPanel();
-        eleventhPanel.add(webButton);
-        leftPanel.add(eleventhPanel);
+		// eleventh panel: AO 'generate html page' button
+		JPanel eleventhPanel = new JPanel();
+		eleventhPanel.add(webButton);
+		leftPanel.add(eleventhPanel);
 
-        //twelf panel: AO 'record to csv' button
-        JPanel twelfPanel = new JPanel();
-        twelfPanel.add(csvButton);
-        leftPanel.add(twelfPanel);
+		// twelf panel: AO 'record to csv' button
+		JPanel twelfPanel = new JPanel();
+		twelfPanel.add(csvButton);
+		leftPanel.add(twelfPanel);
 
-        //thirteenth panel: AO 'color key'
-        JPanel thirteenthPanel = new JPanel();
-        thirteenthPanel.add(colorKey);
-        leftPanel.add(thirteenthPanel);
+		// thirteenth panel: AO 'color key'
+		JPanel thirteenthPanel = new JPanel();
+		thirteenthPanel.add(colorKey);
+		leftPanel.add(thirteenthPanel);
 
-    }
+	}
 
     /**
      * Accessor method for the leftPanel instance variable so that
@@ -993,9 +961,9 @@ public class Electro2D extends JPanel implements ActionListener {
     public void removeHighlightedProteins() {
         selectedIndexes = proteinList.getSelectedIndexes();
         String[] selectedItems = proteinList.getSelectedItems();
-        for (int x = 0; x < selectedIndexes.length; x++) {
-            removeProteinbyTitle(selectedItems[x]);
-            proteinList.remove(selectedIndexes[x] - x);
+        for (int i = 0; i < selectedIndexes.length; i++) {
+            removeProteinbyTitle(selectedItems[i]);
+            proteinList.remove(selectedIndexes[i] - i);
 
         }
         if (sequenceTitles2 != null) {
@@ -1767,13 +1735,13 @@ public class Electro2D extends JPanel implements ActionListener {
     }
 
 	public void loadFile(File f, int fileNum) {
-		MessageFrame error = GenomeFileParser.loadFile(f, (Vector<Protein>)null, this, fileNum);
+		MessageFrame error = GenomeFileParser.loadFile(f, null, (Vector<Protein>)null, this, fileNum);
 		if (error == null) {
 			int n = sequences.size();
 			JOptionPane.showMessageDialog(null, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");					
-			if (fileNum == 1) {
+			if (fileNum == GenomeFileParser.ELECTRO2D_FILE_1) {
 				refreshProteinList();
-			} else if (fileNum == 2) {
+			} else if (fileNum == GenomeFileParser.ELECTRO2D_FILE_2) {
 				refreshProteinList2();
 			}
 		} else {

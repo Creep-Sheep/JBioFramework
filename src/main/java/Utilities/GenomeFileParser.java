@@ -63,6 +63,11 @@ public class GenomeFileParser {
 		"tyrosine","TYR","Y",
 		"valine","VAL","V",
     };
+
+	public static final int SEQUENCES_ONLY = -1;
+	public static final int PROTEINS_ONLY = 0;
+	public static final int ELECTRO2D_FILE_1 = 1;
+	public static final int ELECTRO2D_FILE_2 = 2;
     
     static {
     	for (int i = 1; i < aas.length; i++)
@@ -80,12 +85,12 @@ public class GenomeFileParser {
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
 	 * @return the number of p.sequences
      */
-    public static int e2dParse(File f, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+    public static int e2dParse(File f, String data, Vector<String> sequences, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
         try {
-        	Preprocessor p = new Preprocessor(f, fileNum == 0);
+        	Preprocessor p = new Preprocessor(f, fileNum);
 			BufferedReader reader = new BufferedReader(
 					data == null || data.equals("") ? new FileReader(f) : new StringReader(data));
-	        return p.readFromFile(reader, proteins, electro2D, fileNum);
+	        return p.readFromFile(reader, sequences, proteins, electro2D, fileNum);
         } catch (Exception e) {
             System.err.println("Error reading from file.  Double-check the file name and try again.");
             return 0;
@@ -98,13 +103,14 @@ public class GenomeFileParser {
 	 *
 	 * @param f         file to retrieve sequence data from
 	 * @param data      user-inputed file data
+	 * @param sequences 
 	 * @param proteins  output vector if 1D
 	 * @param electro2D the applet, if 2D
 	 * @param fileNum   0 for 1D, 1 or 2 for 2D
 	 * @return the number of sequences
 	 */
-	public static int fastaParse(File f, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
-		Preprocessor p = new Preprocessor(f, fileNum == 0);
+	public static int fastaParse(File f, String data, Vector<String> sequences, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+		Preprocessor p = new Preprocessor(f, fileNum);
 		StringBuffer chainData = new StringBuffer(); // holds chain designations
 		try {
 			BufferedReader reader = new BufferedReader(
@@ -143,7 +149,7 @@ public class GenomeFileParser {
 				p.sequences.addElement(totalChain);
 			}
 			reader.close();
-			return p.finalizeRead(proteins, electro2D, fileNum);
+			return p.finalizeRead(sequences, proteins, electro2D, fileNum);
 		} catch (Exception e) {
 			MessageFrame error = new MessageFrame();
 			error.setMessage("Error reading from file. Be sure you typed the name correctly.");
@@ -164,9 +170,9 @@ public class GenomeFileParser {
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
 	 * @return the number of sequences
 	 */
-	public static int gbkParse(File f, String data, Vector<Protein> proteins, Electro2D electro2D, 
+	public static int gbkParse(File f, String data, Vector<String> sequences, Vector<Protein> proteins, Electro2D electro2D, 
 			int fileNum) {
-		Preprocessor p = new Preprocessor(f, fileNum == 0);
+		Preprocessor p = new Preprocessor(f, fileNum);
 		boolean foundTranslation = false;
 		try {
 			BufferedReader reader = new BufferedReader(
@@ -246,7 +252,7 @@ public class GenomeFileParser {
 				function.setLength(0); // reset for next chain
 			}
 			reader.close();			
-			return p.finalizeRead(proteins, electro2D, fileNum);
+			return p.finalizeRead(sequences, proteins, electro2D, fileNum);
 		} catch (Exception e) {
 			// NPE is EOF
 			MessageFrame error = new MessageFrame();
@@ -285,8 +291,8 @@ public class GenomeFileParser {
 	 * @param fileNum 0 for 1D, 1 or 2 for 2D
 	 * @return the number of p.sequences
 	 */
-	public static int pdbParse(File inputFile, String data, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
-		Preprocessor p = new Preprocessor(inputFile, fileNum == 0);
+	public static int pdbParse(File inputFile, String data, Vector<String> sequences, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+		Preprocessor p = new Preprocessor(inputFile, fileNum);
 		List<String> chainData = new ArrayList<>(); // holds chain designations
 		List<String> compoundInfo = new ArrayList<>(); // holds COMPND tag data
 		List<String> sequenceInfo = new ArrayList<>(); // holds SEQRES tag data
@@ -455,7 +461,7 @@ public class GenomeFileParser {
 					p.functions.addElement(proteinFunction);
 				}
 			}
-			return p.finalizeRead(proteins, electro2D, fileNum);
+			return p.finalizeRead(sequences, proteins, electro2D, fileNum);
 		} catch (Exception e) {
 			MessageFrame error = new MessageFrame();
 			error.setMessage("Error reading from file. Be sure you typed the name correctly.");
@@ -522,13 +528,13 @@ public class GenomeFileParser {
 			return sb.toString();
 		} catch (IOException ex) {
 			System.out.println(
-					"GenomeFileParser.getFASTSequenceAsSingleLine " + ex.getMessage() + " trying to open " + file);
+					"getFASTSequenceAsSingleLine " + ex.getMessage() + " trying to open " + file);
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unused")
-	public static MessageFrame loadFile(File f, Vector<Protein> proteins, Electro2D electro2d, int fileNum) {
+	public static MessageFrame loadFile(File f, Vector<String> sequences, Vector<Protein> proteins, Electro2D electro2d, int fileNum) {
 		MessageFrame error = null;
 		String filename = (f == null ? null : f.getName());
 		if (filename == null || filename.equals("")) {
@@ -554,16 +560,16 @@ public class GenomeFileParser {
 		switch (extension) {
 		case "faa":
 		case "fasta":
-			n = GenomeFileParser.fastaParse(f, data, proteins, electro2d, fileNum);
+			n = fastaParse(f, data, sequences, proteins, electro2d, fileNum);
 			break;
 		case "pdb":
-			n = GenomeFileParser.pdbParse(f, data, proteins, electro2d, fileNum);
+			n = pdbParse(f, data, sequences, proteins, electro2d, fileNum);
 			break;
 		case "gbk":
-			n = GenomeFileParser.gbkParse(f, data, proteins, electro2d, fileNum);
+			n = gbkParse(f, data, sequences, proteins, electro2d, fileNum);
 			break;
 		case "e2d":
-			n = GenomeFileParser.e2dParse(f, data, proteins, electro2d, fileNum);
+			n = e2dParse(f, data, sequences, proteins, electro2d, fileNum);
 			break;
 		default:
 			error = new MessageFrame();
@@ -1453,7 +1459,7 @@ public class GenomeFileParser {
 //                }
 //            }
 //
-//			finalizeRead(sequences, sequenceTitles, molecularWeights, piValues, null, functions,
+//			finalizeRead(sequences, sequences, sequenceTitles, molecularWeights, piValues, null, functions,
 //					theFile, minmax, null, electro2D, fileNum);
 //        }
 //        try {

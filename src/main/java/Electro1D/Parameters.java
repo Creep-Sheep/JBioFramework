@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import javajs.async.AsyncFileChooser;
+import main.java.Utilities.FileUtils;
 
 /**
  * @author Bader Alharbi
@@ -66,11 +67,7 @@ public class Parameters extends JPanel implements Constants {
     Protein unknown10;
 
     Electrophoresis parent;
-    Protein stdProteinArray[] = new Protein[7];
-	String directoryString = "." + File.separator + 
-			//".." + File.separator + 
-			"data";
-	
+    Protein stdProteinArray[] = new Protein[7];	
 
     /**
      * constructor
@@ -739,30 +736,13 @@ public class Parameters extends JPanel implements Constants {
 
     }
     
-    public void loadFile(String wellNum) {
-    	setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	//JFrame fileSelctorFrame = this;
-    	File dir = new File(directoryString);
-		System.out.println("Parametsers.loadFile " + dir.getAbsolutePath());
-		
-			if (!dir.isDirectory())
-				dir = new File("." + File.separator + ".." + File.separator + "data");
-			AsyncFileChooser chooser = new AsyncFileChooser(dir);
-			chooser.showOpenDialog(this, () -> {
-				parent.simPanel.loadFile(chooser.getSelectedFile(), wellNum);
-				// set the cursor image back to normal
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				// close the frame
-				//dispose();
-			}, () -> {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				//dispose();				
-			});
-		}
-		//parent.addSampleFromFile(proteins, wellNum);
-	
+	public void loadFile(String wellNum) {
+		FileUtils.openFile(this, (file) -> {
+			parent.simPanel.loadFile(file, wellNum);
+			return null;
+		});
+	}
     
-
     // GUI attributes
     JPanel headerPanel;
     JPanel headerSub1;

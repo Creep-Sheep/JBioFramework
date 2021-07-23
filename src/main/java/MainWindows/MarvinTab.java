@@ -63,9 +63,11 @@ public class MarvinTab extends JPanel {
      * @return return the main panel
      */
     public JPanel createMainPanel() {
-        //main panel for application. contains topPanel.
+    	instance = this; 
 
+        //main panel for application. contains topPanel.
         //top panel. contains sketchpanel.
+    	
         JPanel topPanel = new JPanel() {
             /**
 			 * 
@@ -73,55 +75,19 @@ public class MarvinTab extends JPanel {
 			private static final long serialVersionUID = 2047700591318761617L;
 
 			public void setVisible(boolean tf) {
+				// lazy initialization
             	getSketchPane();
             }
         };
         
-        //sketchPanel. contains marvinPane.
         sketchPanel = new JPanel();
-// BH 2021.04.26 -- lazy initialization of MarvinPane for SwingJS        
-//        marvinPane = createSketchPane();
-//        sketchPanel.add(marvinPane);
-    	instance = this; 
-        mainPanel = new JPanel();
-
         topPanel.add(sketchPanel);
 
 
+        mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(topPanel);
-
         return mainPanel;
-    }
-
-    /**
-     * create the central panel of MarvinSketch where all the drawing takes place.
-     * construct and return an MSketchPanel object filled with Marvin's
-     * /UserSettings/ object constructed by createUserSettings().
-     */
-    private MSketchPane createSketchPane() {
-
-        MSketchPane pane = new MSketchPane(createUserSettings());
-        pane.setPreferredSize(new Dimension(900, 500));
-
-        return pane;
-    }
-
-    /**
-     * provide the back-end settings by using Marvin's classes..
-     * construct and return Marvin's /UserSettings/ object which is
-     * used in the construction of 'pane' above.
-     */
-    private UserSettings createUserSettings() {
-        UserSettings settings = new UserSettings(
-                this.getClass().getResourceAsStream("marvin.properties"));
-        settings.setProperty(SketchParameterConstants.MENU_CUSTOMIZATION_FILE,
-                System.getProperty("user.dir") + "/src/customization.xml");
-        settings.setProperty(SketchParameterConstants.SHORTCUTS,
-                System.getProperty("user.dir") + "/src/shortchuts.xml");
-        settings.setProperty(SketchParameterConstants.TOOLBAR_TEMPLATES + "20",
-                ":specials:specialTemplates.mrv");
-        return settings;
     }
 
     /**
@@ -138,4 +104,33 @@ public class MarvinTab extends JPanel {
     	}
         return marvinPane;
     }
+
+    /**
+	 * Create the central panel of MarvinSketch where all the drawing takes place.
+	 * construct and return an MSketchPanel object filled with Marvin's
+	 * /UserSettings/ object constructed by createUserSettings().
+	 */
+    private MSketchPane createSketchPane() {
+        MSketchPane pane = new MSketchPane(createUserSettings());
+        pane.setPreferredSize(new Dimension(900, 500));
+        return pane;
+    }
+
+	/**
+	 * Provide the back-end settings by using Marvin's classes.. construct and
+	 * return Marvin's /UserSettings/ object which is used in the construction of
+	 * 'pane' above.
+	 */
+    private UserSettings createUserSettings() {
+        UserSettings settings = new UserSettings(
+                this.getClass().getResourceAsStream("marvin.properties"));
+        settings.setProperty(SketchParameterConstants.MENU_CUSTOMIZATION_FILE,
+                System.getProperty("user.dir") + "/src/customization.xml");
+        settings.setProperty(SketchParameterConstants.SHORTCUTS,
+                System.getProperty("user.dir") + "/src/shortchuts.xml");
+        settings.setProperty(SketchParameterConstants.TOOLBAR_TEMPLATES + "20",
+                ":specials:specialTemplates.mrv");
+        return settings;
+    }
+
 }

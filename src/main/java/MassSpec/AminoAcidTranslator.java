@@ -2,156 +2,51 @@ package main.java.MassSpec;// This class translates the given sequence letter na
 
 public class AminoAcidTranslator {
 
-    static public String translate(String inpt) {
-        String outpt = "";
-        /**
-         * creates a switch case in which it looks at the output and than
-         * will output the names of the amino acids depending on which one letter
-         * code they fulfill. To account for marvin, if the acid is not the last in
-         * the sequence, it will change to have a -yl at the end
-         */
-        for (int i = 0; i < inpt.length(); i++) {
-            char c = inpt.charAt(i);
-            switch (c) {
+	final static String[][] aname = new String[256][];
+	static {
+		aname['A'] = new String[] { "Alanine", "Alanyl-" };
+		aname['C'] = new String[] { "Cysteine", "Cysteinyl-" };
+		aname['D'] = new String[] { "Aspartic Acid", "Aspartyl-" };
+		aname['E'] = new String[] { "Glutamic Acid", "Glutamyl-" };
+		aname['F'] = new String[] { "Phenylalanine", "Phenylalaninyl-" };
+		aname['G'] = new String[] { "Glycine", "Glycyl-" };
+		aname['H'] = new String[] { "Histidine", "Histidinyl-" };
+		aname['I'] = new String[] { "Isoleucine", "Isoleucinyl-" };
+		aname['K'] = new String[] { "Lysine", "Lysinyl-" };
+		aname['L'] = new String[] { "Leucine", "Leucinyl-" };
+		aname['M'] = new String[] { "Methionine", "Methionyl-" };
+		aname['N'] = new String[] { "Asparagine", "Asparaginyl-" };
+		aname['Q'] = new String[] { "Glutamine", "Glutaminyl-" };
+		aname['R'] = new String[] { "Arginine", "Arginyl-" };
+		aname['S'] = new String[] { "Serine", "Serinyl-" };
+		aname['T'] = new String[] { "Threonine", "Threonyl-" };
+		aname['V'] = new String[] { "Valanine", "Valinyl-" };
+		aname['W'] = new String[] { "Tryptophan", "Tryptophanyl-" };
+		aname['Y'] = new String[] { "Tyrosine", "Tyrosinyl-" };
 
-                case 'A':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Alanine";
-                    } else {
-                        outpt += "Alanyl-";
-                    }
-                    break;
-                case 'G':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Glycine";
-                    } else {
-                        outpt += "Glycyl-";
-                    }
-                    break;
-                case 'V':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Valanine";
-                    } else {
-                        outpt += "Valinyl-";
-                    }
-                    break;
-                case 'L':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Leucine";
-                    } else {
-                        outpt += "Leucinyl-";
-                    }
-                    break;
-                case 'I':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Isoleucine";
-                    } else {
-                        outpt += "Isoleucinyl-";
-                    }
-                    break;
-                case 'M':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Methionine";
-                    } else {
-                        outpt += "Methionyl-";
-                    }
-                    break;
-                case 'F':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Phenylalanine";
-                    } else {
-                        outpt += "Phenylalaninyl-";
-                    }
-                    break;
-                case 'W':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Tryptophan";
-                    } else {
-                        outpt += "Tryptophanyl-";
-                    }
-                    break;
-                case 'S':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Serine";
-                    } else {
-                        outpt += "Serinyl-";
-                    }
-                    break;
-                case 'T':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Threonine";
-                    } else {
-                        outpt += "Threonyl-";
-                    }
-                    break;
-                case 'C':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Cysteine";
-                    } else {
-                        outpt += "Cysteinyl-";
-                    }
-                    break;
-                case 'Y':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Tyrosine";
-                    } else {
-                        outpt += "Tyrosinyl-";
-                    }
-                    break;
-                case 'N':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Asparagine";
-                    } else {
-                        outpt += "Asparaginyl-";
-                    }
-                    break;
-                case 'Q':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Glutamine";
-                    } else {
-                        outpt += "Glutaminyl-";
-                    }
-                    break;
-                case 'D':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Aspartic Acid";
-                    } else {
-                        outpt += "Aspartyl-";
-                    }
-                    break;
-                case 'E':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Glutamic Acid";
-                    } else {
-                        outpt += "Glutamyl-";
-                    }
-                    break;
-                case 'K':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Lysine";
-                    } else {
-                        outpt += "Lysinyl-";
-                    }
-                    break;
-                case 'R':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Arginine";
-                    } else {
-                        outpt += "Arginyl-";
-                    }
-                    break;
-                case 'H':
-                    if (i == inpt.length() - 1) {
-                        outpt += "Histidine";
-                    } else {
-                        outpt += "Histidinyl-";
-                    }
-                    break;
-            }
-        }
-        return outpt;
+	}
 
-    }
+	/**
+	 * Create the Marvin molecule string Arginyl-Valinyl-...-Serine
+	 * @param seq
+	 * @return the name, or null if the sequence includes unnameable amino acids
+	 */
+	static public String translate(String seq) {
+		StringBuffer sb = new StringBuffer();
+//        
+//       
+		int n = seq.length() - 1;
+		for (int i = 0; i < n; i++) {
+			String[] c = aname[seq.charAt(i)];
+			if (c == null)
+				return null;
+			sb.append(c[1]);
+		}
+		String[] cn = aname[seq.charAt(n)];
+		if (cn == null)
+			return null;
+		sb.append(cn[0]);
+		return sb.toString();
+	}
 
 }
-

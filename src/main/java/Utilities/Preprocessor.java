@@ -114,8 +114,8 @@ public class Preprocessor {
 
 	private String e2dOutFileName;
 
-	Preprocessor(File inputFile, boolean is1D) {
-		this(null, inputFile, is1D);
+	Preprocessor(File inputFile, int fileNum) {
+		this(null, inputFile, fileNum <= 0);
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class Preprocessor {
 		}
 	}
 
-	public int readFromFile(BufferedReader reader, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+	public int readFromFile(BufferedReader reader, Vector<String> sequencesOut, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		String err = null;
 		isE2D = true;
 		StringBuffer buf = new StringBuffer();
@@ -201,7 +201,7 @@ public class Preprocessor {
 					else
 						piValues.add(readE2D(reader, PIVAL_HEADER, buf));
 				}
-				finalizeRead(proteins, electro2D, fileNum);
+				finalizeRead(sequencesOut, proteins, electro2D, fileNum);
 				// electro2D.setLastFileLoaded(
 				reader.close();
 				break;
@@ -269,12 +269,16 @@ public class Preprocessor {
 			}
 		}
 	}
-
-	int finalizeRead(Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+	
+	int finalizeRead(Vector<String> sequencesOut, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		getPIandMW();
 		int nSeq = sequences.size();
 		switch (fileNum) {
-		case 0:
+		case GenomeFileParser.SEQUENCES_ONLY:
+			// Mass Spec
+			sequencesOut.addAll(sequences);
+			break;
+		case GenomeFileParser.PROTEINS_ONLY:
 			// Electro1D
 			for (int i = 0; i < nSeq; i++) {
 				proteins.add(new Protein(sequenceTitles.get(i), "", "",
@@ -283,14 +287,14 @@ public class Preprocessor {
 					proteins.get(i).setConcentration(Integer.parseInt(concentrations.get(i)));
 			}
 			return nSeq;
-		case 1:
+		case GenomeFileParser.ELECTRO2D_FILE_1:
 			electro2D.setSequences(sequences);
 			electro2D.setSequenceTitles(sequenceTitles);
 			electro2D.setMolecularWeights(molecularWeights);
 			electro2D.setPiValues(piValues);
 			electro2D.setFunctionValues(functions);
 			break;
-		case 2:
+		case GenomeFileParser.ELECTRO2D_FILE_2:
 			electro2D.setSequences2(sequences);
 			electro2D.setSequenceTitles2(sequenceTitles);
 			electro2D.setMolecularWeights2(molecularWeights);
