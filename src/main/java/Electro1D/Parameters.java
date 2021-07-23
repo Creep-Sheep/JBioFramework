@@ -219,7 +219,7 @@ public class Parameters extends JPanel implements Constants {
         // headerPanel.add(headerSub1);
         headerPanel.add(headerSub2);
 
-        dropPanel.setLayout(new GridLayout(2, 1));
+        dropPanel.setLayout(new GridLayout(2, 1, 1, 5));
         labelPanel1.setLayout(new GridLayout(1, 2));
 
         JLabel unknownLabel1 = new JLabel("Well 2");//Unkown Proteins
@@ -345,7 +345,8 @@ public class Parameters extends JPanel implements Constants {
         standard7.addItemListener(sll);
         // end check boxes
         
-        resetPanel.setLayout(new GridLayout(2, 1));
+        resetPanel.setLayout(new GridLayout(1, 2, 5, 5));
+        resetPanel.setBackground(Color.lightGray);
         JButton resetwells = new JButton("Refill Wells");
         resetwells.setToolTipText("Reset wells with the same samples");
         resetwells.addActionListener(new ActionListener() {
@@ -369,9 +370,10 @@ public class Parameters extends JPanel implements Constants {
             
         });
         resetPanel.add(clearwells);
-        helperMethod1();
 
-        JButton addStandard = new JButton("Add");
+        JPanel tempStandWells = new JPanel();
+        JLabel wellsLabel = new JLabel("Select The Well to Add a Sample too", SwingConstants.CENTER);
+        JButton addStandard = new JButton("Add Standards");
         addStandard.setToolTipText("Pipette selected standards into well 1");
         addStandard.addActionListener(new ActionListener() {
 
@@ -381,6 +383,14 @@ public class Parameters extends JPanel implements Constants {
 
             }
         });
+        tempStandWells.setLayout(new GridLayout(2, 1));
+        tempStandWells.setBackground(Color.lightGray);
+        tempStandWells.add(addStandard);
+        tempStandWells.add(wellsLabel);
+        dropPanel.add(tempStandWells);
+        //dropPanel.add(addStandard);
+        helperMethod1();
+
         JButton addSample = new JButton("Add Sample");
         addSample.setToolTipText("Pipette selected unknown into well 2");
         addSample.addActionListener(new ActionListener() {
@@ -522,20 +532,22 @@ public class Parameters extends JPanel implements Constants {
             }
         });
         
-        controlPanel.add(voltacrPanel);
+        //dropPanel.add(voltacrPanel);
         JPanel contr = new JPanel();
-        contr.setLayout(new GridLayout(2,3,0,5));
+        contr.setLayout(new GridLayout(1,2,5,5));
         contr.setBackground(Color.lightGray);
         JLabel stds = new JLabel("Standards", SwingConstants.CENTER);
         JLabel strt = new JLabel("Start Run", SwingConstants.CENTER);
         JLabel stp = new JLabel("Stop Run", SwingConstants.CENTER);
-        contr.add(stds);
-        contr.add(strt);
-        contr.add(stp);
-        contr.add(addStandard);
+        //contr.add(stds);
+        //contr.add(strt);
+        //contr.add(stp);
+        //contr.add(addStandard);
+        controlPanel.add(voltacrPanel);
         contr.add(startButton);
         contr.add(stopButton);
         controlPanel.add(contr);
+        controlPanel.add(resetPanel);
         /*controlPanel.add(addStandard);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);*/
@@ -551,8 +563,9 @@ public class Parameters extends JPanel implements Constants {
         selectionPanel1.add(fileSelector8);
 
         //add(headerPanel);
-        add(dropPanel);
         add(selectionPanel2);
+        add(dropPanel);
+        
         //add(voltagePanel);
         //add(voltacrPanel);
         add(controlPanel);
@@ -597,10 +610,10 @@ public class Parameters extends JPanel implements Constants {
         selectionPanel2.add(colorPanel);
         //dropPanel.add(labelPanel1);
         // THIS IS WHERE THE GRID OF BUTTONS TO ADD GETS ADDED
-        dropPanel.add(resetPanel);
+        //dropPanel.add(resetPanel);
         dropPanel.add(selectionPanel1);
         //dropPanel.add(labelPanel2);
-        controlPanel.setLayout(new GridLayout(2, 1, 0, 5));//should be 3, 2, 10, 10
+        controlPanel.setLayout(new GridLayout(3, 1, 5, 5));//should be 3, 2, 10, 10
 
         // create the control panel buttons & use anonymous inner handling
     }
