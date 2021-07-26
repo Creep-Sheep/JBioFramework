@@ -340,12 +340,11 @@ public class Parameters extends JPanel {
 		resetwells.setToolTipText("Reset wells with the same samples");
 		resetwells.addActionListener(new ActionListener() {
 
-        JPanel tempStandWells = new JPanel();
-        JLabel wellsLabel = new JLabel("Select the Well to add a Sample to", SwingConstants.CENTER);
-        JButton addStandard = new JButton("Add Standards");
-        addStandard.setToolTipText("Pipette selected standards into well 1");
-        addStandard.addActionListener(new ActionListener() {
-
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.resetWells();
+			}
+		
 		});
 		// resetwells.setBackground(Color.orange);
 		resetPanel.add(resetwells);
