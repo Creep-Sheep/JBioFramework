@@ -14,6 +14,23 @@ package main.java.MassSpec;
  * See the GNU General Public License for more details.
  */
 
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+//Listeners and Event handlers
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+//etc.
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Vector;
+import java.util.function.BiFunction;
+
 /**
  * Main GUI for the MassSpec.Spectrometer simulation contained in a JPanel.
  * One of the tabs added to /Main.JBioFrameworkMain/'s JTabbedPane.
@@ -22,25 +39,18 @@ package main.java.MassSpec;
  */
 
 //GUI Components
-
-import javax.swing.*;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Font;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-//Listeners and Event handlers
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-
-//etc.
-import java.io.IOException;
-import java.text.DecimalFormat;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import main.java.Utilities.BrowserLauncher;
+import main.java.Utilities.FileUtils;
 import main.java.Utilities.GenomeFileParser;
 
 /**
@@ -72,7 +82,7 @@ public class MassSpecMain extends JPanel {
      * the label OR, the button to load a sequence, the protease selection
      * drop down box, the info label, the big graph and the small graph.
      */
-    public MassSpecMain() {
+	public MassSpecMain() {
         //set the layout of the JPanel it's extending.
         super(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -146,6 +156,13 @@ public class MassSpecMain extends JPanel {
         inputArea = new JTextArea(7, 20);
         inputArea.setToolTipText("type or paste protein sequence here");
         inputArea.setLineWrap(true);
+        FileUtils.setFileDropper(inputArea, new BiFunction<File, Point, Void>() {
+        	public Void apply(File file, Point pt) {
+				loadFile(file);
+				return null;
+        	}
+        }); 
+
         JScrollPane scrollPane = new JScrollPane(inputArea);
         constraints.gridy = 3;
 //        grid.setConstraints(scrollPane, constraints);
@@ -160,15 +177,10 @@ public class MassSpecMain extends JPanel {
         loadButton.setToolTipText("Load from protein file"); //@todo: include file types?
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("FASTA files",
-                        "fasta");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showOpenDialog(chooser);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    String parsedSequence = GenomeFileParser.getFASTASequenceAsSingleLine(chooser.getSelectedFile());
-                    inputArea.setText(parsedSequence);
-                }
+            		FileUtils.openFile(MassSpecMain.this, (file) -> {  
+            			loadFile(file);
+            			return null;
+            		});
             }
         });
         constraints.gridy = 5;
@@ -259,7 +271,14 @@ public class MassSpecMain extends JPanel {
 
     }
 
-    /**
+    protected void loadFile(File file) {
+		Vector<String> sequences = new Vector<>();
+		GenomeFileParser.loadFile(file, sequences, null, null, GenomeFileParser.SEQUENCES_ONLY);
+		if (sequences.size() > 0)
+			inputArea.setText(sequences.get(0));
+	}
+
+	/**
      * runTandem changes the information displayed in the infoScreen Jlabel
      * when a user clicks on a peak in the MassSpec.OutputGraphGUI. It also alerts
      * MassSpec.TandemGraphGUI that there is peptide sequencing to be done.

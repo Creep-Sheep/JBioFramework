@@ -194,7 +194,7 @@ public class Electrophoresis extends JPanel {
 		simPanel.addSample2();
 	}
 	
-	public void addSampleFromFile(Vector<Protein> proteins, String wellNum) {
+	public void addSampleFromFile(Vector<Protein> proteins, int wellNum) {
 		simPanel.increaseDDNum();
 		simPanel.addSampleFromFile(proteins, wellNum);
 	}

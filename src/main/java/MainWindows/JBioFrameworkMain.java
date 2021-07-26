@@ -82,6 +82,7 @@ public class JBioFrameworkMain extends JFrame {
         tabbedPane.addTab("Electro2D", new Electro2D(this));
         tabbedPane.addTab("Spectrometer", new MassSpecMain());
         /**
+         * No 
          * @j2sIgnore
          */
         {

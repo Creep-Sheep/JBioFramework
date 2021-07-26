@@ -86,16 +86,16 @@ public class Preprocessor {
 
 	private static final String EXTENTION = ".e2d";
 	private static final int HEADER_WIDTH = 12;
-	private final int lineLength = 50;
+	private static final int LINE_LENGTH = 50;
 
-	private final String FILE_HEADER = "FILE:       ";
+	private final String FILE_HEADER        = "FILE:       ";
 //    private final String NUMENZYME_HEADER = "NUMENZYMES: ";
-	private final String PROTTITLE_HEADER = "NAME:       ";
-	private final String FUNCTION_HEADER = "FUNCTION:   ";
-	private final String SEQUENCE_HEADER = "SEQUENCE:   ";
-	private final String MOLWT_HEADER = "MOLWEIGHT:  ";
-	private final String PIVAL_HEADER = "PIVAL:      ";
-	private final String LINE_SEPARATOR = "-----";
+	private final String PROTTITLE_HEADER   = "NAME:       ";
+	private final String FUNCTION_HEADER    = "FUNCTION:   ";
+	private final String SEQUENCE_HEADER    = "SEQUENCE:   ";
+	private final String MOLWT_HEADER       = "MOLWEIGHT:  ";
+	private final String PIVAL_HEADER       = "PIVAL:      ";
+	private final String SEQ_SEPARATOR     = "-----";
 
 	Vector<String> sequences;
 	Vector<String> sequenceTitles;
@@ -114,8 +114,8 @@ public class Preprocessor {
 
 	private String e2dOutFileName;
 
-	Preprocessor(File inputFile, boolean is1D) {
-		this(null, inputFile, is1D);
+	Preprocessor(File inputFile, int fileNum) {
+		this(null, inputFile, fileNum <= 0);
 	}
 
 	/**
@@ -145,33 +145,39 @@ public class Preprocessor {
 			return;
 		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(theFile)), true)) {
 			out.println(FILE_HEADER + inputName);
-			out.println(LINE_SEPARATOR);
-			for (int i = 0; i < sequenceTitles.size(); i++) {
+			out.println(SEQ_SEPARATOR);
+			for (int i = 0, n = sequences.size(); i < n; i++) {
 				out.println(PROTTITLE_HEADER + sequenceTitles.get(i));
-				write(out, FUNCTION_HEADER, functions.get(i), lineLength);
+				writeRecord(out, FUNCTION_HEADER, functions.get(i));
 				String seq = sequences.get(i);
-				write(out, SEQUENCE_HEADER, seq, lineLength);
+				writeRecord(out, SEQUENCE_HEADER, seq);
 				out.println(MOLWT_HEADER + molecularWeights.get(i));
 				out.println(PIVAL_HEADER + (piValues == null ? getPI(seq) : piValues.get(i)));
-				out.println(LINE_SEPARATOR);
+				out.println(SEQ_SEPARATOR);
 			}
 		} catch (IOException e) {
-			System.err.println("Error writing to file");
+			System.err.println("Preprocessor.wrteToE2DFile Error writing to file " + e.getMessage());
 			return;
 		}
 	}
 
-	private static void write(PrintWriter out, String header, String data, int lineLength) {
+	/**
+	 * write the header/data record
+	 * @param out
+	 * @param header
+	 * @param data
+	 */
+	private static void writeRecord(PrintWriter out, String header, String data) {
 		int length = data.length();
 		int pt = 0;
 		while (length > 0) {
-			int n = Math.min(length, lineLength);
+			int n = Math.min(length, LINE_LENGTH);
 			out.println(header + data.substring(pt, pt = pt + n));
 			length -= n;
 		}
 	}
 
-	public int readFromFile(BufferedReader reader, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+	public int readFromFile(BufferedReader reader, Vector<String> sequencesOut, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		String err = null;
 		isE2D = true;
 		StringBuffer buf = new StringBuffer();
@@ -195,7 +201,7 @@ public class Preprocessor {
 					else
 						piValues.add(readE2D(reader, PIVAL_HEADER, buf));
 				}
-				finalizeRead(proteins, electro2D, fileNum);
+				finalizeRead(sequencesOut, proteins, electro2D, fileNum);
 				// electro2D.setLastFileLoaded(
 				reader.close();
 				break;
@@ -263,12 +269,16 @@ public class Preprocessor {
 			}
 		}
 	}
-
-	int finalizeRead(Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
+	
+	int finalizeRead(Vector<String> sequencesOut, Vector<Protein> proteins, Electro2D electro2D, int fileNum) {
 		getPIandMW();
 		int nSeq = sequences.size();
 		switch (fileNum) {
-		case 0:
+		case GenomeFileParser.SEQUENCES_ONLY:
+			// Mass Spec
+			sequencesOut.addAll(sequences);
+			break;
+		case GenomeFileParser.PROTEINS_ONLY:
 			// Electro1D
 			for (int i = 0; i < nSeq; i++) {
 				proteins.add(new Protein(sequenceTitles.get(i), "", "",
@@ -277,14 +287,14 @@ public class Preprocessor {
 					proteins.get(i).setConcentration(Integer.parseInt(concentrations.get(i)));
 			}
 			return nSeq;
-		case 1:
+		case GenomeFileParser.ELECTRO2D_FILE_1:
 			electro2D.setSequences(sequences);
 			electro2D.setSequenceTitles(sequenceTitles);
 			electro2D.setMolecularWeights(molecularWeights);
 			electro2D.setPiValues(piValues);
 			electro2D.setFunctionValues(functions);
 			break;
-		case 2:
+		case GenomeFileParser.ELECTRO2D_FILE_2:
 			electro2D.setSequences2(sequences);
 			electro2D.setSequenceTitles2(sequenceTitles);
 			electro2D.setMolecularWeights2(molecularWeights);
@@ -303,124 +313,21 @@ public class Preprocessor {
 	private final static Map<String, String> htMWcache = new Hashtable<>();
 
 	/**
-	 * This method calculates the pI from inputed sequence
-	 *
-	 * @param pro protein sequence
-	 * @return returns the pI value
-	 */
-	public static String getPI(String pro) {
-
-		String pi = htPIcache.get(pro);
-		if (pi != null)
-			return pi;
-
-		/**
-		 *  Calculate charge at a certain pH, starting with a pH of 7
-		 */
-		double pH = 7;
-
-		/**
-		 *  pH boundaries used to determine pH where charge is 0
-		 */
-		double lowpH = 0, highpH = 14;
-
-		// Length of protein sequence
-		int plen = pro.length();
-
-		/**
-		 *  total charge on the protein at specified pH, initialize to 1
-		 */
-		double charge = 1;
-
-		// Calculate total charge at varying pH values until the
-		// charge is within 0.005 of 0
-		while (Math.abs(charge) >= .005) {
-			// Calculate the charge for each AA until reach end of sequence
-			// Add the charge for each AA to the value of total charge
-			calculatePartialCharges(pH);
-			charge = 0;
-			for (int a = 0; a < plen; a++) {
-				// Determine appropriate pK value for current AA
-				// If AA not acid or base, set to neutral
-				// and give default pK of 0
-				charge += partialCharges[pro.charAt(a)];
-			}
-
-			// Calculate charge on C-terminus and add to total charge
-			charge += -1 / (1 + Math.pow(10, 3.2 - pH));
-
-			// Calculate charge on N-terminus and add to total charge
-			charge += 1 / (1 + Math.pow(10, pH - /* 9.53 */8.2));
-
-			// If total charge is greater than +0.005, then
-			// set pH to a higher value and recalculate charge
-			if (charge > 0.005) {
-
-				// Set lower pH limit to value of current pH
-				lowpH = pH;
-
-				// Set new pH to a value midway between current pH
-				// and upper pH limit
-				pH = (lowpH + highpH) / 2;
-			}
-
-			// If total charge is less than -0.005, then
-			// set pH to a lower value and recalculate charge
-			if (charge < -0.005) {
-
-				// Set upper pH limit to value of current pH
-				highpH = pH;
-
-				// Set new pH to a value midway between current
-				// pH and lower pH limit
-				pH = (lowpH + highpH) / 2;
-			}
-		}
-		String s = roundOff(pH, 2);
-		htPIcache.put(pro, s);
-		return s; // Method returns the pH at which charge is 0 (pI)
-	}
-
-	private static void calculatePartialCharges(double pH) {
-
-		// pK values were obtained from Bjellqvist, B., Basse, B., Olsen, E.,
-		// Celis, J., Reference points for comparisons of two-dimensional
-		// maps of proteins from different human cell types defined in a
-		// pH scale where isoelectric points correlate with polypeptide
-		// compositions, Electro1DMain 1994, 15, 529-539.
-		
-
-		partialCharges['R'] = getPartialCharge(true, 12.0, pH);
-		partialCharges['D'] = getPartialCharge(false, 4.05, pH);
-		partialCharges['C'] = getPartialCharge(false, 9.0, pH);
-		partialCharges['E'] = getPartialCharge(false, 4.75, pH);
-		partialCharges['H'] = getPartialCharge(true, 5.98, pH);
-		partialCharges['K'] = getPartialCharge(true, 10.0, pH);
-		partialCharges['Y'] = getPartialCharge(false, 10.0, pH);
-	}
-
-	private static double getPartialCharge(boolean isBasic, double pK, double pH) { 
-		// Calculate charge for acids or bases
-		return (isBasic ? 1 / (1 + Math.pow(10, pH - pK)) : -1 /
-                (1 + Math.pow(10, pK - pH))); 
-	}
-
-	/**
 	 * This method calculates the molecular weight from inputed sequence
 	 *
-	 * @param pro protein sequence
+	 * @param seq protein sequence
 	 *
 	 * @return returns the molecular weight
 	 */
-	public static String getMW(String pro) {
-		String wt = htMWcache.get(pro);
+	public static String getMW(String seq) {
+		String wt = htMWcache.get(seq);
 		if (wt != null)
 			return wt;
-		// Length of protein sequence
-		int len = pro.length();
+		int len = seq.length();
 
-		// Molecular weight of protein
-		double mW = 18; // Include molecular weight of water
+		// Molecular weight of protein, starting with 1 unit of H2O
+		
+		double mW = 18;
 
 //     Determine the molecular weight for each AA until reach
 //     end of sequence. Add the weight for each AA to the value
@@ -432,14 +339,97 @@ public class Preprocessor {
 //	   abbreviations, then a weight of 0 is given for that AA.
 
 		for (int f = 0; f < len; f++) {
-			mW += mws[pro.charAt(f)];
+			mW += mws[seq.charAt(f)];
 		}
 
-		// Return the molecular weight of the protein
 		String mWstring = roundOff(mW, 2);
-		htMWcache.put(pro, mWstring);
+		htMWcache.put(seq, mWstring);
 		return mWstring;
 	}
+	
+	private static void calculatePartialCharges(double pH) {
+
+		// pK values were obtained from Bjellqvist, B., Basse, B., Olsen, E.,
+		// Celis, J., Reference points for comparisons of two-dimensional
+		// maps of proteins from different human cell types defined in a
+		// pH scale where isoelectric points correlate with polypeptide
+		// compositions, Electro1DMain 1994, 15, 529-539.
+		
+
+		partialCharges['D'] = getPartialCharge(false, 4.05, pH); // ASP
+		partialCharges['C'] = getPartialCharge(false, 9.00, pH); // CYS
+		partialCharges['E'] = getPartialCharge(false, 4.75, pH); // GLU
+		partialCharges['Y'] = getPartialCharge(false, 10.0, pH); // TYR
+		
+		partialCharges['R'] = getPartialCharge(true, 12.0, pH); // ARG
+		partialCharges['H'] = getPartialCharge(true, 5.98, pH); // His
+		partialCharges['K'] = getPartialCharge(true, 10.0, pH); // LYS
+
+		partialCharges['\1'] = getPartialCharge(true, 8.2, pH); // N terminus, NH3+
+		partialCharges['\2'] = getPartialCharge(false, 3.2, pH); // C terminus, CO2-
+	}
+
+	/**
+	 * @param isBasic -- that is, "is a basic amino acid," meaning that it is protonated, like lysine.
+	 * @param pK
+	 * @param pH
+	 * @return
+	 */
+	private static double getPartialCharge(boolean isBasic, double pK, double pH) { 
+		return 1 / (isBasic ? (1 + Math.pow(10, pH - pK)) : -(1 + Math.pow(10, pK - pH))); 
+	}
+
+	/**
+	 * This method calculates the pI from inputed sequence
+	 *
+	 * @param seq protein sequence
+	 * @return returns the pI value
+	 */
+	public static String getPI(String seq) {
+
+		String pi = htPIcache.get(seq);
+		if (pi != null)
+			return pi;
+
+		double lowpH = 0, pH = 7, highpH = 14;
+
+		int plen = seq.length();
+
+		double charge = 0;
+
+		// Calculate total charge at varying pH values until the
+		// charge is within 0.005 of 0
+		while (true) {
+			// Calculate the charge for each AA until reach end of sequence
+			// Add the charge for each AA to the value of total charge
+			calculatePartialCharges(pH);
+			charge = 0;
+			for (int a = plen; --a >= 0;) {
+				// Determine appropriate pK value for current AA
+				// If AA not acid or base, set to neutral
+				// and give default pK of 0
+				charge += partialCharges[seq.charAt(a)];
+			}
+			charge += partialCharges['\1'] + partialCharges['\2'];
+			// Calculate charge on N-terminus and add to total charge
+			//was charge += 1 / (1 + Math.pow(10, pH - /* 9.53 */8.2));
+			// Calculate charge on C-terminus and add to total charge
+			//was charge += -1 / (1 + Math.pow(10, 3.2 - pH));
+
+			if (charge > 0.005) {
+				lowpH = pH;
+			} else if (charge < -0.005) {
+				highpH = pH;
+			} else {
+				break;
+			}
+			pH = (lowpH + highpH) / 2;
+		}
+		String s = roundOff(pH, 2);
+		htPIcache.put(seq, s);
+		return s; // Method returns the pH at which charge is 0 (pI)
+	}
+
 	/**
 	 * Round off a value to n decimal digits maximum
 	 * 
