@@ -124,7 +124,7 @@ public class GenomeFileParser {
 					int ptBAR = line.indexOf("|");
 					int ptHASH = line.indexOf("|$#");
 					if (totalChain.length() > 0) {
-						p.sequences.addElement(totalChain);
+						addSequence(p, totalChain);
 					}
 					if (ptCO > 0 && (ptBAR < 0 || ptBAR > ptCO)) {
 						// this is most likely chain data
@@ -146,7 +146,7 @@ public class GenomeFileParser {
 				}
 			}
 			if (totalChain.length() > 0) {
-				p.sequences.addElement(totalChain);
+				addSequence(p, totalChain);
 			}
 			reader.close();
 			return p.finalizeRead(sequences, proteins, electro2D, fileNum);
@@ -246,7 +246,7 @@ public class GenomeFileParser {
 
 				// if EOF, we will have a NullPointerException here
 				readGBKQuoted(reader, line, 35, "", "", totalChain);
-				p.sequences.addElement(totalChain.toString()); // add the sequence
+				addSequence(p, totalChain.toString()); // add the sequence
 				p.functions.addElement(function.toString()); // add the function
 				totalChain.setLength(0); // reset for next chain
 				function.setLength(0); // reset for next chain
@@ -412,7 +412,7 @@ public class GenomeFileParser {
 			// handle special case where there is no chain data
 			line = seqByChain[26];
 			if (line != null) {
-				p.sequences.addElement(line);
+				addSequence(p, line);
 				p.sequenceTitles.addElement(moleculeTitles.get(0));
 			} else if (!hasMoleculeTag) {
 
@@ -425,7 +425,7 @@ public class GenomeFileParser {
 					String seq = seqByChain[i];
 					if (seq != null) {
 						chainData.add("" + (char) ('A' + i));
-						p.sequences.addElement(seq.trim());
+						addSequence(p, seq.trim());
 						p.sequenceTitles.addElement(moleculeTitles.get(0));
 					}
 				}
@@ -436,7 +436,7 @@ public class GenomeFileParser {
 					// find which chain we're looking for
 					String chainValue = chainData.get(i);
 					int pt = chainValue.charAt(0) - 'A';
-					p.sequences.addElement(seqByChain[pt]);
+					addSequence(p, seqByChain[pt]);
 				}
 			}
 			convertAmino(p.sequences);
@@ -558,6 +558,7 @@ public class GenomeFileParser {
 		long t0 = System.currentTimeMillis();
 		String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 		switch (extension) {
+		case "fa": // BH added 2021.07.29
 		case "faa":
 		case "fasta":
 			n = fastaParse(f, data, sequences, proteins, electro2d, fileNum);
@@ -1483,5 +1484,13 @@ public class GenomeFileParser {
 //		String s = getSequenceAsSingleLine(f);
 //		System.out.println(s);
 //	}
-
+	/**
+	 * BH remove sequence alignment markings
+	 * 
+	 * @param p
+	 * @param s
+	 */
+	private static void addSequence(Preprocessor p, String s) {
+					p.sequences.add(s.replaceAll("[-]", ""));
+	}
 } 
