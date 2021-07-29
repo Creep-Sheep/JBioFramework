@@ -83,8 +83,10 @@ public class FileUtils {
 	@SuppressWarnings("serial")
 	public static class FileDropper extends TransferHandler {
 		private BiFunction<File, Point, Void> func;
+		private TransferHandler oldTransferHandler;
 		
-		public  FileDropper(BiFunction<File, Point, Void> function) {
+		public  FileDropper(JComponent c, BiFunction<File, Point, Void> function) {
+			this.oldTransferHandler = c.getTransferHandler();
 			this.func = function;
 		}
 
@@ -113,7 +115,7 @@ public class FileUtils {
 			} catch (UnsupportedFlavorException | IOException e) {
 				e.printStackTrace();
 			}
-			return false;
+			return oldTransferHandler != null && oldTransferHandler.importData(support);
 		}
 	}
 
@@ -126,7 +128,7 @@ public class FileUtils {
 	 * @param f
 	 */
 	public static void setFileDropper(JComponent c, BiFunction<File, Point, Void> f) {
-		c.setTransferHandler(new FileDropper(f));
+		c.setTransferHandler(new FileDropper(c, f));
 	}
 
 
