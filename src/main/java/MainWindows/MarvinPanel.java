@@ -1,99 +1,41 @@
 package main.java.MainWindows;
 
-/*
-* Copyright (C) 2013 Rochester Institute of Technology
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License as
-* published by the Free Software Foundation; either version 2 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*
-* See the GNU General Public License for more details.
-*/
-
-import java.awt.Component;
+import java.awt.Container;
 
 /**
  * Main GUI class for Marvin integration with JBioFramework.
- * Instantiated by /Main.JBioFrameworkMain/ as a JPanel object (extends JPanel)
- * which adds it to main frame.
+ * Instantiated as a singleton by /Main.JBioFrameworkMain/ as a JPanel object (extends JPanel).
  */
-
-//GUI compoents
 
 import java.awt.Dimension;
 import java.util.function.Consumer;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-//chemaxon (marvin) packages necessary for internal Marvin stuff
 import chemaxon.marvin.beans.MSketchPane;
 import chemaxon.marvin.common.UserSettings;
 import chemaxon.marvin.sketch.SketchParameterConstants;
 import main.java.Utilities.JSUtil;
 
 /**
- * JPanel object containing the main GUI for interacting with MarvinSketch.
+ * JPanel object containing the main GUI for interacting with MarvinSketch in
+ * Java or JavaScript.
  */
 @SuppressWarnings("serial")
 public class MarvinPanel extends JPanel {
 
+	/**
+	 * api id for allowed domains in JavaScript
+	 * 
+	 */
+	private static String apiID = "2d2e4f98e04447babfbef7ae1e830756";
+
 	private static int defaultWidth = 900;
 
 	private static int defaultHeight = 500;
-
-	private static Runnable whenChemicalizeCreated;
-
-	private static String marvinDiv = "jbfmarvindiv";
-
-	private static String apiID = "2d2e4f98e04447babfbef7ae1e830756";
-	
-	static {
-		if (JSUtil.isJS) {
-
-			// JavaScript only
-			
-			// Add the div that Marvin JS will be placed into. 
-			
-			// Add the Chemicalize scripts to the page, 
-			// running whenChemicalizeCreated only when ready.
-			// The timeout is necessary to account for the fact that
-			// this static code is run before main() has has run. 
-
-			String serverScript = "https://marvinjs.chemicalize.com/v1/"+apiID+"/client-settings.js";
-			String clientScript = "https://marvinjs.chemicalize.com/v1/client.js";
-			String div = "<div style='display:none;width:" + defaultWidth + "px;height:" + defaultHeight + "px' id="
-					+ marvinDiv + "></div>";
-			Runnable r = whenChemicalizeCreated;
-			
-			/**
-			 * @j2sNative
-			 * 
-			 * 			$("body").append(div); 
-			 */
-			{
-				// This block of code is never run, because it would only be in Java, but
-				// this static code block is JavaScript-only. Just here as an illustration of
-				// how the j2sNative annotation works.
-
-				System.out.println(serverScript + clientScript + div + r);
-			}
-			
-			SwingUtilities.invokeLater(() -> {
-				/** @j2sNative
-				 * 
-				 * $.getScript(serverScript, function() { $.getScript(clientScript, r && r.run$) });
-				 */
-			});
-		}
-
-	}
 
 	/**
 	 * the Marvin application, either Java or JavaScript
@@ -105,17 +47,106 @@ public class MarvinPanel extends JPanel {
 	 */
 	private static MarvinPanel instance;
 
+	/**
+	 * run after scripts are asynchronously added by jQuery
+	 * 
+	 */
+	private static Runnable whenChemicalizeCreated;
+
+	/**
+	 * the name of the div we are using for Marvin; initially in document.body, but
+	 * when the JFrame is added, this div is moved into it.
+	 */
+	private static String marvinDiv = "jbfmarvindiv";
+
+	final static int STATE_UNITIALIZED = 0;
+	final static int STATE_CHEMICALIZED = 1;
+	final static int STATE_EDITORLOADED = 2;
+
+	static int state = STATE_UNITIALIZED;
+
+	private static JLabel labelWorking;
+
+	private static Container marvinAppPanel;
+
+	private static void setupMarvinJS() {
+
+		// JavaScript only
+
+		// Add the div that Marvin JS will be placed into.
+
+		// Add the Chemicalize scripts to the page,
+		// running whenChemicalizeCreated only when ready.
+		
+		String serverScript = "https://marvinjs.chemicalize.com/v1/" + apiID + "/client-settings.js";
+		String clientScript = "https://marvinjs.chemicalize.com/v1/client.js";
+		String div = "<div style='display:none;width:" + defaultWidth + "px;height:" + defaultHeight + "px' id="
+				+ marvinDiv + "></div>";
+		System.out.println(serverScript + "\n" + clientScript + "\n" + div);
+
+		@SuppressWarnings("unused")
+		Runnable r = new Runnable() {
+
+			@Override
+			public void run() {
+				state = STATE_CHEMICALIZED;
+				if (whenChemicalizeCreated != null)
+					whenChemicalizeCreated.run(); 
+			}
+			
+		};
+
+		/**
+		 * @j2sNative
+		 * 
+		 * 			$("body").append(div);
+		 */
+		{
+			// This block of code is never run, because it would only be in Java, but
+			// this static code block is JavaScript-only. Just here as an illustration of
+			// how the j2sNative annotation works.
+
+		}
+
+		// Using SwingUtilities.invokeLater is necessary to account for 
+		// the fact that this static code is run before main() has had a chance to run.
+
+		SwingUtilities.invokeLater(() -> {
+			/**
+			 * @j2sNative
+			 * 
+			 * 			$.getScript(serverScript, function() { $.getScript(clientScript, r.run$) });
+			 */
+		});
+
+	}
+
+	
+	static {
+		if (JSUtil.isJS) {
+			setupMarvinJS();
+		}
+
+	}
+
 	private MarvinPanel() {
 		// private constructor only
 	}
 
 	/**
-	 * Public access to a singleton instance. 
+	 * Public access to a singleton instance.
 	 * 
 	 * @return the instance
 	 */
 	public static JPanel createMarvinPanel() {
-		return (instance == null ? instance = new MarvinPanel() : instance);
+		if (instance == null) {
+			instance = new MarvinPanel();
+			if (JSUtil.isJS)
+				addPanel(null);
+			else
+				getMarvinApp(null);
+		}
+		return instance;
 	}
 
 	/**
@@ -125,14 +156,18 @@ public class MarvinPanel extends JPanel {
 	public static void getMarvinApp(Runnable whenReady) {
 		// BH 2021.04.26 allows lazy, asynchronous instantiation of Marvin for SwingJS
 		if (marvinInstance != null) {
-			whenReady.run();
+			if (whenReady != null)
+				whenReady.run();
 			return;
 		}
 		if (JSUtil.isJS) {
 			createMarvinEditorJS(whenReady);
 			return;
 		}
-		addMarvin(new MSketchPane(createUserSettings()));
+		
+		marvinInstance = new MSketchPane(createUserSettingsJava());
+		addPanel(marvinInstance);
+
 		if (whenReady != null)
 			whenReady.run();
 	}
@@ -150,17 +185,24 @@ public class MarvinPanel extends JPanel {
 	 */
 	@SuppressWarnings("unused") // some of these variables are JavaScript only
 	private static void createMarvinEditorJS(Runnable whenReady) {
+		
+		transferMarvinDivIfYouCanJS();
+		
 		Consumer<Object> marvinReady = new Consumer<Object>() {
 
 			@Override
 			public void accept(Object marvinObject) {
-				addMarvin((MSketchPane) marvinObject);
+				marvinInstance = (MSketchPane) marvinObject;
+				if (labelWorking != null)
+					labelWorking.setVisible(false);
 				if (whenReady != null)
 					whenReady.run();
 			}
 
 		};
 		try {
+			if (labelWorking != null)
+				labelWorking.setText("loading Marvin JS...");
 			/**
 			 * @j2sNative
 			 * 
@@ -174,31 +216,41 @@ public class MarvinPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Add the Marvin application component (Java or JavaScript) to the instance
-	 * frame.
-	 * 
-	 * In JavaScript, we just create a JPanel of the desired size and append the
-	 * already created div that is currently in document.body.
-	 * 
-	 * @param marvin
-	 */
-	private static void addMarvin(MSketchPane marvin) {
-		marvinInstance = marvin;
-		Component panel = (JSUtil.isJS ? new JPanel() : marvin);
-		panel.setPreferredSize(new Dimension(defaultWidth, defaultHeight));
-		instance.add(panel);
+	public void setVisible(boolean b) {
+		super.setVisible(b);
+		if (b) {
+			getMarvinApp(null);
+		}
+	}
+	
+	private static void addPanel(Container marvin) {
+		marvinAppPanel = (marvin == null ? new JPanel() : marvin);
+		if (marvin == null)
+			marvinAppPanel.add(labelWorking = new JLabel("working..."));
+		marvinAppPanel.setPreferredSize(new Dimension(defaultWidth, defaultHeight));
+		instance.add(marvinAppPanel);
 		instance.validate();
 		if (JSUtil.isJS) {
-
-			// Transfer the body-based marvinDiv into the frame
-
-			@SuppressWarnings("unused")
-			String mdiv = "#" + marvinDiv;
-			/**
-			 * @j2sNative $(panel.ui.domNode).append($(mdiv).show());
-			 */
+			transferMarvinDivIfYouCanJS();
 		}
+	}
+
+	@SuppressWarnings("unused")
+	private static void transferMarvinDivIfYouCanJS() {
+
+		// Transfer the body-based marvinDiv into the frame
+		// In SwingJS, the div associated with this panel is panel.ui.domNode 
+
+		Container panel = marvinAppPanel;
+		
+		String mdiv = "#" + marvinDiv;
+		/**
+		 * @j2sNative 
+		 * var d = $(panel.ui.domNode);
+		 * var m = $(mdiv);
+		 * d[0] && m.parent().is($("body")) && d.append(m.show());
+		 */
+		return;
 	}
 
 	/**
@@ -211,7 +263,9 @@ public class MarvinPanel extends JPanel {
 		MSketchPane marvin = marvinInstance;
 		getMarvinApp(() -> {
 			/**
-			 * @j2sNative marvin.importStructure("name", mol);
+			 * @j2sNative 
+			 * 
+			 *   marvin.importStructure("name", mol);
 			 */
 			{
 				marvin.setMol(mol);
@@ -226,7 +280,7 @@ public class MarvinPanel extends JPanel {
 	 * return Marvin's /UserSettings/ object which is used in the construction of
 	 * 'pane' above.
 	 */
-	private static UserSettings createUserSettings() {
+	private static UserSettings createUserSettingsJava() {
 		UserSettings settings = new UserSettings(MarvinPanel.class.getResourceAsStream("marvin.properties"));
 		settings.setProperty(SketchParameterConstants.MENU_CUSTOMIZATION_FILE,
 				System.getProperty("user.dir") + "/src/customization.xml");
@@ -236,9 +290,9 @@ public class MarvinPanel extends JPanel {
 	}
 
 	/**
-	 * Create a JFrame that just contains the Marvin app for testing. 
+	 * Create a JFrame that just contains the Marvin app for testing.
 	 * 
-	 * Note that this will not actually work as an app in JavaScript. 
+	 * Note that this will not actually work as an app in JavaScript.
 	 * 
 	 * @param args
 	 */
@@ -249,15 +303,15 @@ public class MarvinPanel extends JPanel {
 				whenChemicalizeCreated = null;
 				JFrame frame = new JFrame();
 				frame.add(createMarvinPanel());
+				frame.pack();					
+				frame.setVisible(true);
 				getMarvinApp(() -> {
-					frame.pack();
-					frame.setVisible(true);
 					setMoleculeByName("Glycyl-Alanine");
-				});
+				}); 
 			}
 
 		};
-		if (!JSUtil.isJS)
+		if (!JSUtil.isJS || state == STATE_CHEMICALIZED)
 			whenChemicalizeCreated.run();
 	}
 }

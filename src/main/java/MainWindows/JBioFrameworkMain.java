@@ -83,19 +83,18 @@ public class JBioFrameworkMain extends JFrame {
 		tabbedPane.addTab("Electro2D", new Electro2D(this));
 		tabbedPane.addTab("Spectrometer", new MassSpecMain());
 		// BH 2021.04.26 for now, Marvin Sketch is just for Java
-		// but lazy initialization could allow it also in JavaScript
 		tabbedPane.addTab("Marvin Sketch", marvinTab = MarvinPanel.createMarvinPanel());
 		// lazy MarvinTab.getMarvinApp();
 		/* tabbedPane.addTab(["name (to be displayed)"], [object]); */
-		tabbedPane.addChangeListener(new ChangeListener() {
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (tabbedPane.getSelectedComponent() == marvinTab)
-					MarvinPanel.getMarvinApp(null);
-			}
-
-		});
+//		tabbedPane.addChangeListener(new ChangeListener() {
+//
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				if (tabbedPane.getSelectedComponent() == marvinTab)
+//					MarvinPanel.getMarvinApp(null);
+//			}
+//
+//		});
 		// add tabbedPane to frame
 		add(tabbedPane);
 
