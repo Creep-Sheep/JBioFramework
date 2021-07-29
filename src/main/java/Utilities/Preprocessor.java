@@ -277,7 +277,7 @@ public class Preprocessor {
 		case GenomeFileParser.SEQUENCES_ONLY:
 			// Mass Spec
 			sequencesOut.addAll(sequences);
-			break;
+			return nSeq;
 		case GenomeFileParser.PROTEINS_ONLY:
 			// Electro1D
 			for (int i = 0; i < nSeq; i++) {
@@ -304,7 +304,7 @@ public class Preprocessor {
 		}
 		electro2D.setLastFileLoaded(inputName);
 		electro2D.setMaxAndMinVals(minmax[1], minmax[0], minmax[3], minmax[2]);
-		if (!isE2D)
+		if (!isE2D && !JSUtil.isJS)
 			writeToE2DFile(e2dOutFileName);
 		return nSeq;
 	}
