@@ -43,7 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import main.java.MainWindows.JBioFrameworkMain;
-import main.java.MainWindows.MarvinTab;
+import main.java.MainWindows.MarvinPanel;
 
 public class Ion extends ArrayList<SpecAminoAcid> {
 
@@ -114,7 +114,7 @@ public class Ion extends ArrayList<SpecAminoAcid> {
 			marvinButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					MarvinTab.getSketchPane().setMol(mol);
+					MarvinPanel.setMoleculeByName(mol);
 					JBioFrameworkMain.getTabs().setSelectedIndex(4);
 					frame.dispose();
 				}

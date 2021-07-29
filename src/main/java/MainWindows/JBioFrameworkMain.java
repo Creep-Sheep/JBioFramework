@@ -33,7 +33,7 @@ import javax.swing.event.ChangeListener;
 import main.java.Electro1D.Electrophoresis;
 import main.java.Electro2D.Electro2D;
 import main.java.MassSpec.MassSpecMain;
-import main.java.MainWindows.MarvinTab;
+import main.java.MainWindows.MarvinPanel;
 
 /**
  * The main frame for the JBioFramework program.
@@ -62,73 +62,67 @@ public class JBioFrameworkMain extends JFrame {
         new JBioFrameworkMain();
     }
 
-    /**
-     * Constructor for Main.JBioFrameworkMain Frame object.
-     * -sets frame to visible, sets some general behaviors, adds
-     *  panels from Electro1D, Electro2d, etc. and adjusts size.
-     */
-    public JBioFrameworkMain() {
-        //calls JFrame constructor with String parametr which sets the displayed
-        //name at the top of the window.
-        super("JBioFramework");
+	/**
+	 * Constructor for Main.JBioFrameworkMain Frame object. -sets frame to visible,
+	 * sets some general behaviors, adds panels from Electro1D, Electro2d, etc. and
+	 * adjusts size.
+	 */
+	public JBioFrameworkMain() {
+		// calls JFrame constructor with String parametr which sets the displayed
+		// name at the top of the window.
+		super("JBioFramework");
 
-        //swing component which facilitates switching between different panels.
-        tabbedPane = new JTabbedPane();
+		// swing component which facilitates switching between different panels.
+		tabbedPane = new JTabbedPane();
 
-        //add all of the relevant panels for each application's GUI to tabbedPane
-        tabbedPane.addTab("Welcome", new Welcome());
-        //tabbedPane.addTab("IonExchange", new Ionex()); //Not working at the current moment
-        tabbedPane.addTab("Electro1D", new Electrophoresis(this));
-        tabbedPane.addTab("Electro2D", new Electro2D(this));
-        tabbedPane.addTab("Spectrometer", new MassSpecMain());
-        /**
-         * No 
-         * @j2sIgnore
-         */
-        {
-        	// BH 2021.04.26 for now, Marvin Sketch is just for Java
-        	// but lazy initialization could allow it also in JavaScript
-            tabbedPane.addTab("Marvin Sketch", marvinTab = new MarvinTab().createMainPanel());
-        	MarvinTab.getSketchPane();
-        }
-        /*tabbedPane.addTab(["name (to be displayed)"], [object]);*/
-        tabbedPane.addChangeListener(new ChangeListener() {
+		// add all of the relevant panels for each application's GUI to tabbedPane
+		tabbedPane.addTab("Welcome", new Welcome());
+		// tabbedPane.addTab("IonExchange", new Ionex()); //Not working at the current
+		// moment
+		tabbedPane.addTab("Electro1D", new Electrophoresis(this));
+		tabbedPane.addTab("Electro2D", new Electro2D(this));
+		tabbedPane.addTab("Spectrometer", new MassSpecMain());
+		// BH 2021.04.26 for now, Marvin Sketch is just for Java
+		// but lazy initialization could allow it also in JavaScript
+		tabbedPane.addTab("Marvin Sketch", marvinTab = MarvinPanel.createMarvinPanel());
+		// lazy MarvinTab.getMarvinApp();
+		/* tabbedPane.addTab(["name (to be displayed)"], [object]); */
+		tabbedPane.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (tabbedPane.getSelectedComponent() == marvinTab)
-					MarvinTab.getSketchPane();
+					MarvinPanel.getMarvinApp(null);
 			}
-        	
-        });
-        //add tabbedPane to frame
-        add(tabbedPane);
 
+		});
+		// add tabbedPane to frame
+		add(tabbedPane);
 
-        /**various last steps for the JFrame.*/
+		/** various last steps for the JFrame. */
 
-        // Method inherited from Window by JFrame which "Causes this Window to be
-        // sized to fit the preferred size and layouts of its subcomponents.
-        super.pack();
+		// Method inherited from Window by JFrame which "Causes this Window to be
+		// sized to fit the preferred size and layouts of its subcomponents.
+		super.pack();
 
-        // Use a toolkit to find the screen size of the user's monitor
+		// Use a toolkit to find the screen size of the user's monitor
 
-        //scale window size so as to not take up the entire screen
+		// scale window size so as to not take up the entire screen
 //    double newWidth = Toolkit.getDefaultToolkit().getScreenSize().width*(3/4);
 //    double newHeight = Toolkit.getDefaultToolkit().getScreenSize().height*(3/4);
 
-        //set size of application to the size of the screen
+		// set size of application to the size of the screen
 //    super.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 
-        //ensure that the program stops when the Window for the GUI is closed.
-        //TODO create WindowManager to set prompt for review or session log.
-        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// ensure that the program stops when the Window for the GUI is closed.
+		// TODO create WindowManager to set prompt for review or session log.
+		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //make the completed, correctly-sized window visible.
-        // [should be the last thing called, to prevent the user from seeing
-        //  the window get resized]
-        super.setVisible(true);
-    }
+		// make the completed, correctly-sized window visible.
+		// [should be the last thing called, to prevent the user from seeing
+		// the window get resized]
+		super.setVisible(true);
+	}
 
     /**
      * returns the JTabbedPane which holds all of our simulation panels.
