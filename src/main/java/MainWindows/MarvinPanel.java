@@ -69,6 +69,8 @@ public class MarvinPanel extends JPanel {
 
 	private static Container marvinAppPanel;
 
+	private static Object myclass = /**@j2sNative C$ || */null;
+
 	private static void setupMarvinJS() {
 
 		// JavaScript only
@@ -260,15 +262,16 @@ public class MarvinPanel extends JPanel {
 	 * @param mol
 	 */
 	public static void setMoleculeByName(String mol) {
-		MSketchPane marvin = marvinInstance;
+		
+		Object c = myclass ;
 		getMarvinApp(() -> {
 			/**
 			 * @j2sNative 
 			 * 
-			 *   marvin.importStructure("name", mol);
+			 *   c.marvinInstance.importStructure("name", mol);
 			 */
 			{
-				marvin.setMol(mol);
+				marvinInstance.setMol(mol);
 			}
 		});
 	}
