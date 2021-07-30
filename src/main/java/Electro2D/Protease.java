@@ -7,67 +7,61 @@ import java.util.ArrayList;
 /**
  * Contains the methods needed for a Protease who cuts before or after apecific proteins without any other conditions.  Otherwise the method cut needs to be overwritten and new conditions added
  */
-public class Protease {
+public abstract class Protease {
 
-    public ArrayList<Character> cutAminoAcids = new ArrayList<>();
-    public boolean cutsBefore;// does it cut before or after the proteins in cutAminoAcids
+    final private char[] cuts;
+    final private boolean cutsBefore;// does it cut before or after the proteins in cutAminoAcids
 
-    /**
-     * Cut array list.
-     *
-     * @param sequence the sequence
-     * @return the array list
-     * @throws ProteaseException the protease exception
-     */
-    public ArrayList<String> cut(String sequence) throws ProteaseException {
-        ArrayList<Character> buildingIons = new ArrayList<>();
-        ArrayList<String> cutSequence = new ArrayList<>();
-        sequence = checkSequence(sequence); //runs the sequence through the sequence checker method in order to detect any errors
-        int i = 0; //needed to send what the character after the currentAA is
-        for (Character currentAA : sequence.toCharArray()) {
+    public Protease(char[] cuts, boolean cutsBefore) {
+    	this.cuts = cuts;
+        this.cutsBefore = cutsBefore;
+	}
 
-            if (!cutsBefore) {
-                buildingIons.add(currentAA);
-            }
-            for (Character currentCutPoint : cutAminoAcids) { //should make a new method for determing if the protease should cut here so that more a complex protease only has to override that smaller method instead of the larger cut method
+	/**
+	 * Cut array list.
+	 *
+	 * @param sequence the sequence
+	 * @return the array list
+	 * @throws ProteaseException the protease exception
+	 */
+	public ArrayList<String> cut(String sequence) throws ProteaseException {
+		ArrayList<String> cutSequences = new ArrayList<>();
+		sequence = checkSequence(sequence);
+		// runs the sequence through the sequence checker method in order to detect any
+		// errors
+		char[] chars = sequence.toCharArray();
+		int nCut = cuts.length;
+		int p0 = 0, p1 = 0;
+		for (int i = 0, n = chars.length - 1; i <= n; i++) {
+			char aa = chars[i];
+			if (!cutsBefore) {
+				p1++;
+			}
+			char afterAA = (i < n ? chars[i + 1] : ' ');
+			for (int j = 0; j < nCut; j++) {
+				char c = cuts[j];
+				if (shouldCutHere(aa, c, afterAA)) {
+					makeIon(sequence, p0, p1, cutSequences);
+					p0 = p1;
+				}
+			}
+			if (cutsBefore) {
+				p1++;
+			}
+		}
+		if (p1 < sequence.length()) {
+			// added by Bob Hanson - right? Do you get the final ion as well?
+			makeIon(sequence, p1, sequence.length(), cutSequences);
+		}
+		return cutSequences;
+	}
 
-                Character afterAA = ' ';
-                if ((i + 1) <= (sequence.toCharArray().length - 1)) {
-                    afterAA = sequence.toCharArray()[i + 1];
-                }
-                if (shouldCutHere(currentAA, currentCutPoint, afterAA)) {
-                    makeIon(buildingIons, cutSequence);
-                }
-                if (shouldCutHere(currentAA,currentCutPoint)){
-                    makeIon(buildingIons,cutSequence);
-                }
-
-
-            }
-            if (cutsBefore) {
-                buildingIons.add(currentAA);
-            }
-        }
-        return cutSequence;
+    protected boolean shouldCutHere(char aa, char c, char afterAA) {
+    	// overridden only by Trypsin
+    	return (aa == c);
     }
 
-    public boolean shouldCutHere(Character currentAA,Character currentCutPoint) {
-        boolean shouldCut = false;
-            if (currentAA == currentCutPoint) {
-                shouldCut = true;
-            }
-        return shouldCut;
-    }
-
-    public boolean shouldCutHere(Character currentAA, Character currentCutPoint, Character afterAA) {
-        boolean shouldCut = false;
-        if (currentAA == currentCutPoint) {
-            shouldCut = true;
-        }
-        return shouldCut;
-    }
-
-    public String checkSequence(String sequence) throws ProteaseException {
+    private static String checkSequence(String sequence) throws ProteaseException {
         if (sequence.contains(" ")) {
             throw new ProteaseException("Sequence to be cut must not contain spaces.");
         } else if (sequence.matches(".*\\d.*")) {
@@ -78,20 +72,17 @@ public class Protease {
         return sequence;
     }
 
-    /**
-     * Takes the characters collected by cut and turns them in to a string that represents the sequence of the Ion
-     *
-     * @param buildingIons The current ion
-     * @param cutSequence  The sequence to be cut
-     */
-    public void makeIon(ArrayList<Character> buildingIons, ArrayList<String> cutSequence) {
-        String ion = new String();
-        for (Character c : buildingIons) {
-            ion += c.toString();
-        }
-        cutSequence.add(ion);
-        buildingIons.clear();
-    }
+	/**
+	 * Takes the characters collected by cut and turns them in to a string that
+	 * represents the sequence of the Ion
+	 *
+	 * @param buildingIons The current ion
+	 * @param cutSequence  The sequence to be cut
+	 */
+	private static void makeIon(String sequence, int p0, int p1, ArrayList<String> cutSequence) {
+		if (p0 < p1)
+			cutSequence.add(sequence.substring(p0, p1));
+	}
 
 
 }

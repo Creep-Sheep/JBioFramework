@@ -75,6 +75,14 @@ public class MassSpecMain extends JPanel {
     private ToggleFragmentButton redYs;
     private OutputGraphGUI outputGraph;
     private Ion ion;
+	private ActionListener clearListener = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			clearGraphics();
+		}
+		
+	};
 
     /**
      * The constructor uses a GridBagLayout to arrange the eight different
@@ -194,6 +202,7 @@ public class MassSpecMain extends JPanel {
         add(proteaseLabel, constraints);
 
         proteaseBox = new JComboBox<String>(proteaseChoices);
+        proteaseBox.addActionListener(clearListener );
         constraints.gridy = 7;
 //        grid.setConstraints(proteaseBox, constraints);
         add(proteaseBox, constraints);
@@ -271,7 +280,12 @@ public class MassSpecMain extends JPanel {
 
     }
 
-    protected void loadFile(File file) {
+    protected void clearGraphics() {
+    	tandemGraph.drawSequencePeaks(null);
+    	outputGraph.setPeaks(null, 0);
+	}
+
+	protected void loadFile(File file) {
 		Vector<String> sequences = new Vector<>();
 		GenomeFileParser.loadFile(file, sequences, null, null, GenomeFileParser.SEQUENCES_ONLY);
 		if (sequences.size() > 0)

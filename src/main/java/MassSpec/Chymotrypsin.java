@@ -13,8 +13,7 @@ import java.util.Arrays;
 public class Chymotrypsin extends Protease {
 
     public Chymotrypsin() {
-        cutAminoAcids = new ArrayList<>(Arrays.asList('Y', 'W', 'F')); //Chymotrypsin cuts at these proteins
-        cutsBefore = false;
+    	super(new char[] {'Y', 'W', 'F' }, false); //Chymotrypsin cuts at these proteins
     }
 
 }
