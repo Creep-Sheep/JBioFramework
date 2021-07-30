@@ -20,19 +20,23 @@ package main.java.Electro2D;/*
  */
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.util.Vector;
-import java.util.Random;
 import java.util.Collection;
+import java.util.Random;
+import java.util.Vector;
 
 
-public class IEFProtein extends Component {
 
+public class IEFProtein {
+	// BH question: Why was this a java.awt.Component??
+
+	private static int nProt = 0;
+	int index;
+	
     private static Color[] colors = {Color.blue, Color.green, Color.yellow,
             Color.red, Color.orange, Color.pink};
     private Color myColor;
-    private Vector proteins;
+    private Vector<E2DProtein> proteins;
     private int myX;
     private static int myY = 5;
     private double tempX = 0;
@@ -42,35 +46,32 @@ public class IEFProtein extends Component {
     private double maxPi;
     private double minPi;
     private static int myHeight = 40;
-    private static double myWidth = 0;
+    private static double pixelWidth_100 = 0;
     private static double tempWidth = 0;
-    private Vector names;
+    private Vector<String> names;
     private static double maxpH = 10;
     private static double minpH = 3;
     private static GelCanvas gelcanvas;
+	private static double w34;
+	private static double pH_range_100;
+	private static double pixelsPerPH;
+	static int pixelWidth = 563;
 
+	
     /**
      * constructor - creates the Electro2D.IEFProtein object
      *
      * @param p the first protein to be represented by this object
      */
     public IEFProtein(E2DProtein p, GelCanvas g) {
-        names = new Vector();
+    	index = ++nProt;
+        names = new Vector<>();
         gelcanvas = g;
-        proteins = new Vector();
+        proteins = new Vector<>();
         proteins.add(p);
 
-        myPi = p.getPI();
-        minPi = p.getPI();
-        maxPi = minPi;
-        if (myPi < minpH) {
-            maxPi = minpH;
-        }
-
-        /**
-         * add the name of the protein to the name vector and set the initial
-         * color of the object
-         */
+        minPi = myPi = p.getPI();
+        maxPi = Math.max(myPi, minpH);
         names.add(p.toString());
         myColor = colors[0];
 
@@ -79,10 +80,10 @@ public class IEFProtein extends Component {
          */
         double w = gelcanvas.getWidth();
 
-        if (myPi <= ((double) minpH)) {
+        if (myPi <= minpH) {
             myX = 1;
         } else if (myPi >= maxpH) {
-            myX = (int) (w - 6);
+            myX = (int) (w - 6) + 1;
         } else {
             myX = (int) ((w - 4) * (((myPi - minpH) / (maxpH - minpH))));
         }
@@ -92,6 +93,14 @@ public class IEFProtein extends Component {
         tempX = tempX + 1;
         increments = (myX - tempX) / 50;
     }
+    
+    /** Get the X-pixel for a give pH 
+     * 
+     */
+    
+    public static int getXForPH(double pH) {
+    	return (int) ((pH - minpH) * pixelsPerPH);
+    }
 
     /**
      * addProtein adds a collection of proteins c to the vector of proteins
@@ -99,12 +108,11 @@ public class IEFProtein extends Component {
      *
      * @param c the collection of proteins to be added to the vector
      */
-
-    public void addProtein(Collection c) {
+    public void addProtein(Collection<E2DProtein> c) {
         /**
          * copy all of the proteins passed to this object into its vector
          */
-        proteins.addAll((Vector) (c));
+        proteins.addAll(c);
 
         /**
          * change the color of the Electro2D.IEFProtein based on the number of proteins
@@ -123,21 +131,20 @@ public class IEFProtein extends Component {
         } else {
             myColor = colors[5];
         }
-
-        this.repaint();
+//
+//        this.repaint();
 
         /**
          * add the new protein names to the vector of names and set any
          * changes in the max or min pI values
          */
-        E2DProtein p = null;
-        double pi = 0;
-        for (int i = 0; i < ((Vector) c).size(); i++) {
+        for (int i = 0; i < c.size(); i++) {
 
-            names.add(((E2DProtein) ((Vector) c).elementAt(i)).toString());
+            E2DProtein p = ((Vector<E2DProtein>) c).elementAt(i);
+        	
+            names.add(p.toString());
 
-            p = ((E2DProtein) ((Vector) c).elementAt(i));
-            pi = p.getPI();
+            double pi = p.getPI();
 
             if (pi > maxPi) {
                 maxPi = pi;
@@ -193,8 +200,7 @@ public class IEFProtein extends Component {
      *
      * @return proteins
      */
-    public Vector getProtein() {
-
+    public Vector<E2DProtein> getProtein() {
         return proteins;
     }
 
@@ -207,7 +213,7 @@ public class IEFProtein extends Component {
         /**
          * increase the width of the object by a 50th of its final width
          */
-        tempWidth = tempWidth + myWidth / 50;
+        tempWidth = tempWidth + pixelWidth_100 / 50;
     }
 
     /**
@@ -231,15 +237,13 @@ public class IEFProtein extends Component {
      * animation of the IEF process
      */
     public static void setWidth() {
-        tempWidth = myWidth;
+        tempWidth = pixelWidth_100;
     }
 
     /**
      * draw displays the Electro2D.IEFProtein as a rectangle on the screen
      */
     public void draw(Graphics g) {
-
-        myWidth = 563 / 100;
 
         //set the color to be drawn to the color of this Electro2D.IEFProtein
         g.setColor(myColor);
@@ -278,7 +282,7 @@ public class IEFProtein extends Component {
      * @return final width of this object
      */
     public static double returnWidth() {
-        return myWidth;
+        return pixelWidth_100;
     }
 
     /**
@@ -313,19 +317,31 @@ public class IEFProtein extends Component {
      *
      * @return vector of protein titles
      */
-    public Vector getNames() {
+    public Vector<String> getNames() {
         return names;
     }
 
     /**
      * sets maxpH equal to the maximum pH value and minpH to the minimum
      * pH value entered by the user for the IEF animation
+     * @param canvasWidth 
      */
-    public static void setRange(double max, double min) {
+    public static void setRange(double max, double min, int canvasWidth) {
         maxpH = max;
         minpH = min;
         // calculate the final width
-        myWidth = 563 / 100;
+        pixelWidth = canvasWidth;
+        pixelWidth_100 = pixelWidth / 100D;
+        pH_range_100 = (maxpH - minpH) / 100;
+        w34 = pixelWidth_100 * 0.75;
+        pixelsPerPH = pixelWidth_100/pH_range_100;
     }
 
+	public static double returnWidth34() {
+		return w34;
+	}
+
+	public String toString() {
+		return "[IEF" + index + " " + proteins.size() + " " + minPi + " " + maxPi + " " + myX + "]";
+	}
 }

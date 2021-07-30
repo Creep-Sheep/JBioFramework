@@ -9,7 +9,11 @@ import java.awt.event.ActionEvent;
 
 public class StopE2DAnimationButton extends JButton implements ActionListener {
 
-    Electro2D electro2D;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5671067335223706871L;
+	Electro2D electro2D;
 
     public StopE2DAnimationButton(Electro2D e) {
         super("Stop");
@@ -21,10 +25,10 @@ public class StopE2DAnimationButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         GelCanvas g = electro2D.getGel();
-        g.clearIEF();
+        //g.clearIEF();
         g.resetLocation();
         g.resetRanges();
-        g.clearCanvas();
+        //g.clearCanvas();
         electro2D.resetIEF();
         IEFProtein.resetProtein();
 

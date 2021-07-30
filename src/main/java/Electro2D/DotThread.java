@@ -18,6 +18,7 @@ public class DotThread extends Thread implements StateMachine {
 	private StateHelper stateHelper;
 	private int loop_i;
 	private long tm;
+	private int delay = /** @j2sNative 10 || */100; // was 100
 
     /**
      * Constructor
@@ -85,7 +86,7 @@ public class DotThread extends Thread implements StateMachine {
 				// send the percent acrylamide value to Electro2D.ProteinDot
 				ProteinDot.setPercent(electro2D.getLowPercent(), electro2D.getHighPercent());
 
-				gel.resetReLine();
+				gel.setRedrawPHLines(false);
 				stateHelper.next(LOOP_IEF);
 				break;
 			case LOOP_IEF:
@@ -97,7 +98,7 @@ public class DotThread extends Thread implements StateMachine {
 					// ...and redraw them to the Electro2D.GelCanvas
 					gel.shrinkIEF();
 					// then wait for 100 milliseconds
-					stateHelper.sleep(100);
+					stateHelper.sleep(delay );
 					break;
 				}
 				// Make the ProteinDots visible
@@ -118,14 +119,14 @@ public class DotThread extends Thread implements StateMachine {
 						stopDots();
 					}
 					loop_i = 1 + loop_i;
-					stateHelper.sleep(100);
+					stateHelper.sleep(delay);
 					break;
 				}
-				gel.setreLine();
+				gel.setRedrawPHLines(true);
 				gel.setMWLines(loop_i);
 				loop_i = 0;
 				electro2D.resetPlay();
-				gel.paint(gel.getGraphic());
+				//gel.paint(gel.getGraphic());
 				gel.repaint();
 				break;
 			}

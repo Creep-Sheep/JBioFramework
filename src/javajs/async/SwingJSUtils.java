@@ -773,6 +773,11 @@ public class SwingJSUtils {
 
 	public static class Timeout extends Timer implements SingletonI {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6783683292829793397L;
+
 		private static int timeoutID = 0;
 
 		public final static int PENDING = 1;

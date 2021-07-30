@@ -111,9 +111,9 @@ public class IDD_DIALOG1 {
         m_Parent.addNotify();
 
         Dimension size = m_Layout.getDialogSize();
-        Insets insets = m_Parent.insets();
+        Insets insets = m_Parent.getInsets();
 
-        m_Parent.resize(insets.left + size.width + insets.right,
+        m_Parent.setSize(insets.left + size.width + insets.right,
                 insets.top + size.height + insets.bottom);
 
         // Control creation

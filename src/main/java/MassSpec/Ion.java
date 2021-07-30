@@ -31,220 +31,237 @@ package main.java.MassSpec;
  *
  * @author Amanda Fisher
  */
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.io.*;
 
-import javax.swing.*;
-import main.java.MainWindows.MarvinTab;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import main.java.MainWindows.JBioFrameworkMain;
+import main.java.MainWindows.MarvinPanel;
 
 public class Ion extends ArrayList<SpecAminoAcid> {
 
-    private double totalMass = 0;
-    private int totalCharge = 0;
-    private double hits = 0;
-    private int xCoordinate = 0;
-    private String sequence;
-    Color color = Color.BLACK;
-
-    /**
-     * Adds the MassSpec.SpecAminoAcid to the end of the MassSpec.Ion. MassSpec.Ion adds its mass to
-     * the appropriate instance variable. Charge of an MassSpec.Ion will always be one in
-     * peptide sequencing.
-     *
-     * @param a MassSpec.SpecAminoAcid to be added to the end of the MassSpec.Ion.
-     * @return true if successfully added AmmionAcid.
-     */
-    @Override
-    public boolean add(SpecAminoAcid a) {
-        super.add(a);
-        // add the mass of the amino acid to the ion
-        setMass(totalMass + a.getMass());
-        // if this is the second or greater amino acid added to the chain;
-        if(this.size() > 1) {
-            // subtract the mass in Daltons of H2O as the amino acids dehydrate
-            // together to form the chain
-            setMass(totalMass - 18.01528);
-        }
-        return true;
-    }
-    /**
-     *  This is used to get the pop-up window to display the
-     *  amino acid sequence that is translated from the Amino Acid Translator 
-     *  after it is sent from the ion setters and getters
-     * 
-     */
-    
-    public void displaySequence() {
-    	// this is the code that gives the pop up box for the chemical structure to put in Marvin Sketch
-    	// there is a text area inside of a panel and frame that allows the size to be changed.
-	    
-    	final JFrame frame = new JFrame("Name for MarvinSketch");
-    	JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-    	JTextArea proteinSet = new JTextArea("",150,300);
-		proteinSet.append(
-	       "Instructions: " +
-	       "\n" +
-	       "\n To display the structure properly, go to Edit> Transformation > Flip> Flip Horizontally.\n \n" +
-	       "Note: The longer the sequence the more likely it is to display diagonally,"+
-	       "\n simply select all the atoms in the structure and move it where you would like it to be."
-	       
-	    );
-        panel.add(proteinSet, BorderLayout.CENTER);
-
-        // Add a button that will load the protein in Marvin Sketch
-        JButton marvinButton = new JButton("Show in MarvinSketch");
-        marvinButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MarvinTab.getSketchPane().setMol(AminoAcidTranslator.translate(sequence));
-                JBioFrameworkMain.getTabs().setSelectedIndex(4);
-                frame.dispose();
-            }
-        });
-        panel.add(marvinButton, BorderLayout.SOUTH);
-
-		frame.add(panel);
-		frame.setSize(480,175);
-    	frame.setVisible(true);
-    	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
-   
-    	
-    private void setSize(int i, int j) { }
-	private Font newFont(String string, int i) { return null; }
-	private Dimension newDimension(int i, int j) { return null;	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8265397581678359850L;
+	private double totalMass = 0;
+	private int totalCharge = 0;
+	private double hits = 0;
+	private int xCoordinate = 0;
+	private String sequence;
+	Color color = Color.BLACK;
 
 	/**
-     * Used by MassSpec.Ion in add method to keep a running total of the mass, and by
-     * MassSpec.TandemGraphGUI to adjust the molecular weight of an ion after
-     * sequencing fragmentation (single H gets taken away/put on depending on
-     * if it is a b or y fragment).
-     *
-     * @param mass New totalMass.
-     */
-    public void setMass(double mass) {
+	 * Adds the MassSpec.SpecAminoAcid to the end of the MassSpec.Ion. MassSpec.Ion
+	 * adds its mass to the appropriate instance variable. Charge of an MassSpec.Ion
+	 * will always be one in peptide sequencing.
+	 *
+	 * @param a MassSpec.SpecAminoAcid to be added to the end of the MassSpec.Ion.
+	 * @return true if successfully added AmmionAcid.
+	 */
+	@Override
+	public boolean add(SpecAminoAcid a) {
+		super.add(a);
+		// add the mass of the amino acid to the ion
+		setMass(totalMass + a.getMass());
+		// if this is the second or greater amino acid added to the chain;
+		if (this.size() > 1) {
+			// subtract the mass in Daltons of H2O as the amino acids dehydrate
+			// together to form the chain
+			setMass(totalMass - 18.01528);
+		}
+		return true;
+	}
 
-        totalMass = mass;
-    }
-    
-    // This will set the sequence given from the ion fragment in the bottom peaks of the graph
-    public void setSequence(String sequence) {
+	/**
+	 * This is used to get the pop-up window to display the amino acid sequence that
+	 * is translated from the Amino Acid Translator after it is sent from the ion
+	 * setters and getters
+	 * 
+	 */
 
-        this.sequence = sequence;
-    }
+	public void displaySequence() {
+		// this is the code that gives the pop up box for the chemical structure to put
+		// in Marvin Sketch
+		// there is a text area inside of a panel and frame that allows the size to be
+		// changed.
 
-    // Gets the Sequence to be used in the Translator
-    public String getSequence() {
+		final JFrame frame = new JFrame("Name for MarvinSketch");
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		JTextArea proteinSet = new JTextArea("", 150, 300);
+		proteinSet.append("Instructions: " + "\n"
+				+ "\n To display the structure properly, go to Edit> Transformation > Flip> Flip Horizontally.\n \n"
+				+ "Note: The longer the sequence the more likely it is to display diagonally,"
+				+ "\n simply select all the atoms in the structure and move it where you would like it to be."
 
-        return sequence;
-    }
+		);
+		panel.add(proteinSet, BorderLayout.CENTER);
 
-    /**
-     * Used only by MassSpec.Spectrometer in RunAnalysis to set the charge of the ion to
-     * one. Look for a better way to ensure that all ions only have a charge of one.
-     *
-     * @param charge New totalCharge.
-     */
-    public void setCharge(int charge) {
+		String mol = AminoAcidTranslator.translate(sequence);
+		// Add a button that will load the protein in Marvin Sketch
+		JButton marvinButton = new JButton("Show in MarvinSketch");
+		if (mol == null) {
+			marvinButton.setEnabled(false);
+		} else {
+			marvinButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					MarvinPanel.setMoleculeByName(mol);
+					JBioFrameworkMain.getTabs().setSelectedIndex(4);
+					frame.dispose();
+				}
+			});
+		}
+		panel.add(marvinButton, BorderLayout.SOUTH);
+		frame.add(panel);
+		frame.setSize(480, 175);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
 
-        totalCharge = charge;
-    }
+//    private void setSize(int i, int j) { }
+//	private Font newFont(String string, int i) { return null; }
+//	private Dimension newDimension(int i, int j) { return null;	}
 
-    /**
-     * Used by MassSpec.Spectrometer to count how many ions share a specific mass charge
-     * ratio.
-     *
-     * @param i New hits count.
-     */
-    public void setHits(double i) {
+	/**
+	 * Used by MassSpec.Ion in add method to keep a running total of the mass, and
+	 * by MassSpec.TandemGraphGUI to adjust the molecular weight of an ion after
+	 * sequencing fragmentation (single H gets taken away/put on depending on if it
+	 * is a b or y fragment).
+	 *
+	 * @param mass New totalMass.
+	 */
+	public void setMass(double mass) {
 
-        hits = i;
-    }
+		totalMass = mass;
+	}
 
-    /**
-     * Used by MassSpec.OutputGraphGUI to let the MassSpec.Ion know where it is on the graph.
-     *
-     * @param x the x-coordinate
-     */
-    public void setXCoordinate(int x) {
+	// This will set the sequence given from the ion fragment in the bottom peaks of
+	// the graph
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
 
-        xCoordinate = x;
-    }
+	// Gets the Sequence to be used in the Translator
+	public String getSequence() {
 
-    /**
-     * Used to return the MassSpec.Ion's mass.
-     * @return totalMass.
-     */
-    public double getMass() {
+		return sequence;
+	}
 
-        return totalMass;
-    }
+	/**
+	 * Used only by MassSpec.Spectrometer in RunAnalysis to set the charge of the
+	 * ion to one. Look for a better way to ensure that all ions only have a charge
+	 * of one.
+	 *
+	 * @param charge New totalCharge.
+	 */
+	public void setCharge(int charge) {
 
-    /**
-     * Used to return the MassSpec.Ion's charge. Should always return one; think about
-     * removing this function.
-     *
-     * @return totalCharge.
-     */
-    public int getCharge() {
+		totalCharge = charge;
+	}
 
-        return totalCharge;
-    }
+	/**
+	 * Used by MassSpec.Spectrometer to count how many ions share a specific mass
+	 * charge ratio.
+	 *
+	 * @param i New hits count.
+	 */
+	public void setHits(double i) {
 
-    /**
-     * Used to return the MassSpec.Ion's mass charge ratio. Should always just be mass
-     * over one. Think about removing this method.
-     *
-     * @return massChargeRatio.
-     */
-    public double getMassChargeRatio() {
+		hits = i;
+	}
 
-        return totalMass/(double)totalCharge;
-    }
+	/**
+	 * Used by MassSpec.OutputGraphGUI to let the MassSpec.Ion know where it is on
+	 * the graph.
+	 *
+	 * @param x the x-coordinate
+	 */
+	public void setXCoordinate(int x) {
 
-    /**
-     * Used to return the MassSpec.Ion's hits count.
-     *
-     * @return hits.
-     */
-    public double getHits() {
+		xCoordinate = x;
+	}
 
-        return hits;
-    }
+	/**
+	 * Used to return the MassSpec.Ion's mass.
+	 * 
+	 * @return totalMass.
+	 */
+	public double getMass() {
 
-    /**
-     * Used by MassSpec.Spectrometer to determine if a user clicked on this MassSpec.Ion or not.
-     *
-     * @return xCoordinate.
-     */
-    public int getXCoordinate() {
+		return totalMass;
+	}
 
-        return xCoordinate;
-    }
+	/**
+	 * Used to return the MassSpec.Ion's charge. Should always return one; think
+	 * about removing this function.
+	 *
+	 * @return totalCharge.
+	 */
+	public int getCharge() {
 
-    /**
-     * Used by MassSpec.TandemGraphGUI to set b fragments to blue and y fragments to red.
-     *
-     * @param c desired color for the MassSpec.Ion's peak on a graph
-     */
-    public void setColor(Color c) {
+		return totalCharge;
+	}
 
-        color = c;
-    }
+	/**
+	 * Used to return the MassSpec.Ion's mass charge ratio. Should always just be
+	 * mass over one. Think about removing this method.
+	 *
+	 * @return massChargeRatio.
+	 */
+	public double getMassChargeRatio() {
 
-    /**
-     * Used by MassSpec.TandemGraphGUI to draw the peaks on its graph with the
-     * appropriate color coding for b and y fragments.
-     *
-     * @return color this MassSpec.Ion's peak should be on a graph
-     */
-    public Color getColor() {
+		return totalMass / (double) totalCharge;
+	}
 
-        return color;
-    }
+	/**
+	 * Used to return the MassSpec.Ion's hits count.
+	 *
+	 * @return hits.
+	 */
+	public double getHits() {
+
+		return hits;
+	}
+
+	/**
+	 * Used by MassSpec.Spectrometer to determine if a user clicked on this
+	 * MassSpec.Ion or not.
+	 *
+	 * @return xCoordinate.
+	 */
+	public int getXCoordinate() {
+
+		return xCoordinate;
+	}
+
+	/**
+	 * Used by MassSpec.TandemGraphGUI to set b fragments to blue and y fragments to
+	 * red.
+	 *
+	 * @param c desired color for the MassSpec.Ion's peak on a graph
+	 */
+	public void setColor(Color c) {
+
+		color = c;
+	}
+
+	/**
+	 * Used by MassSpec.TandemGraphGUI to draw the peaks on its graph with the
+	 * appropriate color coding for b and y fragments.
+	 *
+	 * @return color this MassSpec.Ion's peak should be on a graph
+	 */
+	public Color getColor() {
+
+		return color;
+	}
 }

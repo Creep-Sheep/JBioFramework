@@ -13,7 +13,7 @@ import java.util.Vector;
 public class CSVCreator {
 
     //Vector of proteins to be written to the csv file
-    private Vector proteins;
+    private Vector<ProteinDot> proteins;
 
     //saving the state for electro2D at time of object's creation.
     private Electro2D electro2D;
@@ -62,17 +62,18 @@ public class CSVCreator {
                     "Y-Coordinate");
 
             if (proteins == null) {
-                proteins = new Vector();
+                proteins = new Vector<>();
             }
             for (int i = 0; i < proteins.size(); i++) {
-                d = (ProteinDot) proteins.elementAt(i);
-                p = (E2DProtein) d.getPro();
+                d = proteins.elementAt(i);
+                p = d.getPro();
 
                 out.println("\"" + p.getID() + "\"" + "," + p.getSequence() + "," +
                         p.getMW() + "," + p.getPI() + "," +
                         d.returnX() + "," + d.returnY());
             }
 
+            //here a dialog pops up
             //alert user that the file has been created.
             JOptionPane.showMessageDialog(null, "CSV created at " + directoryString + "/" + filename);
 

@@ -11,7 +11,11 @@ import java.awt.Image;
 
 public class RangeImage extends Canvas {
 
-    private Image pic;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4370885764244548265L;
+	private Image pic;
 
     /**
      * constructor - Creates a Electro2D.RangeImage object

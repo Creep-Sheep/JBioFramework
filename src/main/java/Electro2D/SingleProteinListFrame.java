@@ -25,17 +25,21 @@ import java.awt.event.ActionListener;
 public class SingleProteinListFrame extends JFrame {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 808969271879432236L;
+	/**
      * electro2D reference
      */
     Electro2D electro2D;
     /**
      * The Sequence one list.
      */
-    JList sequenceOneList;
+    JList<String> sequenceOneList;
     /**
      * The Sequence titles one.
      */
-    Vector sequenceTitlesOne;
+    Vector<String> sequenceTitlesOne;
     /**
      * The Positions one.
      */
@@ -43,7 +47,7 @@ public class SingleProteinListFrame extends JFrame {
     /**
      * The Copy sequence one.
      */
-    Vector copySequenceOne;
+    Vector<String> copySequenceOne;
 
     /**
      * Constructor for the window; sets up the instance variables and builds the GUI.
@@ -51,14 +55,15 @@ public class SingleProteinListFrame extends JFrame {
      * @param param     The title of the window.
      * @param electro2D Reference to the electro2D where the protein lists are.
      */
-    public SingleProteinListFrame(String param, Electro2D electro2D) {
+    @SuppressWarnings("unchecked")
+	public SingleProteinListFrame(String param, Electro2D electro2D) {
         super(param);
         this.electro2D = electro2D;
         setLayout(new GridBagLayout());
         JLabel sequenceOneLabel = new JLabel("Sequence");
-        sequenceOneList = new JList();
-        sequenceTitlesOne = new Vector();
-        copySequenceOne = (Vector) sequenceTitlesOne.clone();
+        sequenceOneList = new JList<>();
+        sequenceTitlesOne = new Vector<>();
+        copySequenceOne = (Vector<String>) sequenceTitlesOne.clone();
         positionsOne = new Vector<Integer>();
         JScrollPane sequenceOneScroll = new JScrollPane(sequenceOneList);
         JButton selectedButton = new JButton("Remove Selected Proteins");
@@ -94,10 +99,11 @@ public class SingleProteinListFrame extends JFrame {
      * @param pL1 the p l 1
      * @param pL2 the p l 2
      */
-    public void updateSequences(Vector pL1, Vector pL2) {
+    @SuppressWarnings("unchecked")
+	public void updateSequences(Vector<String> pL1, Vector<String> pL2) {
         sequenceOneList.setListData(pL1);
-        sequenceTitlesOne = new Vector(pL1);
-        copySequenceOne = (Vector) sequenceTitlesOne.clone();
+        sequenceTitlesOne = new Vector<String>(pL1);
+        copySequenceOne = (Vector<String>) sequenceTitlesOne.clone();
         positionsOne = new Vector<>();
     }
 
@@ -131,16 +137,17 @@ public class SingleProteinListFrame extends JFrame {
      * Removes all proteins that are selected.
      */
     private class SelectedListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+        @SuppressWarnings("unchecked")
+		public void actionPerformed(ActionEvent e) {
             int[] oneIndexes = sequenceOneList.getSelectedIndices();
-            Vector oneProteins = new Vector();
+            Vector<String> oneProteins = new Vector<>();
             for (int x = 0; x < oneIndexes.length; x++) {
                 oneProteins.add(sequenceTitlesOne.get(oneIndexes[x]));
             }
             sequenceTitlesOne.removeAll(oneProteins);
             // The following line ensures that multiple edits can be made,
             // even before and after a gel run.
-            copySequenceOne = (Vector) sequenceTitlesOne.clone();
+            copySequenceOne = (Vector<String>) sequenceTitlesOne.clone();
 
             sequenceOneList.setListData(sequenceTitlesOne);
             sequenceOneList.validate();

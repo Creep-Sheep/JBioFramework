@@ -7,17 +7,16 @@ package main.java.Electro2D; /**
  * @author Jill Zapoticznyj
  */
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Vector;
 
 public class WebGenerator {
 
     private Electro2D electro2D;
-    private BufferedWriter buf;
+//    private BufferedWriter buf;
     private FileWriter fWrite;
     private PrintWriter pWrite;
     private String maxMW;
@@ -26,12 +25,12 @@ public class WebGenerator {
     private String minPi;
     private static int searchVal = 0;
     private final String bgColor = "\"FCFCFC\"";
-    private final String openTab = "\u003C";
-    private final String closeTab = "\u003E";
-    private final String openTD = "\u003CTD\u003E";
-    private final String closeTD = "\u003C/TD\u003E";
-    private final String openTR = "\u003CTR\u003E";
-    private final String closeTR = "\u003C/TR\u003E";
+    private final String openTab = "<";
+    private final String closeTab = ">";
+    private final String openTD = "<TD>";
+    private final String closeTD = "</TD>";
+    private final String openTR = "<TR>";
+    private final String closeTR = "</TR>";
     private final String directoryString = "HTML Files/";
 
     public WebGenerator(Electro2D e) {
@@ -48,97 +47,97 @@ public class WebGenerator {
         searchVal = index;
     }
 
-    public void genFile(String filename) {
-        try {
-            File fl = new File(directoryString);
-            if (!fl.exists()) {
-                fl.mkdir();
-            }
-            fWrite = new FileWriter(directoryString + filename + ".html");
-            buf = new BufferedWriter(fWrite);
-            pWrite = new PrintWriter(fWrite);
-        } catch (IOException x) {
-            System.err.println(x.getMessage());
-        }
+	public void genFile(String filename) {
+		try {
+			/** @j2sNative */
+			{
+				// Java only
+				File fl = new File(directoryString);
+				if (!fl.exists()) {
+					fl.mkdir();
+				}
+			}
+			fWrite = new FileWriter(directoryString + filename + ".html");
+			// = new BufferedWriter(fWrite);
+			pWrite = new PrintWriter(fWrite);
+		} catch (IOException x) {
+			System.err.println(x.getMessage());
+		}
 
-        Vector names = electro2D.getSequenceTitles();
-        Vector molwt = electro2D.getMolecularWeights();
-        Vector pI_vals = electro2D.getPiValues();
-        Vector functions = electro2D.getFunctions();
+		Vector<String> names = electro2D.getSequenceTitles();
+		Vector<String> molwt = electro2D.getMolecularWeights();
+		Vector<String> pI_vals = electro2D.getPiValues();
+		Vector<String> functions = electro2D.getFunctions();
 
-        HTMLSorter htmlSort = new HTMLSorter(searchVal, names, pI_vals, molwt, functions);
-        Vector sorted = new Vector(htmlSort.getSorted());
+		HTMLSorter htmlSort = new HTMLSorter(searchVal, names, pI_vals, molwt, functions);
+		Vector<Vector<String>> sorted = new Vector<Vector<String>>(htmlSort.getSorted());
 
-        maxMW = String.valueOf(electro2D.getMaxMW());
-        minMW = String.valueOf(electro2D.getMinMW());
-        maxPi = String.valueOf(electro2D.getMaxPi());
-        minPi = String.valueOf(electro2D.getMinPi());
+		maxMW = String.valueOf(electro2D.getMaxMW());
+		minMW = String.valueOf(electro2D.getMinMW());
+		maxPi = String.valueOf(electro2D.getMaxPi());
+		minPi = String.valueOf(electro2D.getMinPi());
 
-        String startingLine = " \u003Chtml\u003E\u003Chead\u003E" +
-                "\u003Cbody bgcolor=" + bgColor + "\u003E\u003Ctitle\u003E" +
-                filename + "\u003C/title\u003E\u003C/head\u003E";
+		String startingLine = " <html><head>" + "<body bgcolor=" + bgColor
+				+ "><title>" + filename + "</title></head>";
 
-        String startTable = openTab + "TABLE BORDER=2" + closeTab + openTab +
-                "TR" + closeTab + openTD + "PROTEIN TITLE" +
-                closeTD + openTD + "MOLECULAR WEIGHT" + closeTD + openTD +
-                "pI VALUE" + closeTD + openTD + "FUNCTION" + closeTD + closeTR;
+		String startTable = openTab + "TABLE BORDER=2" + closeTab + openTab + "TR" + closeTab + openTD + "PROTEIN TITLE"
+				+ closeTD + openTD + "MOLECULAR WEIGHT" + closeTD + openTD + "pI VALUE" + closeTD + openTD + "FUNCTION"
+				+ closeTD + closeTR;
 
-        String endTable = openTab + "/TABLE" + closeTab;
-        String endLine = openTab + "/HTML" + closeTab;
+		String endTable = openTab + "/TABLE" + closeTab;
+		String endLine = openTab + "/HTML" + closeTab;
 
-        String maxmwCode = "\u003Ccenter\u003E\u003Cbr\u003E\u003Cb\u003EMax " +
-                "Molecular weight = " + maxMW + "\u003C/b\u003E\u003Cbr\u003E";
+		String maxmwCode = "<center><br><b>Max " + "Molecular weight = " + maxMW
+				+ "</b><br>";
 
-        String minmwCode = "\u003Cb\u003EMin Molecular weight = " + minMW + "\u003C/b\u003E\u003Cbr\u003E";
+		String minmwCode = "<b>Min Molecular weight = " + minMW + "</b><br>";
 
-        String maxpiCode = "\u003Cb\u003EMax pI Value = " + maxPi + "\u003C/b\u003E\u003Cbr\u003E";
+		String maxpiCode = "<b>Max pI Value = " + maxPi + "</b><br>";
 
-        String minpiCode = "\u003Cb\u003EMin pI Value = " + minPi + "\u003C/b\u003E\u003Cbr\u003E";
-        String filesizeCode = "\u003Cb\u003EProteome File Size = " +
-                sorted.size() + "\u003C/b\u003E\u003Cbr\u003E\u003Cbr\u003E";
+		String minpiCode = "<b>Min pI Value = " + minPi + "</b><br>";
+		String filesizeCode = "<b>Proteome File Size = " + sorted.size()
+				+ "</b><br><br>";
 
+		try {
 
-        try {
+			pWrite.println(startingLine);
+			pWrite.println(maxmwCode);
+			pWrite.println(minmwCode);
+			pWrite.println(maxpiCode);
+			pWrite.println(minpiCode);
+			pWrite.println(filesizeCode);
+			pWrite.println(startTable);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 
-            pWrite.println(startingLine);
-            pWrite.println(maxmwCode);
-            pWrite.println(minmwCode);
-            pWrite.println(maxpiCode);
-            pWrite.println(minpiCode);
-            pWrite.println(filesizeCode);
-            pWrite.println(startTable);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+		String protInfoTable = "";
+		String molwtValue = "";
+		String pI = "";
+//		double molwtDouble = 0;
+//		double pIDouble = 0;
+		Vector<String> tmp = new Vector<>();
+		for (int i = 0; i < sorted.size(); i++) {
+			tmp = sorted.elementAt(i);
+			pI = tmp.elementAt(1);
+			molwtValue = tmp.elementAt(2);
 
+//			pIDouble = Double.parseDouble(pI);
+//			molwtDouble = Double.parseDouble(molwtValue);
 
-        String protInfoTable = "";
-        String molwtValue = "";
-        double molwtDouble = 0;
-        String pI = "";
-        double pIDouble = 0;
-        Vector tmp = new Vector();
-        for (int i = 0; i < sorted.size(); i++) {
-            tmp = ((Vector) sorted.elementAt(i));
-            pI = (String) tmp.elementAt(1);
-            pIDouble = Double.parseDouble(pI);
-            molwtValue = (String) tmp.elementAt(2);
-            molwtDouble = Double.parseDouble(molwtValue);
+			protInfoTable = openTR 
+					+ openTD + tmp.elementAt(0) + closeTD 
+					+ openTD + molwtValue + closeTD
+					+ openTD + pI + closeTD 
+					+ openTD + tmp.elementAt(3) + closeTD 
+					+ closeTR;
 
-            protInfoTable = openTR + openTD +
-                    (String) tmp.elementAt(0) + closeTD + openTD +
-                    molwtValue + closeTD + openTD +
-                    pI + closeTD + openTD +
-                    (String) tmp.elementAt(3) + closeTD + closeTR;
+			pWrite.println(protInfoTable);
 
-            pWrite.println(protInfoTable);
+		}
 
-        }
-
-        pWrite.println(endTable);
-        pWrite.println(endLine);
-        pWrite.close();
-        pWrite.close();
-
-    }
+		pWrite.println(endTable);
+		pWrite.println(endLine);
+		pWrite.close();
+	}
 }

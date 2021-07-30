@@ -4,7 +4,11 @@ import javax.swing.JTextField;
 import java.awt.Event;
 
 class ConcenTextField extends JTextField {
-    String lastValue;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6569363444974666158L;
+	String lastValue;
 
     public ConcenTextField(String string) {
         super(string);

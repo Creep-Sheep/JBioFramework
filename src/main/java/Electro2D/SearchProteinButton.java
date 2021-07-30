@@ -15,7 +15,11 @@ import java.awt.event.ActionEvent;
 //public class Electro2D.SearchProteinButton extends Canvas implements MouseListener {
 public class SearchProteinButton extends JButton implements ActionListener {
 
-    private Electro2D electro2D;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4938288615110791181L;
+	private Electro2D electro2D;
     private String pro_id = "";  //the ID of the protein
 
     /**

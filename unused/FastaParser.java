@@ -12,6 +12,7 @@ package main.java.Utilities;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.BufferedReader;
 
 public class FastaParser {
@@ -25,17 +26,23 @@ public class FastaParser {
      */
     public static String parse(File file) {
         String returnSequence = new String();
+        BufferedReader bReader = null;
         try {
             FileReader fReader = new FileReader(file);
-            BufferedReader bReader = new BufferedReader(fReader);
+            bReader = new BufferedReader(fReader);
             String line;
             while ((line = bReader.readLine()) != null) {
                 line = process(line);
                 returnSequence = returnSequence.concat(line);
             }
+            bReader.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+        try {
+			bReader.close();
+		} catch (IOException e) {
+		}
         return returnSequence;
     }
 

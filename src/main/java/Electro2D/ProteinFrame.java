@@ -13,6 +13,21 @@ package main.java.Electro2D;/*
  * See the GNU General Public License for more details.
  */
 
+import java.awt.BorderLayout;
+//import GUI components
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+//import java utilities
+import java.io.IOException;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 /**
  * Electro2D.ProteinFrame.java
  * <p>
@@ -29,31 +44,17 @@ package main.java.Electro2D;/*
  */
 
 import main.java.MainWindows.JBioFrameworkMain;
-import main.java.Utilities.FastaParser;
-import main.java.Utilities.GenomeFileParser;
 import main.java.MassSpec.MassSpecMain;
 import main.java.Utilities.BrowserLauncher;
-
-//import GUI components
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.BoxLayout;
-import javax.swing.JTextArea;
-
-//import java utilities
-import java.io.IOException;
-import java.util.ArrayList;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
 public class ProteinFrame extends JFrame {
 
-    private Electro2D electro2D;           //reference to calling applet
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1217452211296066828L;
+	private Electro2D electro2D;           //reference to calling applet
     private String proteinTitle;           //name of the protein
     private String ptTruncated;            //name truncated
     private JPanel proteinInfoPanel;       //panel to add components to
@@ -63,13 +64,13 @@ public class ProteinFrame extends JFrame {
     private JLabel piLabel;                //protein pI
     private String searchID = null;       // the id for the GenBank search
     private String swsSearchID = null;    // id for the SwissProt search
-    private int fileNum;                  // while file the proteins came from
     private String sequenceString; // the sequence of amino acids for
     // the protein
     private String proteinFunction = "";  // the function of the protein
-    private JLabel function;               // protein function
     private JLabel functionLabel;
-    private ArrayList<JLabel> functionList;
+//    private int fileNum;                  // while file the proteins came from
+//    private JLabel function;               // protein function
+//    private ArrayList<JLabel> functionList;
 
     /**
      * Constructor - creates the Electro2D.ProteinFrame object as well as initializes
@@ -85,7 +86,7 @@ public class ProteinFrame extends JFrame {
         //set the title of the protein
         proteinTitle = pt;
         ptTruncated = proteinTitle;
-        fileNum = filenum;
+        //fileNum = filenum;
         setTitle("Protein Information");
 
         proteinInfoPanel = new JPanel();                  //init panel
@@ -106,13 +107,7 @@ public class ProteinFrame extends JFrame {
         blstSearch.setToolTipText("Performs BLAST search for the protein sequence");
         blstSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String urlPre = "http://web.expasy.org/cgi-bin/blast/blast.pl?sequence=";
-                String url = urlPre + sequenceString;
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException ex) {
-                    System.out.println("URL did not work");
-                }
+            	search("blast");
             }
         });
 
@@ -152,14 +147,7 @@ public class ProteinFrame extends JFrame {
         ncbiSearch.setToolTipText("Performs NCBI search for the protein sequence");
         ncbiSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String urlPre = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=protein&cmd=search&term=";
-                ;
-                String url = urlPre + searchID;
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException ex) {
-                    System.out.println("URL did not work");
-                }
+            	search("entrez");
             }
         });
 
@@ -181,13 +169,7 @@ public class ProteinFrame extends JFrame {
         uniSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String urlPre = "http://www.uniprot.org/uniprot/?query=";
-                String url = urlPre + swsSearchID;
-                try {
-                    BrowserLauncher.openURL(url);
-                } catch (IOException ex) {
-                    System.out.println("URL did not work");
-                }
+            	search("uniprot");
             }
         });
 
@@ -227,5 +209,28 @@ public class ProteinFrame extends JFrame {
         pack();
         //setSize(420, 150);
     }
+
+	protected void search(String type) {
+		String url;
+		switch (type) {
+		case "uniprot":
+	    	url = "http://www.uniprot.org/uniprot/?query=" + swsSearchID;
+			break;
+		case "blast":
+			url = "http://web.expasy.org/cgi-bin/blast/blast.pl?sequence=" + sequenceString;
+			break;
+		case "entrez":
+			url = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=protein&cmd=search&term=" + searchID;
+			break;
+		default:
+			System.err.println("ProteinFrame.search " + type + " invalid type");
+			return;
+		}
+		try {
+			BrowserLauncher.openURL(url);
+		} catch (IOException ex) {
+			System.out.println("ProteinFrame.search URL did not work for " + url);
+		}
+	}
 
 }

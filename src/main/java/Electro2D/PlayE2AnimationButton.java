@@ -33,7 +33,11 @@ import java.awt.event.ActionListener;
  */
 public class PlayE2AnimationButton extends JButton implements ActionListener {
 
-    Electro2D electro2D;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2940203929854230002L;
+	Electro2D electro2D;
     boolean sdsPlaying;
     private boolean iefDrawn;
     private boolean sdsDrawn;
@@ -153,15 +157,15 @@ public class PlayE2AnimationButton extends JButton implements ActionListener {
                     if (!iefDrawn) {
                         electro2D.restartIEF();
                         iefDrawn = true;
-                        electro2D.getGel().resetReLine();
+                        electro2D.getGel().setRedrawPHLines(false);
                     }
                 }
                 //if the user selected SDS-PAGE animation, and the IEF is
                 // already drawn, perform the SDS-PAGE animation
                 else if (choice.equals("SDS-PAGE")) {
                     if (iefDrawn) {
-                        electro2D.getGel().clearCanvas();
-                        electro2D.getGel().clearIEF();
+//                        electro2D.getGel().clearCanvas();
+//                        electro2D.getGel().clearIEF();
                         electro2D.getGel().resetLocation();
                         electro2D.clearpH();
                         sdsPlaying = true;

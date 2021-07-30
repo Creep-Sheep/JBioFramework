@@ -1,7 +1,5 @@
 package main.java.Electro1D;
 
-import main.java.Electro1D.Electrophoresis;
-
 import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,7 +10,11 @@ import javax.swing.JTextField;
  *         ProteinData.java class that handle the GUI components of the protein data panel
  */
 public class ProteinData extends JPanel {
-    Electrophoresis parent;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3836828666209394917L;
+	Electrophoresis parent;
     String mw;
     JTextField name;
     JTextField fullName;
@@ -85,7 +87,6 @@ public class ProteinData extends JPanel {
         abbr.setText(protein.abbr);
         mw = String.valueOf(protein.mw);
         molwt.setText(mw);
-        double d = Math.log(protein.mw) / Math.log(10D);
-        logMolWt.setText(String.valueOf(d));
+        logMolWt.setText(String.valueOf(Math.log(protein.mw) / Math.log(10)));
     }
 }

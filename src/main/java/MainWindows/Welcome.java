@@ -41,7 +41,11 @@ import main.java.Utilities.*;
  */
 public class Welcome extends JPanel {
 
-    //links to various jbf sites used below
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3895526665576726006L;
+	//links to various jbf sites used below
     public static String jbfWebsite = "https://sourceforge.net/projects/jbf/";
 
     /**
@@ -324,6 +328,7 @@ public class Welcome extends JPanel {
                 bug.setToolTipText("Report an issue with the software");
                 bug.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                    	//here a dialog pops up
                         JOptionPane.showMessageDialog(null, "will copy information about program");
                     }
                 });
@@ -364,7 +369,7 @@ public class Welcome extends JPanel {
                         "<u>NCBI</u> [National Center for Biotechnology Information], and " +
                         "<u>Uniprot</u> [The Uniprot Consortium] " +
                         "search engines. </body>";
-                String nbCE = "NetbeansIDE <u>ContactEditor was used for the creation of some GUIs.";
+                //String nbCE = "NetbeansIDE <u>ContactEditor was used for the creation of some GUIs.";
                 String rt = "This software was developed at Rochester Institute of Technology (<u>RIT</u>). ";
                 String html1 = "<html><body style='width: ";
                 String html2 = "px'>";

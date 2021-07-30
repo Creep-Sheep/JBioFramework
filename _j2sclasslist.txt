@@ -475,3 +475,17 @@ sun/util/locale/provider/AuxLocaleProviderAdapter.js
 sun/util/locale/provider/JRELocaleProviderAdapter.js
 sun/util/locale/provider/ResourceBundleBasedAdapter.js
 sun/util/locale/provider/SPILocaleProviderAdapter.js
+
+java/awt/datatransfer/FlavorMap.js
+java/awt/datatransfer/FlavorTable.js
+java/awt/datatransfer/SystemFlavorMap.js
+java/awt/dnd/DropTarget.js
+java/awt/dnd/DropTargetContext.js
+java/awt/dnd/DropTargetListener.js
+java/util/Random.js
+java/util/function/BiFunction.js
+main/java/MainWindows/MarvinPanel.js
+main/java/Utilities/FileUtils.js
+main/java/Utilities/GenomeFileParser.js
+main/java/Utilities/JSUtil.js
+main/java/Utilities/Preprocessor.js

@@ -14,7 +14,7 @@
    	<!-- make core files -->
 
    	<echo>creating and compressing core files - warnings are OK; "does not exist" is trouble</echo>
-   	<echo>reading core class list from file coreclasses</echo>   	
+   	<echo>reading core class list from file _j2sclasslist.txt</echo>   	
    	<loadresource property="coreclasses">
        <file file="_j2sclasslist.txt"/>
     </loadresource>

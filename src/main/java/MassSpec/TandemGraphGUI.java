@@ -17,6 +17,10 @@ import java.util.ArrayList;
 public class TandemGraphGUI extends JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6604528787253362853L;
+	/**
      * The Width.
      */
     int width;
@@ -144,7 +148,7 @@ public class TandemGraphGUI extends JPanel {
     public void drawSequencePeaks(Ion ion) {
         peakLines = new ArrayList<Ion>();
         // First, make the b-fragment ions if the user wants them displayed.
-        if (blueBs) {
+        if (ion != null && blueBs) {
             Ion bIon;
             for (int i = 0; i < ion.size(); i++) {
                 bIon = new Ion();
@@ -160,7 +164,7 @@ public class TandemGraphGUI extends JPanel {
         }
 
         // Next, make the y-fragment ions if the user wants them displayed
-        if (redYs) {
+        if (ion != null && redYs) {
             Ion yIon;
             for (int i = ion.size() - 1; i > -1; i--) {
                 yIon = new Ion();

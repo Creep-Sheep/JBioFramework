@@ -17,6 +17,11 @@ package main.java.Utilities;
  */
 public class UnknownLineException extends Exception {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2756149082573223092L;
+
+	/**
      * Instantiates a new Unknown line exception.
      */
     public UnknownLineException() {

@@ -36,7 +36,7 @@ import java.awt.Label;
 //
 
 public class DialogLayout implements LayoutManager {
-    protected Hashtable m_map = new Hashtable();
+    protected Hashtable<Component, Rectangle> m_map = new Hashtable<>();
     protected int m_width;
     protected int m_height;
 
@@ -84,12 +84,12 @@ public class DialogLayout implements LayoutManager {
     }
 
     public void layoutContainer(Container parent) {
-        int count = parent.countComponents();
+        int count = parent.getComponentCount();
         Rectangle rect = new Rectangle();
         int charHeight = getCharHeight(parent);
         int charWidth = getCharWidth(parent);
-        Insets insets = parent.insets();
-        FontMetrics m = parent.getFontMetrics(parent.getFont());
+        Insets insets = parent.getInsets();
+//        FontMetrics m = parent.getFontMetrics(parent.getFont());
 
         for (int i = 0; i < count; i++) {
             Component c = parent.getComponent(i);
@@ -108,7 +108,7 @@ public class DialogLayout implements LayoutManager {
 
                 rect.x += insets.left;
                 rect.y += insets.top;
-                c.reshape(rect.x, rect.y, rect.width, rect.height);
+                c.setBounds(rect.x, rect.y, rect.width, rect.height);
             }
         }
     }

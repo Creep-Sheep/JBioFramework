@@ -8,7 +8,11 @@ import javax.swing.JPanel;
  * initiate set of panels for  standard proteins, so that each protein band has its own unique color
  */
 public class ColorPanels extends JPanel {
-    JPanel controlPanel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3468373359735961915L;
+	JPanel controlPanel;
     JPanel color1Panel;
     JPanel color2Panel;
     JPanel color3Panel;

@@ -14,6 +14,23 @@ package main.java.MassSpec;
  * See the GNU General Public License for more details.
  */
 
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+//Listeners and Event handlers
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+//etc.
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Vector;
+import java.util.function.BiFunction;
+
 /**
  * Main GUI for the MassSpec.Spectrometer simulation contained in a JPanel.
  * One of the tabs added to /Main.JBioFrameworkMain/'s JTabbedPane.
@@ -22,45 +39,50 @@ package main.java.MassSpec;
  */
 
 //GUI Components
-
-import javax.swing.*;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Font;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-//Listeners and Event handlers
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-
-//etc.
-import java.io.IOException;
-import java.text.DecimalFormat;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import main.java.Utilities.BrowserLauncher;
-import main.java.Utilities.FastaParser;
+import main.java.Utilities.FileUtils;
+import main.java.Utilities.GenomeFileParser;
 
 /**
  *
  */
 public class MassSpecMain extends JPanel {
 
-    private String[] proteaseChoices = {"Trypsin", "Chymotrypsin", "Proteinase K", "Thermolysin"};
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2867844752315011532L;
+	private String[] proteaseChoices = {"Trypsin", "Chymotrypsin", "Proteinase K", "Thermolysin"};
     private JButton help;
     private JButton about;
     private static JTextArea inputArea; // static so Electro2D.ProteinFrame can interact with it.
     private JTextField lowerRange;
     private JTextField upperRange;
-    private JComboBox proteaseBox;
+    private JComboBox<String> proteaseBox;
     private TandemGraphGUI tandemGraph;
     private JLabel massDisplay;
     private ToggleFragmentButton blueBs;
     private ToggleFragmentButton redYs;
     private OutputGraphGUI outputGraph;
     private Ion ion;
+	private ActionListener clearListener = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			clearGraphics();
+		}
+		
+	};
 
     /**
      * The constructor uses a GridBagLayout to arrange the eight different
@@ -68,7 +90,7 @@ public class MassSpecMain extends JPanel {
      * the label OR, the button to load a sequence, the protease selection
      * drop down box, the info label, the big graph and the small graph.
      */
-    public MassSpecMain() {
+	public MassSpecMain() {
         //set the layout of the JPanel it's extending.
         super(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -142,6 +164,13 @@ public class MassSpecMain extends JPanel {
         inputArea = new JTextArea(7, 20);
         inputArea.setToolTipText("type or paste protein sequence here");
         inputArea.setLineWrap(true);
+        FileUtils.setFileDropper(inputArea, new BiFunction<File, Point, Void>() {
+        	public Void apply(File file, Point pt) {
+				loadFile(file);
+				return null;
+        	}
+        }); 
+
         JScrollPane scrollPane = new JScrollPane(inputArea);
         constraints.gridy = 3;
 //        grid.setConstraints(scrollPane, constraints);
@@ -156,15 +185,10 @@ public class MassSpecMain extends JPanel {
         loadButton.setToolTipText("Load from protein file"); //@todo: include file types?
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("FASTA files",
-                        "fasta");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showOpenDialog(chooser);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    String parsedSequence = FastaParser.parse(chooser.getSelectedFile());
-                    inputArea.setText(parsedSequence);
-                }
+            		FileUtils.openFile(MassSpecMain.this, (file) -> {  
+            			loadFile(file);
+            			return null;
+            		});
             }
         });
         constraints.gridy = 5;
@@ -177,7 +201,8 @@ public class MassSpecMain extends JPanel {
 //        grid.setConstraints(proteaseLabel, constraints);
         add(proteaseLabel, constraints);
 
-        proteaseBox = new JComboBox(proteaseChoices);
+        proteaseBox = new JComboBox<String>(proteaseChoices);
+        proteaseBox.addActionListener(clearListener );
         constraints.gridy = 7;
 //        grid.setConstraints(proteaseBox, constraints);
         add(proteaseBox, constraints);
@@ -255,7 +280,19 @@ public class MassSpecMain extends JPanel {
 
     }
 
-    /**
+    protected void clearGraphics() {
+    	tandemGraph.drawSequencePeaks(null);
+    	outputGraph.setPeaks(null, 0);
+	}
+
+	protected void loadFile(File file) {
+		Vector<String> sequences = new Vector<>();
+		GenomeFileParser.loadFile(file, sequences, null, null, GenomeFileParser.SEQUENCES_ONLY);
+		if (sequences.size() > 0)
+			inputArea.setText(sequences.get(0));
+	}
+
+	/**
      * runTandem changes the information displayed in the infoScreen Jlabel
      * when a user clicks on a peak in the MassSpec.OutputGraphGUI. It also alerts
      * MassSpec.TandemGraphGUI that there is peptide sequencing to be done.
@@ -276,6 +313,11 @@ public class MassSpecMain extends JPanel {
     private class ToggleFragmentButton extends JCheckBox implements ItemListener {
 
         /**
+		 * 
+		 */
+		private static final long serialVersionUID = -2579374802627838606L;
+
+		/**
          * Constructor passes the String to be displayed on the button to
          * JCheckBox's constructor and registers itself as its own actionListener.
          */
@@ -339,6 +381,7 @@ public class MassSpecMain extends JPanel {
             try {
                 lower = Double.valueOf(noComma);
             } catch (NumberFormatException e) {
+            	//here a dialog pops up
                 JOptionPane.showMessageDialog(null, "Did not recognize Lower Limit as a number. Using default lower limit of 0.");
                 lowerRange.setText("0");
                 return 0;

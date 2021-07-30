@@ -13,36 +13,37 @@ package main.java.Electro2D;/*
  * See the GNU General Public License for more details.
  */
 
+import java.util.TreeSet;
+
 /**
  * This class creates the ordered Vector of all of the proteins to be
  * displayed in hte HTML file.
  */
 
 import java.util.Vector;
-import java.util.TreeSet;
 
 public class HTMLSorter {
 
-    private TreeSet proteinInfo;
+    private TreeSet<Vector<String>> proteinInfo;
     private int compBy;
 
-    public HTMLSorter(int cb, Vector t, Vector p, Vector m, Vector f) {
+    public HTMLSorter(int cb, Vector<String> t, Vector<String> p, Vector<String> m, Vector<String> f) {
 
         compBy = cb;
-        proteinInfo = new TreeSet(new HTMLComparator(compBy));
-        Vector tmp;
+        proteinInfo = new TreeSet<Vector<String>>(new HTMLComparator(compBy));
+        Vector<String> tmp;
 
         for (int i = 0; i < t.size(); i++) {
-            tmp = new Vector();
-            tmp.add((String) t.elementAt(i));
-            tmp.add((String) p.elementAt(i));
-            tmp.add((String) m.elementAt(i));
-            tmp.add((String) f.elementAt(i));
+            tmp = new Vector<String>();
+            tmp.add(t.elementAt(i));
+            tmp.add(p.elementAt(i));
+            tmp.add(m.elementAt(i));
+            tmp.add(f.elementAt(i));
             proteinInfo.add(tmp);
         }
     }
 
-    public TreeSet getSorted() {
+    public TreeSet<Vector<String>> getSorted() {
         return proteinInfo;
     }
 }

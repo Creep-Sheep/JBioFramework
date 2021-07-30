@@ -21,7 +21,7 @@ package main.java.Electro2D;/*
 import java.util.Vector;
 import java.util.Comparator;
 
-public class HTMLComparator implements Comparator {
+public class HTMLComparator implements Comparator<Vector<String>> {
 
     private int compBy;
 
@@ -29,68 +29,57 @@ public class HTMLComparator implements Comparator {
         compBy = c;
     }
 
-    public int compare(Object a, Object b) {
+	public int compare(Vector<String> objA, Vector<String> objB) {
+		if (compBy != 1 && compBy != 2) {
+			if (objA.elementAt(compBy).equals(objB.elementAt(compBy))) {
+				for (int i = 0; i < 4; i++) {
+					if (i != 1 && i != 2) {
+						int comp = objA.elementAt(i).compareTo(objB.elementAt(i));
+						if (comp != 0) {
+							return comp;
+						}
+					} else if (i == 1 || i == 2) {
+						int comp = compareDouble(objA, objB, i);
+						if (comp != 0) {
+							return comp;
+						}
+					}
+				}
 
-        Vector objA = (Vector) a;
-        Vector objB = (Vector) b;
-        if (compBy != 1 && compBy != 2) {
-            if (((String) objA.elementAt(compBy)).equals(
-                    (String) objB.elementAt(compBy))) {
-                for (int i = 0; i < 4; i++) {
-                    if (i != 1 && i != 2) {
-                        int comp = ((String) objA.elementAt(i)).compareTo(
-                                ((String) objB.elementAt(i)));
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    } else if (i == 1 || i == 2) {
-                        int comp = compareDouble(a, b, i);
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    }
-                }
+			} else {
+				return objA.elementAt(compBy).compareTo(objB.elementAt(compBy));
+			}
 
-            } else {
-                return (((String) objA.elementAt(compBy)).compareTo(
-                        (String) objB.elementAt(compBy)));
-            }
+		} else if (compBy == 1 || compBy == 2) {
+			if (compareDouble(objA, objB, compBy) == 0) {
+				for (int i = 0; i < 4; i++) {
+					if (i != 1 && i != 2) {
+						int comp = objA.elementAt(i).compareTo(objB.elementAt(i));
+						if (comp != 0) {
+							return comp;
+						}
+					} else if (i == 1 || i == 2) {
 
-        } else if (compBy == 1 || compBy == 2) {
-            if (compareDouble(a, b, compBy) == 0) {
-                for (int i = 0; i < 4; i++) {
-                    if (i != 1 && i != 2) {
+						int comp = compareDouble(objA, objB, i);
+						if (comp != 0) {
+							return comp;
+						}
+					}
+				}
 
-                        int comp = ((String) objA.elementAt(i)).compareTo(
-                                ((String) objB.elementAt(i)));
+				return 0;
+			}
+			return compareDouble(objA, objB, compBy);
+		}
 
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    } else if (i == 1 || i == 2) {
+		return -1000;
+	}
 
-                        int comp = compareDouble(a, b, i);
-                        if (comp != 0) {
-                            return comp;
-                        }
-                    }
-                }
-
-                return 0;
-            }
-            return compareDouble(a, b, compBy);
-        }
-
-        return -1000;
-    }
-
-    public int compareDouble(Object a, Object b, int index) {
-        Vector objA = (Vector) a;
-        Vector objB = (Vector) b;
+    public int compareDouble(Vector<String> objA, Vector<String> objB, int index) {
         int retVal = -2;
 
-        double dA = Double.parseDouble(((String) objA.elementAt(index)));
-        double dB = Double.parseDouble(((String) objB.elementAt(index)));
+        double dA = Double.parseDouble(objA.elementAt(index));
+        double dB = Double.parseDouble(objB.elementAt(index));
 
         if (dA < dB) {
             retVal = -1;

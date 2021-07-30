@@ -38,7 +38,11 @@ import java.awt.event.ActionListener;
 public class HTMLGenScreen extends JFrame implements ActionListener,
         MouseListener {
 
-    private static final int PI_VAL = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1736384964722731387L;
+	private static final int PI_VAL = 1;
     private static final int TITLE_VAL = 0;
     private static final int FUNCTION_VAL = 3;
     private static final int MW_VAL = 2;

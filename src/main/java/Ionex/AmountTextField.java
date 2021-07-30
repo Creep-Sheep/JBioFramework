@@ -4,7 +4,11 @@ import javax.swing.JTextField;
 import java.awt.Event;
 
 class AmountTextField extends JTextField {
-    String lastValue;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3905619255423613492L;
+	String lastValue;
 
     public AmountTextField(String string) {
         super(string);

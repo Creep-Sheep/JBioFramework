@@ -12,7 +12,11 @@ import javajs.async.SwingJSUtils.StateHelper;
 import javajs.async.SwingJSUtils.StateMachine;
 
 class ImageCanvas extends Canvas implements Runnable {
-    final int COLLOY = 25;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1257254289189013597L;
+	final int COLLOY = 25;
     final int COLHIY = 226;
     final int COLLOX = 280;
     final int COLHIX = 376;
