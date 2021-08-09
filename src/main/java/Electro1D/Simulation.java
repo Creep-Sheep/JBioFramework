@@ -1182,7 +1182,7 @@ public class Simulation extends JPanel implements Runnable {
 		if (error == null) {
 			addSampleFromFile(proteins, wellNum);
 			int n = proteins.size();
-			JOptionPane.showMessageDialog(parent.parentFrame, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");
+			//JOptionPane.showMessageDialog(parent.parentFrame, n + " Protein" + (n == 1 ? "" : "s") + " loaded.");
 		}
 
 	}

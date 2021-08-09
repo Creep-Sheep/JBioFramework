@@ -119,6 +119,12 @@ public class Parameters extends JPanel {
 	}; 
 	
 	String[] samples = new String[unknowns.length];
+	private JButton resetwells;
+	private JButton clearwells;
+	private JButton addStandard;
+	private JButton startButton;
+	private JButton stopButton;
+	private JButton[] wellButtons;
 
 	{
 		for (int i = 0; i < unknowns.length; i++)
@@ -154,6 +160,7 @@ public class Parameters extends JPanel {
 		voltages.addItemListener(vl);
 		// button groups
 		voltage = new ButtonGroup();
+		wellButtons = new JButton[11];
 		speed = new ButtonGroup();
 		// panels
 
@@ -336,25 +343,27 @@ public class Parameters extends JPanel {
 
 		resetPanel.setLayout(new GridLayout(1, 2, 5, 5));
 		resetPanel.setBackground(Color.lightGray);
-		JButton resetwells = new JButton("Refill Wells");
+		resetwells = new JButton("Refill Wells");
 		resetwells.setToolTipText("Reset wells with the same samples");
 		resetwells.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				parent.resetWells();
+				setButtonStates(2);
 			}
 		
 		});
 		// resetwells.setBackground(Color.orange);
 		resetPanel.add(resetwells);
-		JButton clearwells = new JButton("Clear Wells");
+		clearwells = new JButton("Clear Wells");
 		clearwells.setToolTipText("Clear the wells");
 		clearwells.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				parent.clearWells();
+				setButtonStates(1);
 			}
 
 		});
@@ -362,13 +371,14 @@ public class Parameters extends JPanel {
 
 		JPanel tempStandWells = new JPanel();
 		JLabel wellsLabel = new JLabel("Select the Well to Add a Sample to", SwingConstants.CENTER);
-		JButton addStandard = new JButton("Add Standards");
+		addStandard = new JButton("Add Standards");
 		addStandard.setToolTipText("Pipette selected standards into well 1");
 		addStandard.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				parent.addStandard();
+				setButtonStates(2);
 
 			}
 		});
@@ -404,7 +414,7 @@ public class Parameters extends JPanel {
 
 			}
 		});
-		JButton startButton = new JButton("Start");// Start run
+		startButton = new JButton("Start");// Start run
 		startButton.setToolTipText("Powers on the battery to begin run");
 		startButton.addActionListener(new ActionListener() {
 
@@ -413,10 +423,10 @@ public class Parameters extends JPanel {
 
 				// when click start
 				parent.startRun(stdProteinArray, selectedSample1, selectedSample2, Constants.dyes);
-
+				setButtonStates(3);
 			}
 		});
-		JButton stopButton = new JButton("Stop");// Stop Run
+		stopButton = new JButton("Stop");// Stop Run
 		stopButton.setToolTipText("Ends current to stop the run");
 		stopButton.addActionListener(new ActionListener() {
 
@@ -426,6 +436,7 @@ public class Parameters extends JPanel {
 				// when click stop
 				parent.stopRun();
 				parent.setPlotData(stdProteinArray, selectedSample1, Constants.dyes[0]);
+				setButtonStates(4);
 			}
 		});
 
@@ -467,20 +478,62 @@ public class Parameters extends JPanel {
 		setSpeed(selectedSpeed);
 		selectedSample1 = unknowns[0];
 		selectedSample2 = unknowns[1];
+		setButtonStates(1);
 	}
 
 	private JButton newFileButton(int i) {
 		JButton b = new JButton("Well " + i);
+		wellButtons[i] = b;
 		b.setToolTipText("Select a file to be put in well " + i);
 		b.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (parent.isReady())
+				if (parent.isReady()) 
 					loadFile(i);
 			}
 		});
 		return b;
+	}
+	
+	private void setButtonStates(int i) {
+		switch(i) {
+		case 1:
+			addStandard.setEnabled(true);
+			for(int j = 2; j < wellButtons.length; j++) 
+				wellButtons[j].setEnabled(false);
+			startButton.setEnabled(false);
+			stopButton.setEnabled(false);
+			clearwells.setEnabled(false);
+			resetwells.setEnabled(false);
+			break;
+		case 2:
+			addStandard.setEnabled(false);
+			for(int j = 2; j < wellButtons.length; j++) 
+				wellButtons[j].setEnabled(true);
+			startButton.setEnabled(true);
+			stopButton.setEnabled(false);
+			clearwells.setEnabled(false);
+			resetwells.setEnabled(false);
+			break;
+		case 3:
+			addStandard.setEnabled(false);
+			for(int j = 2; j < wellButtons.length; j++) 
+				wellButtons[j].setEnabled(false);
+			startButton.setEnabled(false);
+			stopButton.setEnabled(true);
+			clearwells.setEnabled(false);
+			resetwells.setEnabled(false);
+			break;
+		case 4:
+			addStandard.setEnabled(false);
+			for(int j = 2; j < wellButtons.length; j++) 
+				wellButtons[j].setEnabled(false);
+			startButton.setEnabled(false);
+			stopButton.setEnabled(false);
+			clearwells.setEnabled(true);
+			resetwells.setEnabled(true);
+		}
 	}
 
 	private void helperMethod1() {
