@@ -730,6 +730,8 @@ public class Simulation extends JPanel implements Runnable {
 			}
 			ResetFlags();
 			wellProteins[n] = proteins;
+			if(wellProteins[n].size() == 1)
+				wellProteins[n].get(0).color = Color.blue;
 			updateSpeed(speed, gel);
 			// setAcrylamideEffect(well2proteins);
 			addSampleFileFlag = true;
