@@ -52,7 +52,8 @@ public class Parameters extends JPanel {
 	JComboBox<String> voltages;
 	ButtonGroup voltage;
 	ButtonGroup speed;
-
+	int state;
+	
 	Color dyeColor;
 
 	Electrophoresis parent;
@@ -489,14 +490,19 @@ public class Parameters extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (parent.isReady()) 
+				//if (parent.isReady()) 
 					loadFile(i);
 			}
 		});
 		return b;
 	}
 	
+	public int getButtonState() {
+		return state;
+	}
+	
 	private void setButtonStates(int i) {
+		state = i;
 		switch(i) {
 		case 1:
 			addStandard.setEnabled(true);
@@ -536,6 +542,8 @@ public class Parameters extends JPanel {
 		}
 	}
 
+	
+	
 	private void helperMethod1() {
 		colorPanelTop.setBackground(Color.lightGray);
 		colorPanel.setLayout(new GridLayout(8, 1, 1, 3));

@@ -220,6 +220,10 @@ public class Electrophoresis extends JPanel {
 		simPanel.clearWells();
 	}
 	
+	public int getButtonState() {
+		return paramPanel.getButtonState();
+	}
+	
 	/**
 	 * configure the animation speed
 	 *

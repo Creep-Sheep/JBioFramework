@@ -152,6 +152,7 @@ public class Simulation extends JPanel implements Runnable {
 	int samp2LoadState;
 	int sampFileLoadState;
 	int stdLoadState;
+	int buttonState;
 	boolean noLoadError;
 	protected DecimalFormat twoDigits;
 	private StateHelper stateHelper;
@@ -223,13 +224,16 @@ public class Simulation extends JPanel implements Runnable {
 		bsRedoWell.clear();
 		resetWell();
 		FileUtils.setFileDropper(this, (file, loc) -> {
-			loadFileDropped(file, loc);
+			buttonState = parent.getButtonState();
+			System.out.println(buttonState);
+			if(buttonState == 2)
+				loadFileDropped(file, loc);
 			return null;
 		});
 	}
 
 	public void loadFileDropped(File f, Point p) {
-		if (stdLoadState == loading || sampFileLoadState == loading || p.y <= wellOpeningY
+		if (/*stdLoadState == loading || sampFileLoadState == loading ||*/ p.y <= wellOpeningY
 				|| p.y >= wellOpeningY + wellOpeningHeight)
 			return;
 		for (int i = 2; i <= Constants.wellCount; i++) {
