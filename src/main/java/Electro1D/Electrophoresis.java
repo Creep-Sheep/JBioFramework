@@ -60,8 +60,9 @@ public class Electrophoresis extends JPanel {
 		//550(i think i want 825, 450: good size: 845, 470
 
     	GenomeFileParser.init();
-
+    	
 		this.parentFrame = parentFrame;
+		this.parentFrame.setName("Electrophoresis Frame");
 		simPanel = new Simulation(this);
 		paramPanel = new Parameters(this);
 		dataPanel = new ProteinData(this);
