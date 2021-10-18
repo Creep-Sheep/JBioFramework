@@ -387,6 +387,7 @@ public class Simulation extends JPanel implements Runnable {
 		stdLoadState = notLoaded;
 		sampFileLoadState = notLoaded;
 		setPause("elute");
+		setinitialspeed();
 		start();
 	}
 
@@ -858,6 +859,24 @@ public class Simulation extends JPanel implements Runnable {
 			}
 		}
 	}
+	
+	public void setinitialspeed() {
+		for(Protein p : stdSamples) {
+			p.speed = 1;
+		}
+		for(int i = 0; i < Constants.wellCount; i++) {
+			if(wellProteins[i] != null)
+				dyes[i].speed = 1;
+		}
+		for(int i = 0; i < Constants.wellCount; i++) {
+			if(wellProteins[i] != null) {
+				for(Protein p : wellProteins[i]) {
+					p.speed = 1;
+				}
+			}
+				
+		}
+	}
 
 	/**
 	 * set the Acrylamide effect
@@ -1047,6 +1066,7 @@ public class Simulation extends JPanel implements Runnable {
 		offScreenGraphics.fillRect(0, 0, getSize().width, getSize().height);
 		offScreenGraphics.setColor(g.getColor());
 		if (runExperiment) {
+			hitStackBottom();
 			drawCell(offScreenGraphics);
 			if (runSampleFlag)
 				paintSample(offScreenGraphics);
@@ -1069,6 +1089,14 @@ public class Simulation extends JPanel implements Runnable {
 			drawGraph(offScreenGraphics);
 		}
 		g.drawImage(offScreenImage, 0, 0, this);
+	}
+
+	private void hitStackBottom() {
+		if(dyes[1] != null) {
+			if(dyes[1].y1 > wellBottom + 10) {
+				parent.paramsetspeed(speed);
+			}
+		}
 	}
 
 	/**
@@ -1097,7 +1125,7 @@ public class Simulation extends JPanel implements Runnable {
 		if (clicked && (!stopAnimation || !notAtBottom))
 			return;
 		if (sample1.matchPosition(x, y)) {
-			announce(sample1, sample1.name, 1, clicked);
+			announce(sample1, "tbd", sample1.name, 1, clicked);
 			return;
 		}
 		int w = findWell(x);
@@ -1108,7 +1136,7 @@ public class Simulation extends JPanel implements Runnable {
 			for (int i = 0; i < stdSamples.length; i++) {
 				if (stdSamples[i].matchPosition(x, y)) {
 					stdSamples[i].relativeMigration = stdSamples[i].getDistance() / dyes[1].getDistance();
-					announce(stdSamples[i], stdSamples[i].fullName, 1, clicked);
+					announce(stdSamples[i], stdSamples[i].mw + "",stdSamples[i].fullName, 1, clicked);
 					return;
 				}
 			}
@@ -1116,13 +1144,13 @@ public class Simulation extends JPanel implements Runnable {
 		}
 		Protein dye = dyes[w];
 		if (dye.matchPosition(x, y)) {
-			announce(dye, dye.name, 1, clicked);
+			announce(dye, "", dye.name, 1, clicked);
 			return;
 		}
 		Protein protein = (clicked ? findProtein(x, y, w) : null);
 		if (protein != null) {
 			protein.relativeMigration = protein.getDistance() / dyes[w].getDistance();
-			announce(protein, protein.fullName, w, clicked);
+			announce(protein, "tbd", protein.fullName, w, clicked);
 		}
 	}
 
@@ -1164,11 +1192,11 @@ public class Simulation extends JPanel implements Runnable {
 		return null;
 	}
 
-	public void announce(Protein p, String name, int refDye, boolean clicked) {
+	public void announce(Protein p, String mw, String name, int refDye, boolean clicked) {
 		if (!clicked)
 			return;
 		proteinName = name;
-		proteinMW = "MW = tbd";
+		proteinMW = "MW = " + mw;
 		proteinDist = "mm travel = " + twoDigits.format(p.getDistance());
 		relMigration = "RM = " + twoDigits.format(p.getDistance() / dyes[refDye].getDistance());
 		addInfo = true;
