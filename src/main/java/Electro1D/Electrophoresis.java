@@ -62,7 +62,8 @@ public class Electrophoresis extends JPanel {
     	GenomeFileParser.init();
     	
 		this.parentFrame = parentFrame;
-		this.parentFrame.setName("Electrophoresis Frame");
+	    // to match <div id="testApplet-Electro1D-div"></div> in Electro1D_embedded.html
+		this.parentFrame.setName("Electro1D");
 		simPanel = new Simulation(this);
 		paramPanel = new Parameters(this);
 		dataPanel = new ProteinData(this);
@@ -248,7 +249,6 @@ public class Electrophoresis extends JPanel {
 
 	static public void main(String[] args) {
 		JFrame f = new JFrame();
-	    f.setName("Electro1D"); // to match <div id="testApplet-Electro1D-div"></div> in Electro1D_embedded.html
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		f.add(new Electrophoresis(f));
 		f.pack();
