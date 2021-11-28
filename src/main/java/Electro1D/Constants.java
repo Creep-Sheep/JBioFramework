@@ -50,7 +50,7 @@ public class Constants {
 	public final static String fiftyV = "50V";
 	public final static String hundredV = "100V";
 	public final static String oneFiftyV = "150V";
-	public final static String twoHundredV = "200";
+	public final static String twoHundredV = "200V";
 
 	public final static String[] voltageList = { fiftyV, hundredV, oneFiftyV, twoHundredV };
 
