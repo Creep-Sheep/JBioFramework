@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SwingJS test Electrophoresis</title><meta charset="utf-8" />
+		<script src="swingjs/swingjs2.js"></script>
+		<script>
+			if (!self.SwingJS)alert('swingjs2.js was not found. It needs to be in swingjs folder in the same directory as ' + document.location.href)
+				Info = {
+				  code: null,
+				  main: "main.java.Electro1D.Electrophoresis",
+				  core: "NONE",
+					width: 850,
+					height: 550,
+				  readyFunction: null,
+					serverURL: 'https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php',
+					j2sPath: 'swingjs/j2s',
+					console:'sysoutdiv',
+					allowjavascript: true
+				}
+		</script>
+	</head>
+<body>
+<body>
+    <div style="width:800px; margin:0 auto;">
+        <div id="testApplet-Electro1D-div"></div>	
+    </div>
+</body>
+
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/full_e.coli_proteins.fasta">E.Coli Sample<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/flow_through.fasta">Flow Through<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/low_imidazole_wash_1.fasta">Low Imidazole Wash 1<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/low_imidazole_wash_2.fasta">Low Imidazole Wash 2<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/high_imidazole_wash_1.fasta">High Imidazole Wash 1<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/high_imidazole_wash_2.fasta">High Imidazole Wash 2<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/high_imidazole_wash_3.fasta">High Imidazole Wash 3<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/high_imidazole_wash_4.fasta">High Imidazole Wash 4<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<p style="text-align:right;"><a href="/2O14_1DE_Data/high_imidazole_wash_5.fasta">High Imidazole Wash 5<img src="test_tube.jpg" style="width:42px;height:42px;"></a></p>
+	<div id = "Electrophoresis">
+		<script>
+			SwingJS.getApplet('testApplet', Info)
+			getClassList = function(){J2S._saveFile('_j2sclasslist.txt', Clazz.ClassFilesLoaded.sort().join('\n'))}
+		</script>
+	</div>
+	<!--div style="position:absolute;left:900px;top:30px;width:600px;height:300px;"-->
+	<div id="sysoutdiv" contentEditable="true" style="border:1px solid green;width:100%;height:95%;overflow:auto;display:none"></div>
+
+	<!--
+	 This is System.out. <a href="javascript:testApplet._clearConsole()">clear it</a>  <a href='javascript:J2S.getProfile()'>start/stop profiling</a><br>see <a href=___j2sflags.htm>___j2sflags.htm</a> for SwingJS URL command-line options<br><a href="javascript:getClassList()">get _j2sClassList.txt</a>
+	-->
+	</div>
+</body>
+</html>
+
