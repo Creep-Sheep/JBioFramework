@@ -117,6 +117,7 @@ public class Plot extends JPanel implements Runnable {
     protected double errorMargin;
     protected DecimalFormat twoDigits;
 	private StateHelper stateHelper;
+	private boolean working;
 
     Plot(Electrophoresis electrophoresis) {
         pause = 20;
@@ -204,6 +205,9 @@ public class Plot extends JPanel implements Runnable {
 			}
 		}
 		if (mouseOnXAxis(x, y)) {
+			if (working)
+				return;
+			working = true;
 			xPlot = xMouse;
 			plotRM = mouseRM;
 			paintUserRM = true;
@@ -231,6 +235,7 @@ public class Plot extends JPanel implements Runnable {
             this.stopAnimation = true;
             runner = null;
         }
+		working = false;
     } // stop
 
     public void update(Graphics g) {
@@ -672,6 +677,8 @@ public class Plot extends JPanel implements Runnable {
 						stateHelper.next(SLEEP);
 						break;
 					}
+				} else {
+					working = false;
 				}
 				return false;
 			}
