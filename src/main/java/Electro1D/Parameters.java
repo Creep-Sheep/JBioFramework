@@ -324,7 +324,7 @@ public class Parameters extends JPanel {
 		// add new section for volatages and acrlyamide percentages
 		// JPanel voltacrLabel = new JPanel();
 		JLabel voltLabel = new JLabel("Voltage");
-		JLabel acrLabel = new JLabel("Acrylamide %");
+		JLabel acrLabel = new JLabel("% Acrylamide");
 		// voltacrLabel.add(voltLabel);
 		// voltacrLabel.add(acrLabel);
 		voltacrPanel.add(voltLabel);

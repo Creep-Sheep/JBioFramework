@@ -864,11 +864,11 @@ public class Simulation extends JPanel implements Runnable {
 		for(Protein p : stdSamples) {
 			p.speed = 1;
 		}
-		for(int i = 0; i < Constants.wellCount; i++) {
+		for(int i = 0; i <= Constants.wellCount; i++) {
 			if(wellProteins[i] != null)
 				dyes[i].speed = 1;
 		}
-		for(int i = 0; i < Constants.wellCount; i++) {
+		for(int i = 0; i <= Constants.wellCount; i++) {
 			if(wellProteins[i] != null) {
 				for(Protein p : wellProteins[i]) {
 					p.speed = 1;
