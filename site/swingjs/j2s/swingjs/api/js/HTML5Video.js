@@ -79,7 +79,7 @@ this.$finals$.listener.actionPerformed$java_awt_event_ActionEvent(e);
 return null;
 });
 })()
-), Clazz.new_(P$.HTML5Video$1.$init$,[this, {listener:listener,jsvideo:jsvideo}]));
+), Clazz.new_(P$.HTML5Video$1.$init$,[this, {jsvideo:jsvideo,listener:listener}]));
 var listeners=Clazz.new_($I$(5,1));
 for (var i=0; i < events.length; i++) {
 var func=function(event){f.apply$O.apply(f, [event])} ||null;
@@ -159,7 +159,7 @@ if (this.$finals$.whenReady != null ) this.$finals$.whenReady.apply$O(this.$fina
 $I$(12,"removeActionListener",[this.$finals$.jsvideo, $I$(12).getProperty(this.$finals$.jsvideo, "j2sListener")]);
 });
 })()
-), Clazz.new_(P$.HTML5Video$2.$init$,[this, {label:label,dialog:dialog,maxWidth:maxWidth,whenReady:whenReady,jsvideo:jsvideo}])), ["canplaythrough"]);
+), Clazz.new_(P$.HTML5Video$2.$init$,[this, {label:label,jsvideo:jsvideo,dialog:dialog,maxWidth:maxWidth,whenReady:whenReady}])), ["canplaythrough"]);
 C$.setProperty(jsvideo, "j2sListener", j2sListener);
 C$.setCurrentTime(jsvideo, 0);
 return dialog;
@@ -246,4 +246,4 @@ C$.$static$=function(){C$.$static$=0;
 C$.eventTypes=Clazz.array(String, -1, ["audioprocess", "canplay", "canplaythrough", "complete", "durationchange", "emptied", "ended", "loadeddata", "loadedmetadata", "pause", "play", "playing", "progress", "ratechange", "seeked", "seeking", "stalled", "suspend", "timeupdate", "volumechange", "waiting"]);
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-03 19:41:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

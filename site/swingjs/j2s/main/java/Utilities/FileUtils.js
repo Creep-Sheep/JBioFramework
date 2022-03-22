@@ -54,7 +54,7 @@ Clazz.newMeth(C$, 'run$',  function () {
 this.$finals$.ok.apply$O(this.$finals$.chooser.getSelectedFile$());
 });
 })()
-), Clazz.new_(P$.FileUtils$lambda1.$init$,[this, {chooser:chooser,ok:ok}])), null);
+), Clazz.new_(P$.FileUtils$lambda1.$init$,[this, {ok:ok,chooser:chooser}])), null);
 }, 1);
 
 Clazz.newMeth(C$, 'setFileDropper$javax_swing_JComponent$java_util_function_BiFunction',  function (c, f) {
@@ -116,4 +116,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-03 19:41:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

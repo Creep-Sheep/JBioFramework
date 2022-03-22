@@ -47,7 +47,7 @@ $I$(9).getTabs$().setSelectedIndex$I(4);
 this.$finals$.frame.dispose$();
 });
 })()
-), Clazz.new_(P$.Ion$1.$init$,[this, {frame:frame,mol:mol}])));
+), Clazz.new_(P$.Ion$1.$init$,[this, {mol:mol,frame:frame}])));
 }panel.add$java_awt_Component$O(marvinButton, "South");
 frame.add$java_awt_Component(panel);
 frame.setSize$I$I(480, 175);
@@ -109,4 +109,4 @@ return this.color;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-03 19:41:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

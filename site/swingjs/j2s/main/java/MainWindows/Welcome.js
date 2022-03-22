@@ -73,7 +73,7 @@ Clazz.newMeth(C$, 'mouseExited$java_awt_event_MouseEvent',  function (arg0) {
 this.$finals$.headLink.setCursor$java_awt_Cursor(Clazz.new_($I$(7,1).c$$I,[0]));
 });
 })()
-), Clazz.new_(P$.Welcome$1.$init$,[this, {headLink:headLink,url1:url1}])));
+), Clazz.new_(P$.Welcome$1.$init$,[this, {url1:url1,headLink:headLink}])));
 head1.setFont$java_awt_Font(Clazz.new_($I$(5,1).c$$S$I$I,["SansSerif", 0, 14]));
 subHeadP.add$java_awt_Component(head1);
 con.gridy=1;
@@ -381,4 +381,4 @@ C$.$static$=function(){C$.$static$=0;
 C$.jbfWebsite="https://sourceforge.net/projects/jbf/";
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-03 19:41:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

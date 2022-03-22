@@ -6,7 +6,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 
-C$.$fields$=[['Z',['imageCreated','standardsSet','paintRM','paintUserRM','stopAnimation','showExperimentalMW','showSampleMW','questionRCorr','showLogMW','showNotBracketed','graphVerticalLine','graphHorizontalLine','newYLine','newXLine','Played','harpPlayed'],'D',['yDivision','logMwMax','logMwMin','ln10','yConversion','deltaPixelY','deltaPixelX','deltaMw','mwOffsetFromMax','pixOffsetFromTop','mouseRM','plotRM','experimentalMW','logMw','sumX','sumY','sumXsq','sumYsq','sumProd','rCorr','rCorrSq','slope','yIntercept','errorMargin'],'I',['pause','numberOfStds','bottomEdge','rightEdge','xAxesLabelY','xAxesRMLabelY','yAxesLabelY','yAxisLabelX','charHalfHeight','charHeight','charWidth','charHalfWidth','division','gridRows','gridCols','rightGridCol','leftGridCol','bottomGridRow','topGridRow','rows','cols','nPoints','yPos','xPos','xMouse','xPlot','userLineY','userLineX','fitLineX1','fitLineX2','fitLineY1','fitLineY2'],'O',['runner','Thread','$parent','main.java.Electro1D.Electrophoresis','stds','main.java.Electro1D.Protein[]','sample','main.java.Electro1D.Protein','+dye','offScreenImage','java.awt.Image','fm','java.awt.FontMetrics','$font','java.awt.Font','xArray','int[]','+yArray','lineCoord','java.awt.Point','twoDigits','java.text.DecimalFormat','stateHelper','javajs.async.SwingJSUtils.StateHelper']]
+C$.$fields$=[['Z',['imageCreated','standardsSet','paintRM','paintUserRM','stopAnimation','showExperimentalMW','showSampleMW','questionRCorr','showLogMW','showNotBracketed','graphVerticalLine','graphHorizontalLine','newYLine','newXLine','Played','harpPlayed','working'],'D',['yDivision','logMwMax','logMwMin','ln10','yConversion','deltaPixelY','deltaPixelX','deltaMw','mwOffsetFromMax','pixOffsetFromTop','mouseRM','plotRM','experimentalMW','logMw','sumX','sumY','sumXsq','sumYsq','sumProd','rCorr','rCorrSq','slope','yIntercept','errorMargin'],'I',['pause','numberOfStds','bottomEdge','rightEdge','xAxesLabelY','xAxesRMLabelY','yAxesLabelY','yAxisLabelX','charHalfHeight','charHeight','charWidth','charHalfWidth','division','gridRows','gridCols','rightGridCol','leftGridCol','bottomGridRow','topGridRow','rows','cols','nPoints','yPos','xPos','xMouse','xPlot','userLineY','userLineX','fitLineX1','fitLineX2','fitLineY1','fitLineY2'],'O',['runner','Thread','$parent','main.java.Electro1D.Electrophoresis','stds','main.java.Electro1D.Protein[]','sample','main.java.Electro1D.Protein','+dye','offScreenImage','java.awt.Image','fm','java.awt.FontMetrics','$font','java.awt.Font','xArray','int[]','+yArray','lineCoord','java.awt.Point','twoDigits','java.text.DecimalFormat','stateHelper','javajs.async.SwingJSUtils.StateHelper']]
 ,['O',['plotFont','java.awt.Font']]]
 
 Clazz.newMeth(C$, 'c$$main_java_Electro1D_Electrophoresis',  function (electrophoresis) {
@@ -98,6 +98,8 @@ this.$parent.displayProtein$main_java_Electro1D_Protein(this.stds[k]);
 return;
 }}
 if (p$1.mouseOnXAxis$I$I.apply(this, [x, y])) {
+if (this.working) return;
+this.working=true;
 this.xPlot=this.xMouse;
 this.plotRM=this.mouseRM;
 this.paintUserRM=true;
@@ -122,7 +124,8 @@ Clazz.newMeth(C$, 'stop$',  function () {
 if (this.runner != null ) {
 this.stopAnimation=true;
 this.runner=null;
-}});
+}this.working=false;
+});
 
 Clazz.newMeth(C$, 'update$java_awt_Graphics',  function (g) {
 this.paint$java_awt_Graphics(g);
@@ -496,6 +499,8 @@ this.b$['java.awt.Component'].repaint$.apply(this.b$['java.awt.Component'], []);
 this.b$['main.java.Electro1D.Plot'].stateHelper.next$I(0);
 break;
 }
+} else {
+this.b$['main.java.Electro1D.Plot'].working=false;
 }return false;
 });
 })()
@@ -510,4 +515,4 @@ var $b$ = new Int8Array(1);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-17 21:39:33 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

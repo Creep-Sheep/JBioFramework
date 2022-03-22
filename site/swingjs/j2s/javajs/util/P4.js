@@ -30,4 +30,4 @@ var dw=this.w - p1.w;
 return Math.sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
 });
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-03 19:41:54 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

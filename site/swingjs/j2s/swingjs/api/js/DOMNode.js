@@ -10,6 +10,21 @@ C$.$classes$=[['Promise',9]];
 C$.$fields$=[[]
 ,['O',['jQuery','swingjs.api.js.JQuery']]]
 
+Clazz.newMeth(C$, 'x',  function () {
+var x=((P$.DOMNode$1||
+(function(){/*a*/var C$=Clazz.newClass(P$, "DOMNode$1", function(){Clazz.newInstance(this, arguments[0],1,C$);}, null, 'java.util.function.Consumer', 1);
+
+C$.$clinit$=2;
+
+Clazz.newMeth(C$, '$init$', function () {
+},1);
+
+Clazz.newMeth(C$, ['accept$S','accept$O'],  function (t) {
+});
+})()
+), Clazz.new_(P$.DOMNode$1.$init$,[this, null]));
+});
+
 Clazz.newMeth(C$, 'createElement',  function (key, id) {
 var node=null;
 
@@ -176,23 +191,7 @@ default:
 return C$.getAttr(node, type);
 }
 }, 1);
-C$.$defaults$ = function(C$){
 
-Clazz.newMeth(C$, 'x',  function () {
-var x=((P$.DOMNode$1||
-(function(){/*a*/var C$=Clazz.newClass(P$, "DOMNode$1", function(){Clazz.newInstance(this, arguments[0],1,C$);}, null, 'java.util.function.Consumer', 1);
-
-C$.$clinit$=2;
-
-Clazz.newMeth(C$, '$init$', function () {
-},1);
-
-Clazz.newMeth(C$, ['accept$S','accept$O'],  function (t) {
-});
-})()
-), Clazz.new_(P$.DOMNode$1.$init$,[this, null]));
-});
-};
 C$.$static$=function(){C$.$static$=0;
 C$.jQuery=jQuery.$ || (jQuery.$ = jQuery) ||null;
 };
@@ -201,4 +200,4 @@ C$.jQuery=jQuery.$ || (jQuery.$ = jQuery) ||null;
 });
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-10-03 19:41:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
