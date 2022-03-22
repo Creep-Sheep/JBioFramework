@@ -444,3 +444,6 @@ sun/util/locale/provider/AuxLocaleProviderAdapter.js
 sun/util/locale/provider/JRELocaleProviderAdapter.js
 sun/util/locale/provider/ResourceBundleBasedAdapter.js
 sun/util/locale/provider/SPILocaleProviderAdapter.js
+java/awt/event/KeyEvent.js
+swingjs/JSKeyEvent.js
+swingjs/jquery/j2sComboBox.js
