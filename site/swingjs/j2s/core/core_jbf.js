@@ -74816,7 +74816,7 @@ this.sample=Clazz_new_($I$(2,1));
 }, 1);
 })();
 ;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
-(function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.awt.Font','main.java.Electro1D.Protein','java.awt.Point','java.text.DecimalFormat','Thread','java.awt.Color',['javajs.async.SwingJSUtils','.StateHelper']]],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
+(function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.awt.Font','java.text.DecimalFormat','main.java.Electro1D.Protein','java.awt.Point','Thread','java.awt.Color',['javajs.async.SwingJSUtils','.StateHelper']]],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Plot", null, 'javax.swing.JPanel', 'Runnable');
 
 C$.$clinit$=2;
@@ -74824,44 +74824,28 @@ C$.$clinit$=2;
 Clazz_newMeth(C$, '$init$', function () {
 },1);
 
-C$.$fields$=[['Z',['imageCreated','standardsSet','paintRM','paintUserRM','stopAnimation','showExperimentalMW','showSampleMW','questionRCorr','showLogMW','showNotBracketed','graphVerticalLine','graphHorizontalLine','newYLine','newXLine','Played','harpPlayed','working'],'D',['yDivision','logMwMax','logMwMin','ln10','yConversion','deltaPixelY','deltaPixelX','deltaMw','mwOffsetFromMax','pixOffsetFromTop','mouseRM','plotRM','experimentalMW','logMw','sumX','sumY','sumXsq','sumYsq','sumProd','rCorr','rCorrSq','slope','yIntercept','errorMargin'],'I',['pause','numberOfStds','bottomEdge','rightEdge','xAxesLabelY','xAxesRMLabelY','yAxesLabelY','yAxisLabelX','charHalfHeight','charHeight','charWidth','charHalfWidth','division','gridRows','gridCols','rightGridCol','leftGridCol','bottomGridRow','topGridRow','rows','cols','nPoints','yPos','xPos','xMouse','xPlot','userLineY','userLineX','fitLineX1','fitLineX2','fitLineY1','fitLineY2'],'O',['runner','Thread','$parent','main.java.Electro1D.Electrophoresis','stds','main.java.Electro1D.Protein[]','sample','main.java.Electro1D.Protein','+dye','offScreenImage','java.awt.Image','fm','java.awt.FontMetrics','$font','java.awt.Font','xArray','int[]','+yArray','lineCoord','java.awt.Point','twoDigits','java.text.DecimalFormat','stateHelper','javajs.async.SwingJSUtils.StateHelper']]
-,['O',['plotFont','java.awt.Font']]]
+C$.$fields$=[['Z',['imageCreated','standardsSet','paintRM','paintUserRM','stopAnimation','showExperimentalMW','showSampleMW','questionRCorr','showLogMW','showNotBracketed','graphVerticalLine','graphHorizontalLine','newYLine','newXLine','Played','harpPlayed','working'],'D',['yDivision','logMwMax','logMwMin','ln10','deltaPixelY','deltaPixelX','deltaLogMw','mwOffsetFromMax','pixOffsetFromTop','mouseRM','plotRM','experimentalMW','logMw','sumX','sumY','sumXsq','sumYsq','sumProd','rCorr','rCorrSq','slope','yIntercept','errorMargin','nY'],'I',['pause','numberOfStds','h','w','xAxesLabelY','xAxesRMLabelY','yAxesLabelY','yAxisLabelX','charHalfHeight','charHeight','charWidth','charHalfWidth','gridYMarks','gridCols','rightGridCol','leftGridCol','bottomGridRow','topGridRow','rows','cols','nPoints','xMouse','xPlot','userLineY','userLineX','fitLineX1','fitLineX2','fitLineY1','fitLineY2'],'O',['runner','Thread','$parent','main.java.Electro1D.Electrophoresis','stds','main.java.Electro1D.Protein[]','sample','main.java.Electro1D.Protein','+dye','offScreenImage','java.awt.Image','xArray','int[]','+yArray','lineCoord','java.awt.Point','stateHelper','javajs.async.SwingJSUtils.StateHelper']]
+,['O',['plotFont','java.awt.Font','oneDigit','java.text.DecimalFormat','+twoDigits']]]
 
 Clazz_newMeth(C$, 'c$$main_java_Electro1D_Electrophoresis',  function (electrophoresis) {
 Clazz_super_(C$, this);
+this.$parent=electrophoresis;
 this.pause=20;
 this.numberOfStds=7;
-this.stds=Clazz_array($I$(2), [this.numberOfStds]);
-this.sample=Clazz_new_($I$(2,1));
-this.dye=Clazz_new_($I$(2,1));
-this.stopAnimation=true;
-this.newYLine=true;
-this.newXLine=true;
-this.yAxisLabelX=1;
-this.gridRows=10;
+this.stds=Clazz_array($I$(3), [this.numberOfStds]);
+this.sample=Clazz_new_($I$(3,1));
+this.dye=Clazz_new_($I$(3,1));
 this.gridCols=10;
-this.rows=14;
 this.cols=14;
 this.xArray=Clazz_array(Integer.TYPE, [this.cols]);
-this.yArray=Clazz_array(Integer.TYPE, [this.rows]);
-this.ln10=1.0;
-this.yConversion=1.0;
-this.deltaPixelY=1.0;
-this.deltaPixelX=1.0;
-this.deltaMw=1.0;
 this.mwOffsetFromMax=1.0;
 this.pixOffsetFromTop=1.0;
-this.yPos=1;
-this.xPos=1;
-this.lineCoord=Clazz_new_($I$(3,1).c$$I$I,[0, 0]);
+this.lineCoord=Clazz_new_($I$(4,1).c$$I$I,[0, 0]);
 this.errorMargin=0.2;
-this.$parent=electrophoresis;
 this.ln10=Math.log(10.0);
 this.rightGridCol=this.cols - 1;
 this.leftGridCol=this.rightGridCol - this.gridCols;
-this.bottomGridRow=this.rows - 1;
-this.topGridRow=this.bottomGridRow - this.gridRows;
-this.twoDigits=Clazz_new_($I$(4,1).c$$S,["0.00"]);
+p$1.resetFlags.apply(this, []);
 this.addMouseListener$java_awt_event_MouseListener(((P$.Plot$1||
 (function(){/*a*/var C$=Clazz_newClass(P$, "Plot$1", function(){Clazz_newInstance(this, arguments[0],1,C$);}, null, 'java.awt.event.MouseListener', 1);
 
@@ -74945,10 +74929,6 @@ this.runner=null;
 }this.working=false;
 });
 
-Clazz_newMeth(C$, 'update$java_awt_Graphics',  function (g) {
-this.paint$java_awt_Graphics(g);
-});
-
 Clazz_newMeth(C$, 'calcLine',  function () {
 if (this.nPoints <= 1) {
 this.slope=0.0;
@@ -74971,44 +74951,35 @@ this.sumProd=0.0;
 this.nPoints=0;
 }, p$1);
 
-Clazz_newMeth(C$, 'calcLinePoint$D',  function (d1) {
-var d2=p$1.calcLogMw$D.apply(this, [d1]);
-var d3=this.logMwMax - d2;
-var d4=d3 * this.yConversion;
-var j=((this.yArray[this.topGridRow] + d4)|0);
-var i=((this.xArray[this.leftGridCol] + d1 * this.deltaPixelX)|0);
-return Clazz_new_($I$(3,1).c$$I$I,[i, j]);
+Clazz_newMeth(C$, 'calcPixelXY$D',  function (x) {
+var y=p$1.calcLogMw$D.apply(this, [x]);
+var px=this.xArray[this.leftGridCol] + ((x * this.deltaPixelX)|0);
+var py=this.yArray[this.topGridRow] + (((this.logMwMax - y) / this.deltaLogMw * this.deltaPixelY)|0);
+return Clazz_new_($I$(4,1).c$$I$I,[px, py]);
 }, p$1);
 
 Clazz_newMeth(C$, 'calcMaxMinLogs$',  function () {
-var i=0;
-var j=9999999;
-var mDelta;
-var test;
+var maxMW=0;
+var minMW=2147483647;
 for (var k=0; k < this.numberOfStds; k++) {
-if (this.stds[k].mw > i) i=this.stds[k].mw;
-if (this.stds[k].mw < j) j=this.stds[k].mw;
+if (this.stds[k].mw > maxMW) maxMW=this.stds[k].mw;
+if (this.stds[k].mw < minMW) minMW=this.stds[k].mw;
 }
-this.logMwMax=Math.log(i) / this.ln10;
-this.logMwMin=Math.log(j) / this.ln10;
-mDelta=(1.1 * (this.logMwMax - this.logMwMin));
-for (this.yDivision=0; 10 * this.yDivision < mDelta ; this.yDivision+=0.05) {
-}
-for (test=(this.logMwMax|0); test <= this.logMwMax ; test+=this.yDivision) {
-}
-this.logMwMax=test;
-this.logMwMin=this.logMwMax - 10 * this.yDivision;
-this.deltaMw=this.logMwMax - this.logMwMin;
+this.logMwMax=-Math.floor(-Math.log(maxMW) / this.ln10 * 2) / 2;
+this.logMwMin=Math.floor(Math.log(minMW) / this.ln10 * 2) / 2;
+this.nY=(this.logMwMax - this.logMwMin) * 2;
+this.yDivision=0.5;
+this.deltaLogMw=this.logMwMax - this.logMwMin;
 });
 
 Clazz_newMeth(C$, 'drawYScale$java_awt_Graphics',  function (g) {
 var d=this.logMwMax;
 var i=this.topGridRow;
 if (this.standardsSet) {
-for (var j=0; j <= this.gridRows; j++) {
-g.drawString$S$I$I(this.twoDigits.format$D(d), this.yAxisLabelX + 5 * this.charHalfWidth, this.yArray[i] + this.charHalfHeight);
+for (var j=0; j <= this.gridYMarks; j++) {
+g.drawString$S$I$I(C$.twoDigits.format$D(d), this.yAxisLabelX + 5 * this.charHalfWidth, this.yArray[i] + this.charHalfHeight);
 ++i;
-d-=this.yDivision;
+d-=0.5;
 }
 }}, p$1);
 
@@ -75031,7 +75002,7 @@ Clazz_newMeth(C$, 'calcStdCoords',  function () {
 var point;
 for (var i=0; i < this.numberOfStds; i++) {
 if (this.stds[i].selected) {
-point=p$1.calcLinePoint$D.apply(this, [this.stds[i].relativeMigration]);
+point=p$1.calcPixelXY$D.apply(this, [this.stds[i].relativeMigration]);
 this.stds[i].plotXPos=point.x;
 this.stds[i].plotYPos=point.y;
 }}
@@ -75041,7 +75012,7 @@ Clazz_newMeth(C$, 'plotStandards$java_awt_Graphics',  function (g) {
 var b1=($b$[0] = 6, $b$[0]);
 var i=($b$[0] = b1/2, $b$[0]);
 var j=($b$[0] = b1/2, $b$[0]);
-Clazz_new_($I$(3,1).c$$I$I,[0, 0]);
+Clazz_new_($I$(4,1).c$$I$I,[0, 0]);
 if (this.standardsSet) {
 for (var k=0; k < this.numberOfStds; k++) {
 if (this.stds[k].selected) {
@@ -75051,47 +75022,37 @@ g.setColor$java_awt_Color($I$(6).black);
 g.drawOval$I$I$I$I(this.stds[k].plotXPos - j, this.stds[k].plotYPos - i, b1, b1);
 }}
 g.drawLine$I$I$I$I(this.fitLineX1, this.fitLineY1, this.fitLineX2, this.fitLineY2);
-g.drawString$S$I$I("Slope = " + this.twoDigits.format$D(this.slope), this.xArray[7], this.yArray[4]);
-g.drawString$S$I$I("y Intercept = " + this.twoDigits.format$D(this.yIntercept), this.xArray[7], this.yArray[4] + this.charHeight);
-g.drawString$S$I$I("r = " + this.twoDigits.format$D(this.rCorr), this.xArray[7], this.yArray[4] + this.charHeight * 2);
-g.drawString$S$I$I("r Squared = " + this.twoDigits.format$D(this.rCorrSq), this.xArray[7], this.yArray[4] + this.charHeight * 3);
+g.drawString$S$I$I("Slope = " + C$.twoDigits.format$D(this.slope), this.xArray[7], this.yArray[4]);
+g.drawString$S$I$I("y Intercept = " + C$.twoDigits.format$D(this.yIntercept), this.xArray[7], this.yArray[4] + this.charHeight);
+g.drawString$S$I$I("r = " + C$.twoDigits.format$D(this.rCorr), this.xArray[7], this.yArray[4] + this.charHeight * 2);
+g.drawString$S$I$I("r Squared = " + C$.twoDigits.format$D(this.rCorrSq), this.xArray[7], this.yArray[4] + this.charHeight * 3);
 }});
 
-Clazz_newMeth(C$, 'drawAxes$java_awt_Graphics',  function (g) {
-var oneDigit=Clazz_new_($I$(4,1).c$$S,["0.0"]);
+Clazz_newMeth(C$, 'drawPlotSurface$java_awt_Graphics',  function (g) {
 g.setColor$java_awt_Color($I$(6).black);
 g.drawString$S$I$I("Plot of Log MW as f(Relative Migration)", 10, this.charHeight);
 g.drawLine$I$I$I$I(this.xArray[this.leftGridCol], this.yArray[this.bottomGridRow], this.xArray[this.rightGridCol], this.yArray[this.bottomGridRow]);
 g.drawLine$I$I$I$I(this.xArray[this.leftGridCol], this.yArray[this.topGridRow], this.xArray[this.leftGridCol], this.yArray[this.bottomGridRow]);
-var i1=this.leftGridCol;
-for (var j=0; j <= this.gridCols; j+=2) {
-g.drawString$S$I$I(oneDigit.format$D(j / 10.0), this.xArray[i1] - this.charWidth, this.xAxesLabelY);
-i1+=2;
+for (var x=0, i=this.leftGridCol; x <= this.gridCols; x+=2, i+=2) {
+g.drawString$S$I$I(C$.oneDigit.format$D(x / 10.0), this.xArray[i] - this.charWidth, this.xAxesLabelY);
 }
-g.drawString$S$I$I("Relative Migration", this.xArray[this.leftGridCol + 2] + this.charHalfWidth, this.xAxesRMLabelY + this.charHalfHeight);
+g.drawString$S$I$I("Relative Migration", this.xArray[this.leftGridCol + 2] + this.charHalfWidth, this.xAxesRMLabelY + this.charHeight);
 var yLabel="Log MW";
-i1=this.yArray[this.leftGridCol + 5] - this.charHeight * ((yLabel.length$()/2|0));
-for (var j=0; j < yLabel.length$(); j++) {
-g.drawString$S$I$I(yLabel.substring$I$I(j, j + 1), this.yAxisLabelX + (this.charWidth/4|0), i1);
-i1+=this.charHeight;
+for (var j=0, i=this.yArray[this.yArray.length >> 1] - this.charHeight * ((yLabel.length$()/2|0)); j < yLabel.length$(); j++, i+=this.charHeight) {
+g.drawString$S$I$I(yLabel.substring$I$I(j, j + 1), this.yAxisLabelX + (this.charWidth/4|0), i);
 }
 g.setColor$java_awt_Color($I$(6).lightGray);
-i1=this.topGridRow;
-for (var k=0; k < this.gridRows; k++) {
-g.drawLine$I$I$I$I(this.xArray[this.leftGridCol], this.yArray[i1], this.xArray[this.rightGridCol], this.yArray[i1]);
-++i1;
+for (var j=0, i=this.topGridRow; j < this.gridYMarks; j++, i++) {
+g.drawLine$I$I$I$I(this.xArray[this.leftGridCol], this.yArray[i], this.xArray[this.rightGridCol], this.yArray[i]);
 }
-i1=this.leftGridCol + 1;
-for (var i2=0; i2 < this.gridCols; i2++) {
-g.drawLine$I$I$I$I(this.xArray[i1], this.yArray[this.topGridRow], this.xArray[i1], this.yArray[this.bottomGridRow]);
-++i1;
+for (var j=0, i=this.leftGridCol + 1; j < this.gridCols; j++, i++) {
+g.drawLine$I$I$I$I(this.xArray[i], this.yArray[this.topGridRow], this.xArray[i], this.yArray[this.bottomGridRow]);
 }
 g.setColor$java_awt_Color($I$(6).black);
 }, p$1);
 
 Clazz_newMeth(C$, 'calcLogMw$D',  function (d) {
-if (this.slope == 0.0 ) return 0.0;
- else return this.slope * d + this.yIntercept;
+return (this.slope == 0.0  ? 0 : this.slope * d + this.yIntercept);
 }, p$1);
 
 Clazz_newMeth(C$, 'sumXs$D',  function (d) {
@@ -75102,7 +75063,7 @@ Clazz_newMeth(C$, 'showLgMW$java_awt_Graphics',  function (g) {
 if (this.showLogMW) {
 var g1=g.create$();
 g1.setFont$java_awt_Font(C$.plotFont);
-g1.drawString$S$I$I(this.twoDigits.format$D(this.logMw), this.xArray[this.leftGridCol] + this.charHalfWidth, this.userLineY);
+g1.drawString$S$I$I(C$.twoDigits.format$D(this.logMw), this.xArray[this.leftGridCol] + this.charHalfWidth, this.userLineY);
 g1.dispose$();
 }}, p$1);
 
@@ -75111,23 +75072,20 @@ if (this.graphVerticalLine) g.drawLine$I$I$I$I(this.xPlot, this.yArray[this.bott
 }, p$1);
 
 Clazz_newMeth(C$, 'paint$java_awt_Graphics',  function (g) {
-if (!this.imageCreated) {
-this.offScreenImage=this.createImage$I$I(this.getSize$().width, this.getSize$().height);
-this.$font=this.getFont$();
-this.fm=this.getFontMetrics$java_awt_Font(this.$font);
+this.setOpaque$Z(true);
+this.calcMaxMinLogs$();
 this.calcDimensions$();
+if (!this.imageCreated || this.offScreenImage.getWidth$java_awt_image_ImageObserver(null) != this.w  || this.offScreenImage.getHeight$java_awt_image_ImageObserver(null) != this.h ) {
+this.offScreenImage=this.createImage$I$I(this.w, this.h);
 if (this.standardsSet) {
-this.yConversion=this.deltaPixelY / this.deltaMw;
 p$1.calcStdCoords.apply(this, []);
 p$1.calcLineCoords.apply(this, []);
 this.imageCreated=true;
 }}var offScreenGraphics=this.offScreenImage.getGraphics$();
 offScreenGraphics.setColor$java_awt_Color($I$(6).white);
-offScreenGraphics.fillRect$I$I$I$I(0, 0, this.getSize$().width, this.getSize$().height);
-offScreenGraphics.setColor$java_awt_Color($I$(6).black);
-offScreenGraphics.drawRect$I$I$I$I(0, 0, this.getSize$().width, this.getSize$().height);
+offScreenGraphics.fillRect$I$I$I$I(0, 0, this.w, this.h);
 offScreenGraphics.setColor$java_awt_Color(g.getColor$());
-p$1.drawAxes$java_awt_Graphics.apply(this, [offScreenGraphics]);
+p$1.drawPlotSurface$java_awt_Graphics.apply(this, [offScreenGraphics]);
 p$1.drawYScale$java_awt_Graphics.apply(this, [offScreenGraphics]);
 this.plotStandards$java_awt_Graphics(offScreenGraphics);
 p$1.displayRM$java_awt_Graphics.apply(this, [offScreenGraphics]);
@@ -75158,7 +75116,7 @@ this.rCorrSq=this.rCorr * this.rCorr;
 Clazz_newMeth(C$, 'showSampMW$java_awt_Graphics',  function (g) {
 if (this.showSampleMW) {
 var string=this.sample.abbr + " MW = " + String.valueOf$I(this.sample.mw) ;
-g.drawString$S$I$I(string, this.xArray[this.leftGridCol], (this.getSize$().height/6|0));
+g.drawString$S$I$I(string, this.xArray[this.leftGridCol], (this.h/6|0));
 this.$parent.displayProtein$main_java_Electro1D_Protein(this.sample);
 if (!this.harpPlayed) {
 this.harpPlayed=true;
@@ -75185,7 +75143,6 @@ p$1.sumProds$D$D.apply(this, [this.stds[i].relativeMigration, d]);
 p$1.calcLine.apply(this, []);
 p$1.calcFit.apply(this, []);
 this.sample.relativeMigration=this.sample.getDistance$() / this.dye.getDistance$();
-this.calcMaxMinLogs$();
 this.standardsSet=true;
 this.graphVerticalLine=false;
 this.graphHorizontalLine=false;
@@ -75208,7 +75165,7 @@ this.sumY+=d;
 Clazz_newMeth(C$, 'plotUserRM',  function () {
 if (this.paintUserRM) {
 this.logMw=p$1.calcLogMw$D.apply(this, [this.plotRM]);
-this.lineCoord=p$1.calcLinePoint$D.apply(this, [this.plotRM]);
+this.lineCoord=p$1.calcPixelXY$D.apply(this, [this.plotRM]);
 if (this.newYLine) {
 this.newYLine=false;
 this.userLineY=this.yArray[this.bottomGridRow];
@@ -75239,33 +75196,38 @@ this.paintUserRM=false;
 }}}, p$1);
 
 Clazz_newMeth(C$, 'calcDimensions$',  function () {
-this.rightEdge=this.getSize$().width;
+this.h=this.getSize$().height;
+this.w=this.getSize$().width;
 this.xArray[0]=0;
-this.division=(this.rightEdge/this.cols|0);
-for (var i=1; i < this.cols; i++) this.xArray[i]=this.xArray[i - 1] + this.division;
+var pixels=(this.w/this.cols|0);
+for (var i=1; i < this.cols; i++) this.xArray[i]=this.xArray[i - 1] + pixels;
 
-this.bottomEdge=this.getSize$().height;
+this.gridYMarks=(this.nY|0);
+this.rows=this.gridYMarks + 2;
+this.bottomGridRow=this.rows - 1;
+this.topGridRow=this.bottomGridRow - this.gridYMarks;
+this.yArray=Clazz_array(Integer.TYPE, [this.rows]);
 this.yArray[0]=0;
-this.division=(this.bottomEdge/this.rows|0);
-for (var j=1; j < this.rows; j++) this.yArray[j]=this.yArray[j - 1] + this.division;
+pixels=(this.h/this.rows|0);
+for (var j=1; j < this.rows; j++) this.yArray[j]=this.yArray[j - 1] + pixels;
 
 this.deltaPixelX=this.xArray[this.rightGridCol] - this.xArray[this.leftGridCol];
 this.deltaPixelY=this.yArray[this.bottomGridRow] - this.yArray[this.topGridRow];
-this.$font=this.getFont$();
-this.fm=this.getFontMetrics$java_awt_Font(this.$font);
-this.charWidth=this.fm.charWidth$C("0");
+var fm=this.getFontMetrics$java_awt_Font(C$.plotFont);
+this.charWidth=fm.charWidth$C("0");
 this.charHalfWidth=(this.charWidth/2|0);
-this.charHalfHeight=(this.fm.getAscent$()/2|0);
-this.charHeight=this.fm.getHeight$();
-this.xAxesLabelY=this.yArray[this.bottomGridRow] + this.fm.getHeight$();
-this.xAxesRMLabelY=this.xAxesLabelY + (this.fm.getHeight$()/2|0);
-this.yAxesLabelY=this.yArray[this.topGridRow] - (this.fm.getHeight$()/2|0);
+this.charHalfHeight=(fm.getAscent$()/2|0);
+this.charHeight=fm.getHeight$();
+this.xAxesLabelY=this.yArray[this.bottomGridRow] + fm.getHeight$();
+this.xAxesRMLabelY=this.xAxesLabelY + (fm.getHeight$()/2|0);
+this.yAxesLabelY=this.yArray[this.topGridRow] - (fm.getHeight$()/2|0);
+this.yAxisLabelX=this.xArray[this.leftGridCol] - fm.stringWidth$S("MW 0.00 ");
 });
 
 Clazz_newMeth(C$, 'displayRM$java_awt_Graphics',  function (g) {
 if (this.paintRM) {
 this.mouseRM=(this.xMouse - this.xArray[this.leftGridCol]) / this.deltaPixelX;
-g.drawString$S$I$I(this.twoDigits.format$D(this.mouseRM), this.xArray[this.leftGridCol], this.yArray[this.bottomGridRow] + this.division);
+g.drawString$S$I$I(C$.twoDigits.format$D(this.mouseRM), this.xArray[this.leftGridCol], ((this.yArray[this.bottomGridRow] + this.yDivision)|0));
 }}, p$1);
 
 Clazz_newMeth(C$, 'sumProds$D$D',  function (d1, d2) {
@@ -75274,10 +75236,10 @@ this.sumProd+=d1 * d2;
 
 Clazz_newMeth(C$, 'calcLineCoords',  function () {
 var point;
-point=p$1.calcLinePoint$D.apply(this, [0.01]);
+point=p$1.calcPixelXY$D.apply(this, [0.01]);
 this.fitLineX1=point.x;
 this.fitLineY1=point.y;
-point=p$1.calcLinePoint$D.apply(this, [1.0]);
+point=p$1.calcPixelXY$D.apply(this, [1.0]);
 this.fitLineX2=point.x;
 this.fitLineY2=point.y;
 }, p$1);
@@ -75328,12 +75290,14 @@ this.stateHelper.next$I(0);
 
 C$.$static$=function(){C$.$static$=0;
 C$.plotFont=Clazz_new_($I$(1,1).c$$S$I$I,["Courier New", 0, 10]);
+C$.oneDigit=Clazz_new_($I$(2,1).c$$S,["0.0"]);
+C$.twoDigits=Clazz_new_($I$(2,1).c$$S,["0.00"]);
 };
 var $b$ = new Int8Array(1);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 14:50:52 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.awt.Color']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Protein");
 
