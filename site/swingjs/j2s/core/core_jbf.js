@@ -98598,4 +98598,1000 @@ Clazz_newMeth(C$);
 Clazz_newMeth(C$);
 })();
 ;Clazz_setTVer('3.3.1-v1');//Created 2021-01-27 21:34:49 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+(function(){var P$=Clazz_newPackage("java.awt.event"),p$1={},I$=[[0,'java.awt.Toolkit','StringBuilder','java.awt.event.InputEvent']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
+/*c*/var C$=Clazz_newClass(P$, "KeyEvent", null, 'java.awt.event.InputEvent');
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+this.isProxyActive=false;
+},1);
+
+C$.$fields$=[['Z',['isProxyActive'],'C',['keyChar'],'I',['keyCode','keyLocation']]]
+
+Clazz_newMeth(C$, 'c$$java_awt_Component$I$J$I$I$C$I',  function (source, id, when, modifiers, keyCode, keyChar, keyLocation) {
+;C$.superclazz.c$$java_awt_Component$I$J$I.apply(this,[source, id, when, modifiers]);C$.$init$.apply(this);
+if (id == 400) {
+if (keyChar == "\uffff") {
+throw Clazz_new_(Clazz_load('IllegalArgumentException').c$$S,["invalid keyChar"]);
+}if (keyCode != 0) {
+throw Clazz_new_(Clazz_load('IllegalArgumentException').c$$S,["invalid keyCode"]);
+}if (keyLocation != 0) {
+throw Clazz_new_(Clazz_load('IllegalArgumentException').c$$S,["invalid keyLocation"]);
+}}this.keyCode=keyCode;
+this.keyChar=keyChar;
+if ((keyLocation < 0) || (keyLocation > 4) ) {
+throw Clazz_new_(Clazz_load('IllegalArgumentException').c$$S,["invalid keyLocation"]);
+}this.keyLocation=keyLocation;
+if ((this.getModifiers$() != 0) && (this.getModifiersEx$() == 0) ) {
+p$1.setNewModifiers.apply(this, []);
+} else if ((this.getModifiers$() == 0) && (this.getModifiersEx$() != 0) ) {
+p$1.setOldModifiers.apply(this, []);
+}}, 1);
+
+Clazz_newMeth(C$, 'c$$java_awt_Component$I$J$I$I$C',  function (source, id, when, modifiers, keyCode, keyChar) {
+C$.c$$java_awt_Component$I$J$I$I$C$I.apply(this, [source, id, when, modifiers, keyCode, keyChar, 0]);
+}, 1);
+
+Clazz_newMeth(C$, 'c$$java_awt_Component$I$J$I$I',  function (source, id, when, modifiers, keyCode) {
+C$.c$$java_awt_Component$I$J$I$I$C.apply(this, [source, id, when, modifiers, keyCode, String.fromCharCode(keyCode)]);
+}, 1);
+
+Clazz_newMeth(C$, 'c$',  function () {
+;C$.superclazz.c$.apply(this,[]);C$.$init$.apply(this);
+}, 1);
+
+Clazz_newMeth(C$, 'getKeyCode$',  function () {
+return this.keyCode;
+});
+
+Clazz_newMeth(C$, 'setKeyCode$I',  function (keyCode) {
+this.keyCode=keyCode;
+});
+
+Clazz_newMeth(C$, 'getKeyChar$',  function () {
+return this.keyChar;
+});
+
+Clazz_newMeth(C$, 'setKeyChar$C',  function (keyChar) {
+this.keyChar=keyChar;
+});
+
+Clazz_newMeth(C$, 'setModifiers$I',  function (modifiers) {
+this.modifiers=modifiers;
+if ((this.getModifiers$() != 0) && (this.getModifiersEx$() == 0) ) {
+p$1.setNewModifiers.apply(this, []);
+} else if ((this.getModifiers$() == 0) && (this.getModifiersEx$() != 0) ) {
+p$1.setOldModifiers.apply(this, []);
+}});
+
+Clazz_newMeth(C$, 'getKeyLocation$',  function () {
+return this.keyLocation;
+});
+
+Clazz_newMeth(C$, 'getKeyText$I',  function (keyCode) {
+if (keyCode >= 48 && keyCode <= 57  || keyCode >= 65 && keyCode <= 90  ) {
+return String.valueOf$C(String.fromCharCode(keyCode));
+}switch (keyCode) {
+case 10:
+return $I$(1).getProperty$S$S("AWT.enter", "Enter");
+case 8:
+return $I$(1).getProperty$S$S("AWT.backSpace", "Backspace");
+case 9:
+return $I$(1).getProperty$S$S("AWT.tab", "Tab");
+case 3:
+return $I$(1).getProperty$S$S("AWT.cancel", "Cancel");
+case 12:
+return $I$(1).getProperty$S$S("AWT.clear", "Clear");
+case 65312:
+return $I$(1).getProperty$S$S("AWT.compose", "Compose");
+case 19:
+return $I$(1).getProperty$S$S("AWT.pause", "Pause");
+case 20:
+return $I$(1).getProperty$S$S("AWT.capsLock", "Caps Lock");
+case 27:
+return $I$(1).getProperty$S$S("AWT.escape", "Escape");
+case 32:
+return $I$(1).getProperty$S$S("AWT.space", "Space");
+case 33:
+return $I$(1).getProperty$S$S("AWT.pgup", "Page Up");
+case 34:
+return $I$(1).getProperty$S$S("AWT.pgdn", "Page Down");
+case 35:
+return $I$(1).getProperty$S$S("AWT.end", "End");
+case 36:
+return $I$(1).getProperty$S$S("AWT.home", "Home");
+case 37:
+return $I$(1).getProperty$S$S("AWT.left", "Left");
+case 38:
+return $I$(1).getProperty$S$S("AWT.up", "Up");
+case 39:
+return $I$(1).getProperty$S$S("AWT.right", "Right");
+case 40:
+return $I$(1).getProperty$S$S("AWT.down", "Down");
+case 65368:
+return $I$(1).getProperty$S$S("AWT.begin", "Begin");
+case 16:
+return $I$(1).getProperty$S$S("AWT.shift", "Shift");
+case 17:
+return $I$(1).getProperty$S$S("AWT.control", "Control");
+case 18:
+return $I$(1).getProperty$S$S("AWT.alt", "Alt");
+case 157:
+return $I$(1).getProperty$S$S("AWT.meta", "Meta");
+case 65406:
+return $I$(1).getProperty$S$S("AWT.altGraph", "Alt Graph");
+case 44:
+return $I$(1).getProperty$S$S("AWT.comma", "Comma");
+case 46:
+return $I$(1).getProperty$S$S("AWT.period", "Period");
+case 47:
+return $I$(1).getProperty$S$S("AWT.slash", "Slash");
+case 59:
+return $I$(1).getProperty$S$S("AWT.semicolon", "Semicolon");
+case 61:
+return $I$(1).getProperty$S$S("AWT.equals", "Equals");
+case 91:
+return $I$(1).getProperty$S$S("AWT.openBracket", "Open Bracket");
+case 92:
+return $I$(1).getProperty$S$S("AWT.backSlash", "Back Slash");
+case 93:
+return $I$(1).getProperty$S$S("AWT.closeBracket", "Close Bracket");
+case 106:
+return $I$(1).getProperty$S$S("AWT.multiply", "NumPad *");
+case 107:
+return $I$(1).getProperty$S$S("AWT.add", "NumPad +");
+case 108:
+return $I$(1).getProperty$S$S("AWT.separator", "NumPad ,");
+case 109:
+return $I$(1).getProperty$S$S("AWT.subtract", "NumPad -");
+case 110:
+return $I$(1).getProperty$S$S("AWT.decimal", "NumPad .");
+case 111:
+return $I$(1).getProperty$S$S("AWT.divide", "NumPad /");
+case 127:
+return $I$(1).getProperty$S$S("AWT.delete", "Delete");
+case 144:
+return $I$(1).getProperty$S$S("AWT.numLock", "Num Lock");
+case 145:
+return $I$(1).getProperty$S$S("AWT.scrollLock", "Scroll Lock");
+case 524:
+return $I$(1).getProperty$S$S("AWT.windows", "Windows");
+case 525:
+return $I$(1).getProperty$S$S("AWT.context", "Context Menu");
+case 112:
+return $I$(1).getProperty$S$S("AWT.f1", "F1");
+case 113:
+return $I$(1).getProperty$S$S("AWT.f2", "F2");
+case 114:
+return $I$(1).getProperty$S$S("AWT.f3", "F3");
+case 115:
+return $I$(1).getProperty$S$S("AWT.f4", "F4");
+case 116:
+return $I$(1).getProperty$S$S("AWT.f5", "F5");
+case 117:
+return $I$(1).getProperty$S$S("AWT.f6", "F6");
+case 118:
+return $I$(1).getProperty$S$S("AWT.f7", "F7");
+case 119:
+return $I$(1).getProperty$S$S("AWT.f8", "F8");
+case 120:
+return $I$(1).getProperty$S$S("AWT.f9", "F9");
+case 121:
+return $I$(1).getProperty$S$S("AWT.f10", "F10");
+case 122:
+return $I$(1).getProperty$S$S("AWT.f11", "F11");
+case 123:
+return $I$(1).getProperty$S$S("AWT.f12", "F12");
+case 61440:
+return $I$(1).getProperty$S$S("AWT.f13", "F13");
+case 61441:
+return $I$(1).getProperty$S$S("AWT.f14", "F14");
+case 61442:
+return $I$(1).getProperty$S$S("AWT.f15", "F15");
+case 61443:
+return $I$(1).getProperty$S$S("AWT.f16", "F16");
+case 61444:
+return $I$(1).getProperty$S$S("AWT.f17", "F17");
+case 61445:
+return $I$(1).getProperty$S$S("AWT.f18", "F18");
+case 61446:
+return $I$(1).getProperty$S$S("AWT.f19", "F19");
+case 61447:
+return $I$(1).getProperty$S$S("AWT.f20", "F20");
+case 61448:
+return $I$(1).getProperty$S$S("AWT.f21", "F21");
+case 61449:
+return $I$(1).getProperty$S$S("AWT.f22", "F22");
+case 61450:
+return $I$(1).getProperty$S$S("AWT.f23", "F23");
+case 61451:
+return $I$(1).getProperty$S$S("AWT.f24", "F24");
+case 154:
+return $I$(1).getProperty$S$S("AWT.printScreen", "Print Screen");
+case 155:
+return $I$(1).getProperty$S$S("AWT.insert", "Insert");
+case 156:
+return $I$(1).getProperty$S$S("AWT.help", "Help");
+case 192:
+return $I$(1).getProperty$S$S("AWT.backQuote", "Back Quote");
+case 222:
+return $I$(1).getProperty$S$S("AWT.quote", "Quote");
+case 224:
+return $I$(1).getProperty$S$S("AWT.up", "Up");
+case 225:
+return $I$(1).getProperty$S$S("AWT.down", "Down");
+case 226:
+return $I$(1).getProperty$S$S("AWT.left", "Left");
+case 227:
+return $I$(1).getProperty$S$S("AWT.right", "Right");
+case 128:
+return $I$(1).getProperty$S$S("AWT.deadGrave", "Dead Grave");
+case 129:
+return $I$(1).getProperty$S$S("AWT.deadAcute", "Dead Acute");
+case 130:
+return $I$(1).getProperty$S$S("AWT.deadCircumflex", "Dead Circumflex");
+case 131:
+return $I$(1).getProperty$S$S("AWT.deadTilde", "Dead Tilde");
+case 132:
+return $I$(1).getProperty$S$S("AWT.deadMacron", "Dead Macron");
+case 133:
+return $I$(1).getProperty$S$S("AWT.deadBreve", "Dead Breve");
+case 134:
+return $I$(1).getProperty$S$S("AWT.deadAboveDot", "Dead Above Dot");
+case 135:
+return $I$(1).getProperty$S$S("AWT.deadDiaeresis", "Dead Diaeresis");
+case 136:
+return $I$(1).getProperty$S$S("AWT.deadAboveRing", "Dead Above Ring");
+case 137:
+return $I$(1).getProperty$S$S("AWT.deadDoubleAcute", "Dead Double Acute");
+case 138:
+return $I$(1).getProperty$S$S("AWT.deadCaron", "Dead Caron");
+case 139:
+return $I$(1).getProperty$S$S("AWT.deadCedilla", "Dead Cedilla");
+case 140:
+return $I$(1).getProperty$S$S("AWT.deadOgonek", "Dead Ogonek");
+case 141:
+return $I$(1).getProperty$S$S("AWT.deadIota", "Dead Iota");
+case 142:
+return $I$(1).getProperty$S$S("AWT.deadVoicedSound", "Dead Voiced Sound");
+case 143:
+return $I$(1).getProperty$S$S("AWT.deadSemivoicedSound", "Dead Semivoiced Sound");
+case 150:
+return $I$(1).getProperty$S$S("AWT.ampersand", "Ampersand");
+case 151:
+return $I$(1).getProperty$S$S("AWT.asterisk", "Asterisk");
+case 152:
+return $I$(1).getProperty$S$S("AWT.quoteDbl", "Double Quote");
+case 153:
+return $I$(1).getProperty$S$S("AWT.Less", "Less");
+case 160:
+return $I$(1).getProperty$S$S("AWT.greater", "Greater");
+case 161:
+return $I$(1).getProperty$S$S("AWT.braceLeft", "Left Brace");
+case 162:
+return $I$(1).getProperty$S$S("AWT.braceRight", "Right Brace");
+case 512:
+return $I$(1).getProperty$S$S("AWT.at", "At");
+case 513:
+return $I$(1).getProperty$S$S("AWT.colon", "Colon");
+case 514:
+return $I$(1).getProperty$S$S("AWT.circumflex", "Circumflex");
+case 515:
+return $I$(1).getProperty$S$S("AWT.dollar", "Dollar");
+case 516:
+return $I$(1).getProperty$S$S("AWT.euro", "Euro");
+case 517:
+return $I$(1).getProperty$S$S("AWT.exclamationMark", "Exclamation Mark");
+case 518:
+return $I$(1).getProperty$S$S("AWT.invertedExclamationMark", "Inverted Exclamation Mark");
+case 519:
+return $I$(1).getProperty$S$S("AWT.leftParenthesis", "Left Parenthesis");
+case 520:
+return $I$(1).getProperty$S$S("AWT.numberSign", "Number Sign");
+case 45:
+return $I$(1).getProperty$S$S("AWT.minus", "Minus");
+case 521:
+return $I$(1).getProperty$S$S("AWT.plus", "Plus");
+case 522:
+return $I$(1).getProperty$S$S("AWT.rightParenthesis", "Right Parenthesis");
+case 523:
+return $I$(1).getProperty$S$S("AWT.underscore", "Underscore");
+case 24:
+return $I$(1).getProperty$S$S("AWT.final", "Final");
+case 28:
+return $I$(1).getProperty$S$S("AWT.convert", "Convert");
+case 29:
+return $I$(1).getProperty$S$S("AWT.noconvert", "No Convert");
+case 30:
+return $I$(1).getProperty$S$S("AWT.accept", "Accept");
+case 31:
+return $I$(1).getProperty$S$S("AWT.modechange", "Mode Change");
+case 21:
+return $I$(1).getProperty$S$S("AWT.kana", "Kana");
+case 25:
+return $I$(1).getProperty$S$S("AWT.kanji", "Kanji");
+case 240:
+return $I$(1).getProperty$S$S("AWT.alphanumeric", "Alphanumeric");
+case 241:
+return $I$(1).getProperty$S$S("AWT.katakana", "Katakana");
+case 242:
+return $I$(1).getProperty$S$S("AWT.hiragana", "Hiragana");
+case 243:
+return $I$(1).getProperty$S$S("AWT.fullWidth", "Full-Width");
+case 244:
+return $I$(1).getProperty$S$S("AWT.halfWidth", "Half-Width");
+case 245:
+return $I$(1).getProperty$S$S("AWT.romanCharacters", "Roman Characters");
+case 256:
+return $I$(1).getProperty$S$S("AWT.allCandidates", "All Candidates");
+case 257:
+return $I$(1).getProperty$S$S("AWT.previousCandidate", "Previous Candidate");
+case 258:
+return $I$(1).getProperty$S$S("AWT.codeInput", "Code Input");
+case 259:
+return $I$(1).getProperty$S$S("AWT.japaneseKatakana", "Japanese Katakana");
+case 260:
+return $I$(1).getProperty$S$S("AWT.japaneseHiragana", "Japanese Hiragana");
+case 261:
+return $I$(1).getProperty$S$S("AWT.japaneseRoman", "Japanese Roman");
+case 262:
+return $I$(1).getProperty$S$S("AWT.kanaLock", "Kana Lock");
+case 263:
+return $I$(1).getProperty$S$S("AWT.inputMethodOnOff", "Input Method On/Off");
+case 65481:
+return $I$(1).getProperty$S$S("AWT.again", "Again");
+case 65483:
+return $I$(1).getProperty$S$S("AWT.undo", "Undo");
+case 65485:
+return $I$(1).getProperty$S$S("AWT.copy", "Copy");
+case 65487:
+return $I$(1).getProperty$S$S("AWT.paste", "Paste");
+case 65489:
+return $I$(1).getProperty$S$S("AWT.cut", "Cut");
+case 65488:
+return $I$(1).getProperty$S$S("AWT.find", "Find");
+case 65482:
+return $I$(1).getProperty$S$S("AWT.props", "Props");
+case 65480:
+return $I$(1).getProperty$S$S("AWT.stop", "Stop");
+}
+if (keyCode >= 96 && keyCode <= 105 ) {
+var numpad=$I$(1).getProperty$S$S("AWT.numpad", "NumPad");
+var c=String.fromCharCode((keyCode - 96 + 48));
+return numpad + "-" + c ;
+}var unknown=$I$(1).getProperty$S$S("AWT.unknown", "Unknown");
+return unknown + " keyCode: 0x" + Integer.toString$I$I(keyCode, 16) ;
+}, 1);
+
+Clazz_newMeth(C$, 'getKeyModifiersText$I',  function (modifiers) {
+var buf=Clazz_new_($I$(2,1));
+if ((modifiers & 4) != 0) {
+buf.append$S($I$(1).getProperty$S$S("AWT.meta", "Meta"));
+buf.append$S("+");
+}if ((modifiers & 2) != 0) {
+buf.append$S($I$(1).getProperty$S$S("AWT.control", "Ctrl"));
+buf.append$S("+");
+}if ((modifiers & 8) != 0) {
+buf.append$S($I$(1).getProperty$S$S("AWT.alt", "Alt"));
+buf.append$S("+");
+}if ((modifiers & 1) != 0) {
+buf.append$S($I$(1).getProperty$S$S("AWT.shift", "Shift"));
+buf.append$S("+");
+}if ((modifiers & 32) != 0) {
+buf.append$S($I$(1).getProperty$S$S("AWT.altGraph", "Alt Graph"));
+buf.append$S("+");
+}if ((modifiers & 16) != 0) {
+buf.append$S($I$(1).getProperty$S$S("AWT.button1", "Button1"));
+buf.append$S("+");
+}if (buf.length$() > 0) {
+buf.setLength$I(buf.length$() - 1);
+}return buf.toString();
+}, 1);
+
+Clazz_newMeth(C$, 'isActionKey$',  function () {
+switch (this.keyCode) {
+case 36:
+case 35:
+case 33:
+case 34:
+case 38:
+case 40:
+case 37:
+case 39:
+case 65368:
+case 226:
+case 224:
+case 227:
+case 225:
+case 112:
+case 113:
+case 114:
+case 115:
+case 116:
+case 117:
+case 118:
+case 119:
+case 120:
+case 121:
+case 122:
+case 123:
+case 61440:
+case 61441:
+case 61442:
+case 61443:
+case 61444:
+case 61445:
+case 61446:
+case 61447:
+case 61448:
+case 61449:
+case 61450:
+case 61451:
+case 154:
+case 145:
+case 20:
+case 144:
+case 19:
+case 155:
+case 24:
+case 28:
+case 29:
+case 30:
+case 31:
+case 21:
+case 25:
+case 240:
+case 241:
+case 242:
+case 243:
+case 244:
+case 245:
+case 256:
+case 257:
+case 258:
+case 259:
+case 260:
+case 261:
+case 262:
+case 263:
+case 65481:
+case 65483:
+case 65485:
+case 65487:
+case 65489:
+case 65488:
+case 65482:
+case 65480:
+case 156:
+case 524:
+case 525:
+return true;
+}
+return false;
+});
+
+Clazz_newMeth(C$, 'paramString$',  function () {
+var str=Clazz_new_($I$(2,1).c$$I,[100]);
+switch (this.id) {
+case 401:
+str.append$S("KEY_PRESSED");
+break;
+case 402:
+str.append$S("KEY_RELEASED");
+break;
+case 400:
+str.append$S("KEY_TYPED");
+break;
+default:
+str.append$S("unknown type");
+break;
+}
+str.append$S(",keyCode=").append$S("" + this.keyCode);
+str.append$S(",keyText=").append$S(C$.getKeyText$I(this.keyCode));
+str.append$S(",keyChar=");
+switch (this.keyChar.$c()) {
+case 8:
+str.append$S(C$.getKeyText$I(8));
+break;
+case 9:
+str.append$S(C$.getKeyText$I(9));
+break;
+case 10:
+str.append$S(C$.getKeyText$I(10));
+break;
+case 24:
+str.append$S(C$.getKeyText$I(3));
+break;
+case 27:
+str.append$S(C$.getKeyText$I(27));
+break;
+case 127:
+str.append$S(C$.getKeyText$I(127));
+break;
+case 65535:
+str.append$S($I$(1).getProperty$S$S("AWT.undefined", "Undefined"));
+str.append$S(" keyChar");
+break;
+default:
+str.append$S("\'").append$S("" + this.keyChar).append$S("\'");
+break;
+}
+if (this.getModifiers$() != 0) {
+str.append$S(",modifiers=").append$S(C$.getKeyModifiersText$I(this.modifiers));
+}if (this.getModifiersEx$() != 0) {
+str.append$S(",extModifiers=").append$S($I$(3).getModifiersExText$I(this.modifiers));
+}str.append$S(",keyLocation=");
+switch (this.keyLocation) {
+case 0:
+str.append$S("KEY_LOCATION_UNKNOWN");
+break;
+case 1:
+str.append$S("KEY_LOCATION_STANDARD");
+break;
+case 2:
+str.append$S("KEY_LOCATION_LEFT");
+break;
+case 3:
+str.append$S("KEY_LOCATION_RIGHT");
+break;
+case 4:
+str.append$S("KEY_LOCATION_NUMPAD");
+break;
+default:
+str.append$S("KEY_LOCATION_UNKNOWN");
+break;
+}
+return str.toString();
+});
+
+Clazz_newMeth(C$, 'setNewModifiers',  function () {
+if ((this.modifiers & 1) != 0) {
+this.modifiers|=64;
+}if ((this.modifiers & 8) != 0) {
+this.modifiers|=512;
+}if ((this.modifiers & 2) != 0) {
+this.modifiers|=128;
+}if ((this.modifiers & 4) != 0) {
+this.modifiers|=256;
+}if ((this.modifiers & 32) != 0) {
+this.modifiers|=8192;
+}if ((this.modifiers & 16) != 0) {
+this.modifiers|=1024;
+}}, p$1);
+
+Clazz_newMeth(C$, 'setOldModifiers',  function () {
+if ((this.modifiers & 64) != 0) {
+this.modifiers|=1;
+}if ((this.modifiers & 512) != 0) {
+this.modifiers|=8;
+}if ((this.modifiers & 128) != 0) {
+this.modifiers|=2;
+}if ((this.modifiers & 256) != 0) {
+this.modifiers|=4;
+}if ((this.modifiers & 8192) != 0) {
+this.modifiers|=32;
+}if ((this.modifiers & 1024) != 0) {
+this.modifiers|=16;
+}}, p$1);
+})();
+;Clazz_setTVer('3.3.1-v1');//Created 2021-01-14 18:17:06 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+(function(){var P$=Clazz_newPackage("swingjs"),I$=[[0,'swingjs.JSMouse','java.awt.AWTKeyStroke']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
+/*c*/var C$=Clazz_newClass(P$, "JSKeyEvent", null, 'java.awt.event.KeyEvent');
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+},1);
+
+Clazz_newMeth(C$, 'newJSKeyEvent$javax_swing_JComponent$O$I$Z',  function (source, jqevent, id, isList) {
+var evType=null;
+var jskey=null;
+var jskeyCode=0;
+var jskeyLocation=0;
+var ev=jqevent;
+
+evType = ev.type; jskey = ev.key;
+jskeyCode = ev.keyCode || ev.which;
+jskeyLocation = ev.originalEvent.location || 0;
+if (isList && evType == "keypress") ev.originalEvent.preventDefault();
+if (id == 0) id=$I$(1).fixEventType$O$I(jqevent, 0);
+if (id == 0) return null;
+var keyCode=C$.getJavaKeyCode$I$S(jskeyCode, jskey);
+var keyChar=C$.getJavaKeyChar$I$S(keyCode, jskey);
+return (keyChar == "\uffff" && id == 400  ? null : Clazz_new_(C$.c$$javax_swing_JComponent$O$I$I$C$I,[source, jqevent, id, (id == 400 ? 0 : keyCode), keyChar, (id == 400 ? 0 : jskeyLocation + 1)]));
+}, 1);
+
+Clazz_newMeth(C$, 'c$$javax_swing_JComponent$O$I$I$C$I',  function (source, ev, id, keyCode, keyChar, location) {
+;C$.superclazz.c$$java_awt_Component$I$J$I$I$C$I.apply(this,[source, id, System.currentTimeMillis$(), 0, keyCode, keyChar, location]);C$.$init$.apply(this);
+var bdata=Clazz_array(Byte.TYPE, [0]);
+
+bdata.jqevent = ev;
+this.setBData$BA(bdata);
+this.modifiers=$I$(1).getModifiers$O(ev);
+}, 1);
+
+Clazz_newMeth(C$, 'getJavaKeyCode$I$S',  function (jskeyCode, jskey) {
+if (jskeyCode <= 40) {
+if (jskeyCode == 13) return 10;
+return jskeyCode;
+}if (jskey.length$() == 1) {
+return jskeyCode;
+}switch (jskeyCode) {
+case 91:
+return 157;
+case 93:
+return 525;
+case 144:
+case 145:
+return jskeyCode;
+case 244:
+return 25;
+}
+var keyName="VK_" + jskey.toUpperCase$();
+try {
+return $I$(2).getVKValue$S(keyName);
+} catch (e) {
+if (Clazz_exceptionOf(e,"Exception")){
+System.out.println$S("JSKeyEvent adding key/keyCode " + keyName + " " + jskeyCode );
+$I$(2).addKeyCode$S$I(keyName, jskeyCode);
+} else {
+throw e;
+}
+}
+return jskeyCode;
+}, 1);
+
+Clazz_newMeth(C$, 'getJavaKeyChar$I$S',  function (jsKeyCode, jskey) {
+if (jskey.length$() == 1) return jskey.charAt$I(0);
+switch (jsKeyCode) {
+case 13:
+jsKeyCode=10;
+case 10:
+case 8:
+case 9:
+case 127:
+case 27:
+return String.fromCharCode(jsKeyCode);
+default:
+return "\uffff";
+}
+}, 1);
+
+Clazz_newMeth(C$, 'hasKeyChar$I$S',  function (javaKeyCode, jskey) {
+switch (javaKeyCode) {
+case 10:
+case 8:
+case 9:
+case 127:
+case 27:
+return true;
+default:
+return (jskey.length$() == 1);
+}
+}, 1);
+
+Clazz_newMeth(C$);
+})();
+;Clazz_setTVer('3.3.1-v1');//Created 2021-04-27 11:58:30 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+/**
+ * 
+ * @author Bob Hanson 2019.07.06
+ * 
+ * 
+ * A relatively simple ComboBox that supports actual objects, not just strings
+ * 
+ */
+
+// NOTE: If you change this file, then you need to touch and save JQueryUI.java, as only then
+//       will the transpiler copy this file to site/swingjs/j2s/swingjs/jquery/
+
+;(function($) {
+
+J2S.__makeComboBox = function() {
+  J2S.__makeComboBox = function(){};	
+  
+  $( function() {
+    $('head').append('<style>.j2scb-sel {background-color:#B8CFE5;}'
+    		+'\n.j2scb-unsel {background-color:white;}'
+    		+'\n.j2scb-hov {background-color:lightblue;}'
+    		+'\n.j2scbcont {position:absolute; left:0px;top:0px;}'
+    		+'\n.j2scbhead {position:absolute; left:0px;top:0px;text-align:left;overflow:hidden;padding:0px 2px 1px 2px}'
+    		+'\n.j2scbbtn {position:absolute; leftbackground-color:white;:100px;top:0px; width:20px;text-align:center;cursor:pointer;background-color:lightblue;padding:0px}'
+    		+'\n.j2scbpopup {position:absolute; list-style:none}'
+    		+'\n.j2scblist {background-color:white;position:absolute; left:0px;top:0px;margin:0;border:black solid 1px;cursor:pointer;text-align:left;padding:0em;scrollbar-width:thin;cursor:pointer;}</style>'
+    );
+    
+    var CLOSE_DELAY = 100; // BH 2019.10.04 50 was just a bit too fast; could close early
+        
+    // the widget definition, where 'custom' is the namespace,
+    // 'j2sCB' the widget name
+
+    $.widget( 'custom.j2sCB', {
+    	
+      options: {
+    	mode: 's', // or 'm'
+ 		height: 0,
+ 		items: null,
+ 		disabled: false,
+ 		popupVisible: false,
+ 		selectedIndex: -1,
+ 		backgroundColor: "white",
+ 		// z-index
+ 		zIndex:999999,
+ 		name:null,
+        // Callbacks
+        change: null
+      },
+      itemCount: 0,
+      
+      id: function() {return this.element[0].id},
+      find: function(x) {return this.element.find(x)},
+      on: function(a, x) {for(var i = a.length; --i >= 0;)this._on(a[i],x)},
+      on2: function(obj, evts, handle) {var a = {};for(var i = evts.length; --i >= 0;)a[evts[i]]=handle;this._on(obj, a)},
+
+  	  popupVisible: function() { return this.options.popupVisible; }, 
+
+  	  setHeight: function(h) {
+		  this.options.height = h;
+	  },
+      setZIndex: function(z) {
+    	this.options.zIndex = z;
+      },
+      
+      _mouse: function(e) { 
+    	  var opt = $(e.target).closest('.j2scbopt');
+    	  this._trigger('change', e, [this, 'mouse', (opt[0] ? opt[0].j2scbIndex : -1)])
+      },
+      _keyEvent: function(e) {
+    	  this._trigger('change', e, [this, 'keyevent']);
+      },
+ 
+      // Called when created, and later when changing options
+      _refresh: function() {
+ 
+        // Trigger a callback/event
+        this._trigger( 'change' , null, [this, "refreshed"] );
+      },
+ 
+      // The constructor
+      _create: function() {
+    	var id = this.id();
+        this.element.addClass( 'custom-j2sCB' );
+        this.cont = $( '<div>', {'class': 'j2scbcont', 'id':id+'_cont' });
+        this.cont.append(this.head = $( '<button>', {'class': 'j2scbhead', 'id':id+'_head' }));
+        this.cont.append(this.btn = $( '<button>', {'class': 'j2scbbtn', 'id':id+'_btn' , text:'\u25bc'}));
+        this.btn.addClass("swingjs-ui");
+        this.popup = $( '<div>', {'class': 'j2scbpopup', 'name':this.options.name, 'id':id+'_popup' });
+        this.popup.css({
+        	display:'none'
+        });
+        this.list = $( '<ul>', {'class': 'j2scblist', 'id':id+'_list' });
+        this.on2(this.list, 'click mousedown touchstart mousemove touchmove mouseup touchend mousewheel mouseover mouseout mouseenter mouseexit'.split(' '), '_mouse');
+        this.popup.append(this.list);        
+        this.element.append(this.cont);
+        // important to add popup after body so that it does not take on any body attributes 
+        $('body').after(this.popup);
+        this.updateCSS();    	
+        this.on( [this.head, this.btn, this.cont], { click: '_tog' });
+        this.on( [this.popup, this.list], {mouseover: '_stopT' });
+        this.on( [this.cont, this.head, this.btn, this.popup, this.list], {
+        	mouseleave: '_close'//,
+        	//keydown: '_keyEvent'
+        		});
+        
+        if (this.options.items)
+        	this.add(this.options.items);
+        
+        this.setSelectedIndex(this.options.selectedIndex)
+        this._refresh();
+      },
+      // Events bound via _on are removed automatically
+      // revert other modifications here
+      _destroy: function() {
+        // remove generated elements
+        this.cont.remove();
+ 		this.popup.remove();
+        this.element
+          .removeClass( 'custom-j2sCB' )
+          .enableSelection()
+          .css( 'background-color', 'transparent' );
+		this._trigger('change', null, [this, 'destroyed']);
+      },
+ 
+      // _setOptions is called with a hash of all options that are changing
+      // always refresh when changing options
+      _setOptions: function() {
+        // _super and _superApply handle keeping the right this-context
+        this._superApply( arguments );
+        this._refresh();
+      },
+ 
+      // _setOption is called for each individual option that is changing
+      _setOption: function( key, value ) {
+    	  if (key == "disabled") {
+    		  this.options.disabled = true;
+    	  }
+        //[prevent invalid value here with test and return]
+        this._super( key, value );
+      },
+
+      update: function(andTrigger) {
+   		 var sel = this._selectedItem();
+   		 var all;
+   		 this.options.selectedIndex = (sel[0] ? sel[0].j2scbIndex : -1);
+   		 this.head.text(sel.length ==0 ? '' : 
+   			this.options.mode == 's' ? sel.text() : sel.length + ' of ' 
+   					+ (all = this.list.find('.j2scbopt').length) + ' selected option' + (all > 1 ? 's' :''));
+   		 if (andTrigger)
+ 	      	this._trigger( 'change' , null, [this, "selected", sel[0].j2scbIndex]);
+// 	     else
+// 	    	 this._stopT("update");
+       },  
+      updateList: function(items) {
+    	  this.list.children().detach();
+    	  this.add(items);
+	  },
+      add: function(items) {
+      	  var y = 0;
+    	  if (Array.isArray(items)) {
+        	this.itemCount = 0;    		
+    	  } else {
+    	  	this.list.children().each(function(a) {y += a.height()});
+    		items = [items];  
+    	  }
+    	  for (var i = 0; i < items.length; i++) {
+    		var item = items[i];
+    		if (!item)continue;
+    		var opt = $('<li>', {'class':'j2scbopt j2scb-unsel', 'id': this.id() + '_opt' + this.itemCount});
+    		opt[0].j2scbIndex = this.itemCount++;    		
+    		this.list.append(opt);
+			if (typeof item == 'string') {
+				opt.text(item);
+    		} else {
+    			var ji = $(item);
+    			ji.css("background-color", "transparent");
+    			opt.append(item);
+    			opt.css({height:ji.css("height")});
+	    		y += opt.height();
+    		}
+    		this.list.css({height: (y + 2) + "px"});
+	        this._on(opt, {mouseleave: '_close', mouseover: '_overOpt', click : '_clickOpt'});
+    	  }
+      },
+      updateCSS: function() {
+    	  var cbox = this.cont.parent();
+    	  var font = {"font-family": cbox.css("font-family")
+    			  , "font-size": cbox.css("font-size")
+    			  , "font-weight": cbox.css("font-weight")
+    			  , "font-style": cbox.css("font-style")
+    			  }; 	  
+          var w = this.element.width();
+          if (w == 0)
+        	  return;
+          var h = this.element.height() + 'px';
+          this.cont.css({
+          	width: (w - 2) + 'px',
+          	height: h,
+          	backgroundColor: this.options.backgroundColor
+          });
+          this.head.css({
+          	width: (w - 20) + 'px',
+          	height: h,
+          	backgroundColor: this.options.backgroundColor
+          });
+          this.head.css(font);
+          this.btn.css({
+          	left: (w - 20) + 'px',
+          	height: h
+          });
+          h = (this.options.height ? this.options.height + 'px' : null);
+          this.popup.css({
+            width: w + 'px',
+        	height: h
+          });  
+          this.popup.css(font);
+          this.list.css({
+            width: w + 'px',
+          	height: h,
+          	overflowY: (h ? null : 'auto')
+          }); 
+          this.list.css(font);
+          font["font-size"] = "0.7em";
+          this.btn.css(font);
+      },
+      
+      setSelectedIndex: function(n) { return this._clickOpt({target: $('#' + this.id() + '_opt' + n)}, false) },
+      _selectedItem: function() { return this.list && this.list.find('.j2scb-sel') },
+            
+      setText: function(s) { this.head.text(s) },
+      hoverOver: function(i) {
+      	this._overOpt(i >= 0 ? this.list[0].children[i] : null);  
+        },
+      showPopup: function() { this._open(null);},
+      _tog: function(e) {
+    	  if (this.popup.css("display") == "block") {
+    		  this.hidePopup();
+    	  } else {
+    		  var me = this;
+    		setTimeout(function(){ me._open(e) },100);
+    	  }
+    	  return false;
+      },
+  	  _open: function(e) {
+  		this.cont.focus();
+  		if (this.options.disabled)
+  			return;
+		this._stopT("_open");
+		var loc = this.element.offset();
+		if (e)
+			this._trigger('change', null, [this, 'opening']);
+		this.options.popupVisible = true;
+	 	this.popup.css({
+	 		'display':'block',
+	 		left: loc.left + 'px',
+        	top: (loc.top + this.element.height()) + 'px',
+        	width:this.element.css('width') - 2,
+	 		'z-index': this.options.zIndex
+	 	});
+	  	this.list.scrollTop(0);
+	  	this.element.focus();
+	  },
+  	  hidePopup: function() {
+   		 if (this.options.popupVisible) {
+   			this.options.popupVisible = false;
+   			this.popup.hide();
+   		 }
+   	  },
+      _overOpt: function(e) {
+    	  this._stopT("_overOpt");
+    	  this.list.find('.j2scbopt').removeClass('j2scb-hov j2scb-sel');
+    	  var opt = $(e && e.target || e).closest('.j2scbopt');
+    	  opt.addClass('j2scb-hov');
+    	  this.options.hoveredIndex = (opt[0] ? opt[0].j2scbIndex : -1);
+      },
+      _clickOpt: function(e, andTrigger) {
+    	    andTrigger |= (arguments.length == 1);
+    	    var opt = $(e.target || e).closest('.j2scbopt');
+    	  	var opts = this.list.find('.j2scbopt');
+    	  	opts.removeClass('j2scb-hov');
+	    	if (this.options.mode=='s') {
+	    		opts.removeClass('j2scb-sel');
+	    	    opts.addClass('j2scb-unsel');
+	    	    opt.removeClass('j2scb-unsel');
+	    	    opt.addClass('j2scb-sel');
+	    	    if (andTrigger)
+	    	    	this._close();
+	    	} else if (mode == 'm') {  
+	    		  if (opt.is('.j2scb-sel')) {
+	    			opt.addClass('j2scb-unsel');
+	    			opt.removeClass('j2scb-sel');
+	    	      } else {
+	    			opt.addClass('j2scb-sel');
+	    			opt.removeClass('j2scb-unsel');
+	    	      }  
+	    	}  
+	    	this.update(andTrigger);
+	    	return opt;
+      },
+      _stopT: function(why) {
+    	  clearTimeout(this.t);
+    	  this.t = 0;
+      },
+      _close: function() {
+          if (this.t)return;
+          var me = this;
+          this.t = setTimeout(function() {  
+      		  me.hidePopup();
+      		  me.t = 0;
+      	  },CLOSE_DELAY);
+      }
+      
+    });
+ 
+  });
+  
+};  
+
+})(J2S.__$);
 })(Clazz,Clazz.setTVer,Clazz.toLong,Clazz.incrAN,Clazz.array,Clazz.assert,Clazz.clone,Clazz.exceptionOf,Clazz.forName,Clazz.getClass,Clazz.instanceOf,Clazz.load,Clazz.new_,Clazz.newClass,Clazz.newEnumConst,Clazz.newInstance,Clazz.newInterface,Clazz.newMeth,Clazz.newPackage,Clazz.super_);
