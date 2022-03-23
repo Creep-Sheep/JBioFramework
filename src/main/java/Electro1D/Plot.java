@@ -12,7 +12,7 @@ import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.Graphics;
 import java.awt.Color;
-
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -27,93 +27,86 @@ import javajs.async.SwingJSUtils.StateMachine;
  * The type Plot.
  */
 public class Plot extends JPanel implements Runnable {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -2725697857452487199L;
+	
 	private static final Font plotFont = new Font("Courier New", 0, 10);
     private static final DecimalFormat oneDigit = new DecimalFormat("0.0");
     private static final DecimalFormat twoDigits = new DecimalFormat("0.00");
 
-    Thread runner;
-    int pause;
-    Electrophoresis parent;
-    int numberOfStds;
-    Protein stds[];
-    Protein sample;
-    Protein dye;
+    private Electrophoresis parent;
+    private Thread runner;
     private Image offScreenImage;
-    //FontMetrics fm;
-    //Font font;
-    protected boolean imageCreated;
-    protected boolean standardsSet;
-    protected boolean paintRM;
-    protected boolean paintUserRM;
-    protected boolean stopAnimation;
-    protected boolean showExperimentalMW;
-    protected boolean showSampleMW;
-    protected boolean questionRCorr;
-    protected boolean showLogMW;
-    protected boolean showNotBracketed;
-    protected boolean graphVerticalLine;
-    protected boolean graphHorizontalLine;
-    protected boolean newYLine;
-    protected boolean newXLine;
-    protected boolean Played;
-    protected boolean harpPlayed;
-    protected int h;
-    protected int w;
-    protected int xAxesLabelY;
-    protected int xAxesRMLabelY;
-    protected int yAxesLabelY;
-    protected int yAxisLabelX;
-    protected int charHalfHeight;
-    protected int charHeight;
-    protected int charWidth;
-    protected int charHalfWidth;
-    protected double yDivision;
-    protected int gridYMarks;
-    protected int gridCols;
-    protected int rightGridCol;
-    protected int leftGridCol;
-    protected int bottomGridRow;
-    protected int topGridRow;
-    protected int rows;
-    protected int cols;
-    protected int xArray[];
-    protected int yArray[];
-    protected double logMwMax;
-    protected double logMwMin;
-    protected double ln10;
-    protected double deltaPixelY;
-    protected double deltaPixelX;
-    protected double deltaLogMw;
-    protected double mwOffsetFromMax;
-    protected double pixOffsetFromTop;
-    protected double mouseRM;
-    protected double plotRM;
-    protected double experimentalMW;
-    protected double logMw;
-    protected double sumX;
-    protected double sumY;
-    protected double sumXsq;
-    protected double sumYsq;
-    protected double sumProd;
-    protected double rCorr;
-    protected double rCorrSq;
-    protected int nPoints;
-    protected double slope;
-    protected double yIntercept;
-    protected int xMouse;
-    protected int xPlot;
-    protected int userLineY;
-    protected int userLineX;
-    protected Point lineCoord;
-    protected int fitLineX1;
-    protected int fitLineX2;
-    protected int fitLineY1;
-    protected int fitLineY2;
-    protected double errorMargin;
+
+    private Protein stds[];
+    private Protein sample;
+    private Protein dye;
+
+    private int numberOfStds;
+    
+    private int h;
+    private int w;
+    private int xAxesLabelY;
+    private int xAxesRMLabelY;
+    private int yAxisLabelX;
+    private int charHalfHeight;
+    private int charHeight;
+    private int charWidth;
+    private int charHalfWidth;
+    private int gridYMarks;
+    private int gridCols;
+    private int rightGridCol;
+    private int leftGridCol;
+    private int bottomGridRow;
+    private int topGridRow;
+    private int rows;
+    private int cols;
+    private int xArray[];
+    private int yArray[];
+
+    private int pause;
+    
+    private boolean imageCreated;
+    private boolean standardsSet;
+    private boolean paintRM;
+    private boolean paintUserRM;
+    private boolean stopAnimation;
+    private boolean showExperimentalMW;
+    private boolean showSampleMW;
+    private boolean questionRCorr;
+    private boolean showLogMW;
+    private boolean showNotBracketed;
+    private boolean graphVerticalLine;
+    private boolean graphHorizontalLine;
+    private boolean newYLine;
+    private boolean newXLine;
+    private boolean harpPlayed;
+    private double yStep;
+
+    private double logMwMax;
+    private double logMwMin;
+    private double ln10;
+    private double deltaPixelY;
+    private double deltaPixelX;
+    private double mouseRM;
+    private double plotRM;
+    private double experimentalMW;
+    private double logMw;
+    private double rCorr;
+    private double rCorrSq;
+    private double slope;
+    private double yIntercept;
+
+    private int nPoints;
+    private int xMouse;
+    private int xPlot;
+    private int userLineY;
+    private int userLineX;
+    private int fitLineX1;
+    private int fitLineX2;
+    private int fitLineY1;
+    private int fitLineY2;
+    private double errorMargin;
 ;
 	private StateHelper stateHelper;
 	private boolean working;
@@ -129,9 +122,6 @@ public class Plot extends JPanel implements Runnable {
         gridCols = 10;
         cols = 14;
         xArray = new int[cols];
-        mwOffsetFromMax = 1.0;
-        pixOffsetFromTop = 1.0;
-        lineCoord = new Point(0, 0);
         errorMargin = 0.2;
         ln10 = Math.log(10.0);
         rightGridCol = cols - 1;
@@ -172,12 +162,21 @@ public class Plot extends JPanel implements Runnable {
             public void mouseMoved(MouseEvent e) {
                 if (standardsSet) {
                     paintRM = mouseOnXAxis(e.getX(), e.getY());
+                    setCursor(Cursor.getPredefinedCursor(paintRM ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR));
                     repaint();
                 }
             }
         });
 	} // Plot
 
+    private void resetFlags() {
+        stopAnimation = true;
+        newYLine = true;
+        newXLine = true;
+        paintRM = false;
+        harpPlayed = false;
+    }
+    
 	protected void doMouseClicked(int x, int y) {
 		if (!standardsSet) {
 			return;
@@ -207,68 +206,105 @@ public class Plot extends JPanel implements Runnable {
 		}
 	}
 
-	public void start() {
-        if (runner == null) {
-            runner = new Thread(this);
-            runner.start();
-        }
-    } // start
+    private boolean mouseOnXAxis(int i, int j) {
+        byte b = 3;
+        if (i < xArray[leftGridCol] || i > xArray[rightGridCol]
+                || j < yArray[bottomGridRow] - b
+                || j > yArray[bottomGridRow] + b)
+            return false;
+        xMouse = i;
+        return true;
+    } // mouseOnXAxis
 
-    public void stop() {
-        if (runner != null) {
-            this.stopAnimation = true;
-            runner = null;
-        }
-		working = false;
-    } // stop
+    
+//// least squares analysis
 
-    private void calcLine() {
-        if (nPoints <= 1) {
-            slope = 0.0;
-            yIntercept = 0.0;
-            return;
-        }
-        slope = (nPoints * sumProd - sumX * sumY)
-                / (nPoints * sumXsq - sumX * sumX);
-        yIntercept = (sumY - slope * sumX) / nPoints;
+    /**
+     * Carry out the least-squares analysis for a set of standards and define both the "dye" and the protein.
+     * 
+     * @param stds
+     * @param sample
+     * @param dye leads the way
+     */
+    public void setResults(Protein stds[], Protein sample, Protein dye) {
+        this.stds = stds;
+        this.sample = sample;
+        this.dye = dye;
+        getFit();
+        sample.relativeMigration = sample.getDistance() / dye.getDistance();
+        standardsSet = true;
+        graphVerticalLine = false;
+        graphHorizontalLine = false;
+        showExperimentalMW = false;
+        showLogMW = false;
+        showSampleMW = false;
+        questionRCorr = false;
+        imageCreated = false;
+        repaint();
     }
 
-    private void showNotBracket(Graphics g) {
-        if (showNotBracketed)
-            g.drawString("RM not bracketed by Standards", xArray[leftGridCol],
-                    getSize().height / 8);
-    }
-
-    private void resetSums() {
-        sumX = 0.0;
-        sumY = 0.0;
-        sumXsq = 0.0;
-        sumYsq = 0.0;
-        sumProd = 0.0;
-        nPoints = 0;
-    }
-
-    private Point calcPixelXY(double x) {
-        double y = calcLogMw(x);
-        int px = xArray[leftGridCol] + (int) (x * deltaPixelX);
-        int py = yArray[topGridRow] + (int) ((logMwMax - y) / deltaLogMw * deltaPixelY);
-        return new Point(px, py);
-    }
-
-	protected void calcMaxMinLogs() {
-		// make divisions n*.05 & then make Max plot round number above maxMw
-		int maxMW = 0;
-		int minMW = Integer.MAX_VALUE;
-		for (int k = 0; k < numberOfStds; k++) {
-			if (stds[k].mw > maxMW)
-				maxMW = stds[k].mw;
-			if (stds[k].mw < minMW)
-				minMW = stds[k].mw;
+	private void getFit() {
+		double sumX = 0.0;
+		double sumY = 0.0;
+		double sumXsq = 0.0;
+		double sumYsq = 0.0;
+		double sumProd = 0.0;
+		nPoints = 0;
+		for (int i = 0; i < numberOfStds; i++) {
+			if (stds[i].selected) {
+				double x = stds[i].relativeMigration = stds[i].getDistance() / dye.getDistance();
+				double y = Math.log(stds[i].mw) / ln10;
+				sumX += x;
+				sumXsq += x * x;
+				sumY += y;
+				sumYsq += y * y;
+				sumProd += x * y;
+				nPoints++;
+			}
 		}
-		logMwMax = -Math.floor(-Math.log(maxMW) / ln10 * 2)/2;
-		logMwMin = Math.floor(Math.log(minMW) / ln10 * 2)/2;
-		nY = (logMwMax - logMwMin) * 2;
-		yDivision = 0.5; 
+		if (nPoints <= 1) {
+			slope = yIntercept = rCorr = rCorrSq = 0.0;
+		} else {
+			double xy = nPoints * sumProd - sumX * sumY;
+			double xx = nPoints * sumXsq - sumX * sumX;
+			double yy = nPoints * sumYsq - sumY * sumY;
+			slope = xy / xx;
+			yIntercept = (sumY - slope * sumX) / nPoints;
+			rCorrSq = xy * xy / xx / yy;
+			rCorr = Math.sqrt(rCorrSq);
+//        d2 = Math.pow(d2, 0.5);
+//        d3 = Math.pow(d3, 0.5);
+//        rCorr = num / (d2 * d3);
+//        rCorrSq = rCorr * rCorr;
+		}
+	}
+
+    private double calcLogMw(double x) {
+        return (slope == 0.0 ? 0 :  slope * x + yIntercept);
+    }
+
+    /**
+     * Set the minimum and maximum log values
+     */
+	private void calcMaxMinLogs() {
+		// make divisions n*.05 & then make Max plot round number above maxMw
+		double y0 = calcLogMw(0);
+		double y1 = calcLogMw(1);
+		logMwMax = Math.max(y0, y1);
+		logMwMin = Math.min(y0, y1);
+		for (int k = 0; k < numberOfStds; k++) {
+			if (stds[k] == null)
+				continue;
+			double logMW = Math.log(stds[k].mw) / ln10;
+			if (logMW > logMwMax)
+				logMwMax = logMW;
+			if (logMW < logMwMin)
+				logMwMin = logMW;
+		}
+		logMwMax = -Math.floor(-logMwMax * 2)/2;
+		logMwMin = Math.floor(logMwMin * 2)/2;
+		yStep = 0.5; 
+		nY = (logMwMax - logMwMin) / yStep;
 //		float mDelta = (float) (1.1 * (logMwMax - logMwMin));
 //		yDivision = 0;
 //		for (; 10 * yDivision < mDelta; yDivision += .05) {
@@ -281,8 +317,44 @@ public class Plot extends JPanel implements Runnable {
 //		logMwMin = Math.floor(logMwMin);
 //		yDivision =
 //				// yDivision = (logMwMax - logMwMin) / 10.0;
-		deltaLogMw = logMwMax - logMwMin;
 	}
+
+    
+///// plotting methods /////////   
+
+    public void paint(Graphics g) {
+    	setOpaque(true);
+        calcMaxMinLogs();
+        calcDimensions();
+        if (!imageCreated || offScreenImage.getWidth(null) != w || offScreenImage.getHeight(null) != h) {
+            offScreenImage = createImage(w, h);
+            //font = getFont();
+//            fm = getFontMetrics(plotFont);
+            if (standardsSet) {
+                calcStdCoords();
+                calcLineCoords();
+                imageCreated = true;
+            }
+        }
+        Graphics offScreenGraphics = offScreenImage.getGraphics();
+        offScreenGraphics.setColor(Color.white);
+        offScreenGraphics.fillRect(0, 0, w, h);
+//        offScreenGraphics.setColor(Color.black);
+//        offScreenGraphics.drawRect(0, 0, getSize().width, getSize().height);
+        offScreenGraphics.setColor(g.getColor());
+        drawPlotSurface(offScreenGraphics);
+        drawYScale(offScreenGraphics);
+        plotStandards(offScreenGraphics);
+        displayRM(offScreenGraphics);
+        plotUserRM();
+        showExpMW(offScreenGraphics);
+        showSampMW(offScreenGraphics);
+        showLgMW(offScreenGraphics);
+        graphVertLine(offScreenGraphics);
+        graphHorizLine(offScreenGraphics);
+        showNotBracket(offScreenGraphics);
+        g.drawImage(offScreenImage, 0, 0, this);
+    }
 
     private void drawYScale(Graphics g) {
         double d = logMwMax;
@@ -304,58 +376,40 @@ public class Plot extends JPanel implements Runnable {
                     xArray[leftGridCol], getSize().height / 8);
     } // showExpMW
 
-    private boolean mouseOnXAxis(int i, int j) {
-        byte b = 3;
-        if (i < xArray[leftGridCol] || i > xArray[rightGridCol]
-                || j < yArray[bottomGridRow] - b
-                || j > yArray[bottomGridRow] + b)
-            return false;
-        xMouse = i;
-        return true;
-    } // mouseOnXAxis
-
-    private void sumYsqs(double d) {
-        sumYsq += d * d;
-    } // sumYsqs
-
-    private void calcStdCoords() {
-        Point point;    // This defaults to (0,0)
-        for (int i = 0; i < numberOfStds; i++) {
-            if (stds[i].selected) {
-                point = calcPixelXY(stds[i].relativeMigration);
-                stds[i].plotXPos = point.x;
-                stds[i].plotYPos = point.y;
-            }
+    private void showLgMW(Graphics g) {
+        if (showLogMW) {
+        	Graphics g1 = g.create();
+            g1.setFont(plotFont);
+            g1.drawString(twoDigits.format(logMw), xArray[leftGridCol]
+                    + charHalfWidth, userLineY);
+            g1.dispose();
         }
-    } // calcStdCoords
+    }
 
-    public void plotStandards(Graphics g) {
-        byte b1 = 6;
-        int i = b1 / 2;
-        int j = b1 / 2;
-        new Point(0, 0);
-        if (standardsSet) {
-            for (int k = 0; k < numberOfStds; k++) {
-                if (stds[k].selected) {
-                    g.setColor(stds[k].color);
-                    g.fillOval(stds[k].plotXPos - j, stds[k].plotYPos - i, b1,
-                            b1);
-                    g.setColor(Color.black);
-                    g.drawOval(stds[k].plotXPos - j, stds[k].plotYPos - i, b1,
-                            b1);
-                }
-            }
-            g.drawLine(fitLineX1, fitLineY1, fitLineX2, fitLineY2);
-            g.drawString("Slope = " + twoDigits.format(slope), xArray[7],
-                    yArray[4]);
-            g.drawString("y Intercept = " + twoDigits.format(yIntercept),
-                    xArray[7], yArray[4] + charHeight);
-            g.drawString("r = " + twoDigits.format(rCorr), xArray[7], yArray[4]
-                    + charHeight * 2);
-            g.drawString("r Squared = " + twoDigits.format(rCorrSq), xArray[7],
-                    yArray[4] + charHeight * 3);
-        }
-    } // plotStandards
+    private void graphVertLine(Graphics g) {
+        if (graphVerticalLine)
+            g.drawLine(xPlot, yArray[bottomGridRow], xPlot, userLineY);
+    }
+    
+	private void plotStandards(Graphics g) {
+		if (!standardsSet)
+			return;
+		int diameter = 6;
+		int offset = diameter / 2;
+		for (int k = 0; k < numberOfStds; k++) {
+			if (stds[k].selected) {
+				g.setColor(stds[k].color);
+				g.fillOval(stds[k].plotXPos - offset, stds[k].plotYPos - offset, diameter, diameter);
+				g.setColor(Color.black);
+				g.drawOval(stds[k].plotXPos - offset, stds[k].plotYPos - offset, diameter, diameter);
+			}
+		}
+		g.drawLine(fitLineX1, fitLineY1, fitLineX2, fitLineY2);
+		g.drawString("Slope = " + twoDigits.format(slope), xArray[7], yArray[4]);
+		g.drawString("y Intercept = " + twoDigits.format(yIntercept), xArray[7], yArray[4] + charHeight);
+		g.drawString("r = " + twoDigits.format(rCorr), xArray[7], yArray[4] + charHeight * 2);
+		g.drawString("r Squared = " + twoDigits.format(rCorrSq), xArray[7], yArray[4] + charHeight * 3);
+	}
 
 	private void drawPlotSurface(Graphics g) {
 		g.setColor(Color.black);
@@ -393,78 +447,6 @@ public class Plot extends JPanel implements Runnable {
 		g.setColor(Color.black);
 	}
 
-    private double calcLogMw(double d) {
-        return (slope == 0.0 ? 0 :  slope * d + yIntercept);
-    }
-
-    private void sumXs(double d) {
-        sumX += d;
-    }
-
-    private void showLgMW(Graphics g) {
-        if (showLogMW) {
-        	Graphics g1 = g.create();
-            g1.setFont(plotFont);
-            g1.drawString(twoDigits.format(logMw), xArray[leftGridCol]
-                    + charHalfWidth, userLineY);
-            g1.dispose();
-        }
-    }
-
-    private void graphVertLine(Graphics g) {
-        if (graphVerticalLine)
-            g.drawLine(xPlot, yArray[bottomGridRow], xPlot, userLineY);
-    }
-
-    public void paint(Graphics g) {
-    	setOpaque(true);
-        calcMaxMinLogs();
-        calcDimensions();
-        if (!imageCreated || offScreenImage.getWidth(null) != w || offScreenImage.getHeight(null) != h) {
-            offScreenImage = createImage(w, h);
-            //font = getFont();
-//            fm = getFontMetrics(plotFont);
-            if (standardsSet) {
-                calcStdCoords();
-                calcLineCoords();
-                imageCreated = true;
-            }
-        }
-        Graphics offScreenGraphics = offScreenImage.getGraphics();
-        offScreenGraphics.setColor(Color.white);
-        offScreenGraphics.fillRect(0, 0, w, h);
-//        offScreenGraphics.setColor(Color.black);
-//        offScreenGraphics.drawRect(0, 0, getSize().width, getSize().height);
-        offScreenGraphics.setColor(g.getColor());
-        drawPlotSurface(offScreenGraphics);
-        drawYScale(offScreenGraphics);
-        plotStandards(offScreenGraphics);
-        displayRM(offScreenGraphics);
-        plotUserRM();
-        showExpMW(offScreenGraphics);
-        showSampMW(offScreenGraphics);
-        showLgMW(offScreenGraphics);
-        graphVertLine(offScreenGraphics);
-        graphHorizLine(offScreenGraphics);
-        showNotBracket(offScreenGraphics);
-        g.drawImage(offScreenImage, 0, 0, this);
-    }
-
-    private void calcFit() {
-        if (nPoints <= 1) {
-            rCorr = 0.0;
-            rCorrSq = 0.0;
-            return;
-        }
-        double d1 = (double) nPoints * sumProd - sumX * sumY;
-        double d2 = (double) nPoints * sumXsq - sumX * sumX;
-        double d3 = (double) nPoints * sumYsq - sumY * sumY;
-        d2 = Math.pow(d2, 0.5);
-        d3 = Math.pow(d3, 0.5);
-        rCorr = d1 / (d2 * d3);
-        rCorrSq = rCorr * rCorr;
-    }
-
     private void showSampMW(Graphics g) {
         if (showSampleMW) {
             String string = sample.abbr + " MW = " + String.valueOf(sample.mw);
@@ -479,44 +461,7 @@ public class Plot extends JPanel implements Runnable {
         }
     }
 
-    public void setResults(Protein aprotein[], Protein protein1, Protein protein2) {
-        stds = aprotein;
-        sample = protein1;
-        dye = protein2;
-        resetSums();
-        for (int i = 0; i < numberOfStds; i++) {
-            if (stds[i].selected) {
-                stds[i].relativeMigration = stds[i].getDistance() / dye.getDistance();
-                sumXs(stds[i].relativeMigration);
-                sumXsqs(stds[i].relativeMigration);
-                double d = Math.log(stds[i].mw) / ln10;
-                sumYs(d);
-                sumYsqs(d);
-                sumProds(stds[i].relativeMigration, d);
-                nPoints++;
-            }
-        }
-        calcLine();
-        calcFit();
-        sample.relativeMigration = sample.getDistance() / dye.getDistance();
-        standardsSet = true;
-        graphVerticalLine = false;
-        graphHorizontalLine = false;
-        showExperimentalMW = false;
-        showLogMW = false;
-        showSampleMW = false;
-        questionRCorr = false;
-        imageCreated = false;
-        repaint();
-    }
-
-    private void sumXsqs(double d) {
-        sumXsq += d * d;
-    }
-
-    private void sumYs(double d) {
-        sumY += d;
-    }
+    private Point lineCoord = new Point(0, 0);
 
 	private void plotUserRM() {
 		if (paintUserRM) {
@@ -558,7 +503,22 @@ public class Plot extends JPanel implements Runnable {
 		}
 	}
 
-    protected void calcDimensions() {
+    public void start() {
+        if (runner == null) {
+            runner = new Thread(this);
+            runner.start();
+        }
+    } // start
+
+    public void stop() {
+        if (runner != null) {
+            this.stopAnimation = true;
+            runner = null;
+        }
+		working = false;
+    } // stop
+
+    private void calcDimensions() {
         h = getSize().height;
         w = getSize().width;
         xArray[0] = 0;
@@ -584,24 +544,14 @@ public class Plot extends JPanel implements Runnable {
         charHeight = fm.getHeight();
         xAxesLabelY = yArray[bottomGridRow] + fm.getHeight();
         xAxesRMLabelY = xAxesLabelY + fm.getHeight() / 2;
-        yAxesLabelY = yArray[topGridRow] - fm.getHeight() / 2;
         yAxisLabelX = xArray[leftGridCol] - fm.stringWidth("MW 0.00 ");
     }
 
-    private void displayRM(Graphics g) {
-        if (paintRM) {
-            mouseRM = (double) (xMouse - xArray[leftGridCol]) / deltaPixelX;
-            // cursorPos = String.valueOf(mouseRM);
-            // dotPos = cursorPos.indexOf(46);
-            g.drawString(twoDigits.format(mouseRM), xArray[leftGridCol],
-                    (int) (yArray[bottomGridRow] + yDivision));
-            // g.drawString(cursorPos.substring(0, dotPos + 3),
-            // xArray[leftGridCol], yArray[bottomGridRow] + division);
-        }
-    }
-
-    private void sumProds(double d1, double d2) {
-        sumProd += d1 * d2;
+    private Point calcPixelXY(double x) {
+        double y = calcLogMw(x);
+        int px = xArray[leftGridCol] + (int) (x * deltaPixelX);
+        int py = yArray[topGridRow] + (int) ((logMwMax - y) / (logMwMax - logMwMin) * deltaPixelY);
+        return new Point(px, py);
     }
 
     private void calcLineCoords() {
@@ -614,20 +564,40 @@ public class Plot extends JPanel implements Runnable {
         fitLineY2 = point.y;
     }
 
+    private void calcStdCoords() {
+        Point point;    // This defaults to (0,0)
+        for (int i = 0; i < numberOfStds; i++) {
+            if (stds[i].selected) {
+                point = calcPixelXY(stds[i].relativeMigration);
+                stds[i].plotXPos = point.x;
+                stds[i].plotYPos = point.y;
+            }
+        }
+    } // calcStdCoords
+
+    private void displayRM(Graphics g) {
+        if (paintRM) {
+            mouseRM = (double) (xMouse - xArray[leftGridCol]) / deltaPixelX;
+            // cursorPos = String.valueOf(mouseRM);
+            // dotPos = cursorPos.indexOf(46);
+            g.drawString(twoDigits.format(mouseRM), xArray[leftGridCol],
+                    (int) (yArray[bottomGridRow] + yStep));
+            // g.drawString(cursorPos.substring(0, dotPos + 3),
+            // xArray[leftGridCol], yArray[bottomGridRow] + division);
+        }
+    }
+
     private void graphHorizLine(Graphics g) {
         if (graphHorizontalLine)
             g.drawLine(xPlot, userLineY, userLineX, userLineY);
     }
 
-    private void resetFlags() {
-        stopAnimation = true;
-        newYLine = true;
-        newXLine = true;
-        paintRM = false;
-        Played = false;
-        harpPlayed = false;
+    private void showNotBracket(Graphics g) {
+        if (showNotBracketed)
+            g.drawString("RM not bracketed by Standards", xArray[leftGridCol],
+                    getSize().height / 8);
     }
-    
+
     private final static int SLEEP = 0;
     private final static int PAINT = 1;
 

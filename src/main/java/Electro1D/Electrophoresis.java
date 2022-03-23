@@ -167,12 +167,12 @@ public class Electrophoresis extends JPanel {
 	/**
 	 * setPlotData() set the plot data
 	 *
-	 * @param aprotein is an array of standard proteins (known)
-	 * @param protein  is a unknown protein (sample)
-	 * @param protein1 is a dye
+	 * @param stds is an array of standard proteins (known)
+	 * @param sample  is a unknown protein (sample)
+	 * @param dye is a fast-running leading marker
 	 */
-	public void setPlotData(Protein aprotein[], Protein protein, Protein protein1) {
-		plotPanel.setResults(aprotein, protein, protein1);
+	public void setPlotData(Protein stds[], Protein sample, Protein dye) {
+		plotPanel.setResults(stds, sample, dye);
 	}
 
 	/**

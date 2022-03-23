@@ -100,8 +100,8 @@ Clazz.newMeth(C$, 'startRun$main_java_Electro1D_ProteinA$main_java_Electro1D_Pro
 this.simPanel.startRun$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein$main_java_Electro1D_ProteinA(aprotein, protein1, protein2, proteins);
 });
 
-Clazz.newMeth(C$, 'setPlotData$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein',  function (aprotein, protein, protein1) {
-this.plotPanel.setResults$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein(aprotein, protein, protein1);
+Clazz.newMeth(C$, 'setPlotData$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein',  function (stds, sample, dye) {
+this.plotPanel.setResults$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein(stds, sample, dye);
 });
 
 Clazz.newMeth(C$, 'displayData$',  function () {
@@ -167,4 +167,4 @@ f.setVisible$Z(true);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 19:29:46 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
