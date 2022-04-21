@@ -86,7 +86,7 @@ Clazz.newMeth(C$, 'run$',  function () {
 this.$finals$.me.run1$I(this.$finals$.state);
 });
 })()
-), Clazz.new_(P$.JSThread$1.$init$,[this, {state:state,me:me}]));
+), Clazz.new_(P$.JSThread$1.$init$,[this, {me:me,state:state}]));
 {
 setTimeout( function() { java.awt.Toolkit.getDefaultToolkit$().getSystemEventQueue$().postEvent$java_awt_AWTEvent( Clazz.new_(java.awt.event.InvocationEvent.c$$O$Runnable,[me, r]))}, delay);
 }
@@ -97,4 +97,4 @@ C$.$static$=function(){C$.$static$=0;
 C$.threadCount=0;
 };
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 16:53:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

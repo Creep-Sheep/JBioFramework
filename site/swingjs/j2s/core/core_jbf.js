@@ -16182,6 +16182,66 @@ C$.$clinit$=2;
 })();
 ;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:10 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("java.awt.event"),I$=[];
+/*c*/var C$=Clazz_newClass(P$, "MouseWheelEvent", null, 'java.awt.event.MouseEvent');
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+},1);
+
+C$.$fields$=[['D',['preciseWheelRotation'],'I',['scrollType','scrollAmount','wheelRotation']]]
+
+Clazz_newMeth(C$, 'c$$java_awt_Component$I$J$I$I$I$I$Z$I$I$I',  function (source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation) {
+C$.c$$java_awt_Component$I$J$I$I$I$I$I$I$Z$I$I$I.apply(this, [source, id, when, modifiers, x, y, 0, 0, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation]);
+}, 1);
+
+Clazz_newMeth(C$, 'c$$java_awt_Component$I$J$I$I$I$I$I$I$Z$I$I$I',  function (source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation) {
+C$.c$$java_awt_Component$I$J$I$I$I$I$I$I$Z$I$I$I$D.apply(this, [source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, wheelRotation]);
+}, 1);
+
+Clazz_newMeth(C$, 'c$$java_awt_Component$I$J$I$I$I$I$I$I$Z$I$I$I$D',  function (source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation) {
+;C$.superclazz.c$$java_awt_Component$I$J$I$I$I$I$I$I$Z$I.apply(this,[source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, 0]);C$.$init$.apply(this);
+this.scrollType=scrollType;
+this.scrollAmount=scrollAmount;
+this.wheelRotation=wheelRotation;
+this.preciseWheelRotation=preciseWheelRotation;
+}, 1);
+
+Clazz_newMeth(C$, 'getScrollType$',  function () {
+return this.scrollType;
+});
+
+Clazz_newMeth(C$, 'getScrollAmount$',  function () {
+return this.scrollAmount;
+});
+
+Clazz_newMeth(C$, 'getWheelRotation$',  function () {
+return this.wheelRotation;
+});
+
+Clazz_newMeth(C$, 'getPreciseWheelRotation$',  function () {
+return this.preciseWheelRotation;
+});
+
+Clazz_newMeth(C$, 'getUnitsToScroll$',  function () {
+return this.scrollAmount * this.wheelRotation;
+});
+
+Clazz_newMeth(C$, 'paramString$',  function () {
+var scrollTypeStr=null;
+if (this.getScrollType$() == 0) {
+scrollTypeStr="WHEEL_UNIT_SCROLL";
+} else if (this.getScrollType$() == 1) {
+scrollTypeStr="WHEEL_BLOCK_SCROLL";
+} else {
+scrollTypeStr="unknown scroll type";
+}return C$.superclazz.prototype.paramString$.apply(this, []) + ",scrollType=" + scrollTypeStr + ",scrollAmount=" + this.getScrollAmount$() + ",wheelRotation=" + this.getWheelRotation$() ;
+});
+
+Clazz_newMeth(C$);
+})();
+;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:11 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+(function(){var P$=Clazz_newPackage("java.awt.event"),I$=[];
 /*i*/var C$=Clazz_newInterface(P$, "MouseWheelListener", null, null, 'java.util.EventListener');
 
 C$.$clinit$=2;
@@ -47953,7 +48013,7 @@ Clazz_newMeth(C$, 'apply$O',  function (t) { return (this.$finals$.after.apply$O
 (function(){var P$=Clazz_newPackage("javajs.api"),I$=[];
 /*i*/var C$=Clazz_newInterface(P$, "JSONEncodable");
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:55 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.async"),p$1={},I$=[[0,'javajs.async.AsyncDialog']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "AsyncFileChooser", null, 'javax.swing.JFileChooser', 'java.beans.PropertyChangeListener');
 
@@ -48104,7 +48164,7 @@ Clazz_newMeth(C$, 'getFileBytes$java_io_File',  function (f) {
 return f.秘bytes ||null;
 }, 1);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:55 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.async"),p$1={},p$2={},I$=[[0,'java.awt.event.ActionEvent','javax.swing.Timer',['javajs.async.SwingJSUtils','.StateHelper'],'java.util.HashMap','Thread','java.util.ArrayList',['javajs.async.SwingJSUtils','.Singleton'],['javajs.async.SwingJSUtils','.Timeout'],'java.awt.Dimension','java.awt.Image','javax.imageio.ImageIO','java.io.BufferedReader','java.io.InputStreamReader','java.util.stream.Collectors','java.io.BufferedInputStream','java.io.ByteArrayInputStream']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "SwingJSUtils", function(){
 Clazz_newInstance(this, arguments,0,C$);
@@ -48306,7 +48366,7 @@ if (!this.b$['javajs.async.SwingJSUtils.StateHelper'].interrupted) this.$finals$
 if (!this.b$['javajs.async.SwingJSUtils.StateHelper'].interrupted && (this.$finals$.stateNext != -2147483648 || this.$finals$.levelNext != -2147483648 ) ) $I$(3,"nextStatePriv$O$I$I",[this.$finals$.me, this.$finals$.stateNext == -2147483648 ? this.b$['javajs.async.SwingJSUtils.StateHelper'].state : this.$finals$.stateNext, this.$finals$.levelNext == -2147483648 ? this.b$['javajs.async.SwingJSUtils.StateHelper'].level : this.$finals$.levelNext]);
 });
 })()
-), Clazz_new_(P$.SwingJSUtils$StateHelper$1.$init$,[this, {listener:listener,me:me,event:event,levelNext:levelNext,stateNext:stateNext}]))],$I$(2,1).c$$I$java_awt_event_ActionListener);
+), Clazz_new_(P$.SwingJSUtils$StateHelper$1.$init$,[this, {stateNext:stateNext,levelNext:levelNext,listener:listener,event:event,me:me}]))],$I$(2,1).c$$I$java_awt_event_ActionListener);
 timer.setRepeats$Z(false);
 timer.start$();
 return true;
@@ -48589,7 +48649,7 @@ C$.timeoutID=0;
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:55 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.util"),I$=[[0,'java.util.Hashtable','javajs.util.AjaxURLStreamHandler']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "AjaxURLStreamHandlerFactory", null, null, 'java.net.URLStreamHandlerFactory');
 
@@ -48612,7 +48672,7 @@ this.htFactories.put$O$O(protocol, fac=Clazz_new_($I$(2,1).c$$S,[protocol]));
 }return (fac.protocol == null  ? null : fac);
 });
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:56 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.util"),I$=[[0,'javajs.util.SB']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Base64");
 
@@ -48678,7 +48738,7 @@ C$.decode64=Clazz_array(Integer.TYPE, -1, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:56 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.util"),I$=[[0,'Thread']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "JSThread", null, 'Thread');
 
@@ -48778,7 +48838,7 @@ C$.$static$=function(){C$.$static$=0;
 C$.threadCount=0;
 };
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:56 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.util"),I$=[];
 /*c*/var C$=Clazz_newClass(P$, "Lst", null, 'java.util.ArrayList');
 
@@ -48803,7 +48863,7 @@ Clazz_newMeth(C$, 'removeObj$O',  function (v) {
 return C$.superclazz.prototype.remove$O.apply(this, [v]);
 });
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:56 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javajs.util"),I$=[];
 /*c*/var C$=Clazz_newClass(P$, "SB");
 
@@ -48981,7 +49041,7 @@ Clazz_newMeth(C$, 'insert$I$S',  function (offset, str) {
 this.replace$I$I$S(offset, offset, str);
 });
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:25:57 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javax.swing"),I$=[[0,'javax.swing.ArrayTable','javax.swing.event.SwingPropertyChangeSupport','java.beans.PropertyChangeListener']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "AbstractAction", null, null, ['javax.swing.Action', 'Cloneable']);
 
@@ -59771,6 +59831,206 @@ Clazz_newMeth(C$, 'paramString$',  function () {
 var rootPaneCheckingEnabledString=(this.rootPaneCheckingEnabled ? "true" : "false");
 return C$.superclazz.prototype.paramString$.apply(this, []) + ",rootPaneCheckingEnabled=" + rootPaneCheckingEnabledString ;
 });
+})();
+;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:26:12 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+(function(){var P$=Clazz_newPackage("javax.swing"),p$1={},I$=[[0,'java.util.Hashtable','java.util.Vector','Thread',['javax.swing.KeyboardManager','.ComponentKeyStrokePair'],'javax.swing.KeyStroke','javax.swing.JMenuBar','java.awt.JSComponent']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
+/*c*/var C$=Clazz_newClass(P$, "KeyboardManager", function(){
+Clazz_newInstance(this, arguments,0,C$);
+});
+C$.$classes$=[['ComponentKeyStrokePair',0]];
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+this.containerMap=Clazz_new_($I$(1,1));
+this.componentKeyStrokeMap=Clazz_new_($I$(1,1));
+},1);
+
+C$.$fields$=[['O',['containerMap','java.util.Hashtable','+componentKeyStrokeMap']]
+,['O',['currentManager','javax.swing.KeyboardManager']]]
+
+Clazz_newMeth(C$, 'getCurrentManager$',  function () {
+return C$.currentManager;
+}, 1);
+
+Clazz_newMeth(C$, 'setCurrentManager$javax_swing_KeyboardManager',  function (km) {
+C$.currentManager=km;
+}, 1);
+
+Clazz_newMeth(C$, 'registerKeyStroke$javax_swing_KeyStroke$javax_swing_JComponent',  function (k, c) {
+var keyMap=p$1.getKeyMap$javax_swing_JComponent$javax_swing_KeyStroke.apply(this, [c, k]);
+if (keyMap == null ) return;
+var tmp=keyMap.get$O(k);
+if (tmp == null ) {
+keyMap.put$O$O(k, c);
+} else if (Clazz_instanceOf(tmp, "java.util.Vector")) {
+var v=tmp;
+if (!v.contains$O(c)) {
+v.addElement$O(c);
+}} else if (Clazz_instanceOf(tmp, "javax.swing.JComponent")) {
+if (tmp !== c ) {
+var v=Clazz_new_($I$(2,1));
+v.addElement$O(tmp);
+v.addElement$O(c);
+keyMap.put$O$O(k, v);
+}} else {
+System.out.println$S("Unexpected condition in registerKeyStroke");
+$I$(3).dumpStack$();
+}});
+
+Clazz_newMeth(C$, 'unregisterKeyStroke$javax_swing_KeyStroke$javax_swing_JComponent',  function (ks, c) {
+var ckp=Clazz_new_($I$(4,1).c$$O$O,[this, null, c, ks]);
+var topContainer=this.componentKeyStrokeMap.get$O(ckp);
+if (topContainer == null ) {
+return;
+}var keyMap=this.containerMap.get$O(topContainer);
+if (keyMap == null ) {
+$I$(3).dumpStack$();
+return;
+}var tmp=keyMap.get$O(ks);
+if (tmp == null ) {
+$I$(3).dumpStack$();
+return;
+}if (Clazz_instanceOf(tmp, "javax.swing.JComponent") && tmp === c  ) {
+keyMap.remove$O(ks);
+} else if (Clazz_instanceOf(tmp, "java.util.Vector")) {
+var v=tmp;
+v.removeElement$O(c);
+if (v.isEmpty$()) {
+keyMap.remove$O(ks);
+}}if (keyMap.isEmpty$()) {
+this.containerMap.remove$O(topContainer);
+}this.componentKeyStrokeMap.remove$O(ckp);
+});
+
+Clazz_newMeth(C$, 'fireKeyboardAction$java_awt_event_KeyEvent$Z$java_awt_Container',  function (e, pressed, topAncestor) {
+if (e.isConsumed$()) {
+System.out.println$S("Aquired pre-used event!");
+$I$(3).dumpStack$();
+}var ks;
+if (e.getID$() == 400) {
+ks=$I$(5,"getKeyStroke$C",[e.getKeyChar$()]);
+} else {
+ks=$I$(5,"getKeyStroke$I$I$Z",[e.getKeyCode$(), e.getModifiers$(), !pressed]);
+}var keyMap=this.containerMap.get$O(topAncestor);
+if (keyMap != null ) {
+var tmp=keyMap.get$O(ks);
+if (tmp == null ) {
+} else if (Clazz_instanceOf(tmp, "javax.swing.JComponent")) {
+var c=tmp;
+if (c.isShowing$() && c.isEnabled$() ) {
+this.fireBinding$javax_swing_JComponent$javax_swing_KeyStroke$java_awt_event_KeyEvent$Z(c, ks, e, pressed);
+}} else if (Clazz_instanceOf(tmp, "java.util.Vector")) {
+var v=tmp;
+for (var counter=v.size$() - 1; counter >= 0; counter--) {
+var c=v.elementAt$I(counter);
+if (c.isShowing$() && c.isEnabled$() ) {
+this.fireBinding$javax_swing_JComponent$javax_swing_KeyStroke$java_awt_event_KeyEvent$Z(c, ks, e, pressed);
+if (e.isConsumed$()) return true;
+}}
+} else {
+System.out.println$S("Unexpected condition in fireKeyboardAction " + tmp);
+$I$(3).dumpStack$();
+}}if (e.isConsumed$()) {
+return true;
+}if (keyMap != null ) {
+var v=keyMap.get$O(Clazz_getClass($I$(6)));
+if (v != null ) {
+var iter=v.elements$();
+while (iter.hasMoreElements$()){
+var mb=iter.nextElement$();
+if (mb.isShowing$() && mb.isEnabled$() ) {
+this.fireBinding$javax_swing_JComponent$javax_swing_KeyStroke$java_awt_event_KeyEvent$Z(mb, ks, e, pressed);
+if (e.isConsumed$()) {
+return true;
+}}}
+}}return e.isConsumed$();
+});
+
+Clazz_newMeth(C$, 'fireBinding$javax_swing_JComponent$javax_swing_KeyStroke$java_awt_event_KeyEvent$Z',  function (c, ks, e, pressed) {
+if (c.processKeyBinding$javax_swing_KeyStroke$java_awt_event_KeyEvent$I$Z(ks, e, 2, pressed)) {
+e.consume$();
+}});
+
+Clazz_newMeth(C$, 'registerMenuBar$javax_swing_JMenuBar',  function (mb) {
+var keyMap=p$1.getKeyMap$javax_swing_JComponent$javax_swing_KeyStroke.apply(this, [mb, null]);
+if (keyMap == null ) return;
+var menuBars=keyMap.get$O(Clazz_getClass($I$(6)));
+if (menuBars == null ) {
+menuBars=Clazz_new_($I$(2,1));
+keyMap.put$O$O(Clazz_getClass($I$(6)), menuBars);
+}if (!menuBars.contains$O(mb)) {
+menuBars.addElement$O(mb);
+}});
+
+Clazz_newMeth(C$, 'getKeyMap$javax_swing_JComponent$javax_swing_KeyStroke',  function (c, k) {
+var top=$I$(7).秘getTopInvokableAncestor$java_awt_Component$Z(c, true);
+if (top == null ) {
+return null;
+}var keyMap=this.containerMap.get$O(top);
+if (keyMap == null ) {
+keyMap=this.registerNewTopContainer$java_awt_Container(top);
+}if (k != null ) this.componentKeyStrokeMap.put$O$O(Clazz_new_($I$(4,1).c$$O$O,[this, null, c, k]), top);
+return keyMap;
+}, p$1);
+
+Clazz_newMeth(C$, 'unregisterMenuBar$javax_swing_JMenuBar',  function (mb) {
+var top=$I$(7).秘getTopInvokableAncestor$java_awt_Component$Z(mb, true);
+if (top == null ) {
+return;
+}var keyMap=this.containerMap.get$O(top);
+if (keyMap != null ) {
+var v=keyMap.get$O(Clazz_getClass($I$(6)));
+if (v != null ) {
+v.removeElement$O(mb);
+if (v.isEmpty$()) {
+keyMap.remove$O(Clazz_getClass($I$(6)));
+if (keyMap.isEmpty$()) {
+this.containerMap.remove$O(top);
+}}}}});
+
+Clazz_newMeth(C$, 'registerNewTopContainer$java_awt_Container',  function (topContainer) {
+var keyMap=Clazz_new_($I$(1,1));
+this.containerMap.put$O$O(topContainer, keyMap);
+return keyMap;
+});
+
+C$.$static$=function(){C$.$static$=0;
+C$.currentManager=Clazz_new_(C$);
+};
+;
+(function(){/*c*/var C$=Clazz_newClass(P$.KeyboardManager, "ComponentKeyStrokePair", function(){
+Clazz_newInstance(this, arguments[0],true,C$);
+});
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+},1);
+
+C$.$fields$=[['O',['component','java.lang.Object','+keyStroke']]]
+
+Clazz_newMeth(C$, 'c$$O$O',  function (comp, key) {
+;C$.$init$.apply(this);
+this.component=comp;
+this.keyStroke=key;
+}, 1);
+
+Clazz_newMeth(C$, 'equals$O',  function (o) {
+if (!(Clazz_instanceOf(o, "javax.swing.KeyboardManager.ComponentKeyStrokePair"))) {
+return false;
+}var ckp=o;
+return ((this.component.equals$O(ckp.component)) && (this.keyStroke.equals$O(ckp.keyStroke)) );
+});
+
+Clazz_newMeth(C$, 'hashCode$',  function () {
+return this.component.hashCode$() * this.keyStroke.hashCode$();
+});
+
+Clazz_newMeth(C$);
+})()
+
+Clazz_newMeth(C$);
 })();
 ;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:26:12 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("javax.swing"),I$=[[0,'java.awt.AWTKeyStroke']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
@@ -73888,7 +74148,7 @@ this.suppressor=(d > 12  ? 6 : d > 10  ? 3 : d > 7.5  ? 2 : 1);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),I$=[[0,'java.awt.Color','main.java.Electro1D.Protein','main.java.Electro1D.Acrylamide']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Constants");
 
@@ -73919,7 +74179,7 @@ C$.standardIndices=Clazz_array(Integer.TYPE, -1, [0, 1, 2, 3, 4, 5, 6]);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 13:53:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),I$=[[0,'javax.swing.JPanel','javax.swing.JButton','main.java.Utilities.BrowserLauncher','java.awt.Dimension','main.java.Utilities.GenomeFileParser','main.java.Electro1D.Simulation','main.java.Electro1D.Parameters','main.java.Electro1D.ProteinData','main.java.Electro1D.Plot','java.awt.GridBagLayout','java.awt.GridBagConstraints','java.awt.FlowLayout','javax.swing.JTabbedPane','java.awt.Insets','javax.swing.JFrame']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Electrophoresis", null, 'javax.swing.JPanel');
 
@@ -74089,7 +74349,7 @@ f.setVisible$Z(true);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 14:38:49 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'main.java.Electro1D.Constants','main.java.Electro1D.Protein','java.awt.Color','javax.swing.JCheckBox','javax.swing.JPanel','javax.swing.JComboBox',['main.java.Electro1D.Parameters','.UnknownListHandler1'],['main.java.Electro1D.Parameters','.UnknownListHandler2'],['main.java.Electro1D.Parameters','.GelPercentageHandler'],['main.java.Electro1D.Parameters','.VoltageListHandler'],'javax.swing.ButtonGroup','javax.swing.JButton','java.awt.GridLayout','javax.swing.BorderFactory','javax.swing.JRadioButton','javax.swing.JLabel','java.awt.BorderLayout',['main.java.Electro1D.Parameters','.StandardsListListener'],'main.java.Utilities.FileUtils']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Parameters", function(){
 Clazz_newInstance(this, arguments,0,C$);
@@ -74753,7 +75013,7 @@ Clazz_newMeth(C$);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 13:53:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.awt.Color','main.java.Electro1D.Sample']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Pipette");
 
@@ -74860,7 +75120,7 @@ this.emptyTip=4;
 this.sample=Clazz_new_($I$(2,1));
 }, 1);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.awt.Font','java.text.DecimalFormat','java.util.Random','java.awt.Point','main.java.Electro1D.Protein','java.awt.Cursor','javax.swing.JOptionPane','java.awt.Color','Thread',['javajs.async.SwingJSUtils','.StateHelper']]],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Plot", null, 'javax.swing.JPanel', 'Runnable');
 
@@ -75334,7 +75594,7 @@ var $b$ = new Int8Array(1);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 15:53:30 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.awt.Color']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Protein");
 
@@ -75451,7 +75711,7 @@ Clazz_newMeth(C$, 'toString',  function () {
 return "Protein: name=" + this.name + " fullName=" + this.fullName + " MW=" + this.mw + " rm=" + new Double(this.relativeMigration).toString() + " d=" + new Double(this.distance).toString() ;
 });
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 14:27:41 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),I$=[[0,'javax.swing.JPanel','java.awt.GridLayout','java.awt.Color','javax.swing.JLabel','javax.swing.JTextField']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "ProteinData", null, 'javax.swing.JPanel');
 
@@ -75519,7 +75779,7 @@ this.logMolWt.setText$S(String.valueOf$F((((Math.log(protein.mw) / Math.log(10) 
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 14:05:24 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),I$=[[0,'java.awt.Color']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Sample");
 
@@ -75601,7 +75861,7 @@ this.fillRatio=0;
 this.maxY=0;
 });
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Electro1D"),p$1={},I$=[[0,'java.util.Vector','main.java.Electro1D.Sample','main.java.Electro1D.Protein','java.util.BitSet','java.awt.Dimension','main.java.Electro1D.Pipette','java.text.DecimalFormat',['main.java.Electro1D.Simulation','.MouseClickListener'],'main.java.Utilities.FileUtils','Thread','java.awt.Color','java.awt.RenderingHints',['javajs.async.SwingJSUtils','.StateHelper'],'java.awt.Font','main.java.Utilities.GenomeFileParser']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Simulation", function(){
 Clazz_newInstance(this, arguments,0,C$);
@@ -76433,7 +76693,7 @@ Clazz_newMeth(C$);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 13:53:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Utilities"),I$=[[0,'java.io.File','java.io.FileInputStream','javajs.util.Rdr','javajs.async.AsyncFileChooser',['main.java.Utilities.FileUtils','.FileDropper']]],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "FileUtils", function(){
 Clazz_newInstance(this, arguments,0,C$);
@@ -76490,7 +76750,7 @@ Clazz_newMeth(C$, 'run$',  function () {
 this.$finals$.ok.apply$O(this.$finals$.chooser.getSelectedFile$());
 });
 })()
-), Clazz_new_(P$.FileUtils$lambda1.$init$,[this, {ok:ok,chooser:chooser}])), null);
+), Clazz_new_(P$.FileUtils$lambda1.$init$,[this, {chooser:chooser,ok:ok}])), null);
 }, 1);
 
 Clazz_newMeth(C$, 'setFileDropper$javax_swing_JComponent$java_util_function_BiFunction',  function (c, f) {
@@ -76552,7 +76812,7 @@ Clazz_newMeth(C$);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Utilities"),I$=[[0,'java.util.Hashtable','main.java.Utilities.Preprocessor','java.io.BufferedReader','java.io.FileReader','java.io.StringReader','StringBuffer','main.java.Utilities.MessageFrame','java.util.ArrayList','javajs.util.PT','java.io.InputStreamReader','java.io.FileInputStream','main.java.Utilities.FileUtils']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "GenomeFileParser");
 
@@ -76930,7 +77190,7 @@ for (var i=1; i < C$.aas.length; i++) C$.aminoConversions.put$O$O(C$.aas[i++], C
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 13:53:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Utilities"),I$=[[0,'javax.swing.JPanel','javax.swing.JLabel','java.awt.event.WindowAdapter']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "MessageFrame", null, 'javax.swing.JFrame');
 
@@ -76972,7 +77232,7 @@ this.theMessage=message;
 this.label.setText$S(this.theMessage);
 });
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-22 08:41:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("main.java.Utilities"),p$1={},I$=[[0,'java.util.Random','java.awt.Color','java.util.Hashtable','java.util.Vector','java.io.File','java.io.PrintWriter','java.io.BufferedWriter','java.io.FileWriter','StringBuffer','main.java.Electro1D.Protein','main.java.Utilities.JSUtil']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "Preprocessor");
 
@@ -77259,7 +77519,7 @@ C$.htMWcache=Clazz_new_($I$(3,1));
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-24 13:53:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("sun.awt"),p$1={},I$=[[0,'java.util.HashSet','java.util.IdentityHashMap','java.awt.AWTEvent']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "AWTAutoShutdown", null, null, 'Runnable');
 
@@ -85233,11 +85493,11 @@ C$.instances="";
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.api"),I$=[];
 /*i*/var C$=Clazz_newInterface(P$, "JSUtilI");
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.api.js"),I$=[[0,'java.awt.Dimension']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*i*/var C$=Clazz_newInterface(P$, "DOMNode", function(){
 
@@ -85440,7 +85700,7 @@ C$.jQuery=jQuery.$ || (jQuery.$ = jQuery) ||null;
 });
 })()
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.api.js"),I$=[[0,'swingjs.api.js.DOMNode']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*i*/var C$=Clazz_newInterface(P$, "HTML5Canvas", null, null, 'swingjs.api.js.DOMNode');
 
@@ -85471,7 +85731,7 @@ canvas.height = height;
 return canvas;
 }, 1);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.api.js"),I$=[];
 /*c*/var C$=Clazz_newClass(P$, "HTML5CanvasContext2D", function(){
 Clazz_newInstance(this, arguments,0,C$);
@@ -85547,11 +85807,11 @@ Clazz_newMeth(C$);
 
 Clazz_newMeth(C$);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.api.js"),I$=[];
 /*i*/var C$=Clazz_newInterface(P$, "JSFunction");
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.api.js"),I$=[];
 /*i*/var C$=Clazz_newInterface(P$, "JSInterface");
 
@@ -85561,7 +85821,7 @@ try { document.body.style.cursor = c;
 } catch (e) {}
 }, 1);
 })();
-;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:09 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz_setTVer('3.3.1-v4');//Created 2022-04-21 17:00:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.jquery"),I$=[[0,'swingjs.JSUtil']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
 /*c*/var C$=Clazz_newClass(P$, "JQueryUI");
 
@@ -85607,6 +85867,125 @@ styles = null;
 };
 
 Clazz_newMeth(C$);
+})();
+;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:10 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+(function(){var P$=Clazz_newPackage("swingjs.plaf"),I$=[[0,['swingjs.plaf.BasicComboBoxEditor','.BorderlessTextField'],'sun.reflect.misc.MethodUtil']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
+/*c*/var C$=Clazz_newClass(P$, "BasicComboBoxEditor", function(){
+Clazz_newInstance(this, arguments,0,C$);
+}, null, ['javax.swing.ComboBoxEditor', 'java.awt.event.FocusListener']);
+C$.$classes$=[['BorderlessTextField',8],['UIResource',9]];
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+},1);
+
+C$.$fields$=[['O',['editor','javax.swing.JTextField','oldValue','java.lang.Object']]]
+
+Clazz_newMeth(C$, 'c$',  function () {
+;C$.$init$.apply(this);
+this.editor=this.createEditorComponent$();
+}, 1);
+
+Clazz_newMeth(C$, 'getEditorComponent$',  function () {
+return this.editor;
+});
+
+Clazz_newMeth(C$, 'createEditorComponent$',  function () {
+var editor=Clazz_new_($I$(1,1).c$$S$I,["", 9]);
+editor.setBorder$javax_swing_border_Border(null);
+return editor;
+});
+
+Clazz_newMeth(C$, 'setItem$O',  function (anObject) {
+var text;
+if (anObject != null ) {
+text=anObject.toString();
+if (text == null ) {
+text="";
+}this.oldValue=anObject;
+} else {
+text="";
+}if (!text.equals$O(this.editor.getText$())) {
+this.editor.setText$S(text);
+}});
+
+Clazz_newMeth(C$, 'getItem$',  function () {
+var newValue=this.editor.getText$();
+if (this.oldValue != null  && !(Clazz_instanceOf(this.oldValue, "java.lang.String")) ) {
+if (newValue.equals$O(this.oldValue.toString())) {
+return this.oldValue;
+} else {
+var cls=this.oldValue.getClass$();
+try {
+var method=$I$(2,"getMethod$Class$S$ClassA",[cls, "valueOf", Clazz_array(Class, -1, [Clazz_getClass(String)])]);
+newValue=$I$(2,"invoke$java_lang_reflect_Method$O$OA",[method, this.oldValue, Clazz_array(java.lang.Object, -1, [this.editor.getText$()])]);
+} catch (ex) {
+if (Clazz_exceptionOf(ex,"Exception")){
+} else {
+throw ex;
+}
+}
+}}return newValue;
+});
+
+Clazz_newMeth(C$, 'selectAll$',  function () {
+this.editor.selectAll$();
+this.editor.requestFocus$();
+});
+
+Clazz_newMeth(C$, 'focusGained$java_awt_event_FocusEvent',  function (e) {
+});
+
+Clazz_newMeth(C$, 'focusLost$java_awt_event_FocusEvent',  function (e) {
+});
+
+Clazz_newMeth(C$, 'addActionListener$java_awt_event_ActionListener',  function (l) {
+this.editor.addActionListener$java_awt_event_ActionListener(l);
+});
+
+Clazz_newMeth(C$, 'removeActionListener$java_awt_event_ActionListener',  function (l) {
+this.editor.removeActionListener$java_awt_event_ActionListener(l);
+});
+;
+(function(){/*c*/var C$=Clazz_newClass(P$.BasicComboBoxEditor, "BorderlessTextField", function(){
+Clazz_newInstance(this, arguments[0],false,C$);
+}, 'javax.swing.JTextField');
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+},1);
+
+Clazz_newMeth(C$, 'c$$S$I',  function (value, n) {
+;C$.superclazz.c$$S$I.apply(this,[value, n]);C$.$init$.apply(this);
+}, 1);
+
+Clazz_newMeth(C$, 'setText$S',  function (s) {
+if (this.getText$().equals$O(s)) {
+return;
+}C$.superclazz.prototype.setText$S.apply(this, [s]);
+});
+
+Clazz_newMeth(C$, 'setBorder$javax_swing_border_Border',  function (b) {
+if (!(Clazz_instanceOf(b, "swingjs.plaf.BasicComboBoxEditor.UIResource"))) {
+C$.superclazz.prototype.setBorder$javax_swing_border_Border.apply(this, [b]);
+}});
+
+Clazz_newMeth(C$);
+})()
+;
+(function(){/*c*/var C$=Clazz_newClass(P$.BasicComboBoxEditor, "UIResource", function(){
+Clazz_newInstance(this, arguments[0],false,C$);
+}, 'swingjs.plaf.BasicComboBoxEditor', 'javax.swing.plaf.UIResource');
+
+C$.$clinit$=2;
+
+Clazz_newMeth(C$, '$init$', function () {
+},1);
+
+Clazz_newMeth(C$);
+})()
 })();
 ;Clazz_setTVer('3.3.1-v4');//Created 2022-03-19 05:27:10 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
 (function(){var P$=Clazz_newPackage("swingjs.plaf"),I$=[[0,'javax.swing.border.EmptyBorder']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz_load(I$0[i])))),!n&&i.$load$&&Clazz_load(i,2),i)};
