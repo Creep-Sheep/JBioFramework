@@ -6,7 +6,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 
-C$.$fields$=[['Z',['selected'],'D',['relativeMigration','speed','y1float'],'F',['scaleFactor','charge','distance'],'I',['concentration','startY','mw','x1','y1','width','height','maxPosition','decider','counter','plotYPos','plotXPos'],'S',['name','fullName','abbr'],'O',['color','java.awt.Color']]]
+C$.$fields$=[['Z',['selected'],'D',['startY','relativeMigration','speed','x1','y1','y1float','distance'],'F',['scaleFactor','charge'],'I',['concentration','mw','width','height','maxPosition','decider','counter','plotYPos','plotXPos'],'S',['name','fullName','abbr'],'O',['color','java.awt.Color']]]
 
 Clazz.newMeth(C$, 'setStartPosition$I$I',  function (x, y) {
 this.x1=x;
@@ -33,7 +33,7 @@ Clazz.newMeth(C$, 'matchPosition$I$I',  function (x, y) {
 var x2=this.x1 + this.width;
 var y2=this.y1 + this.height;
 var range=2;
-return (x >= this.x1 - range && x <= x2 + range  && y >= this.y1 - range  && y <= y2 + range );
+return (x >= this.x1 - range  && x <= x2 + range   && y >= this.y1 - range   && y <= y2 + range  );
 });
 
 Clazz.newMeth(C$, 'setWidth$I',  function (w) {
@@ -99,15 +99,19 @@ this.concentration=1;
 }, 1);
 
 Clazz.newMeth(C$, 'drawProtein$java_awt_Graphics',  function (g) {
-if (this.y1 >= this.maxPosition) {
+if (this.y1 >= this.maxPosition ) {
 return false;
 }g.setColor$java_awt_Color(this.color);
 if (this.concentration == 1) {
-g.fillRect$I$I$I$I(this.x1, this.y1, this.width, this.height);
+g.fillRect$I$I$I$I((this.x1|0), (this.y1|0), this.width, this.height);
 } else {
-g.fillRect$I$I$I$I(this.x1 - this.concentration, this.y1, this.width + this.concentration * 2, this.height + this.concentration);
+g.fillRect$I$I$I$I((this.x1|0) - this.concentration, (this.y1|0), this.width + this.concentration * 2, this.height + this.concentration);
 }p$1.incrPosition.apply(this, []);
 return true;
 });
+
+Clazz.newMeth(C$, 'toString',  function () {
+return "Protein: name=" + this.name + " fullName=" + this.fullName + " MW=" + this.mw + " rm=" + new Double(this.relativeMigration).toString() + " d=" + new Double(this.distance).toString() ;
+});
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 16:53:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

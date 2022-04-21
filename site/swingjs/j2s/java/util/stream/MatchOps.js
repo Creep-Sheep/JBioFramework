@@ -25,7 +25,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 /*lambda_C*/
-Clazz.newMeth(C$, 'get$',  function () { return Clazz.new_($I$(6,1),[this,{predicate:predicate,matchKind:matchKind}])});
+Clazz.newMeth(C$, 'get$',  function () { return Clazz.new_($I$(6,1),[this,{matchKind:matchKind,predicate:predicate}])});
 })()
 ), Clazz.new_(P$.MatchOps$lambda1.$init$,[this, null]))],$I$(4,1).c$$java_util_stream_StreamShape$java_util_stream_MatchOps_MatchKind$java_util_function_Supplier);
 }, 1);
@@ -41,7 +41,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 /*lambda_C*/
-Clazz.newMeth(C$, 'get$',  function () { return Clazz.new_($I$(7,1),[this,{predicate:predicate,matchKind:matchKind}])});
+Clazz.newMeth(C$, 'get$',  function () { return Clazz.new_($I$(7,1),[this,{matchKind:matchKind,predicate:predicate}])});
 })()
 ), Clazz.new_(P$.MatchOps$lambda2.$init$,[this, null]))],$I$(4,1).c$$java_util_stream_StreamShape$java_util_stream_MatchOps_MatchKind$java_util_function_Supplier);
 }, 1);
@@ -57,7 +57,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 /*lambda_C*/
-Clazz.newMeth(C$, 'get$',  function () { return Clazz.new_($I$(8,1),[this,{predicate:predicate,matchKind:matchKind}])});
+Clazz.newMeth(C$, 'get$',  function () { return Clazz.new_($I$(8,1),[this,{matchKind:matchKind,predicate:predicate}])});
 })()
 ), Clazz.new_(P$.MatchOps$lambda3.$init$,[this, null]))],$I$(4,1).c$$java_util_stream_StreamShape$java_util_stream_MatchOps_MatchKind$java_util_function_Supplier);
 }, 1);
@@ -290,4 +290,4 @@ return Boolean.valueOf$Z(!this.op.matchKind.shortCircuitResult);
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:39 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

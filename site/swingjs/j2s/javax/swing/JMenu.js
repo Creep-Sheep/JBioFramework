@@ -77,7 +77,7 @@ return this.popupMenu.isVisible$();
 });
 
 Clazz.newMeth(C$, 'setPopupMenuVisible$Z',  function (b) {
-if (!this.isEnabled$()) return;
+if (!this.isEnabled$() || this.popupMenu == null  ) return;
 if (b && this.popupMenu.getPeer$() == null  ) this.popupMenu.addNotify$();
 var isVisible=this.isPopupMenuVisible$();
 if (b != isVisible  && (this.isEnabled$() || !b ) ) {
@@ -533,4 +533,4 @@ this.b$['javax.swing.JMenu'].setSelected$Z.apply(this.b$['javax.swing.JMenu'], [
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:29 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

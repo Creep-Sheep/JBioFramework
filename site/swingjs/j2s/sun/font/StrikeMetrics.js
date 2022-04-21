@@ -103,4 +103,4 @@ Clazz.newMeth(C$, 'toString',  function () {
 return "ascent:x=" + new Float(this.ascentX).toString() + " y=" + new Float(this.ascentY).toString() + " descent:x=" + new Float(this.descentX).toString() + " y=" + new Float(this.descentY).toString() + " baseline:x=" + new Float(this.baselineX).toString() + " y=" + new Float(this.baselineY).toString() + " leading:x=" + new Float(this.leadingX).toString() + " y=" + new Float(this.leadingY).toString() + " maxAdvance:x=" + new Float(this.maxAdvanceX).toString() + " y=" + new Float(this.maxAdvanceY).toString() ;
 });
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:18:23 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:41 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

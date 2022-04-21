@@ -90,7 +90,7 @@ throw e;
 return rb;
 });
 })()
-), Clazz.new_(P$.LocaleData$1.$init$,[this, {baseName:baseName,locale:locale}]))]);
+), Clazz.new_(P$.LocaleData$1.$init$,[this, {locale:locale,baseName:baseName}]))]);
 }, 1);
 ;
 (function(){/*c*/var C$=Clazz.newClass(P$.LocaleData, "LocaleDataResourceBundleControl", function(){
@@ -194,4 +194,4 @@ C$.$$INSTANCE=Clazz.new_(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:18:38 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:01 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -357,7 +357,8 @@ Clazz.newMeth(C$, 'getVideo$java_net_URL',  function (url) {
 try {
 if (url.getProtocol$() === "jar" ) {
 return this.createVideo$BA($I$(3).getFileAsBytes$O(url));
-}return this.createVideo$java_nio_file_Path($I$(15,"get$java_net_URI",[url.toURI$()]));
+}if (url.getProtocol$().equals$O("file")) return this.getVideo$S(url.getFile$());
+return this.createVideo$java_nio_file_Path($I$(15,"get$java_net_URI",[url.toURI$()]));
 } catch (e) {
 if (Clazz.exceptionOf(e,"java.net.URISyntaxException")){
 return null;
@@ -425,7 +426,7 @@ return "wait";
 case 2:
 return "text";
 case 12:
-return "grab";
+return "pointer";
 case 13:
 return "move";
 case 8:
@@ -592,4 +593,4 @@ C$.SwingJS=SwingJS ||null;
 C$.dispatchID=0;
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:23 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:41 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

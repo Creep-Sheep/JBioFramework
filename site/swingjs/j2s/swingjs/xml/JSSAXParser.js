@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("swingjs.xml"),p$1={},I$=[[0,'java.util.Hashtable','swingjs.JSUtil','java.io.BufferedInputStream','javajs.util.Rdr','java.io.BufferedReader','swingjs.xml.JSSAXContentHandler','swingjs.api.js.DOMNode','swingjs.xml.JSSAXAttributes','javajs.util.AU']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("swingjs.xml"),p$1={},I$=[[0,'java.util.Hashtable','swingjs.JSUtil','javajs.util.Rdr','java.io.BufferedReader','swingjs.xml.JSSAXContentHandler','swingjs.api.js.DOMNode','swingjs.xml.JSSAXAttributes','javajs.util.AU']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "JSSAXParser", null, null, ['org.xml.sax.Parser', 'org.xml.sax.XMLReader']);
 
 C$.$clinit$=2;
@@ -68,15 +68,12 @@ this.parse$org_xml_sax_InputSource$I(source, 0);
 
 Clazz.newMeth(C$, 'getString$org_xml_sax_InputSource',  function (source) {
 var rdr=source.getCharacterStream$();
-var data=Clazz.array(String, [1]);
 if (rdr == null ) {
-var bs=source.getByteStream$();
-if (!(Clazz.instanceOf(bs, "java.io.BufferedInputStream"))) bs=Clazz.new_($I$(3,1).c$$java_io_InputStream,[bs]);
-data[0]=$I$(4,"fixUTF$BA",[$I$(4).getStreamAsBytes$java_io_BufferedInputStream$javajs_util_OC(bs, null)]);
-} else {
-if (!(Clazz.instanceOf(rdr, "java.io.BufferedReader"))) rdr=Clazz.new_($I$(5,1).c$$java_io_Reader,[rdr]);
-$I$(4).readAllAsString$java_io_BufferedReader$I$Z$SA$I(rdr, -1, false, data, 0);
-}return data[0];
+return $I$(3,"fixUTF$BA",[$I$(3,"streamToBytes$java_io_InputStream",[source.getByteStream$()])]);
+}if (!(Clazz.instanceOf(rdr, "java.io.BufferedReader"))) rdr=Clazz.new_($I$(4,1).c$$java_io_Reader,[rdr]);
+var data=Clazz.array(String, [1]);
+$I$(3).readAllAsString$java_io_BufferedReader$I$Z$SA$I(rdr, -1, false, data, 0);
+return data[0];
 }, p$1);
 
 Clazz.newMeth(C$, 'parseXML$S',  function (data) {
@@ -126,13 +123,13 @@ return (node.getAttribute(name) ||null);
 }, 1);
 
 Clazz.newMeth(C$, 'parseDocument$swingjs_api_js_DOMNode$I',  function (doc, mode) {
-if (this.docHandler == null  && this.contentHandler == null  ) this.contentHandler=Clazz.new_($I$(6,1));
+if (this.docHandler == null  && this.contentHandler == null  ) this.contentHandler=Clazz.new_($I$(5,1));
 this.ver2=(this.contentHandler != null );
 p$1.setNode$swingjs_api_js_DOMNode.apply(this, [doc]);
 if (mode == 2) return;
 if (this.ver2) this.contentHandler.startDocument$();
  else this.docHandler.startDocument$();
-var element=$I$(7).getAttr(doc, "firstChild");
+var element=$I$(6).getAttr(doc, "firstChild");
 
 var type;
 while (element && (type = element.nodeType) != 1) { element = element.nextSibling;
@@ -147,24 +144,24 @@ p$1.walkDOMTreePrivate$swingjs_api_js_DOMNode$swingjs_api_js_DOMNode$Z$I.apply(t
 });
 
 Clazz.newMeth(C$, 'walkDOMTreePrivate$swingjs_api_js_DOMNode$swingjs_api_js_DOMNode$Z$I',  function (root, node, skipTag, mode) {
-var localName=($I$(7).getAttr(node, "localName"));
-var nodeName=$I$(7).getAttr(node, "nodeName");
-var uri=$I$(7).getAttr(node, "namespaceURI");
+var localName=($I$(6).getAttr(node, "localName"));
+var nodeName=$I$(6).getAttr(node, "nodeName");
+var uri=$I$(6).getAttr(node, "namespaceURI");
 if (localName == null ) {
 if (mode != 0) return;
 p$1.getTextData$swingjs_api_js_DOMNode$Z.apply(this, [node, true]);
 } else if (!skipTag) {
 this.registerPrefixes$swingjs_api_js_DOMNode(node);
-var atts=Clazz.new_($I$(8,1).c$$swingjs_api_js_DOMNode,[node]);
+var atts=Clazz.new_($I$(7,1).c$$swingjs_api_js_DOMNode,[node]);
 p$1.setNode$swingjs_api_js_DOMNode.apply(this, [node]);
 if (this.ver2) this.contentHandler.startElement$S$S$S$org_xml_sax_Attributes(uri, localName, nodeName, atts);
  else this.docHandler.startElement$S$org_xml_sax_AttributeList(localName, atts);
 }if (root == null ) root=node;
 var isRoot=(node === root );
-node=$I$(7).getAttr(node, "firstChild");
+node=$I$(6).getAttr(node, "firstChild");
 while (node != null ){
 if (isRoot || mode == 0 ) p$1.walkDOMTreePrivate$swingjs_api_js_DOMNode$swingjs_api_js_DOMNode$Z$I.apply(this, [root, node, false, mode]);
-node=$I$(7).getAttr(node, "nextSibling");
+node=$I$(6).getAttr(node, "nextSibling");
 }
 if (localName == null  || skipTag ) return;
 if (this.ver2) this.contentHandler.endElement$S$S$S(uri, localName, nodeName);
@@ -172,23 +169,23 @@ if (this.ver2) this.contentHandler.endElement$S$S$S(uri, localName, nodeName);
 }, p$1);
 
 Clazz.newMeth(C$, 'getChildren$swingjs_api_js_DOMNode',  function (node) {
-return $I$(7).getAttr(node, "children");
+return $I$(6).getAttr(node, "children");
 }, 1);
 
 Clazz.newMeth(C$, 'getSimpleInnerText$swingjs_api_js_DOMNode',  function (node) {
 var children=C$.getChildren$swingjs_api_js_DOMNode(node);
-return (children == null  || children.length > 0  ? "" : $I$(7).getAttr(node, "textContent"));
+return (children == null  || children.length > 0  ? "" : $I$(6).getAttr(node, "textContent"));
 }, 1);
 
 Clazz.newMeth(C$, 'getTextData$swingjs_api_js_DOMNode$Z',  function (node, doProcess) {
-var nodeName=$I$(7).getAttr(node, "nodeName");
+var nodeName=$I$(6).getAttr(node, "nodeName");
 var isText="#text".equals$O(nodeName);
 if (isText || "#cdata-section".equals$O(nodeName) ) {
-var data=$I$(7).getAttr(node, "textContent");
+var data=$I$(6).getAttr(node, "textContent");
 if (!doProcess) return data;
 var len=data.length$();
 var ch=this.tempChars;
-if (len > ch.length) ch=this.tempChars=$I$(9).ensureLength$O$I(ch, len * 2);
+if (len > ch.length) ch=this.tempChars=$I$(8).ensureLength$O$I(ch, len * 2);
 for (var i=len; --i >= 0; ) ch[i]=data.charAt$I(i);
 
 p$1.setNode$swingjs_api_js_DOMNode.apply(this, [node]);
@@ -248,4 +245,4 @@ return this.errorHandler;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:18:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:20 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

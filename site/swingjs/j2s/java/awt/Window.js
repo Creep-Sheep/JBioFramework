@@ -12,10 +12,11 @@ this.isInShow=false;
 this.opacity=1.0;
 this.shape=null;
 this.isTrayIconWindow=false;
+this.locationByPlatform=false;
 this.opaque=true;
 },1);
 
-C$.$fields$=[['Z',['syncLWRequests','beforeFirstShow','alwaysOnTop','showWithParent','focusableWindowState','isInShow','isTrayIconWindow','_disposed','opaque'],'F',['opacity'],'I',['state'],'S',['warningString'],'O',['icons','java.util.List','temporaryLostComponent','java.awt.Component','ownedWindowList','java.util.Vector','modalBlocker','java.awt.JSDialog','modalExclusionType','java.awt.JSComponent.ModalExclusionType','windowListener','java.awt.event.WindowListener','windowStateListener','java.awt.event.WindowStateListener','windowFocusListener','java.awt.event.WindowFocusListener','shape','java.awt.Shape']]
+C$.$fields$=[['Z',['syncLWRequests','beforeFirstShow','alwaysOnTop','showWithParent','focusableWindowState','isInShow','isTrayIconWindow','_disposed','locationByPlatform','opaque'],'F',['opacity'],'I',['state'],'S',['warningString'],'O',['icons','java.util.List','temporaryLostComponent','java.awt.Component','ownedWindowList','java.util.Vector','modalBlocker','java.awt.JSDialog','modalExclusionType','java.awt.JSComponent.ModalExclusionType','windowListener','java.awt.event.WindowListener','windowStateListener','java.awt.event.WindowStateListener','windowFocusListener','java.awt.event.WindowFocusListener','shape','java.awt.Shape']]
 ,['Z',['systemSyncLWRequests'],'I',['nameCounter'],'O',['TRANSPARENT_BACKGROUND_COLOR','java.awt.Color']]]
 
 Clazz.newMeth(C$, 'setOpaque$java_awt_Window$Z',  function (window, opaque) {
@@ -72,7 +73,14 @@ p$1.addToWindowList.apply(this, []);
 this.cursor=$I$(3).getPredefinedCursor$I(0);
 this.visible=false;
 this.setLayout$java_awt_LayoutManager(Clazz.new_($I$(4,1)));
-this.modalExclusionType=$I$(5).NO_EXCLUDE;
+var screenBounds=this.getGraphicsConfiguration$().getBounds$();
+var screenInsets=this.getToolkit$().getScreenInsets$java_awt_GraphicsConfiguration(this.graphicsConfig);
+var x=this.getX$() + screenBounds.x + screenInsets.left ;
+var y=this.getY$() + screenBounds.y + screenInsets.top ;
+if (x != (this).x || y != (this).y ) {
+this.setLocation$I$I(x, y);
+this.setLocationByPlatform$Z(false);
+}this.modalExclusionType=$I$(5).NO_EXCLUDE;
 }, 1);
 
 Clazz.newMeth(C$, 'constructComponentName$',  function () {
@@ -895,6 +903,18 @@ Clazz.newMeth(C$, 'canContainFocusOwner$java_awt_Component',  function (focusOwn
 return C$.superclazz.prototype.canContainFocusOwner$java_awt_Component.apply(this, [focusOwnerCandidate]) && this.isFocusableWindow$() ;
 });
 
+Clazz.newMeth(C$, 'setLocationByPlatform$Z',  function (locationByPlatform) {
+/*sync org.eclipse.jdt.core.dom.MethodInvocation*/(this.getTreeLock$());
+{
+if (locationByPlatform && this.isShowing$() ) {
+throw Clazz.new_(Clazz.load('java.awt.IllegalComponentStateException').c$$S,["The window is showing on screen."]);
+}this.locationByPlatform=locationByPlatform;
+}});
+
+Clazz.newMeth(C$, 'isLocationByPlatform$',  function () {
+return this.locationByPlatform;
+});
+
 Clazz.newMeth(C$, 'setBounds$I$I$I$I',  function (x, y, width, height) {
 C$.superclazz.prototype.setBounds$I$I$I$I.apply(this, [x, y, width, height]);
 });
@@ -1011,4 +1031,4 @@ C$.nameCounter=0;
 C$.TRANSPARENT_BACKGROUND_COLOR=Clazz.new_($I$(1,1).c$$I$I$I$I,[0, 0, 0, 0]);
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:24 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:08 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

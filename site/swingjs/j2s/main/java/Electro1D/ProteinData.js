@@ -60,9 +60,9 @@ this.fullName.setText$S(protein.fullName);
 this.abbr.setText$S(protein.abbr);
 this.mw=String.valueOf$I(protein.mw);
 this.molwt.setText$S(this.mw);
-this.logMolWt.setText$S(String.valueOf$D(Math.log(protein.mw) / Math.log(10)));
+this.logMolWt.setText$S(String.valueOf$F((((Math.log(protein.mw) / Math.log(10) * 100)|0)) / 100.0));
 });
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 16:53:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

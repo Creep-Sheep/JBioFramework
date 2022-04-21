@@ -33,6 +33,7 @@ case "editable":
 this.ui.setEditable$Z((e.getNewValue$()).booleanValue$());
 break;
 case "document":
+case "lineWrap":
 if (e.getNewValue$() != null ) this.ui.updateRootView$();
 break;
 }
@@ -128,4 +129,4 @@ Clazz.newMeth(C$, 'mouseExited$java_awt_event_MouseEvent',  function (e) {
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:37 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:19 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

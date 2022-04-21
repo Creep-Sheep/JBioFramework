@@ -63,11 +63,13 @@ C$.showMessageDialog$java_awt_Component$O$S$I$javax_swing_Icon(parentComponent, 
 
 Clazz.newMeth(C$, 'showMessageDialog$java_awt_Component$O$S$I$javax_swing_Icon',  function (parentComponent, message, title, messageType, icon) {
 var simplify=C$.USE_HTML5_MODAL_FOR_WARNINGS_AND_ERRORS && (messageType == 2 || messageType == 0 ) ;
-if (simplify || !C$.isListener$java_awt_Component(parentComponent) ) {
-if (!simplify && !(Clazz.instanceOf(message, "java.lang.String")) ) C$.warnJSDeveloper$();
+var haveListener=C$.isListener$java_awt_Component(parentComponent);
+if (simplify || !haveListener ) {
+if (Clazz.instanceOf(message, "java.lang.String")) {
 var s=C$.getMessageTypeString$I$S(messageType, ": ") + (title === "Message"  ? "" : title + "\n\n") + (Clazz.instanceOf(message, "java.lang.String") ? "" + message : "?") ;
 $I$(1).alert$O(s);
 return;
+}C$.warnJSDeveloper$();
 }C$.showOptionDialog$java_awt_Component$O$S$I$I$javax_swing_Icon$OA$O(parentComponent, message, title, -1, messageType, icon, null, null);
 }, 1);
 
@@ -709,4 +711,4 @@ C$.USE_HTML5_MODAL_FOR_WARNINGS_AND_ERRORS=true;
 C$.sharedFrameKey=Clazz.getClass(C$);
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:23 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

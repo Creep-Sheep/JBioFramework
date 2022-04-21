@@ -1,5 +1,5 @@
 (function(){var P$=Clazz.newPackage("swingjs.plaf"),I$=[[0,'swingjs.plaf.JSComponentUI']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
-/*c*/var C$=Clazz.newClass(P$, "JSLayeredPaneUI", null, 'swingjs.plaf.JSLightweightUI');
+/*c*/var C$=Clazz.newClass(P$, "JSLayeredPaneUI", null, 'swingjs.plaf.JSPanelUI');
 
 C$.$clinit$=2;
 
@@ -17,10 +17,14 @@ this.containerNode=this.domNode=$I$(1,"newDOMObject$S$S$SA",["div", this.id, Cla
 }return this.domNode;
 });
 
+Clazz.newMeth(C$, 'getHTMLSizePreferred$swingjs_api_js_DOMNode$Z',  function (obj, addCSS) {
+return C$.superclazz.prototype.getHTMLSizePreferred$swingjs_api_js_DOMNode$Z.apply(this, [obj, addCSS]);
+});
+
 Clazz.newMeth(C$, 'installUI$javax_swing_JComponent',  function (jc) {
 });
 
 Clazz.newMeth(C$, 'uninstallUI$javax_swing_JComponent',  function (jc) {
 });
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-04-27 11:58:29 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:14 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

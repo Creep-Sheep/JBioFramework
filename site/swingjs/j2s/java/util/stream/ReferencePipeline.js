@@ -304,7 +304,7 @@ if (result != null ) result.sequential$().forEach$java_util_function_IntConsumer
 ), Clazz.new_($I$(9,1).c$$java_util_stream_Sink,[this, {mapper:this.$finals$.mapper}, this.$finals$.sink],P$.ReferencePipeline$8$1));
 });
 })()
-), Clazz.new_([this, {mapper:mapper,sink:sink}, this, $I$(1).REFERENCE, $I$(7).NOT_SORTED | $I$(7).NOT_DISTINCT | $I$(7).NOT_SIZED ],$I$(10,1).c$$java_util_stream_AbstractPipeline$java_util_stream_StreamShape$I,P$.ReferencePipeline$8));
+), Clazz.new_([this, {sink:sink,mapper:mapper}, this, $I$(1).REFERENCE, $I$(7).NOT_SORTED | $I$(7).NOT_DISTINCT | $I$(7).NOT_SIZED ],$I$(10,1).c$$java_util_stream_AbstractPipeline$java_util_stream_StreamShape$I,P$.ReferencePipeline$8));
 });
 
 Clazz.newMeth(C$, 'flatMapToDouble$java_util_function_Function',  function (mapper) {
@@ -356,7 +356,7 @@ if (result != null ) result.sequential$().forEach$java_util_function_DoubleConsu
 ), Clazz.new_($I$(9,1).c$$java_util_stream_Sink,[this, {mapper:this.$finals$.mapper}, this.$finals$.sink],P$.ReferencePipeline$9$1));
 });
 })()
-), Clazz.new_([this, {sink:sink,mapper:mapper}, this, $I$(1).REFERENCE, $I$(7).NOT_SORTED | $I$(7).NOT_DISTINCT | $I$(7).NOT_SIZED ],$I$(12,1).c$$java_util_stream_AbstractPipeline$java_util_stream_StreamShape$I,P$.ReferencePipeline$9));
+), Clazz.new_([this, {mapper:mapper,sink:sink}, this, $I$(1).REFERENCE, $I$(7).NOT_SORTED | $I$(7).NOT_DISTINCT | $I$(7).NOT_SIZED ],$I$(12,1).c$$java_util_stream_AbstractPipeline$java_util_stream_StreamShape$I,P$.ReferencePipeline$9));
 });
 
 Clazz.newMeth(C$, 'flatMapToLong$java_util_function_Function',  function (mapper) {
@@ -665,4 +665,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:40 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

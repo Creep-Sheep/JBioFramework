@@ -188,8 +188,8 @@ return;
 var cellSpacing=this.getCellSpacing$();
 var amountFull=this.getAmountFull$java_awt_Insets$I$I(b, barRectWidth, barRectHeight);
 var g2=g;
-g2.setColor$java_awt_Color(this.progressBar.getForeground$());
 if (this.progressBar.isIndeterminate$()) {
+g2.setColor$java_awt_Color(this.progressBar.getForeground$());
 $I$(2).setStyle(this.barNode, "display", "block");
 if (this.progressBar.getOrientation$() == 0) {
 $I$(2).setSize(this.barNode, barRectWidth, barRectHeight);
@@ -199,6 +199,9 @@ $I$(2).setSize(this.barNode, barRectHeight, barRectWidth);
 $I$(2).setTopLeftAbsolute(this.barNode, b.left, b.top);
 }} else {
 $I$(2).setStyle(this.barNode, "display", "none");
+g2.setColor$java_awt_Color(this.progressBar.getBackground$());
+g2.fillRect$I$I$I$I(b.left, b.top, barRectWidth, barRectHeight);
+g2.setColor$java_awt_Color(this.progressBar.getForeground$());
 if (this.progressBar.getOrientation$() == 0) {
 if (cellSpacing == 0 && amountFull > 0 ) {
 g2.setStroke$java_awt_Stroke(Clazz.new_($I$(9,1).c$$F$I$I,[barRectHeight, 0, 2]));
@@ -357,4 +360,4 @@ this.b$['swingjs.plaf.JSProgressBarUI'].progressBar.repaint$();
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:27 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:16 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

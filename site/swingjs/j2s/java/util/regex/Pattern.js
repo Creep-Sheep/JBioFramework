@@ -298,6 +298,44 @@ Clazz.newMeth(C$, 'splitAsStream$CharSequence',  function (input) {
 return $I$(6,"stream$java_util_Spliterator$Z",[$I$(7,"spliteratorUnknownSize$java_util_Iterator$I",[Clazz.new_(P$.Pattern$1MatcherIterator.$init$,[this, {input:input}]), 272]), false]);
 });
 
+Clazz.newMeth(C$, '秘setNameGroups$',  function () {
+this.namedGroups$();
+var s=this.pattern;
+var pt=s.lastIndexOf$S("(?<") + 1;
+if (pt == 0) return;
+var ignore=false;
+var n=-1;
+for (var i=0; i < pt; i++) {
+var c=s.charAt$I(i);
+switch (c.$c()) {
+case 92:
+++i;
+break;
+case 91:
+ignore=true;
+break;
+case 93:
+ignore=false;
+break;
+case 40:
+if (ignore) continue;
+++n;
+if (s.charAt$I(i + 1) == "?") {
+switch ((s.charCodeAt$I(i + 2))) {
+case 60:
+var name=s.substring$I$I(i + 3, s.indexOf$S$I(">", i));
+this.namedGroups.put$O$O(name, Integer.valueOf$I(n));
+i+=s.indexOf$S$I(")", i);
+break;
+case 58:
+--n;
+break;
+}
+}break;
+}
+}
+});
+
 C$.$static$=function(){C$.$static$=0;
 C$.posixes=Clazz.array(String, -1, ["\\p{javaWhitespace}", "\\s", "\\p{javaDigit}", "\\d", "\\p{Lower}", "[a-z]", "\\p{Upper}", "[A-Z]", "\\p{ASCII}", "[\u0000-]", "\\p{Alpha}", "[A-Za-z]", "\\p{Digit}", "[0-9]", "\\p{Alnum}", "[A-Za-z0-9]", "\\p{Punct}", "[!\"#$%&\'\\(\\)\\*\\+,-./:;<=>?@\\[\\\\\\]^_`{\\|}~]", "\\p{Graph}", "[A-Za-z0-9]!\"#$%&\'\\(\\)\\*\\+,-./:;<=>?@\\[\\\\\\]^_`{\\|}~]", "\\p{Print}", "[A-Za-z0-9]!\"#$%&\'\\(\\)\\*\\+,-./:;<=>?@\\[\\\\\\]^_`{\\|}~]", "\\p{Blank}", "[ \t]", "\\p{Cntrl}", "[\u0000-\u001f]", "\\p{XDigit}", "[0-9a-fA-F]", "\\p{Space}", "[ \t\n\u000b\f\r]", "\\p{javaLowerCase}", "[a-z]", "\\p{javaUpperCase}", "[A-Z]", "\\p{Sc}", "[$\u00a2\u00a3\u00a4\u00a5\u058f\u060b\u07fe\u07ff\u09f2\u09f3\u09fb\u0af1\u0bf9\u0e3f\u20a0\u20a1\u20a2\u20a3\u20a4\u20a5\u20a6\u20a7\u20a8\u20a9\u20aa\u20ab\u20ac\u20ad\u20ae\u20af\u20b0\u20b1\u20b2\u20b3\u20b4\u20b5\u20b6\u20b7\u20b8\u20b9\u20ba\u20bb\u20bc\u20bd\u20be\u20bf\ua838\ufdfc\ufe69\uff04\uffe0\uffe1\uffe5\uffe6]"]);
 };
@@ -351,4 +389,4 @@ return false;
 }});
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:38 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:51 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

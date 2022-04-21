@@ -339,7 +339,7 @@ return value;
 }throw Clazz.new_(Clazz.load('java.util.NoSuchElementException'));
 });
 })()
-), Clazz.new_(P$.JarVerifier$2.$init$,[this, {enum2:enum2,itor:itor,signersReq:signersReq}]));
+), Clazz.new_(P$.JarVerifier$2.$init$,[this, {signersReq:signersReq,itor:itor,enum2:enum2}]));
 });
 
 Clazz.newMeth(C$, 'entries2$java_util_jar_JarFile$java_util_Enumeration',  function (jar, e) {
@@ -386,7 +386,7 @@ return je;
 }throw Clazz.new_(Clazz.load('java.util.NoSuchElementException'));
 });
 })()
-), Clazz.new_(P$.JarVerifier$3.$init$,[this, {enum_:enum_,jar:jar,map:map}]));
+), Clazz.new_(P$.JarVerifier$3.$init$,[this, {jar:jar,map:map,enum_:enum_}]));
 });
 
 Clazz.newMeth(C$, 'isSigningRelated$S',  function (name) {
@@ -594,4 +594,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:36 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:49 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

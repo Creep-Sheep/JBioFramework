@@ -36,7 +36,7 @@ return widget.options[name] ||0;
 }, p$1);
 
 Clazz.newMeth(C$, 'createJ2SCB$',  function () {
-if (this.j2scb != null ) this.j2scb.j2sCB("destroy");
+this.uninstallingUI$();
 this.j2scb=this.cbui.$$O(this.cbui.domNode);
 var me=this;
 var fChange=function(){p$1.fChange$O$O$S$O.apply(me,arguments)} ||null;
@@ -89,28 +89,37 @@ Clazz.newMeth(C$, 'updateText$',  function () {
 });
 
 Clazz.newMeth(C$, 'updateCSS$',  function () {
+this.秘getUI$().allowPaintedBackground=false;
 $I$(2).setSize(this.cbui.domNode, this.cbui.width, this.cbui.height);
-if (this.j2scb != null ) this.j2scb.j2sCB("updateCSS");
-});
+if (this.j2scb != null ) {
+this.j2scb.j2sCB("updateCSS");
+}});
 
 Clazz.newMeth(C$, 'updateList$',  function () {
 if (this.j2scb == null ) return;
 var n=this.cbui.comboBox.getItemCount$();
-var opts=Clazz.array($I$(2), [n]);
+var opts=Clazz.array($I$(2), [n * 2]);
 var l=this;
 var d=l.getPreferredSize$();
 var h=d.height;
 var w=d.width;
 var ui=l.getUI$();
-for (var i=0; i < n; i++) {
-var j=this.cbui.comboBox.getRenderer$().getListCellRendererComponent$javax_swing_JList$O$I$Z$Z(this, this.getModel$().getElementAt$I(i), i, true, false);
-j.setSize$I$I(w, ui.getRowHeight$I(i));
-opts[i]=j.秘getUI$().getListNode$();
+for (var i=0, p=0; i < n; i++) {
+opts[p++]=p$1.renderItem$I$I$swingjs_plaf_JSListUI.apply(this, [i, w, ui]);
+opts[p++]=p$1.renderItem$I$I$swingjs_plaf_JSListUI.apply(this, [i, w, ui]);
 }
-this.j2scb.j2sCB("updateList", opts);
+this.j2scb.j2sCB("updateList2", opts);
 this.j2scb.j2sCB("setHeight", (h > 300 ? 300 : 0));
 this.updateCSS$();
 });
+
+Clazz.newMeth(C$, 'renderItem$I$I$swingjs_plaf_JSListUI',  function (i, w, ui) {
+var j=this.cbui.comboBox.getRenderer$().getListCellRendererComponent$javax_swing_JList$O$I$Z$Z(this, this.getModel$().getElementAt$I(i), i, true, false);
+j.setSize$I$I(w, ui.getRowHeight$I(i));
+var jui=j.秘getUI$();
+jui.c=jui.jc=j;
+return jui.getListNode$();
+}, p$1);
 
 Clazz.newMeth(C$, 'updateSelectedIndex$',  function () {
 if (this.j2scb != null ) this.j2scb.j2sCB("setSelectedIndex", this.cbui.comboBox.getSelectedIndex$());
@@ -168,6 +177,10 @@ Clazz.newMeth(C$, 'getKeyListener$',  function () {
 return null;
 });
 
+Clazz.newMeth(C$, 'dispose$',  function () {
+this.uninstallingUI$();
+});
+
 Clazz.newMeth(C$, 'uninstallingUI$',  function () {
 if (this.j2scb != null ) this.j2scb.j2sCB("destroy");
 this.j2scb=null;
@@ -192,14 +205,17 @@ this.cbui.comboBox.秘setTrigger$Z(true);
 this.cbui.comboBox.setSelectedIndex$I(i);
 this.cbui.comboBox.秘setTrigger$Z(false);
 return;
+case "pointerover":
 case "mouseover":
 return;
 case "mouse":
 var jqEvent=event.originalEvent ||null;
 switch (jqEvent.type ||"") {
+case "pointermove":
 case "mousemove":
 $I$(4).retargetMouseEvent$O$swingjs_api_js_DOMNode$javax_swing_JComponent$javax_swing_JComponent$I(jqEvent, null, this.cbui.comboBox, this, 0);
 break;
+case "pointerup":
 case "mouseup":
 $I$(5,"dispatch$O$I$I",[((P$.JSComboPopupList$1||
 (function(){/*a*/var C$=Clazz.newClass(P$, "JSComboPopupList$1", function(){Clazz.newInstance(this, arguments[0],1,C$);}, null, 'Runnable', 1);
@@ -234,4 +250,4 @@ C$.$clinit$=2;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:05 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-23 19:29:03 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

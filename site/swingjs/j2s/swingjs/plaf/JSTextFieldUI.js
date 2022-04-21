@@ -56,6 +56,11 @@ Clazz.newMeth(C$, 'getPreferredSize$javax_swing_JComponent',  function (c) {
 return (this.isAWT ? this.getMinimumSize$javax_swing_JComponent(c) : C$.superclazz.prototype.getPreferredSize$javax_swing_JComponent.apply(this, [c]));
 });
 
+Clazz.newMeth(C$, 'getSizingWidth$',  function () {
+var text=this.editor.getText$();
+return (text == null  ? null : text.length$() + "ch");
+});
+
 Clazz.newMeth(C$, 'getMinimumSize$javax_swing_JComponent',  function (jc) {
 return (this.isAWT ? $I$(8).getMinimumSizePeer$javax_swing_JComponent$O(jc, this.editor) : C$.superclazz.prototype.getMinimumSize$javax_swing_JComponent.apply(this, [jc]));
 });
@@ -68,4 +73,4 @@ return d;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-04-27 11:58:22 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:18 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -101,7 +101,7 @@ this.simPanel.startRun$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$
 });
 
 Clazz.newMeth(C$, 'setPlotData$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein',  function (stds, sample, dye) {
-this.plotPanel.setResults$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein(stds, sample, dye);
+this.tabPane2.setEnabledAt$I$Z(this.tabPane2.indexOfComponent$java_awt_Component(this.plotPanel), this.plotPanel.setResults$main_java_Electro1D_ProteinA$main_java_Electro1D_Protein$main_java_Electro1D_Protein(stds, sample, dye));
 });
 
 Clazz.newMeth(C$, 'displayData$',  function () {
@@ -167,4 +167,4 @@ f.setVisible$Z(true);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-03-23 18:00:04 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 16:53:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

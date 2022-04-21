@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("swingjs.plaf"),p$1={},I$=[[0,'Error','javax.swing.text.DefaultEditorKit','java.awt.Point','java.awt.Cursor',['javax.swing.text.Position','.Bias'],['swingjs.plaf.JSTextUI','.RootView'],'swingjs.api.js.DOMNode','swingjs.plaf.JSComponentUI','swingjs.JSToolkit','swingjs.JSKeyEvent','javax.swing.UIManager','javax.swing.text.DefaultCaret','javax.swing.SwingUtilities','javax.swing.plaf.InputMapUIResource','javax.swing.plaf.ActionMapUIResource','javax.swing.TransferHandler','swingjs.plaf.TextListener']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("swingjs.plaf"),p$1={},I$=[[0,'Error','javax.swing.text.DefaultEditorKit','java.awt.Point','java.awt.Cursor',['javax.swing.text.Position','.Bias'],['swingjs.plaf.JSTextUI','.RootView'],'swingjs.api.js.DOMNode','swingjs.plaf.JSComponentUI','swingjs.JSToolkit','swingjs.JSKeyEvent','javax.swing.UIManager','javax.swing.text.DefaultCaret','javax.swing.SwingUtilities','javax.swing.plaf.InputMapUIResource','javax.swing.plaf.ActionMapUIResource','javax.swing.TransferHandler','swingjs.plaf.TextListener','java.util.ArrayList',['java.awt.geom.Point2D','.Double']]],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "JSTextUI", function(){
 Clazz.newInstance(this, arguments,0,C$);
 }, 'swingjs.plaf.JSLightweightUI');
@@ -12,8 +12,12 @@ this.rootView=Clazz.new_($I$(6,1),[this, null]);
 this.useRootView=false;
 },1);
 
-C$.$fields$=[['Z',['editable','isEditorPane','useRootView'],'O',['editor','javax.swing.text.JTextComponent','rootView','swingjs.plaf.JSTextUI.RootView','textListener','swingjs.plaf.TextListener']]
+C$.$fields$=[['Z',['editable','isEditorPane','useRootView'],'O',['editor','javax.swing.text.JTextComponent','rootView','swingjs.plaf.JSTextUI.RootView','textListener','swingjs.plaf.TextListener','charMap','java.util.ArrayList']]
 ,['O',['defaultKit','javax.swing.text.EditorKit','overflows','String[]','markDot','java.awt.Point','textCursor','java.awt.Cursor','discardBias','javax.swing.text.Position.Bias[]']]]
+
+Clazz.newMeth(C$, 'getToolTipText$javax_swing_text_JTextComponent$java_awt_Point',  function (t, pt) {
+return null;
+});
 
 Clazz.newMeth(C$, 'updateDOMNode$',  function () {
 if (this.editor.isOpaque$() && this.editor.isEnabled$() ) this.setBackgroundImpl$java_awt_Color(this.getBackground$());
@@ -336,6 +340,7 @@ return true;
 });
 
 Clazz.newMeth(C$, 'setJSText$',  function () {
+this.charMap=null;
 this.updateDOMNode$();
 });
 
@@ -475,10 +480,50 @@ return (type === "keydown"  ? null : Boolean.valueOf$Z(false));
 });
 
 Clazz.newMeth(C$, 'viewToModel$javax_swing_text_JTextComponent$java_awt_Point$javax_swing_text_Position_BiasA',  function (t, pt, biasReturn) {
-pt.x=2147483647;
+if (pt.x == 2147483647) {
 this.getJSMarkAndDot$java_awt_Point$I(pt, 0);
 return pt.y;
+}if (this.charMap == null ) p$1.createCharMap.apply(this, []);
+for (var n=this.charMap.size$(), i=n; --i >= 0; ) {
+var p=this.charMap.get$I(i);
+if (p.y < pt.y  && p.x < pt.x  ) return (i == n - 1 ? i - 1 : i);
+}
+return 0;
 });
+
+Clazz.newMeth(C$, 'createCharMap',  function () {
+this.charMap=Clazz.new_($I$(18,1));
+var s=this.editor.getText$();
+var x=0;
+var y=0;
+var fm=this.editor.getFont$().getFontMetrics$();
+var tabWidth=fm.stringWidth$S("    ");
+var h=fm.getHeight$();
+var line0=0;
+var ntab=0;
+for (var i=0; i < s.length$(); i++) {
+this.charMap.add$O(Clazz.new_($I$(19,1).c$$D$D,[x, y]));
+var c=s.charAt$I(i);
+switch (c.$c()) {
+case 10:
+y+=h;
+x=0;
+ntab=0;
+line0=i + 1;
+break;
+case 9:
+x+=tabWidth;
+++ntab;
+break;
+default:
+var r=fm.getStringBounds$S$I$I$java_awt_Graphics(s, line0, i + 1, null);
+x=r.getWidth$() + ntab * tabWidth;
+break;
+}
+}
+this.charMap.add$O(Clazz.new_($I$(19,1).c$$D$D,[x, y]));
+this.charMap.add$O(Clazz.new_($I$(19,1).c$$D$D,[0, y + h]));
+}, p$1);
 
 Clazz.newMeth(C$, 'setJavaMarkAndDot$java_awt_Point',  function (markDot) {
 var mark=markDot.x;
@@ -777,4 +822,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:28 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:18 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

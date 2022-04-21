@@ -501,7 +501,7 @@ Clazz.newMeth(C$, 'getContentLength$',  function () {
 return this.$finals$.uc.getContentLength$();
 });
 })()
-), Clazz.new_($I$(5,1),[this, {url:url,uc:uc,name:name}],P$.URLClassPath$Loader$1));
+), Clazz.new_($I$(5,1),[this, {uc:uc,name:name,url:url}],P$.URLClassPath$Loader$1));
 });
 
 Clazz.newMeth(C$, 'getResource$S',  function (name) {
@@ -720,7 +720,7 @@ Clazz.newMeth(C$, 'getCodeSigners$',  function () {
 return this.$finals$.entry.getCodeSigners$();
 });
 })()
-), Clazz.new_($I$(5,1),[this, {url:url,name:name,entry:entry}],P$.URLClassPath$JarLoader$2));
+), Clazz.new_($I$(5,1),[this, {entry:entry,url:url,name:name}],P$.URLClassPath$JarLoader$2));
 });
 
 Clazz.newMeth(C$, 'validIndex$S',  function (name) {
@@ -956,7 +956,7 @@ Clazz.newMeth(C$, 'getContentLength$',  function () {
 return Long.$ival(this.$finals$.file.length$());
 });
 })()
-), Clazz.new_($I$(5,1),[this, {url:url,file:file,name:name}],P$.URLClassPath$FileLoader$1));
+), Clazz.new_($I$(5,1),[this, {url:url,name:name,file:file}],P$.URLClassPath$FileLoader$1));
 }} catch (e) {
 if (Clazz.exceptionOf(e,"Exception")){
 return null;
@@ -972,4 +972,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:18:26 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:44 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

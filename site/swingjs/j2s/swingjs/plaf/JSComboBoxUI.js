@@ -38,6 +38,7 @@ this.setDataShadowKeyComponent$swingjs_api_js_DOMNode$java_awt_Component(this.do
 }this.addFocusHandler$();
 this.setCssFont$swingjs_api_js_DOMNode$java_awt_Font(this.domNode, this.c.getFont$());
 this.popup.updateEnabled$();
+this.setBackgroundImpl$java_awt_Color(this.jc.isOpaque$() ? this.getBackground$() : null);
 return this.updateDOMNodeCUI$();
 });
 
@@ -65,6 +66,11 @@ return;
 C$.superclazz.prototype.propertyChange$java_beans_PropertyChangeEvent.apply(this, [e]);
 });
 
+Clazz.newMeth(C$, 'dispose$',  function () {
+this.popup.dispose$();
+C$.superclazz.prototype.dispose$.apply(this, []);
+});
+
 Clazz.newMeth(C$, 'getChildCount$',  function () {
 return 0;
 });
@@ -80,6 +86,7 @@ this.installDefaults$();
 this.listBox=this.popup=this.createPopup$();
 this.listBox.setSelectionBackground$java_awt_Color(null);
 this.listBox.addListSelectionListener$javax_swing_event_ListSelectionListener(p$1.getHandler.apply(this, []));
+this.listBox.setBackground$java_awt_Color(this.jc.getBackground$());
 this.comboBox.add$java_awt_Component(this.listBox);
 var inTable=c.getClientProperty$O("JComboBox.isTableCellEditor");
 if (inTable != null ) {
@@ -579,6 +586,12 @@ Clazz.newMeth(C$, 'handleJSFocus$O$O$Z',  function (jco, related, focusGained) {
 if (focusGained) C$.superclazz.prototype.handleJSFocus$O$O$Z.apply(this, [jco, related, focusGained]);
 });
 
+Clazz.newMeth(C$, 'setBackgroundImpl$java_awt_Color',  function (color) {
+if (this.domNode == null  || this.isUIDisabled ) return;
+this.backgroundColor=color;
+this.setBackgroundDOM$swingjs_api_js_DOMNode$java_awt_Color(this.domNode, color);
+});
+
 C$.$static$=function(){C$.$static$=0;
 {
 $I$(9).loadJQComboBox$();
@@ -842,22 +855,25 @@ this.b$['swingjs.plaf.JSComboBoxUI'].popup.updateState$java_util_EventObject$S(e
 });
 
 Clazz.newMeth(C$, 'propertyChange$java_beans_PropertyChangeEvent',  function (e) {
+var editor=this.b$['swingjs.plaf.JSComboBoxUI'].editor;
 var propertyName=e.getPropertyName$();
-if (e.getSource$() === this.b$['swingjs.plaf.JSComboBoxUI'].editor ) {
+var popup=this.b$['swingjs.plaf.JSComboBoxUI'].popup;
+if (e.getSource$() === editor ) {
 if ("border".equals$O(propertyName)) {
 this.b$['swingjs.plaf.JSComboBoxUI'].isMinimumSizeDirty=true;
 this.b$['swingjs.plaf.JSComboBoxUI'].isDisplaySizeDirty=true;
 this.b$['swingjs.plaf.JSComboBoxUI'].comboBox.revalidate$();
 }} else {
 var comboBox=e.getSource$();
-if (propertyName === "model" ) {
+switch (propertyName) {
+case "model":
 var newModel=e.getNewValue$();
 var oldModel=e.getOldValue$();
 if (oldModel != null  && this.b$['swingjs.plaf.JSComboBoxUI'].listDataListener != null  ) {
 oldModel.removeListDataListener$javax_swing_event_ListDataListener(this.b$['swingjs.plaf.JSComboBoxUI'].listDataListener);
 }if (newModel != null  && this.b$['swingjs.plaf.JSComboBoxUI'].listDataListener != null  ) {
 newModel.addListDataListener$javax_swing_event_ListDataListener(this.b$['swingjs.plaf.JSComboBoxUI'].listDataListener);
-}if (this.b$['swingjs.plaf.JSComboBoxUI'].editor != null ) {
+}if (editor != null ) {
 comboBox.configureEditor$javax_swing_ComboBoxEditor$O(comboBox.getEditor$(), comboBox.getSelectedItem$());
 }this.b$['swingjs.plaf.JSComboBoxUI'].isMinimumSizeDirty=true;
 this.b$['swingjs.plaf.JSComboBoxUI'].isDisplaySizeDirty=true;
@@ -865,14 +881,17 @@ comboBox.revalidate$();
 this.b$['swingjs.plaf.JSComboBoxUI'].listBox.setModel$javax_swing_ListModel(newModel);
 this.b$['swingjs.plaf.JSComponentUI'].setTainted$.apply(this.b$['swingjs.plaf.JSComponentUI'], []);
 this.b$['swingjs.plaf.JSComboBoxUI'].updateDOMNode$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
-this.b$['swingjs.plaf.JSComboBoxUI'].popup.updateList$();
-this.b$['swingjs.plaf.JSComboBoxUI'].popup.updateSelectedIndex$();
-this.b$['swingjs.plaf.JSComboBoxUI'].popup.updateCSS$();
+popup.updateList$();
+popup.updateSelectedIndex$();
+popup.updateCSS$();
 this.b$['swingjs.plaf.JSComboBoxUI'].repaint$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
-} else if (propertyName === "editor"  && comboBox.isEditable$() ) {
+break;
+case "editor":
+if (comboBox.isEditable$()) {
 this.b$['swingjs.plaf.JSComboBoxUI'].addEditor$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
 comboBox.revalidate$();
-} else if (propertyName === "editable" ) {
+}break;
+case "editable":
 if (comboBox.isEditable$()) {
 comboBox.setRequestFocusEnabled$Z(false);
 this.b$['swingjs.plaf.JSComboBoxUI'].addEditor$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
@@ -881,40 +900,66 @@ comboBox.setRequestFocusEnabled$Z(true);
 this.b$['swingjs.plaf.JSComboBoxUI'].removeEditor$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
 }p$1.updateToolTipTextForChildren.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
 comboBox.revalidate$();
-} else if (propertyName === "enabled" ) {
+break;
+case "enabled":
 var enabled=comboBox.isEnabled$();
-if (this.b$['swingjs.plaf.JSComboBoxUI'].editor != null ) this.b$['swingjs.plaf.JSComboBoxUI'].editor.setEnabled$Z(enabled);
+if (editor != null ) editor.setEnabled$Z(enabled);
 this.b$['swingjs.plaf.JSComboBoxUI'].repaint$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
-} else if (propertyName === "focusable" ) {
+break;
+case "focusable":
 var focusable=comboBox.isFocusable$();
-if (this.b$['swingjs.plaf.JSComboBoxUI'].editor != null ) this.b$['swingjs.plaf.JSComboBoxUI'].editor.setFocusable$Z(focusable);
+if (editor != null ) editor.setFocusable$Z(focusable);
 this.b$['swingjs.plaf.JSComboBoxUI'].repaint$.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
-} else if (propertyName === "maximumRowCount" ) {
+break;
+case "maximumRowCount":
 if (this.b$['swingjs.plaf.JSComboBoxUI'].isPopupVisible$javax_swing_JComboBox.apply(this.b$['swingjs.plaf.JSComboBoxUI'], [comboBox])) {
 this.b$['swingjs.plaf.JSComboBoxUI'].setPopupVisible$javax_swing_JComboBox$Z.apply(this.b$['swingjs.plaf.JSComboBoxUI'], [comboBox, false]);
 this.b$['swingjs.plaf.JSComboBoxUI'].setPopupVisible$javax_swing_JComboBox$Z.apply(this.b$['swingjs.plaf.JSComboBoxUI'], [comboBox, true]);
-}} else if (propertyName === "font" ) {
+}break;
+case "background":
+var c=comboBox.getBackground$();
+this.b$['swingjs.plaf.JSComboBoxUI'].listBox.setBackground$java_awt_Color(c);
+if (editor != null ) {
+editor.setBackground$java_awt_Color(c);
+}popup.updateCSS$();
+break;
+case "foreground":
 this.b$['swingjs.plaf.JSComboBoxUI'].listBox.setFont$java_awt_Font(comboBox.getFont$());
-if (this.b$['swingjs.plaf.JSComboBoxUI'].editor != null ) {
-this.b$['swingjs.plaf.JSComboBoxUI'].editor.setFont$java_awt_Font(comboBox.getFont$());
+if (editor != null ) {
+editor.setFont$java_awt_Font(comboBox.getFont$());
 }this.b$['swingjs.plaf.JSComboBoxUI'].isMinimumSizeDirty=true;
 this.b$['swingjs.plaf.JSComboBoxUI'].isDisplaySizeDirty=true;
+popup.updateCSS$();
+break;
+case "font":
+this.b$['swingjs.plaf.JSComboBoxUI'].listBox.setFont$java_awt_Font(comboBox.getFont$());
+if (editor != null ) {
+editor.setFont$java_awt_Font(comboBox.getFont$());
+}this.b$['swingjs.plaf.JSComboBoxUI'].isMinimumSizeDirty=true;
+this.b$['swingjs.plaf.JSComboBoxUI'].isDisplaySizeDirty=true;
+popup.updateCSS$();
 comboBox.validate$();
-} else if (propertyName == "ToolTipText") {
+break;
+case "ToolTipText":
 p$1.updateToolTipTextForChildren.apply(this.b$['swingjs.plaf.JSComboBoxUI'], []);
-} else if (propertyName == "JComboBox.isTableCellEditor") {
+break;
+case "JComboBox.isTableCellEditor":
 var inTable=e.getNewValue$();
 this.b$['swingjs.plaf.JSComboBoxUI'].isTableCellEditor=inTable.equals$O(Boolean.TRUE) ? true : false;
-} else if (propertyName === "prototypeDisplayValue" ) {
+break;
+case "prototypeDisplayValue":
 this.b$['swingjs.plaf.JSComboBoxUI'].isMinimumSizeDirty=true;
 this.b$['swingjs.plaf.JSComboBoxUI'].isDisplaySizeDirty=true;
 comboBox.revalidate$();
-} else if (propertyName === "renderer" ) {
+break;
+case "renderer":
 this.b$['swingjs.plaf.JSComboBoxUI'].isMinimumSizeDirty=true;
 this.b$['swingjs.plaf.JSComboBoxUI'].isDisplaySizeDirty=true;
-this.b$['swingjs.plaf.JSComboBoxUI'].popup.updateList$();
+popup.updateList$();
 comboBox.revalidate$();
-}}});
+break;
+}
+}});
 
 Clazz.newMeth(C$, 'keyPressed$java_awt_event_KeyEvent',  function (e) {
 if (p$1.isNavigationKey$I$I.apply(this.b$['swingjs.plaf.JSComboBoxUI'], [e.getKeyCode$(), e.getModifiers$()])) {
@@ -1057,4 +1102,4 @@ index=this.b$['swingjs.plaf.JSComboBoxUI'].listBox.getNextMatch$S$I$javax_swing_
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:22 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:12 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

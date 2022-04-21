@@ -93,11 +93,24 @@ Clazz.newMeth(C$, 'setupButton$',  function () {
 this.setIconAndText$S$javax_swing_Icon$I$S("button", this.getIcon$(), this.button.getIconTextGap$(), this.button.getText$());
 if (this.button.getBorder$() == null  || this.button.getBorder$() === $I$(3).emptyBorder  ) $I$(2).setStyle(this.buttonNode, "border", "none");
  else if (this.button.getBorder$() === $I$(3).html5Border ) $I$(2).setStyle(this.buttonNode, "border", null);
+if (!this.button.isContentAreaFilled$()) $I$(2).setStyles(this.domNode, ["border", "none", "outline", "none"]);
 if (!this.isMenuSep) {
 this.setMnemonic$I(-1);
 this.setAlignments$javax_swing_AbstractButton$Z(this.button, false);
 this.updateCenteringNode$();
 }});
+
+Clazz.newMeth(C$, 'dispose$',  function () {
+if (this.isUIDisabled) return;
+C$.superclazz.prototype.dispose$.apply(this, []);
+if (this.menuAnchorNode != null ) {
+$I$(2).setAttr(this.menuAnchorNode, "_menu", null);
+}});
+
+Clazz.newMeth(C$, 'undisposeUI$swingjs_api_js_DOMNode',  function (node) {
+if (!this.isDisposed) return;
+C$.superclazz.prototype.undisposeUI$swingjs_api_js_DOMNode.apply(this, [node]);
+});
 
 Clazz.newMeth(C$, 'handleJSEvent$O$I$O',  function (target, eventType, jQueryEvent) {
 if (eventType == 401) {
@@ -238,4 +251,4 @@ return Clazz.new_([$in.left + $in.right + ic.getIconWidth$() , $in.top + $in.bot
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:43 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:12 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

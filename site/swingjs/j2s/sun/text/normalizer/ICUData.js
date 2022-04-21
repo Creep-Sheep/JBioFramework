@@ -21,7 +21,7 @@ Clazz.newMeth(C$, 'run$',  function () {
 return this.$finals$.root.getResourceAsStream$S(this.$finals$.resourceName);
 });
 })()
-), Clazz.new_(P$.ICUData$1.$init$,[this, {resourceName:resourceName,root:root}]))]);
+), Clazz.new_(P$.ICUData$1.$init$,[this, {root:root,resourceName:resourceName}]))]);
 } else {
 i=root.getResourceAsStream$S(resourceName);
 }if (i == null  && required ) {
@@ -39,4 +39,4 @@ return C$.getStream$Class$S$Z(Clazz.getClass(C$), resourceName, true);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:13 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:51 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

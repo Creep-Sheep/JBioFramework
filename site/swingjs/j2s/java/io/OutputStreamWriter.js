@@ -88,7 +88,7 @@ Clazz.newMeth(C$, 'flush$',  function () {
 this.writer.flush$();
 var s=this.writer.getBuffer$().toString();
 if (s.length$() > 0) {
-var buf=s.getBytes$();
+var buf=s.getBytes$S(this.charsetName);
 this.stream.write$BA$I$I(buf, 0, buf.length);
 }this.writer=Clazz.new_($I$(1,1));
 });
@@ -100,4 +100,4 @@ this.stream.close$();
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:13 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:20 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -373,7 +373,10 @@ if (width <= 0 || height <= 0 ) return true;
 if (img != null ) {
 var imgNode=(img).秘getImageNode$I(0);
 if (imgNode == null ) {
-p$1.drawImagePriv$java_awt_Image$I$I$I$I$java_awt_image_ImageObserver.apply(this, [img, x, y, width, height, observer]);
+if (width != img.getWidth$java_awt_image_ImageObserver(null) || height != img.getHeight$java_awt_image_ImageObserver(null) ) {
+this.drawImage$java_awt_Image$I$I$I$I$I$I$I$I$java_awt_image_ImageObserver(img, x, y, x + width, y + width, 0, 0, img.getWidth$java_awt_image_ImageObserver(null), img.getHeight$java_awt_image_ImageObserver(null), observer);
+return true;
+}p$1.drawImagePriv$java_awt_Image$I$I$I$I$java_awt_image_ImageObserver.apply(this, [img, x, y, width, height, observer]);
 } else {
 this.ctx.drawImage(imgNode, x, y, width, height);
 }if (observer != null ) p$1.observe$java_awt_Image$java_awt_image_ImageObserver$Z.apply(this, [img, observer, imgNode != null ]);
@@ -429,7 +432,7 @@ var isOpaque=(img).秘isOpaque$();
 var pixels=(C$.isTranslationOnly$DA(m) && !p$1.isClipped$I$I$I$I.apply(this, [x, y, width, height])  ? (img).get秘pixFromRaster$() : null);
 var imgNode=null;
 if (pixels == null ) {
-imgNode=(img).秘getImageNode$I(1);
+imgNode=(img === observer  ? this.canvas : (img).秘getImageNode$I(1));
 if (imgNode != null ) this.ctx.drawImage(imgNode, x, y, width, height);
 } else {
 var isPerPixel=(pixels.length == width * height);
@@ -961,4 +964,4 @@ C$.nohints=Clazz.new_([Clazz.new_($I$(3,1))],$I$(2,1).c$$java_util_Map);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-21 10:14:00 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:03 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

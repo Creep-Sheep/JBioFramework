@@ -135,7 +135,7 @@ enumeration=this.$finals$.cl.getResources$S(this.$finals$.name);
 }return enumeration;
 });
 })()
-), Clazz.new_(P$.SecuritySupport$6.$init$,[this, {cl:cl,name:name}]))]);
+), Clazz.new_(P$.SecuritySupport$6.$init$,[this, {name:name,cl:cl}]))]);
 } catch (e) {
 if (Clazz.exceptionOf(e,"java.security.PrivilegedActionException")){
 throw e.getException$();
@@ -184,4 +184,4 @@ return  Boolean.from(this.$finals$.f.exists$());
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:13 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:32 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

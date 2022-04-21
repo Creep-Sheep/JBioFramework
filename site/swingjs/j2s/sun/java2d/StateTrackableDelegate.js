@@ -6,7 +6,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 
-C$.$fields$=[['I',['numDynamicAgents'],'O',['theState','sun.java2d.StateTrackable.State','theTracker','sun.java2d.StateTracker']]
+C$.$fields$=[['Z',['isDirty'],'I',['numDynamicAgents'],'O',['theState','sun.java2d.StateTrackable.State','theTracker','sun.java2d.StateTracker']]
 ,['O',['UNTRACKABLE_DELEGATE','sun.java2d.StateTrackableDelegate','+IMMUTABLE_DELEGATE']]]
 
 Clazz.newMeth(C$, 'createInstance$sun_java2d_StateTrackable_State',  function (state) {
@@ -95,6 +95,13 @@ this.theTracker=null;
 
 Clazz.newMeth(C$, 'markDirty$',  function () {
 this.theTracker=null;
+this.isDirty=true;
+});
+
+Clazz.newMeth(C$, '秘isDirty$Z',  function (doReset) {
+var isDirty=this.isDirty;
+if (doReset) this.isDirty=false;
+return isDirty;
 });
 
 C$.$static$=function(){C$.$static$=0;
@@ -104,4 +111,4 @@ C$.IMMUTABLE_DELEGATE=Clazz.new_(C$.c$$sun_java2d_StateTrackable_State,[$I$(1).I
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:18:24 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:41 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -6,7 +6,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 
-C$.$fields$=[['O',['theTrackable','sun.java2d.StateTrackableDelegate']]
+C$.$fields$=[[]
 ,['O',['stealer','sun.awt.image.DataStealer']]]
 
 Clazz.newMeth(C$, 'getStealer$',  function () {
@@ -84,23 +84,20 @@ C$.markDirty$java_awt_image_DataBuffer(wr.getDataBuffer$());
 
 Clazz.newMeth(C$, 'c$$java_awt_image_SampleModel$java_awt_Point',  function (sampleModel, origin) {
 ;C$.superclazz.c$$java_awt_image_SampleModel$java_awt_Point.apply(this,[sampleModel, origin]);C$.$init$.apply(this);
-this.theTrackable=C$.stealTrackable$java_awt_image_DataBuffer(this.dataBuffer);
 }, 1);
 
 Clazz.newMeth(C$, 'c$$java_awt_image_SampleModel$java_awt_image_DataBuffer$java_awt_Point',  function (sampleModel, dataBuffer, origin) {
 ;C$.superclazz.c$$java_awt_image_SampleModel$java_awt_image_DataBuffer$java_awt_Point.apply(this,[sampleModel, dataBuffer, origin]);C$.$init$.apply(this);
-this.theTrackable=C$.stealTrackable$java_awt_image_DataBuffer(dataBuffer);
 }, 1);
 
 Clazz.newMeth(C$, 'c$$java_awt_image_SampleModel$java_awt_image_DataBuffer$java_awt_Rectangle$java_awt_Point$java_awt_image_WritableRaster',  function (sampleModel, dataBuffer, aRegion, sampleModelTranslate, parent) {
 ;C$.superclazz.c$$java_awt_image_SampleModel$java_awt_image_DataBuffer$java_awt_Rectangle$java_awt_Point$java_awt_image_WritableRaster.apply(this,[sampleModel, dataBuffer, aRegion, sampleModelTranslate, parent]);C$.$init$.apply(this);
-this.theTrackable=C$.stealTrackable$java_awt_image_DataBuffer(dataBuffer);
 }, 1);
 
 Clazz.newMeth(C$, 'markDirty$',  function () {
-this.theTrackable.markDirty$();
+C$.stealTrackable$java_awt_image_DataBuffer(this.dataBuffer).markDirty$();
 });
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:18:22 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:40 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

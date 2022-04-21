@@ -184,25 +184,39 @@ this.formData.remove$I(i);
 });
 
 Clazz.newMeth(C$, 'toBytes$O',  function (data) {
-try {
 if (data == null  || Clazz.instanceOf(data, Clazz.array(Byte.TYPE, -1)) ) {
-} else if (Clazz.instanceOf(data, "java.io.File")) {
+return data;
+}if (Clazz.instanceOf(data, "java.io.File")) {
+try {
 var fis=Clazz.new_($I$(4,1).c$$java_io_File,[data]);
-data=$I$(5).getBytes$java_io_InputStream(fis);
-fis.close$();
-} else if (Clazz.instanceOf(data, "java.io.InputStream")) {
-var is=data;
-data=$I$(5).getBytes$java_io_InputStream(is);
-is.close$();
-} else {
-data=data.toString().getBytes$();
-}} catch (e) {
+try {
+return $I$(5).getBytes$java_io_InputStream(fis);
+
+}finally{/*res*/fis&&fis.close$&&fis.close$();}
+} catch (e) {
 if (Clazz.exceptionOf(e,"java.io.IOException")){
+e.printStackTrace$();
+return null;
 } else {
 throw e;
 }
 }
-return data;
+}if (Clazz.instanceOf(data, "java.io.InputStream")) {
+try {
+var is=data;
+try {
+return $I$(5).getBytes$java_io_InputStream(is);
+
+}finally{/*res*/is&&is.close$&&is.close$();}
+} catch (e) {
+if (Clazz.exceptionOf(e,"java.io.IOException")){
+e.printStackTrace$();
+return null;
+} else {
+throw e;
+}
+}
+}return data.toString().getBytes$();
 }, p$1);
 
 Clazz.newMeth(C$, 'execute$',  function () {
@@ -513,4 +527,4 @@ return "SimpleHttpClient " + this.method + " state=" + this.state + " uri=" + th
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:42 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:55 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

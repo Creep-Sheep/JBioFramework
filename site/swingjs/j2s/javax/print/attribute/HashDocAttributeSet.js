@@ -22,4 +22,4 @@ Clazz.newMeth(C$, 'c$$javax_print_attribute_DocAttributeSet',  function (attribu
 ;C$.superclazz.c$$javax_print_attribute_AttributeSet$Class.apply(this,[attributes, Clazz.getClass($I$(1),[])]);C$.$init$.apply(this);
 }, 1);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:05 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:01 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

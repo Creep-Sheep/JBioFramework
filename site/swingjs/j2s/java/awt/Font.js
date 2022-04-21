@@ -355,7 +355,7 @@ var f=Clazz.new_(C$.c$$S$I$I,[this.name, this.style, ((sizePts + 0.5)|0)]);
 f.pointSize=sizePts;
 return f;
 }var newValues=p$1.getAttributeValues.apply(this, []).clone$();
-newValues.setSize$F(this.size);
+newValues.setSize$F(sizePts);
 return Clazz.new_(C$.c$$sun_font_AttributeValues$S$I$Z$sun_font_Font2DHandle,[newValues, null, -1, this.createdFont, this.font2DHandle]);
 });
 
@@ -558,4 +558,4 @@ C$.ssinfo=Clazz.array(Float.TYPE, -1, [0.0, 0.375, 0.625, 0.7916667, 0.9027778, 
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:12 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:01 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

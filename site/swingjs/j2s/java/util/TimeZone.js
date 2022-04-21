@@ -123,11 +123,6 @@ Clazz.newMeth(C$, 'getAvailableIDs$',  function () {
 return $I$(6).getAvailableIDs$();
 }, 1);
 
-Clazz.newMeth(C$, 'getSystemGMTOffsetID$',  function () {
-alert('native method must be replaced! getSystemGMTOffsetID');
-}
-, 2);
-
 Clazz.newMeth(C$, 'getTimeZoneOffsetMillis$',  function () {
 return 1?-(new Date()).getTimezoneOffset() * 60000 :0;
 }, 1);
@@ -137,11 +132,11 @@ return C$.getDefaultRef$().clone$();
 }, 1);
 
 Clazz.newMeth(C$, 'getDefaultRef$',  function () {
-if (C$.defaultTimeZone == null ) {
-var ms=C$.getTimeZoneOffsetMillis$();
-var gmtOffsetID=C$.getGMTID$I(ms);
-C$.defaultTimeZone=C$.getTimeZone$S$Z(gmtOffsetID, true);
-}return C$.defaultTimeZone;
+var defaultZone=C$.defaultTimeZone;
+if (defaultZone == null ) {
+defaultZone=C$.setDefaultZone$();
+Clazz.assert(C$, this, function(){return defaultZone != null });
+}return defaultZone;
 }, 1);
 
 Clazz.newMeth(C$, 'getGMTID$I',  function (gmtOffset) {
@@ -155,6 +150,33 @@ NN=NN.substring$I(NN.length$() - 2);
 var MM="00" + min;
 MM=MM.substring$I(MM.length$() - 2);
 return "GMT" + (isNegative ? "-" : "") + NN ;
+}, 1);
+
+Clazz.newMeth(C$, 'setDefaultZone$',  function () {
+var tz;
+var zoneID=null;
+try {
+zoneID=C$.getSystemTimeZoneID$();
+if (zoneID == null ) {
+zoneID="GMT";
+}} catch (e) {
+if (Clazz.exceptionOf(e,"NullPointerException")){
+zoneID="GMT";
+} else {
+throw e;
+}
+}
+tz=C$.getTimeZone$S$Z(zoneID, false);
+C$.defaultTimeZone=tz;
+return tz;
+}, 1);
+
+Clazz.newMeth(C$, 'getSystemTimeZoneID$',  function () {
+var zoneID=null;
+var d=Clazz.new_(java.util.Date);
+
+zoneID = Intl.DateTimeFormat().resolvedOptions().timeZone;
+return (zoneID == null  ? C$.getGMTID$I(C$.getTimeZoneOffsetMillis$()) : zoneID);
 }, 1);
 
 Clazz.newMeth(C$, 'setDefault$java_util_TimeZone',  function (zone) {
@@ -239,7 +261,8 @@ zi=Clazz.new_($I$(6,1).c$$S$I,["GMT", negative ? -gmtOffset : gmtOffset]);
 }, 1);
 
 C$.$static$=function(){C$.$static$=0;
+C$.$_ASSERT_ENABLED_ = ClassLoader.getClassAssertionStatus$(C$);
 C$.NO_TIMEZONE=null;
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:31 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:44 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

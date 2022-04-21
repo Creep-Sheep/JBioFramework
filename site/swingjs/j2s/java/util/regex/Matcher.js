@@ -375,6 +375,7 @@ return this.cs.charAt$I(i);
 Clazz.newMeth(C$, 'getMatchedGroupIndex$S',  function (name) {
 $I$(6).requireNonNull$O$S(name, "Group name");
 if (this.first < 0) throw Clazz.new_(Clazz.load('IllegalStateException').c$$S,["No match found"]);
+if (this.pat.namedGroups == null ) this.pat.秘setNameGroups$();
 if (this.pat.namedGroups == null  || !this.pat.namedGroups$().containsKey$O(name) ) throw Clazz.new_(Clazz.load('IllegalArgumentException').c$$S,["No group with name <" + name + ">" ]);
 return (this.pat.namedGroups$().get$O(name)).$c();
 });
@@ -454,4 +455,4 @@ return 1?new RegExp(rg.source, rg.flags):null;
 }, 1);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:37 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:51 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -289,7 +289,7 @@ var urls=(this.$finals$.s == null ) ? Clazz.array($I$(9), [0]) : $I$(4).pathToUR
 return Clazz.new_($I$(15,1).c$$java_net_URLA$ClassLoader,[urls, this.$finals$.extcl]);
 });
 })()
-), Clazz.new_(P$.Launcher$AppClassLoader$1.$init$,[this, {s:s,extcl:extcl,path:path}]))]);
+), Clazz.new_(P$.Launcher$AppClassLoader$1.$init$,[this, {path:path,extcl:extcl,s:s}]))]);
 }, 1);
 
 Clazz.newMeth(C$, 'c$$java_net_URLA$ClassLoader',  function (urls, parent) {
@@ -426,4 +426,4 @@ C$.PREFIX="sun.net.www.protocol";
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:34:46 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:43 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

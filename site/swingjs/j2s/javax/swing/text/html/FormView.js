@@ -264,7 +264,7 @@ throw e;
 }
 }});
 })()
-), Clazz.new_(P$.FormView$1.$init$,[this, {fse:fse,c:c,url:url}]))]);
+), Clazz.new_(P$.FormView$1.$init$,[this, {c:c,url:url,fse:fse}]))]);
 });
 
 Clazz.newMeth(C$, 'storePostData$javax_swing_text_html_HTMLDocument$S$S',  function (doc, target, data) {
@@ -568,4 +568,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:50 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:24 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

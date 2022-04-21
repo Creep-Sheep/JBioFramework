@@ -1,5 +1,5 @@
 (function(){var P$=Clazz.newPackage("java.awt.image"),p$1={},I$=[[0,['sun.java2d.StateTrackable','.State'],'java.awt.image.DirectColorModel','java.awt.image.ColorModel','java.awt.color.ColorSpace','java.awt.image.ComponentColorModel','java.awt.image.Raster','java.awt.image.IndexColorModel','java.awt.image.PixelInterleavedSampleModel','java.awt.image.SinglePixelPackedSampleModel','java.awt.image.MultiPixelPackedSampleModel','java.util.Hashtable','sun.awt.image.OffScreenImageSource','java.awt.Image','swingjs.api.js.HTML5Canvas','swingjs.JSGraphics2D','swingjs.api.js.DOMNode','java.awt.Point','java.awt.Rectangle',['sun.awt.image.PixelConverter','.UshortGray'],['sun.awt.image.PixelConverter','.ByteGray'],'java.awt.Color']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
-/*c*/var C$=Clazz.newClass(P$, "BufferedImage", null, 'java.awt.Image', ['java.awt.image.RenderedImage', 'java.awt.Transparency']);
+/*c*/var C$=Clazz.newClass(P$, "BufferedImage", null, 'java.awt.Image', ['java.awt.image.RenderedImage', 'java.awt.Transparency', 'java.awt.image.ImageObserver']);
 
 C$.$clinit$=2;
 
@@ -10,7 +10,7 @@ this.imageType=0;
 this.gCount=0;
 },1);
 
-C$.$fields$=[['Z',['hasColor','isAlphaPremultiplied'],'I',['秘state','width','height','秘wxh','imageType','gCount'],'O',['colorModel','java.awt.image.ColorModel','raster','java.awt.image.WritableRaster','osis','sun.awt.image.OffScreenImageSource','properties','java.util.Hashtable','秘g','swingjs.JSGraphics2D','秘imgNode','swingjs.api.js.DOMNode','秘pix','java.lang.Object','秘canvas','swingjs.api.js.HTML5Canvas','秘component','java.awt.Component']]
+C$.$fields$=[['Z',['秘haveNewPixels','hasColor','isAlphaPremultiplied'],'I',['秘state','width','height','秘wxh','imageType','gCount'],'O',['colorModel','java.awt.image.ColorModel','raster','java.awt.image.WritableRaster','osis','sun.awt.image.OffScreenImageSource','properties','java.util.Hashtable','秘g','swingjs.JSGraphics2D','秘imgNode','swingjs.api.js.DOMNode','秘pix','java.lang.Object','秘canvas','swingjs.api.js.HTML5Canvas','秘component','java.awt.Component']]
 ,['I',['imageCount'],'O',['states','String[]']]]
 
 Clazz.newMeth(C$, 'getStateString$',  function () {
@@ -19,7 +19,7 @@ var s="";
 for (var i=0; i < C$.states.length; i++) {
 if ((this.秘state & (1 << i)) != 0) s+=C$.states[i] + ";";
 }
-return "rasterStolen=" + this.秘isDataStolen$() + " " + (s === ""  ? "UNINITIALIZED" : s) + " unDisposedGraphicCount=" + this.gCount + " data[0]=" + (data == null  ? null : Integer.toHexString$I(data[0])) ;
+return "rasterDirty=" + this.秘isRasterDirty$Z(false) + " " + (s === ""  ? "UNINITIALIZED" : s) + " unDisposedGraphicCount=" + this.gCount + " data[0]=" + (data == null  ? null : Integer.toHexString$I(data[0])) ;
 });
 
 Clazz.newMeth(C$, '秘havePixels$',  function () {
@@ -50,17 +50,21 @@ Clazz.newMeth(C$, '秘haveCanvas$',  function () {
 return ((this.秘state & 4) != 0);
 });
 
-Clazz.newMeth(C$, '秘isDataStolen$',  function () {
-var b=this.raster.dataBuffer.theTrackable.getState$() === $I$(1).UNTRACKABLE ;
+Clazz.newMeth(C$, '秘isRasterDirty$Z',  function (doReset) {
+if (this.raster.dataBuffer.theTrackable.秘isDirty$Z(doReset)) {
+return true;
+}var b=this.raster.dataBuffer.theTrackable.getState$() === $I$(1).UNTRACKABLE ;
 return b;
 });
 
 Clazz.newMeth(C$, '秘dataStolenAndHaveRaster$',  function () {
-return this.秘isDataStolen$() && this.秘haveRaster$() ;
+var b=this.秘haveNewPixels || this.秘isRasterDirty$Z(false) && this.秘haveRaster$()  ;
+this.秘haveNewPixels=false;
+return b;
 });
 
 Clazz.newMeth(C$, '秘dataStolenButNoRaster$',  function () {
-return this.秘isDataStolen$() && !this.秘haveRaster$() ;
+return this.秘isRasterDirty$Z(false) && !this.秘haveRaster$() ;
 });
 
 Clazz.newMeth(C$, 'c$$I$I$I',  function (width, height, imageType) {
@@ -322,7 +326,7 @@ return this.raster;
 });
 
 Clazz.newMeth(C$, '秘ensureRasterUpToDate$',  function () {
-if (this.秘isDataStolen$() || !this.秘haveRaster$() && this.秘state != 0  ) {
+if (this.秘isRasterDirty$Z(false) || !this.秘haveRaster$() && this.秘state != 0  ) {
 p$1.秘updateStateFromHTML5Canvas$I$Z.apply(this, [0, false]);
 p$1.秘unsetGraphics.apply(this, []);
 }this.秘state|=2;
@@ -355,7 +359,7 @@ return this.colorModel.getAlphaRaster$java_awt_image_WritableRaster(this.raster)
 });
 
 Clazz.newMeth(C$, 'getRGB$I$I',  function (x, y) {
-var isStolen=this.秘isDataStolen$();
+var isStolen=this.秘isRasterDirty$Z(false);
 if (isStolen && !this.秘haveRaster$() ) this.秘ensureRasterUpToDate$();
 if (!isStolen && (this.秘haveCanvas$() || this.秘state == 0 ) && p$1.秘ensureCanGetRGBPixels.apply(this, [])  ) {
 return (this.秘pix)[y * this.width + x];
@@ -363,7 +367,7 @@ return (this.秘pix)[y * this.width + x];
 });
 
 Clazz.newMeth(C$, 'getRGB$I$I$I$I$IA$I$I',  function (startX, startY, w, h, rgbArray, offset, scansize) {
-var isStolen=this.秘isDataStolen$();
+var isStolen=this.秘isRasterDirty$Z(false);
 if (isStolen && !this.秘haveRaster$() ) this.秘ensureRasterUpToDate$();
 if (!isStolen && (this.秘haveCanvas$() || this.秘state == 1  || this.秘state == 0 ) && p$1.秘ensureCanGetRGBPixels.apply(this, [])  ) {
 var pixels=this.秘pix;
@@ -417,7 +421,7 @@ return rgbArray;
 });
 
 Clazz.newMeth(C$, 'setRGB$I$I$I',  function (x, y, rgb) {
-var isStolen=this.秘isDataStolen$();
+var isStolen=this.秘isRasterDirty$Z(false);
 if (isStolen && !this.秘haveRaster$() ) this.秘ensureRasterUpToDate$();
 if (!isStolen && (this.秘haveCanvas$() || this.秘state == 1  || this.秘state == 0 ) && p$1.秘ensureCanGetRGBPixels.apply(this, [])  ) {
 var pixels=this.秘pix;
@@ -427,7 +431,7 @@ this.raster.setDataElements$I$I$O(x, y, this.colorModel.getDataElements$I$O(rgb,
 }});
 
 Clazz.newMeth(C$, 'setRGB$I$I$I$I$IA$I$I',  function (startX, startY, w, h, rgbArray, offset, scansize) {
-var isStolen=this.秘isDataStolen$();
+var isStolen=this.秘isRasterDirty$Z(false);
 if (isStolen && !this.秘haveRaster$() ) this.秘ensureRasterUpToDate$();
 if (!isStolen && (this.秘haveCanvas$() || this.秘state == 1  || this.秘state == 0 ) && p$1.秘ensureCanGetRGBPixels.apply(this, [])  ) {
 var pixels=this.秘pix;
@@ -504,7 +508,7 @@ this.秘canvas=$I$(14,"createCanvas",[this.getWidth$(), this.getHeight$(), "img"
 }if (this.秘g == null ) {
 this.秘g=Clazz.new_($I$(15,1).c$$O,[this.秘canvas]);
 }if (this.秘dataStolenAndHaveRaster$()) {
-if (this.秘pix != null ) this.秘g.drawImageFromPixelsOrRaster$java_awt_Image$I$I$java_awt_image_ImageObserver(this, 0, 0, null);
+if (this.秘pix != null ) this.秘g.drawImageFromPixelsOrRaster$java_awt_Image$I$I$java_awt_image_ImageObserver(this, 0, 0, this);
 }var pix=this.秘pix;
 
 pix && (pix.img = this);
@@ -520,21 +524,28 @@ g2d.setColor$java_awt_Color(this.秘component.getForeground$());
 });
 
 Clazz.newMeth(C$, '秘graphicsDisposed$',  function () {
-this.gCount=Math.max(0, this.gCount - 1);
+var doSync=(this.秘haveCanvas$() && this.秘isRasterDirty$Z(false) );
 this.秘state=4;
-});
+if (doSync) {
+p$1.秘syncRaster.apply(this, []);
+}});
 
 Clazz.newMeth(C$, 'flush$',  function () {
-var isStolen=this.秘isDataStolen$();
-var haveRaster=this.秘haveRaster$();
-if (isStolen && !haveRaster ) this.秘ensureRasterUpToDate$();
+var setRasterState=p$1.秘syncRaster.apply(this, []);
 if (this.秘haveRaster$() && this.秘pix == null  ) {
 p$1.秘getPixelsFromRaster$I.apply(this, [0]);
 }this.秘getImageGraphic$();
-if (isStolen || haveRaster ) this.秘state|=2;
-while (this.gCount > 0 && --this.gCount >= 0 )this.秘g.dispose$();
+if (setRasterState) this.秘state|=2;
+while (this.gCount-- > 0)this.秘g.dispose$();
 
 });
+
+Clazz.newMeth(C$, '秘syncRaster',  function () {
+var isStolen=this.秘isRasterDirty$Z(false);
+var haveRaster=this.秘haveRaster$();
+if (isStolen && !haveRaster ) this.秘ensureRasterUpToDate$();
+return (isStolen || haveRaster );
+}, p$1);
 
 Clazz.newMeth(C$, '_setImageNode$O$Z',  function (node, async) {
 this.秘setImageNode$O$Z(node, async);
@@ -896,6 +907,7 @@ return true;
 
 Clazz.newMeth(C$, 'get秘pixFromRaster$',  function () {
 if (!this.秘haveRaster$()) return null;
+this.秘isRasterDirty$Z(true);
 var r=this.raster;
 switch (this.imageType) {
 case 1:
@@ -905,16 +917,20 @@ return (r.dataBuffer).data;
 case -6:
 return this.秘pix;
 }
+this.秘haveNewPixels=true;
 return p$1.秘getPixelsFromRaster$I.apply(this, [8]);
 });
 
 Clazz.newMeth(C$, '秘getPixelsFromRaster$I',  function (nbits) {
+this.秘isRasterDirty$Z(true);
+var wasUntrackable=(this.raster.dataBuffer.theTrackable.getState$() === $I$(1).UNTRACKABLE );
 var n=this.秘wxh;
 var b;
 this.秘state&=~48;
 switch (this.imageType) {
 case -6:
 b=(this.raster.getDataBuffer$()).getData$();
+if (!wasUntrackable) this.raster.秘setStable$Z(true);
 if (nbits == 32) {
 var data=Clazz.array(Integer.TYPE, [n]);
 C$.toIntARGB$BA$IA$I(b, data, -16777216);
@@ -926,7 +942,9 @@ case 1:
 case 2:
 if (nbits == 32) {
 this.秘state|=32;
-return this.秘pix=(this.raster.getDataBuffer$()).getData$();
+this.秘pix=(this.raster.getDataBuffer$()).getData$();
+if (!wasUntrackable) this.raster.秘setStable$Z(true);
+return this.秘pix;
 }break;
 }
 var p=this.秘pix;
@@ -986,14 +1004,15 @@ this.秘state|=16;
 }, p$1);
 
 Clazz.newMeth(C$, '秘getImageNode$I',  function (mode) {
-if (this.秘isDataStolen$()) this.秘state|=2;
+if (this.秘isRasterDirty$Z(false)) this.秘state|=2;
 switch (mode) {
 default:
 case 0:
 return this.秘haveImage$() ? this.秘imgNode : this.秘dataStolenAndHaveRaster$() ? null : (this.秘haveRaster$() || this.秘canvas != null   ? this.秘canvas : p$1.createImageNode.apply(this, []));
 case 2:
-if (!this.秘isDataStolen$()) return (this.秘canvas != null  && !this.秘haveVideo$()  ? this.秘canvas : this.秘imgNode != null  ? p$1.秘copyImageNode.apply(this, []) : p$1.createImageNode.apply(this, []));
+if (!this.秘isRasterDirty$Z(false)) return (this.秘canvas != null  && !this.秘haveVideo$()  ? this.秘canvas : this.秘imgNode != null  ? p$1.秘copyImageNode.apply(this, []) : p$1.createImageNode.apply(this, []));
 case 1:
+this.秘haveNewPixels=true;
 p$1.秘getPixelsFromRaster$I.apply(this, [0]);
 this.秘g=null;
 this.秘getImageGraphic$();
@@ -1057,6 +1076,10 @@ break;
 return Clazz.new_([pc.pixelToRgb$I$java_awt_image_ColorModel(pc.rgbToPixel$I$java_awt_image_ColorModel(c.getRGB$(), null), null)],$I$(21,1).c$$I);
 });
 
+Clazz.newMeth(C$, 'imageUpdate$java_awt_Image$I$I$I$I$I',  function (img, infoflags, x, y, width, height) {
+return false;
+});
+
 C$.$static$=function(){C$.$static$=0;
 C$.states=Clazz.array(String, -1, ["ImageOnly", "Raster", "Graphics", "Video", "8-bitPixels", "32-bitPixels"]);
 C$.imageCount=0;
@@ -1064,4 +1087,4 @@ C$.imageCount=0;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:01 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:14 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

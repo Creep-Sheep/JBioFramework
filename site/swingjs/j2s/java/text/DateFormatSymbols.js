@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("java.text"),p$1={},I$=[[0,'java.util.Hashtable','java.util.Locale','InternalError','java.util.Arrays','sun.util.resources.LocaleData']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("java.text"),p$1={},I$=[[0,'java.util.Hashtable','java.util.Locale','InternalError','java.util.Arrays','sun.util.resources.LocaleData','sun.util.TimeZoneNameUtility']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "DateFormatSymbols", null, null, 'Cloneable');
 
 C$.$clinit$=2;
@@ -85,6 +85,10 @@ Clazz.newMeth(C$, 'setAmPmStrings$SA',  function (newAmpms) {
 this.ampms=p$1.duplicate$SA.apply(this, [newAmpms]);
 });
 
+Clazz.newMeth(C$, 'getZoneStrings$',  function () {
+return p$1.getZoneStringsImpl$Z.apply(this, [true]);
+});
+
 Clazz.newMeth(C$, 'setZoneStrings$SAA',  function (newZoneStrings) {
 var aCopy=Clazz.array(String, [newZoneStrings.length, null]);
 for (var i=0; i < newZoneStrings.length; ++i) {
@@ -159,6 +163,34 @@ this.localPatternChars=resource.getString$S("DateTimePatternChars");
 this.locale=desiredLocale;
 }, p$1);
 
+Clazz.newMeth(C$, 'getZoneIndex$S',  function (ID) {
+var zoneStrings=this.getZoneStringsWrapper$();
+for (var index=0; index < zoneStrings.length; index++) {
+if (ID.equalsIgnoreCase$S(zoneStrings[index][0])) return index;
+}
+return -1;
+});
+
+Clazz.newMeth(C$, 'getZoneStringsWrapper$',  function () {
+if (p$1.isSubclassObject.apply(this, [])) {
+return this.getZoneStrings$();
+} else {
+return p$1.getZoneStringsImpl$Z.apply(this, [false]);
+}});
+
+Clazz.newMeth(C$, 'getZoneStringsImpl$Z',  function (needsCopy) {
+if (this.zoneStrings == null ) {
+this.zoneStrings=$I$(6).getZoneStrings$java_util_Locale(this.locale);
+}if (needsCopy) {
+var aCopy=Clazz.array(String, [this.zoneStrings.length, null]);
+for (var i=0; i < this.zoneStrings.length; ++i) {
+aCopy[i]=p$1.duplicate$SA.apply(this, [this.zoneStrings[i]]);
+}
+return aCopy;
+} else {
+return this.zoneStrings;
+}}, p$1);
+
 Clazz.newMeth(C$, 'isSubclassObject',  function () {
 return !this.getClass$().getName$().equals$O("java.text.DateFormatSymbols");
 }, p$1);
@@ -198,4 +230,4 @@ C$.$static$=function(){C$.$static$=0;
 C$.cachedLocaleData=Clazz.new_($I$(1,1).c$$I,[3]);
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:01 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:37 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

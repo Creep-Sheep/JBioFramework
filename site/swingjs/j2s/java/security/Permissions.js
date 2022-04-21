@@ -118,4 +118,4 @@ C$.$static$=function(){C$.$static$=0;
 C$.serialPersistentFields=Clazz.array($I$(1), -1, [Clazz.new_(["perms", Clazz.getClass($I$(2))],$I$(1,1).c$$S$Class), Clazz.new_(["allPermission", Clazz.getClass($I$(3))],$I$(1,1).c$$S$Class)]);
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:34:55 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:34 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

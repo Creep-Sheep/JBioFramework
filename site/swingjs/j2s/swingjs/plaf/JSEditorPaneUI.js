@@ -183,8 +183,8 @@ var sb=Clazz.new_($I$(8,1));
 this.isStyled=Clazz.instanceOf((this.editor).getEditorKit$(), "javax.swing.text.StyledEditorKit");
 p$1.fromJava$S$javajs_util_SB$javax_swing_text_Element$Z$javax_swing_text_AttributeSet.apply(this, [text, sb, d.getRootElements$()[0], true, null]);
 html=sb.toString();
-}}if (this.isHTML) {
-this.setBackgroundDOM$swingjs_api_js_DOMNode$java_awt_Color(this.domNode, this.jc.getBackground$());
+}}if (this.jc.isOpaque$()) this.setBackgroundDOM$swingjs_api_js_DOMNode$java_awt_Color(this.domNode, this.jc.getBackground$());
+if (this.isHTML) {
 if (this.currentHTML != null  && html.equals$O(this.rawHTML) ) return;
 this.rawHTML=html;
 html=this.fixText$S(html);
@@ -448,7 +448,7 @@ this.$finals$.fn.scrollTop(0);
 this.$finals$.fn.scrollTop(this.$finals$.r.offset().top - this.$finals$.fn.offset().top);
 });
 })()
-), Clazz.new_(P$.JSEditorPaneUI$lambda1.$init$,[this, {fn:fn,r:r}]))]);
+), Clazz.new_(P$.JSEditorPaneUI$lambda1.$init$,[this, {r:r,fn:fn}]))]);
 }});
 
 Clazz.newMeth(C$, 'setJSSelection$I$I$Z',  function (mark, dot, andScroll) {
@@ -732,7 +732,7 @@ return n;
 
 Clazz.newMeth(C$, 'setJSText$',  function () {
 this.mytext=null;
-this.updateDOMNode$();
+C$.superclazz.prototype.setJSText$.apply(this, []);
 });
 
 Clazz.newMeth(C$, 'handleJSEvent$O$I$O',  function (target, eventType, jQueryEvent) {
@@ -843,4 +843,4 @@ C$.$fields$=[['I',['length'],'S',['tagName','innerText','textContent'],'O',['chi
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:31 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:14 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

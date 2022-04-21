@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("sun.util.calendar"),p$1={},I$=[[0,'sun.util.calendar.CalendarSystem','java.util.SimpleTimeZone']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("sun.util.calendar"),p$1={},I$=[[0,'sun.util.calendar.CalendarSystem','sun.util.calendar.ZoneInfoFile','java.util.SimpleTimeZone']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "ZoneInfo", null, 'java.util.TimeZone');
 
 C$.$clinit$=2;
@@ -203,11 +203,9 @@ return (rawOffset == 0 ? C$.getAvailableIDs$() : Clazz.array(String, [0]));
 }, 1);
 
 Clazz.newMeth(C$, 'getTimeZone$S',  function (ID) {
-if (!ID.equals$O("GMT")) return null;
-var zi=Clazz.new_(C$);
-zi.setID$S(ID);
-zi.setRawOffset$I(0);
-return zi;
+if (ID.startsWith$S("GMT")) {
+return null;
+}return $I$(2).getZoneInfo$S(ID);
 }, 1);
 
 Clazz.newMeth(C$, 'getLastRule',  function () {
@@ -220,8 +218,8 @@ Clazz.newMeth(C$, 'getLastRuleInstance$',  function () {
 if (this.simpleTimeZoneParams == null ) {
 return null;
 }if (this.simpleTimeZoneParams.length == 10) {
-return Clazz.new_([p$1.getLastRawOffset.apply(this, []), this.getID$(), this.simpleTimeZoneParams[0], this.simpleTimeZoneParams[1], this.simpleTimeZoneParams[2], this.simpleTimeZoneParams[3], this.simpleTimeZoneParams[4], this.simpleTimeZoneParams[5], this.simpleTimeZoneParams[6], this.simpleTimeZoneParams[7], this.simpleTimeZoneParams[8], this.simpleTimeZoneParams[9], this.dstSavings],$I$(2,1).c$$I$S$I$I$I$I$I$I$I$I$I$I$I);
-}return Clazz.new_([p$1.getLastRawOffset.apply(this, []), this.getID$(), this.simpleTimeZoneParams[0], this.simpleTimeZoneParams[1], this.simpleTimeZoneParams[2], this.simpleTimeZoneParams[3], this.simpleTimeZoneParams[4], this.simpleTimeZoneParams[5], this.simpleTimeZoneParams[6], this.simpleTimeZoneParams[7], this.dstSavings],$I$(2,1).c$$I$S$I$I$I$I$I$I$I$I$I);
+return Clazz.new_([p$1.getLastRawOffset.apply(this, []), this.getID$(), this.simpleTimeZoneParams[0], this.simpleTimeZoneParams[1], this.simpleTimeZoneParams[2], this.simpleTimeZoneParams[3], this.simpleTimeZoneParams[4], this.simpleTimeZoneParams[5], this.simpleTimeZoneParams[6], this.simpleTimeZoneParams[7], this.simpleTimeZoneParams[8], this.simpleTimeZoneParams[9], this.dstSavings],$I$(3,1).c$$I$S$I$I$I$I$I$I$I$I$I$I$I);
+}return Clazz.new_([p$1.getLastRawOffset.apply(this, []), this.getID$(), this.simpleTimeZoneParams[0], this.simpleTimeZoneParams[1], this.simpleTimeZoneParams[2], this.simpleTimeZoneParams[3], this.simpleTimeZoneParams[4], this.simpleTimeZoneParams[5], this.simpleTimeZoneParams[6], this.simpleTimeZoneParams[7], this.dstSavings],$I$(3,1).c$$I$S$I$I$I$I$I$I$I$I$I);
 });
 
 Clazz.newMeth(C$, 'clone$',  function () {
@@ -269,4 +267,4 @@ return aliases;
 }}return aliases;
 }, 1);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:34:52 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:58 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

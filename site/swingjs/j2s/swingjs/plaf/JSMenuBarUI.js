@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("swingjs.plaf"),p$1={},I$=[[0,'javax.swing.MenuSelectionManager','javax.swing.MenuElement','swingjs.plaf.JSComponentUI','swingjs.api.js.DOMNode','java.awt.Insets','java.awt.Dimension',['swingjs.plaf.JSMenuBarUI','.Actions'],'swingjs.plaf.DefaultMenuLayout','javax.swing.LookAndFeel','javax.swing.SwingUtilities','swingjs.plaf.LazyActionMap','sun.swing.DefaultLookup',['swingjs.plaf.JSMenuBarUI','.Handler']]],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("swingjs.plaf"),p$1={},I$=[[0,'javax.swing.MenuSelectionManager','javax.swing.MenuElement','swingjs.plaf.JSComponentUI','swingjs.api.js.DOMNode','java.awt.Insets',['swingjs.plaf.JSMenuBarUI','.Actions'],'swingjs.plaf.DefaultMenuLayout','javax.swing.LookAndFeel','javax.swing.SwingUtilities','swingjs.plaf.LazyActionMap','sun.swing.DefaultLookup',['swingjs.plaf.JSMenuBarUI','.Handler']]],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "JSMenuBarUI", function(){
 Clazz.newInstance(this, arguments,0,C$);
 }, 'swingjs.plaf.JSPanelUI', 'java.awt.event.ContainerListener');
@@ -55,7 +55,7 @@ return Clazz.new_($I$(5,1).c$$I$I$I$I,[2, 10, 2, 10]);
 });
 
 Clazz.newMeth(C$, 'getPreferredSize$javax_swing_JComponent',  function (jc) {
-var d=Clazz.new_([0, this.getContainerHeight$()],$I$(6,1).c$$I$I);
+var d=null;
 return d;
 });
 
@@ -69,7 +69,7 @@ this.setHTMLElement$();
 });
 
 Clazz.newMeth(C$, 'loadActionMap$swingjs_plaf_LazyActionMap',  function (map) {
-map.put$javax_swing_Action(Clazz.new_($I$(7,1).c$$S,["takeFocus"]));
+map.put$javax_swing_Action(Clazz.new_($I$(6,1).c$$S,["takeFocus"]));
 }, 1);
 
 Clazz.newMeth(C$, 'installUI$javax_swing_JComponent',  function (c) {
@@ -81,11 +81,11 @@ this.installKeyboardActions$();
 
 Clazz.newMeth(C$, 'installDefaults$',  function () {
 if (this.menuBar.getLayout$() == null  || Clazz.instanceOf(this.menuBar.getLayout$(), "javax.swing.plaf.UIResource") ) {
-this.menuBar.setLayout$java_awt_LayoutManager(Clazz.new_($I$(8,1).c$$java_awt_Container$I,[this.menuBar, 2]));
+this.menuBar.setLayout$java_awt_LayoutManager(Clazz.new_($I$(7,1).c$$java_awt_Container$I,[this.menuBar, 2]));
 this.menuBar.addContainerListener$java_awt_event_ContainerListener(this);
-}$I$(9).installProperty$javax_swing_JComponent$S$O(this.menuBar, "opaque", Boolean.TRUE);
-$I$(9).installBorder$javax_swing_JComponent$S(this.menuBar, "MenuBar.border");
-$I$(9).installColorsAndFont$javax_swing_JComponent$S$S$S(this.menuBar, "MenuBar.background", "MenuBar.foreground", "MenuBar.font");
+}$I$(8).installProperty$javax_swing_JComponent$S$O(this.menuBar, "opaque", Boolean.TRUE);
+$I$(8).installBorder$javax_swing_JComponent$S(this.menuBar, "MenuBar.border");
+$I$(8).installColorsAndFont$javax_swing_JComponent$S$S$S(this.menuBar, "MenuBar.background", "MenuBar.foreground", "MenuBar.font");
 this.menuBar.setOpaque$Z(true);
 });
 
@@ -102,15 +102,15 @@ this.menuBar.addContainerListener$java_awt_event_ContainerListener(this.containe
 
 Clazz.newMeth(C$, 'installKeyboardActions$',  function () {
 var inputMap=this.getInputMap$I(2);
-$I$(10).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(this.menuBar, 2, inputMap);
-$I$(11,"installLazyActionMap$javax_swing_JComponent$Class$S",[this.menuBar, Clazz.getClass(C$), "MenuBar.actionMap"]);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(this.menuBar, 2, inputMap);
+$I$(10,"installLazyActionMap$javax_swing_JComponent$Class$S",[this.menuBar, Clazz.getClass(C$), "MenuBar.actionMap"]);
 });
 
 Clazz.newMeth(C$, 'getInputMap$I',  function (condition) {
 if (condition == 2) {
-var bindings=$I$(12).get$javax_swing_JComponent$javax_swing_plaf_ComponentUI$S(this.menuBar, this, "MenuBar.windowBindings");
+var bindings=$I$(11).get$javax_swing_JComponent$javax_swing_plaf_ComponentUI$S(this.menuBar, this, "MenuBar.windowBindings");
 if (bindings != null ) {
-return $I$(9).makeComponentInputMap$javax_swing_JComponent$OA(this.menuBar, bindings);
+return $I$(8).makeComponentInputMap$javax_swing_JComponent$OA(this.menuBar, bindings);
 }}return null;
 });
 
@@ -123,7 +123,7 @@ this.menuBar=null;
 
 Clazz.newMeth(C$, 'uninstallDefaults$',  function () {
 if (this.menuBar != null ) {
-$I$(9).uninstallBorder$javax_swing_JComponent(this.menuBar);
+$I$(8).uninstallBorder$javax_swing_JComponent(this.menuBar);
 }});
 
 Clazz.newMeth(C$, 'uninstallListeners$',  function () {
@@ -138,8 +138,8 @@ this.handler=null;
 });
 
 Clazz.newMeth(C$, 'uninstallKeyboardActions$',  function () {
-$I$(10).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(this.menuBar, 2, null);
-$I$(10).replaceUIActionMap$javax_swing_JComponent$javax_swing_ActionMap(this.menuBar, null);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(this.menuBar, 2, null);
+$I$(9).replaceUIActionMap$javax_swing_JComponent$javax_swing_ActionMap(this.menuBar, null);
 });
 
 Clazz.newMeth(C$, 'createContainerListener$',  function () {
@@ -156,7 +156,7 @@ return p$1.getHandler.apply(this, []);
 
 Clazz.newMeth(C$, 'getHandler',  function () {
 if (this.handler == null ) {
-this.handler=Clazz.new_($I$(13,1),[this, null]);
+this.handler=Clazz.new_($I$(12,1),[this, null]);
 }return this.handler;
 }, p$1);
 ;
@@ -234,4 +234,4 @@ defaultManager.setSelectedPath$javax_swing_MenuElementA(me);
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:14 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:15 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

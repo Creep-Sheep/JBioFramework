@@ -199,7 +199,7 @@ if (!this.b$['javajs.async.SwingJSUtils.StateHelper'].interrupted) this.$finals$
 if (!this.b$['javajs.async.SwingJSUtils.StateHelper'].interrupted && (this.$finals$.stateNext != -2147483648 || this.$finals$.levelNext != -2147483648 ) ) $I$(3,"nextStatePriv$O$I$I",[this.$finals$.me, this.$finals$.stateNext == -2147483648 ? this.b$['javajs.async.SwingJSUtils.StateHelper'].state : this.$finals$.stateNext, this.$finals$.levelNext == -2147483648 ? this.b$['javajs.async.SwingJSUtils.StateHelper'].level : this.$finals$.levelNext]);
 });
 })()
-), Clazz.new_(P$.SwingJSUtils$StateHelper$1.$init$,[this, {stateNext:stateNext,listener:listener,me:me,levelNext:levelNext,event:event}]))],$I$(2,1).c$$I$java_awt_event_ActionListener);
+), Clazz.new_(P$.SwingJSUtils$StateHelper$1.$init$,[this, {stateNext:stateNext,listener:listener,levelNext:levelNext,event:event,me:me}]))],$I$(2,1).c$$I$java_awt_event_ActionListener);
 timer.setRepeats$Z(false);
 timer.start$();
 return true;
@@ -482,4 +482,4 @@ C$.timeoutID=0;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:06 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 16:53:52 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

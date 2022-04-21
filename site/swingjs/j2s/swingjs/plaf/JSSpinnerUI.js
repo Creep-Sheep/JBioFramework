@@ -9,7 +9,7 @@ C$.$clinit$=2;
 Clazz.newMeth(C$, '$init$', function () {
 },1);
 
-C$.$fields$=[['O',['up','swingjs.api.js.DOMNode','+dn','spinner','javax.swing.JSpinner','handler','swingjs.plaf.JSSpinnerUI.Handler']]
+C$.$fields$=[['O',['spinner','javax.swing.JSpinner','handler','swingjs.plaf.JSSpinnerUI.Handler']]
 ,['O',['nextButtonHandler','swingjs.plaf.JSSpinnerUI.ArrowButtonHandler','+previousButtonHandler','zeroSize','java.awt.Dimension']]]
 
 Clazz.newMeth(C$, 'updateDOMNode$',  function () {
@@ -240,7 +240,8 @@ var prop=e.getPropertyName$();
 var ui=this;
 if (Clazz.instanceOf(e.getSource$(), "javax.swing.JSpinner")) {
 var spinner=(e.getSource$());
-if ("editor".equals$O(prop)) {
+switch (prop) {
+case "editor":
 var oldEditor=e.getOldValue$();
 var newEditor=e.getNewValue$();
 ui.replaceEditor$javax_swing_JComponent$javax_swing_JComponent(oldEditor, newEditor);
@@ -257,21 +258,26 @@ if (Clazz.instanceOf(tf.getFont$(), "javax.swing.plaf.UIResource")) {
 tf.setFont$java_awt_Font(spinner.getFont$());
 }tf.addFocusListener$java_awt_event_FocusListener(C$.nextButtonHandler);
 tf.addFocusListener$java_awt_event_FocusListener(C$.previousButtonHandler);
-}}} else if ("enabled".equals$O(prop) || "model".equals$O(prop) ) {
+}}break;
+case "enabled":
+case "model":
 p$3.updateEnabledState.apply(ui, []);
-} else if ("font".equals$O(prop)) {
+break;
+case "font":
 var editor=spinner.getEditor$();
 if (editor != null  && Clazz.instanceOf(editor, "javax.swing.JSpinner.DefaultEditor") ) {
 var tf=(editor).getTextField$();
 if (tf != null ) {
 if (Clazz.instanceOf(tf.getFont$(), "javax.swing.plaf.UIResource")) {
 tf.setFont$java_awt_Font(spinner.getFont$());
-}}}} else if ("ToolTipText".equals$O(prop)) {
+}}}break;
+case "ToolTipText":
 p$3.updateToolTipTextForChildren$javax_swing_JComponent.apply(this, [spinner]);
-}} else if (Clazz.instanceOf(e.getSource$(), "javax.swing.JComponent")) {
+break;
+}
+} else if (Clazz.instanceOf(e.getSource$(), "javax.swing.JComponent")) {
 var c=e.getSource$();
 if ((Clazz.instanceOf(c.getParent$(), "javax.swing.JPanel")) && (Clazz.instanceOf(c.getParent$().getParent$(), "javax.swing.JSpinner")) && "border".equals$O(prop)  ) {
-var spinner=c.getParent$().getParent$();
 p$3.maybeRemoveEditorBorder$javax_swing_JComponent.apply(ui, [c]);
 }}C$.superclazz.prototype.propertyChange$java_beans_PropertyChangeEvent.apply(this, [e]);
 });
@@ -583,4 +589,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:51 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:17 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

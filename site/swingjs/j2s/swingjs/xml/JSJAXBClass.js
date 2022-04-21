@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("swingjs.xml"),p$1={},I$=[[0,'java.util.Hashtable','java.util.HashMap','javax.xml.namespace.QName','java.util.ArrayList','javajs.util.Rdr','java.io.BufferedInputStream','javajs.util.PT','swingjs.xml.JSJAXBField','swingjs.api.Interface']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("swingjs.xml"),p$1={},I$=[[0,'java.util.Hashtable','java.util.HashMap','javax.xml.namespace.QName','java.util.ArrayList','javajs.util.Rdr','javajs.util.PT','swingjs.xml.JSJAXBField','swingjs.api.Interface']],I$0=I$[0],$I$=function(i,n){return((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "JSJAXBClass", null, null, 'Cloneable');
 
 C$.$clinit$=2;
@@ -34,10 +34,18 @@ C$.packageNamespace="";
 C$.packageAccessorType=2;
 var is=javaClass.getResourceAsStream$S("_$.js");
 if (is != null ) {
-var data=$I$(5,"streamToUTF8String$java_io_BufferedInputStream",[Clazz.new_($I$(6,1).c$$java_io_InputStream,[is])]);
+var data;
+try {
+data=$I$(5).streamToString$java_io_InputStream(is);
 C$.packageAccessorType=C$.parseAccessorType$S(data);
-data=$I$(7).getQuotedAttribute$S$S(data, "namespace");
+data=$I$(6).getQuotedAttribute$S$S(data, "namespace");
 if (data != null ) C$.packageNamespace=data;
+} catch (e) {
+if (Clazz.exceptionOf(e,"java.io.IOException")){
+} else {
+throw e;
+}
+}
 }}}, 1);
 
 Clazz.newMeth(C$, 'c$$Class$O$Z$Z$javax_xml_namespace_QName',  function (javaClass, javaObject, isXmlIDREF, isMarshaller, qname) {
@@ -79,7 +87,7 @@ for (var i=0; i < n; i++) {
 var adata=jsdata[i];
 if (adata[0][1].equals$O(".")) adata[0][1]=lastClassName;
  else lastClassName=adata[0][1];
-var field=Clazz.new_([this, adata, clazz, this.fields.size$(), this.propOrder],$I$(8,1).c$$swingjs_xml_JSJAXBClass$OAA$O$I$java_util_List);
+var field=Clazz.new_([this, adata, clazz, this.fields.size$(), this.propOrder],$I$(7,1).c$$swingjs_xml_JSJAXBClass$OAA$O$I$java_util_List);
 if (field.ignore == true ) {
 p$1.removeField$S.apply(this, [field.javaName]);
 } else if (i == 0 && !isSuperclass  || field.javaName != null  ) {
@@ -131,7 +139,7 @@ return prefix;
 Clazz.newMeth(C$, 'getAdapter$S',  function (adapterClass) {
 var adapter=C$.adapterMap.get$O(adapterClass);
 if (adapter == null  && !C$.adapterMap.containsKey$O(adapterClass) ) {
-C$.adapterMap.put$O$O(adapterClass, adapter=$I$(9).getInstance$S$Z(adapterClass, false));
+C$.adapterMap.put$O$O(adapterClass, adapter=$I$(8).getInstance$S$Z(adapterClass, false));
 }return adapter;
 }, 1);
 
@@ -245,4 +253,4 @@ C$.prefixIndex=1;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:34:56 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:20 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

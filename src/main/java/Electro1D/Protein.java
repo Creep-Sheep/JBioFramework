@@ -9,7 +9,7 @@ import java.awt.Graphics;
 public class Protein {
 
 	int concentration;
-	int startY;
+	double startY;
 	public float scaleFactor;
 	public double relativeMigration;
 	public double speed;
@@ -20,13 +20,13 @@ public class Protein {
 	public String abbr;
 	public boolean selected;
 	public Color color;
-	public int x1;
-	public int y1;
+	public double x1;
+	public double y1;
 	public int width;
 	public int height;
 	public double y1float;
 	public int maxPosition;
-	public float distance;
+	public double distance;
 	private int decider;
 	private int counter;
 	public int plotYPos;
@@ -55,8 +55,8 @@ public class Protein {
 	}
 
 	public boolean matchPosition(int x, int y) {
-		int x2 = x1 + width;
-		int y2 = y1 + height;
+		double x2 = x1 + width;
+		double y2 = y1 + height;
 		int range = 2;
 		return (x >= x1 - range && x <= x2 + range && y >= y1 - range && y <= y2 + range);
 	}
@@ -127,12 +127,15 @@ public class Protein {
 		}
 		g.setColor(color);
 		if (concentration == 1) {
-			g.fillRect(x1, y1, width, height);
+			g.fillRect((int) x1, (int) y1, width, height);
 		} else {
-			g.fillRect(x1 - concentration, y1, width + concentration * 2, height + concentration);
+			g.fillRect((int) x1 - concentration, (int) y1, width + concentration * 2, height + concentration);
 		}
 		incrPosition();
 		return true;
 	}
 
+	public String toString() {
+		return "Protein: name=" + name + " fullName=" + fullName + " MW=" + mw + " rm=" + relativeMigration + " d=" + distance;
+	}
 }

@@ -727,7 +727,7 @@ p$1.drawGraph$java_awt_Graphics.apply(this, [this.offScreenGraphics]);
 
 Clazz.newMeth(C$, 'hitStackBottom',  function () {
 if (this.dyes[1] != null ) {
-if (this.dyes[1].y1 > this.wellBottom + 10) {
+if (this.dyes[1].y1 > this.wellBottom + 10 ) {
 this.$parent.paramsetspeed$D(this.speed);
 }}}, p$1);
 
@@ -829,4 +829,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v4');//Created 2022-03-22 08:41:07 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
+;Clazz.setTVer('3.3.1-v4');//Created 2022-04-21 16:53:53 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -531,7 +531,7 @@ throw Clazz.new_(Clazz.load('IllegalStateException').c$$S,["getKeyStore() must b
 }return this.$finals$.protectionParameter;
 });
 })()
-), Clazz.new_(C$,[this, {keyStore:keyStore,protectionParameter:protectionParameter}],P$.KeyStore$Builder$1));
+), Clazz.new_(C$,[this, {protectionParameter:protectionParameter,keyStore:keyStore}],P$.KeyStore$Builder$1));
 }, 1);
 
 Clazz.newMeth(C$, 'newInstance$S$java_security_Provider$java_io_File$java_security_KeyStore_ProtectionParameter',  function (type, provider, file, protection) {
@@ -597,7 +597,7 @@ throw e;
 return ks;
 });
 })()
-), Clazz.new_(P$.KeyStore$Builder$2$1.$init$,[this, {protection:protection,provider:provider,type:type}]));
+), Clazz.new_(P$.KeyStore$Builder$2$1.$init$,[this, {type:type,provider:provider,protection:protection}]));
 },1);
 
 C$.$fields$=[['Z',['getCalled'],'O',['oldException','java.io.IOException','action','java.security.PrivilegedExceptionAction']]]
@@ -625,7 +625,7 @@ throw Clazz.new_(Clazz.load('IllegalStateException').c$$S,["getKeyStore() must b
 }return this.$finals$.protection;
 });
 })()
-), Clazz.new_(C$,[this, {protection:protection,context:context}],P$.KeyStore$Builder$2));
+), Clazz.new_(C$,[this, {context:context,protection:protection}],P$.KeyStore$Builder$2));
 }, 1);
 ;
 (function(){/*c*/var C$=Clazz.newClass(P$.KeyStore.Builder, "FileBuilder", function(){
@@ -762,4 +762,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:35:16 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:34 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

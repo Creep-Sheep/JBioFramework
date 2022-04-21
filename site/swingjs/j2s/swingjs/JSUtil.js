@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("swingjs"),I$=[[0,'java.io.File','java.net.URL','javajs.util.Rdr','java.io.BufferedInputStream','javajs.util.AU','java.io.ByteArrayInputStream','javajs.util.ZipTools','swingjs.api.Interface','java.util.Hashtable','java.awt.Toolkit','java.util.Locale','javajs.util.AjaxURLConnection','swingjs.json.JSON','java.awt.Color','Thread','sun.awt.AppContext','java.util.HashMap','swingjs.api.js.DOMNode','swingjs.JSToolkit',['swingjs.JSDnD','.JSTransferable']]],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("swingjs"),I$=[[0,'java.io.File','java.net.URL','javajs.util.Rdr','javajs.util.AU','java.io.BufferedInputStream','java.io.ByteArrayInputStream','javajs.util.ZipTools','swingjs.api.Interface','java.util.Hashtable','java.awt.Toolkit','java.util.Locale','javajs.util.AjaxURLConnection','swingjs.json.JSON','java.awt.Color','Thread','sun.awt.AppContext','java.util.HashMap','swingjs.api.js.DOMNode','swingjs.JSToolkit',['swingjs.JSDnD','.JSTransferable']]],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "JSUtil", null, null, 'swingjs.api.JSUtilI');
 
 C$.$clinit$=2;
@@ -83,7 +83,7 @@ if (!isFile) {
 try {
 var url=Clazz.new_($I$(2,1).c$$S,[uri]);
 var stream=url.getContent$();
-return (asBytes ? $I$(3).getStreamAsBytes$java_io_BufferedInputStream$javajs_util_OC(stream, null) : $I$(3).streamToUTF8String$java_io_BufferedInputStream(stream));
+return (asBytes ? $I$(3).streamToBytes$java_io_InputStream(stream) : $I$(3).streamToString$java_io_InputStream(stream));
 } catch (e) {
 if (Clazz.exceptionOf(e,"Exception")){
 } else {
@@ -109,9 +109,16 @@ return C$.ensureString$O(data);
 
 Clazz.newMeth(C$, 'ensureString$O',  function (data) {
 if (data == null ) return null;
-if (Clazz.instanceOf(data, Clazz.array(Byte.TYPE, -1))) return $I$(3).bytesToUTF8String$BA(data);
+if (Clazz.instanceOf(data, Clazz.array(Byte.TYPE, -1))) return  String.instantialize(data);
 if (Clazz.instanceOf(data, "java.lang.String") || Clazz.instanceOf(data, "javajs.util.SB") ) return data.toString();
-if (Clazz.instanceOf(data, "java.io.InputStream")) return $I$(3,"streamToUTF8String$java_io_BufferedInputStream",[Clazz.new_($I$(4,1).c$$java_io_InputStream,[data])]);
+if (Clazz.instanceOf(data, "java.io.InputStream")) try {
+return $I$(3).streamToString$java_io_InputStream(data);
+} catch (e) {
+if (Clazz.exceptionOf(e,"java.io.IOException")){
+} else {
+throw e;
+}
+}
 return null;
 }, 1);
 
@@ -146,7 +153,7 @@ if (Clazz.exceptionOf(e,"java.io.IOException")){
 throw e;
 }
 }
-}return $I$(5).ensureSignedBytes$BA(b);
+}return $I$(4).ensureSignedBytes$BA(b);
 }, 1);
 
 Clazz.newMeth(C$, 'haveCachedResource$S$Z',  function (resourceName, isJavaPath) {
@@ -180,7 +187,7 @@ if (path == null ) return null;
 var stream;
 var data=C$.getCachedFileData$S(path);
 if (Clazz.instanceOf(data, Clazz.array(Byte.TYPE, -1))) {
-return Clazz.new_([Clazz.new_($I$(6,1).c$$BA,[data])],$I$(4,1).c$$java_io_InputStream);
+return Clazz.new_([Clazz.new_($I$(6,1).c$$BA,[data])],$I$(5,1).c$$java_io_InputStream);
 }if (Clazz.instanceOf(data, "java.lang.Boolean")) {
 return null;
 }stream=C$.getResourceAsStream$S(name);
@@ -206,7 +213,7 @@ Clazz.newMeth(C$, 'loadJavaResourcesFromZip$ClassLoader$S$java_util_Map',  funct
 if (mapByteData == null ) mapByteData=C$.getFileCache$();
 var fileList="";
 try {
-var bis=Clazz.new_([cl.getResourceAsStream$S(zipFileName)],$I$(4,1).c$$java_io_InputStream);
+var bis=Clazz.new_([cl.getResourceAsStream$S(zipFileName)],$I$(5,1).c$$java_io_InputStream);
 var prefix=C$.J2S.getResourcePath(null, true);
 fileList=$I$(7).cacheZipContents$java_io_BufferedInputStream$S$java_util_Map$Z(bis, prefix, mapByteData, false);
 } catch (e) {
@@ -306,7 +313,7 @@ System.out.println$S("JSUtil Error running readyCallback method for " + fname + 
 
 Clazz.newMeth(C$, 'getSignedStreamBytes$java_io_BufferedInputStream',  function (bis) {
 try {
-return $I$(5,"ensureSignedBytes$BA",[$I$(3).getStreamAsBytes$java_io_BufferedInputStream$javajs_util_OC(bis, null)]);
+return $I$(4,"ensureSignedBytes$BA",[$I$(3).getStreamAsBytes$java_io_BufferedInputStream$javajs_util_OC(bis, null)]);
 } catch (e) {
 if (Clazz.exceptionOf(e,"java.io.IOException")){
 return null;
@@ -735,7 +742,6 @@ $I$(19).playAudio$BA$javax_sound_sampled_AudioFormat(buffer, format);
 });
 
 Clazz.newMeth(C$, 'importModule$S$java_util_function_Function$java_util_function_Function',  function (resource, resolve, reject) {
-var o=Clazz.getClass($I$(18),['addEventListener','addHorizontalGap','appendChild','appendChildSafely','blur','createElement','createTextNode','detachAll','dispose','firstChild','focus','getAttr','getAttrInt','getAttribute','getAttributeNames','getBoundingClientRect','getCSSRectangle','getElement','getEmbedded','getHeight','getParent','getPreviousSibling','getStyle','getWidth','hasFocus','insertBefore','lastChild','prepend','remove','removeAttribute','removeChild','removeEventListener','removeEventListener','setAttr','setAttrInt','setAttribute','setAttrs','setPositionAbsolute','setSelectionRange','setSize','setStyle','setStyles','setTopLeftAbsolute','setVisible','setZ','transferTo','x']);
 C$.loadStaticResource$S("/_ES6/jsutil.js");
 if (resource.startsWith$S("$J2S$/")) resource=this.getJ2SPath$() + resource.substring$I(5);
 System.out.println$S("JSUtil.importModule " + resource);
@@ -743,7 +749,6 @@ return J2S._ES6.jsutil.importModule(resource, resolve, reject) ||null;
 });
 
 Clazz.newMeth(C$, 'importModuleData$S$java_util_function_Function$java_util_function_Function',  function (resource, resolve, reject) {
-var o=Clazz.getClass($I$(18),['addEventListener','addHorizontalGap','appendChild','appendChildSafely','blur','createElement','createTextNode','detachAll','dispose','firstChild','focus','getAttr','getAttrInt','getAttribute','getAttributeNames','getBoundingClientRect','getCSSRectangle','getElement','getEmbedded','getHeight','getParent','getPreviousSibling','getStyle','getWidth','hasFocus','insertBefore','lastChild','prepend','remove','removeAttribute','removeChild','removeEventListener','removeEventListener','setAttr','setAttrInt','setAttribute','setAttrs','setPositionAbsolute','setSelectionRange','setSize','setStyle','setStyles','setTopLeftAbsolute','setVisible','setZ','transferTo','x']);
 C$.loadStaticResource$S("/_ES6/jsutil.js");
 if (resource.startsWith$S("$J2S$/")) resource=this.getJ2SPath$() + resource.substring$I(5);
 System.out.println$S("JSUtil.importModule " + resource);
@@ -800,4 +805,4 @@ C$.useCache=true;
 C$.jQuery=C$.getJQuery$();
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-30 05:48:29 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:05 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

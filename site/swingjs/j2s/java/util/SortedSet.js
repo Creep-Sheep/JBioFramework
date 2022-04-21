@@ -2,7 +2,6 @@
 /*i*/var C$=Clazz.newInterface(P$, "SortedSet", null, null, 'java.util.Set');
 
 C$.$clinit$=2;
-C$.$defaults$ = function(C$){
 
 Clazz.newMeth(C$, 'spliterator$',  function () {
 return ((P$.SortedSet$1||
@@ -19,5 +18,5 @@ return this.b$['java.util.SortedSet'].comparator$.apply(this.b$['java.util.Sorte
 })()
 ), Clazz.new_($I$(1,1).c$$java_util_Collection$I,[this, null, this, 21],P$.SortedSet$1));
 });
-};})();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-14 18:17:31 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+})();
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:44 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

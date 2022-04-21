@@ -307,12 +307,12 @@ this.setTainted$();
 break;
 case "componentOrientation":
 this.calculateGeometry$();
-this.setTainted$Z(true);
+this.setTainted$();
 break;
 case "model":
 (e.getOldValue$()).removeChangeListener$javax_swing_event_ChangeListener(this);
 (e.getNewValue$()).addChangeListener$javax_swing_event_ChangeListener(this);
-this.setTainted$Z(true);
+this.setTainted$();
 break;
 }
 C$.superclazz.prototype.propertyChange$java_beans_PropertyChangeEvent.apply(this, [e]);
@@ -776,4 +776,4 @@ $I$(1).loadJQSlider$();
 };
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:30 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:17 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

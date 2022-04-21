@@ -172,7 +172,7 @@ public class Electrophoresis extends JPanel {
 	 * @param dye is a fast-running leading marker
 	 */
 	public void setPlotData(Protein stds[], Protein sample, Protein dye) {
-		plotPanel.setResults(stds, sample, dye);
+		tabPane2.setEnabledAt(tabPane2.indexOfComponent(plotPanel), plotPanel.setResults(stds, sample, dye));
 	}
 
 	/**

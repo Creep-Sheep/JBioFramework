@@ -297,21 +297,28 @@ case "keypress":
 return 400;
 case "click":
 return 500;
+case "pointerdown":
 case "mousedown":
 case "touchstart":
 return 501;
+case "pointerup":
 case "mouseup":
 case "touchend":
 return 502;
+case "pointermove":
 case "mousemove":
 return 503;
 case "mousedrag":
 return 506;
 case "mousewheel":
 return 507;
+case "pointerover":
+case "pointerenter":
 case "mouseover":
 case "mouseenter":
 return 504;
+case "pointerout":
+case "pointerleave":
 case "mouseout":
 case "mouseleave":
 return 505;
@@ -322,16 +329,16 @@ return def;
 Clazz.newMeth(C$, 'retargetMouseEvent$O$swingjs_api_js_DOMNode$javax_swing_JComponent$javax_swing_JComponent$I',  function (jqevent, base, from, to, id) {
 if (id == 0) id=C$.fixEventType$O$I(jqevent, 0);
 var isDirect=(base != null );
-var c;
+var c=null;
 if (base == null ) {
 c=$I$(6).秘getTopInvokableAncestor$java_awt_Component$Z(from, false);
+if (c == null ) c=from;
 base=c.秘getUI$().getDOMNode$();
 } else {
 c=from;
 }var xym=null;
 
-jqevent.j2sretarget = to;
-xym = J2S._getEventXY(jqevent, J2S.$(base).offset());
+jqevent.j2sretarget = to; xym = J2S._getEventXY(jqevent, J2S.$(base).offset());
 var modifiers=C$.getModifiers$O(jqevent);
 var time=System.currentTimeMillis$();
 if (isDirect) {
@@ -347,4 +354,4 @@ return je ? je.target :null;
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:55 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:04 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

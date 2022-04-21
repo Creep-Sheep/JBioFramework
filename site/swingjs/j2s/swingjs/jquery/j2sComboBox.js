@@ -17,13 +17,13 @@ J2S.__makeComboBox = function() {
   
   $( function() {
     $('head').append('<style>.j2scb-sel {background-color:#B8CFE5;}'
-    		+'\n.j2scb-unsel {background-color:white;}'
+    		+'\n.j2scb-unsel {background-color:inherit;}'
     		+'\n.j2scb-hov {background-color:lightblue;}'
     		+'\n.j2scbcont {position:absolute; left:0px;top:0px;}'
     		+'\n.j2scbhead {position:absolute; left:0px;top:0px;text-align:left;overflow:hidden;padding:0px 2px 1px 2px}'
-    		+'\n.j2scbbtn {position:absolute; leftbackground-color:white;:100px;top:0px; width:20px;text-align:center;cursor:pointer;background-color:lightblue;padding:0px}'
+    		+'\n.j2scbbtn {position:absolute; leftbackground-color:inherit;:100px;top:0px; width:20px;text-align:center;cursor:pointer;background-color:lightblue;padding:0px}'
     		+'\n.j2scbpopup {position:absolute; list-style:none}'
-    		+'\n.j2scblist {background-color:white;position:absolute; left:0px;top:0px;margin:0;border:black solid 1px;cursor:pointer;text-align:left;padding:0em;scrollbar-width:thin;cursor:pointer;}</style>'
+    		+'\n.j2scblist {background-color:inherit;position:absolute; left:0px;top:0px;margin:0;border:black solid 1px;cursor:pointer;text-align:left;padding:0em;scrollbar-width:thin;cursor:pointer;}</style>'
     );
     
     var CLOSE_DELAY = 100; // BH 2019.10.04 50 was just a bit too fast; could close early
@@ -40,7 +40,7 @@ J2S.__makeComboBox = function() {
  		disabled: false,
  		popupVisible: false,
  		selectedIndex: -1,
- 		backgroundColor: "white",
+ 		backgroundColor: "blue",
  		// z-index
  		zIndex:999999,
  		name:null,
@@ -105,7 +105,7 @@ J2S.__makeComboBox = function() {
         		});
         
         if (this.options.items)
-        	this.add(this.options.items);
+        	this.add(this.options.items, 1);
         
         this.setSelectedIndex(this.options.selectedIndex)
         this._refresh();
@@ -115,7 +115,9 @@ J2S.__makeComboBox = function() {
       _destroy: function() {
         // remove generated elements
         this.cont.remove();
- 		this.popup.remove();
+        // must append to body, as otherwise it is not actually removed
+        $("body").append(this.popup);
+        this.popup.remove();
         this.element
           .removeClass( 'custom-j2sCB' )
           .enableSelection()
@@ -143,10 +145,23 @@ J2S.__makeComboBox = function() {
       update: function(andTrigger) {
    		 var sel = this._selectedItem();
    		 var all;
-   		 this.options.selectedIndex = (sel[0] ? sel[0].j2scbIndex : -1);
-   		 this.head.text(sel.length ==0 ? '' : 
-   			this.options.mode == 's' ? sel.text() : sel.length + ' of ' 
-   					+ (all = this.list.find('.j2scbopt').length) + ' selected option' + (all > 1 ? 's' :''));
+   		 var i = (sel[0] ? sel[0].j2scbIndex : -1);
+   		 this.options.selectedIndex = i;
+   		 if (sel.length == 0) {
+   			 this.head.text("");
+   		 } else if (this.options.mode == 's') {
+   			 var item = this.list["j2shead"+i];
+   			 if (item) {
+   				 this.head[0].removeChild(this.head[0].firstChild);
+   				 item.style.top="0px";
+   				 this.head[0].appendChild(item);
+   			 } else {
+   				 this.head.text(sel.text());
+   			 }
+   		 } else {
+   	   		 this.head.text(sel.length + ' of ' 
+   	   					+ (all = this.list.find('.j2scbopt').length) + ' selected option' + (all > 1 ? 's' :''));
+   		 }
    		 if (andTrigger)
  	      	this._trigger( 'change' , null, [this, "selected", sel[0].j2scbIndex]);
 // 	     else
@@ -154,9 +169,13 @@ J2S.__makeComboBox = function() {
        },  
       updateList: function(items) {
     	  this.list.children().detach();
-    	  this.add(items);
+    	  this.add(items, 1);
 	  },
-      add: function(items) {
+      updateList2: function(items) {
+    	  this.list.children().detach();
+    	  this.add(items, 2);
+	  },
+      add: function(items, step) {
       	  var y = 0;
     	  if (Array.isArray(items)) {
         	this.itemCount = 0;    		
@@ -164,11 +183,11 @@ J2S.__makeComboBox = function() {
     	  	this.list.children().each(function(a) {y += a.height()});
     		items = [items];  
     	  }
-    	  for (var i = 0; i < items.length; i++) {
+    	  for (var i = 0; i < items.length; i += step) {
     		var item = items[i];
     		if (!item)continue;
     		var opt = $('<li>', {'class':'j2scbopt j2scb-unsel', 'id': this.id() + '_opt' + this.itemCount});
-    		opt[0].j2scbIndex = this.itemCount++;    		
+    		var pt = opt[0].j2scbIndex = this.itemCount++;    		
     		this.list.append(opt);
 			if (typeof item == 'string') {
 				opt.text(item);
@@ -178,6 +197,8 @@ J2S.__makeComboBox = function() {
     			opt.append(item);
     			opt.css({height:ji.css("height")});
 	    		y += opt.height();
+	    		if (step == 2)
+	    			this.list["j2shead" + pt] = items[i + 1];
     		}
     		this.list.css({height: (y + 2) + "px"});
 	        this._on(opt, {mouseleave: '_close', mouseover: '_overOpt', click : '_clickOpt'});
@@ -185,10 +206,14 @@ J2S.__makeComboBox = function() {
       },
       updateCSS: function() {
     	  var cbox = this.cont.parent();
+    	  var bg = cbox.css("background-color");
+    	  this.options.backgroundColor = bg;
     	  var font = {"font-family": cbox.css("font-family")
     			  , "font-size": cbox.css("font-size")
     			  , "font-weight": cbox.css("font-weight")
     			  , "font-style": cbox.css("font-style")
+    			  , "font-style": cbox.css("font-style")
+    			  , backgroundColor: bg
     			  }; 	  
           var w = this.element.width();
           if (w == 0)
@@ -197,23 +222,23 @@ J2S.__makeComboBox = function() {
           this.cont.css({
           	width: (w - 2) + 'px',
           	height: h,
-          	backgroundColor: this.options.backgroundColor
+          	backgroundColor: bg
           });
           this.head.css({
           	width: (w - 20) + 'px',
-          	height: h,
-          	backgroundColor: this.options.backgroundColor
+          	height: h
           });
           this.head.css(font);
           this.btn.css({
           	left: (w - 20) + 'px',
-          	height: h
+          	height: h,
+          	backgroundColor: bg
           });
           h = (this.options.height ? this.options.height + 'px' : null);
           this.popup.css({
             width: w + 'px',
         	height: h
-          });  
+         });  
           this.popup.css(font);
           this.list.css({
             width: w + 'px',

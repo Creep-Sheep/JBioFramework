@@ -89,6 +89,7 @@ java/awt/event/MouseEvent.js
 java/awt/event/MouseListener.js
 java/awt/event/MouseMotionAdapter.js
 java/awt/event/MouseMotionListener.js
+java/awt/event/MouseWheelEvent.js
 java/awt/event/MouseWheelListener.js
 java/awt/event/TextListener.js
 java/awt/event/WindowAdapter.js
@@ -248,6 +249,7 @@ javax/swing/JTextField.js
 javax/swing/JToggleButton.js
 javax/swing/JToolTip.js
 javax/swing/JWindow.js
+javax/swing/KeyboardManager.js
 javax/swing/KeyStroke.js
 javax/swing/LayoutComparator.js
 javax/swing/LayoutFocusTraversalPolicy.js
@@ -407,6 +409,7 @@ swingjs/api/js/HTML5CanvasContext2D.js
 swingjs/api/js/JSFunction.js
 swingjs/api/js/JSInterface.js
 swingjs/jquery/JQueryUI.js
+swingjs/plaf/BasicComboBoxEditor.js
 swingjs/plaf/BasicComboBoxRenderer.js
 swingjs/plaf/BasicHTML.js
 swingjs/plaf/ButtonListener.js

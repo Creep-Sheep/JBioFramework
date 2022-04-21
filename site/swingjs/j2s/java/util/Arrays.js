@@ -1293,7 +1293,7 @@ Clazz.newMeth(C$, ['accept$I','accept$O'],  function (i) {
 this.$finals$.array[i]=this.$finals$.generator.apply$I(i);
 });
 })()
-), Clazz.new_(P$.Arrays$lambda1.$init$,[this, {array:array,generator:generator}])));
+), Clazz.new_(P$.Arrays$lambda1.$init$,[this, {generator:generator,array:array}])));
 }, 1);
 
 Clazz.newMeth(C$, 'setAll$IA$java_util_function_IntUnaryOperator',  function (array, generator) {
@@ -1339,7 +1339,7 @@ Clazz.newMeth(C$, ['accept$I','accept$O'],  function (i) {
 this.$finals$.array[i]=this.$finals$.generator.applyAsLong$I(i);
 });
 })()
-), Clazz.new_(P$.Arrays$lambda3.$init$,[this, {generator:generator,array:array}])));
+), Clazz.new_(P$.Arrays$lambda3.$init$,[this, {array:array,generator:generator}])));
 }, 1);
 
 Clazz.newMeth(C$, 'setAll$DA$java_util_function_IntToDoubleFunction',  function (array, generator) {
@@ -1558,4 +1558,4 @@ $I$(2).sort$OA$java_util_Comparator(this.a, c);
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-01-27 21:34:57 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:25:39 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

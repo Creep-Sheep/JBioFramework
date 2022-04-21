@@ -93,6 +93,7 @@ return null;
 
 Clazz.newMeth(C$, 'positionCaret$java_awt_event_MouseEvent',  function (e) {
 var pt=Clazz.new_([e.getX$(), e.getY$()],$I$(9,1).c$$I$I);
+pt.x=2147483647;
 (this.component.getUI$()).viewToModel$javax_swing_text_JTextComponent$java_awt_Point$javax_swing_text_Position_BiasA(this.component, pt, C$.biasRet);
 if (pt.x >= 0) {
 if (C$.biasRet[0] == null ) C$.biasRet[0]=$I$(3).Forward;
@@ -102,6 +103,7 @@ if (pt.y != pt.x) this.moveDot$I$javax_swing_text_Position_Bias(pt.y, C$.biasRet
 
 Clazz.newMeth(C$, 'getPosition$java_awt_event_MouseEvent$javax_swing_text_Position_BiasA',  function (e, biasret) {
 var pt=Clazz.new_([e.getX$(), e.getY$()],$I$(9,1).c$$I$I);
+pt.x=2147483647;
 var pos=(this.component.getUI$()).viewToModel$javax_swing_text_JTextComponent$java_awt_Point$javax_swing_text_Position_BiasA(this.component, pt, C$.biasRet);
 System.out.println$S("def caret getPos " + e.getID$() + " " + pt );
 return pos;
@@ -629,4 +631,4 @@ this.b$['javax.swing.text.DefaultCaret'].handleMoveDot$I$javax_swing_text_Positi
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:39 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:20 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

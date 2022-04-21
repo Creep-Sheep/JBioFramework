@@ -1,4 +1,7 @@
 /*!
+  
+  // BH 2022.01.12 adds pointer option see BHTEST
+
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
  *
@@ -13,6 +16,7 @@
  */
 
 // modified by Bob Hanson for local MSIE 11 reading remote files and skipping Opera test unless Opera
+// 2022.01.08 BHTEST adds pointer| to rmouseEvent
 
 (function( global, factory ) {
 
@@ -4248,7 +4252,7 @@ var rcheckableType = (/^(?:checkbox|radio)$/i);
 
 var rformElems = /^(?:input|select|textarea)$/i,
 	rkeyEvent = /^key/,
-	rmouseEvent = /^(?:mouse|contextmenu)|click/,
+	rmouseEvent = /^(?:mouse|pointer|contextmenu)|click/, // BHTEST
 	rfocusMorph = /^(?:focusinfocus|focusoutblur)$/,
 	rtypenamespace = /^([^.]*)(?:\.(.+)|)$/;
 
@@ -4992,6 +4996,8 @@ jQuery.Event.prototype = {
 
 // Create mouseenter/leave events using mouseover/out and event-time checks
 jQuery.each({
+	pointerenter: "pointerover",  // BHTEST
+	pointerleave: "pointerout",    // BHTEST
 	mouseenter: "mouseover",
 	mouseleave: "mouseout"
 }, function( orig, fix ) {
@@ -10373,6 +10379,7 @@ return jQuery;
 
 }));
 // j2sQueryExt.js]
+// BH 2022.01.12 adds pointer option
 // BH 7/13/2019 removing hook for J2S.unsetMouse
 // BH 7/21/2016 9:25:38 PM passing .pageX and  .pageY to jQuery event
 // BH 7/24/2015 7:24:30 AM renamed from JSmoljQueryExt.js
@@ -10380,6 +10387,14 @@ return jQuery;
 // BH 9/2/2013 7:43:12 AM BH Opera/Safari fix for binary file reading
 
 ;(function($) {
+
+	var addPointerEvent = function(mode, a) {
+		  a = a.split(" ");
+		  for (var i = a.length; --i >= 0;)
+			  $.event.special[mode+a[i]] = {bindType: "pointer" +a[i], delegateType: "pointer" + a[i]};
+		}
+
+		addPointerEvent("mouse", "up down move over out enter leave"); // BHTEST
 
 	function createXHR(isMSIE) {
 		try {
@@ -10671,6 +10686,8 @@ return jQuery;
 })(jQuery,document,"click mousemove mouseup touchmove touchend", "outjsmol");
 // j2sApplet.js BH = Bob Hanson hansonr@stolaf.edu
 
+// BH 2022.01.12 adds pointer option
+// BH 2021.09.22 default file save as application/octet-stream, not text/plain
 // BH 2020.12.31 full 64-bit long
 // BH 2020.12.09 touch fixes for fdown and fdrag (j2sSlider)
 // BH 2020.12.03 note that relay is disabled using J2S.addDirectDatabaseCall(".")
@@ -11938,7 +11955,7 @@ if (database == "_" && J2S._serverUrl.indexOf("//your.server.here/") >= 0) {
 			// Asynchronous output generated using an anchor tag
 			var a = document.createElement("a");
 			a.href = "data:" + mimetype + ";base64," + data;
-			a.type = mimetype || (mimetype = "text/plain;charset=utf-8");
+			a.type = mimetype || (mimetype = "application/octet-stream");//was "text/plain;charset=utf-8");
 			a.download = filename;
 			a.target = "_blank";
 			$("body").append(a);
@@ -12572,7 +12589,7 @@ if (ev.keyCode == 9 && ev.target["data-focuscomponent"]) {
 		// otherwise, if J2S._firstTouch is undefined (!!x != x), set J2S._firstTouch
 		// and ignore future touch events (through the first touchend):
 		
-		if (ev.type == "mousedown") {
+		if (ev.type == "pointerdown" || "mousedown") {// BHTEst
 		    J2S._haveMouse = true;
 		} else { 
 		    if (J2S._haveMouse) return;
@@ -14022,31 +14039,15 @@ if (ev.keyCode == 9 && ev.target["data-focuscomponent"]) {
 
 // Google closure compiler cannot handle Clazz.new or Clazz.super
 
+// BH 2022.03.19 String.valueOf(Double) does not add ".0"
+// BH 2022.01.17 fixes interface default method referencing own static fields
+// BH 2021.12.19 adds Double -0; fixes println(Double)
+// BH 2021.12.15 default encoding for String.getBytes() should be utf-8.
+// BH 2021.08.16 fix for Interface initializing its subclass with static initialization
+// BH 2021.07.28 String.instantialize upgraded to use TextDecoder() if possible (not in MSIE)
+// BH 2021.07.20 Date.toString() format yyyy moved to end, as in Java 
+// BH 2021.06.11 Number.compareTo(....) missing
 // BH 2021.02.12 implements better(?) interface defaults resolution -- in order of presentation
-// BH 2020.12.31 3.3.1-v1 full 64-bit long support; BigDecimal, BigInteger fully 64-bit
-
-// BH 2020.12.19 3.2.10-v1 preliminary work aiming to back long with [r,m,s].
-//                         should be fully backward compatible;  
-//                         supports the 3.2.10 transpiler.
-// BH 2020.12.11 fixing interface extended override of interface default
-// BH 2020.12.06 changing Long maxval to 0x1FFFFFFFFFFFFF from 0x20000000000000
-// BH 2020.12.06 better error checking for TYPE.parseTYPE(string)
-// BH 2020.07.27 fix for inner class array names
-// BH 2020.06.18 better test for instanceof Object[]
-// BH 2020.06.03 sets user.home and user.dir to /TEMP/swingjs, and user.name to "swingjs"
-// BH 2020.04.01 2.2.0-v1e fixes missing C$.superclazz when class loaded from core
-// BH 2020.03.19 3.2.9-v1c fixes new String("xxx") !== "xxx"
-// BH 2020.03.11 3.2.9-v1b fixes numerous subtle issues with boxed primitives Integer, Float, etc.
-// BH 2020.03.07 3.2.9-v1a fixes array.hashCode() to be System.identityHashCode(array). 
-// BH 2020.02.18 3.2.8-v2 upgrades String, Integer, ClassLoader, Package, various Exceptions
-// BH 2020.02.12 3.2.8-v1 new Throwable().getStackTrace() should not include j2sClazz methods
-// BH 2020.02.02 3.2.7-v5 fixes array.getClass().getName() and getArrayClass() for short -- should be [S, not [H, for Java
-// BH 2019.12.29 3.2.6 fixes Float.parseFloat$S("NaN") [and Double]
-// BH 2019.12.23 3.2.6 update of System
-// BH 2019.12.19 3.2.6 revision of $clinit$
-// BH 2019.12.16 3.2.5-v4 adds ClassLoader static methods for system resources (just j2s/...)
-// BH 2019.12.15 3.2.5-v4 Character.prototype.valueOf() missing 
-// BH 2019.12.14 3.2.5-v3 Clazz._4Name initialization should be full static initialization 
 
 // see earlier notes at net.sf.j2s.java.core.srcjs/js/devnotes.txt
 
@@ -14078,95 +14079,6 @@ if (ev.keyCode == 9 && ev.target["data-focuscomponent"]) {
   // at least for now:
 
   var setWindowValue = function(a, v) { window[a] = v; }
-  var getWindowValue = function(a) { return window[a] }
-
-/* not compatible with Safari 2021.01.08
- * 
-try {
-
-	
-Clazz.Runnable = class {
-	constructor(f) {
-		this.f = f;			
-	}
-	run = async function(){
-		await this.f();
-	};
-
-}
-
-Clazz.Thread = class {
-	constructor(name, r) {
-		this.name = name;
-		this.stopped = false;
-		this.runnable = r;
-	}
-	start = async function() {
-		let me = this;
-		setTimeout(function(){me.run.apply(me,[])},1);
-	};
-
-	run = async function() { 
-			if (this.stopped) return;
-			Clazz.Thread.thread = this;
-			try {
-				await this.runnable.run();
-			} catch (e) {
-				console.log("..Thread.run caught " + (e.getMessage ? e.getMessage():e))
-			}
-			Clazz.Thread.thread = null;
-	};
-	stop = function() {
-		this.waiting = false;
-		this.stopped = true;
-		console.log("..Thread stopped: " + this.name);
-	};
-
-	restart = function() {
-		this.stopped = this.waiting = false;
-		console.log("..Thread restarted: " + this.name);
-		this.start();
-	};
-
-	static wait = async function(obj) {
-		let t = Clazz.Thread.currentThread();
-		obj || (obj = t);
-		obj.__WAIT__ = t;
-		t.waitingOn = obj;
-		while (obj.__WAIT__ == t){
-       		await Clazz.Thread.sleep(500); 
-		}
-	};
-
-	static notify = function(obj) {
-		if (!obj)return;
-		if (obj.__WAIT__) {
-			obj.__WAIT__.waitingOn = null;
-			obj.__WAIT__ = null;
- 		}
-	};
-
-	static thread = null;
-
-	static sleep = async function(ms) {
-			let t = Clazz.Thread.currentThread();			
-   			return new Promise(r => setTimeout(async function() {
-			await r();
-			Clazz.Thread.thread = t;			
-		}, ms));
-	}
-	
-	static currentThread() {
-		return Clazz.Thread.thread;
-	}
-}
-
-Clazz.Thread.sleep$J = Clazz.Thread.sleep;
-
-
-} catch(e) {}
-
-*/ 
 
 J2S.LoadClazz = function(Clazz) {
 	
@@ -14223,7 +14135,10 @@ Clazz.array = function(baseClass, paramType, ndims, params, isClone) {
 
 var _array = function(baseClass, paramType, ndims, params, isClone) {
 	
+  // Object x = Array.newInstance(componentClass, nElements);
+  // var x=Clazz.array((Clazz.array(componentClass, 3);
 
+	
   // int[][].class Clazz.array(Integer.TYPE, -2)
   // new int[] {3, 4, 5} Clazz.array(Integer.TYPE, -1, [3, 4, 5])    
   // new int[][]{new int[] {3, 4, 5}, {new int[] {3, 4, 5}} 
@@ -14272,8 +14187,26 @@ var _array = function(baseClass, paramType, ndims, params, isClone) {
         // new int[] {3, 4, 5};
         return _array(baseClass, prim + "A", -1, vals);
       }
-      // Array.newInstance(int[][].class, 3);  
-      return _array(baseClass, prim + "A", (cl.__NDIM || 0) + 1, [ndims]);
+      // Array.newInstance(int[][].class, 3);
+      
+
+      var nElem = ndims;
+      cl = baseClass;
+
+      ndims = 0;
+      while ((cl = cl.getComponentType$()) != null) {
+    	  baseClass = cl;
+    	  ndims++;
+      }
+      if (ndims > 0) {
+    	  a = new Array(nElem);
+          setArray(a, baseClass, prim + "A", ndims + 1);
+    	  for (var i = nElem; --i >= 0;)
+    		  a[i] = null;
+      } else {
+    	  a = _array(baseClass, prim + "A", ndims + 1, [nElem]);
+      }
+	  return a;
     }      
     params = vals;
     paramType = prim;
@@ -14295,22 +14228,7 @@ var _array = function(baseClass, paramType, ndims, params, isClone) {
   } else {
     var initValue = null;
     if (ndims >= 1 && dofill) {
-      switch (prim) {
-      case "J":
-      case "B":
-      case "H": // short
-      case "I":
-      case "F":
-      case "D":
-        initValue = 0;
-        break;
-      case "C": 
-        initValue = '\0';
-        break;
-      case "Z":
-        initValue = false;
-        break;
-      }
+    	initValue = _initVal(prim);
     }
     var p = params; // an Int32Array
     var n = p.length;
@@ -14340,6 +14258,24 @@ var _array = function(baseClass, paramType, ndims, params, isClone) {
     }  
   }
   return newTypedA(baseClass, params, nbits, (dofill ? ndims : -ndims), isClone);
+}
+
+var _initVal = function(p) {
+    switch (p) {
+    case "J":
+    case "B":
+    case "H": // short
+    case "I":
+    case "F":
+    case "D":
+      return 0;
+    case "C": 
+      return  '\0';
+    case "Z":
+        return  false;
+    default:
+    	return null;
+    }
 }
 
 Clazz.assert = function(clazz, obj, tf, msg) {
@@ -14519,7 +14455,7 @@ var initStatic = function(cl, impls) {
 	} else if (cl.superclazz) {
 			initStatic(cl.superclazz);
 	}
-	cl.$static$ && cl.$static$();
+	cl.$static$ && (initStatics(cl), cl.$static$());
 }
 
 /**
@@ -14587,11 +14523,13 @@ var initClass0 = function(c) {
 	var fields = c.$fields$;
 	var objects = fields && fields[0];
 	createDefaults(c, objects, false);
-	if (!fields)
-		return;
-	var statics = fields[1];
+	fields && initStatics(c);
+}
+
+var initStatics = function(c) {
+	var statics = c.$fields$ && c.$fields$[1];
 	if (statics && statics.length)
-		createDefaults(c, statics, true);
+	createDefaults(c, statics, true);
 }
 
 //C$.$fields$=[
@@ -14602,20 +14540,20 @@ var createDefaults = function(c, data, isStatic) {
 	var a = getFields(c, data, true);
 	if (isStatic) {
 		for (var i = a.length; --i >= 0;) {
-			c[a[i][0]] = a[i][1];
+			var j = a[i][0];
+			if (c[j] != undefined)
+				return;
+			c[j] = a[i][1];
 		}
-	} else {
-		c.$init0$ = 
-			//(function(cs, a) {return 
-			function(){
-				var cs = c.superclazz;
-				cs && cs.$init0$ && cs.$init0$.apply(this);
-				for (var i = a.length; --i >= 0;){
-					this[a[i][0]] = a[i][1];
-				}
-			};
-//		})(c.superclazz, a);
+		return;
 	}
+	c.$init0$ = function(){
+			var cs = c.superclazz;
+			cs && cs.$init0$ && cs.$init0$.apply(this);
+			for (var i = a.length; --i >= 0;){
+				this[a[i][0]] = a[i][1];
+			}
+		};
 		
 }
 
@@ -15003,84 +14941,6 @@ Clazz.newInterface = function (prefix, name, f, _null2, interfacez, _0) {
   f && f(c); // allow for j2sNative block
   return c;
 };
-
-// An interesting idea, but too complicated, and probably not that effective anyway.
-//var lambdaCache = {};
-//Clazz.newLambda = function(fc, m, lambdaType) {
-//	var key = (fc.__CLASS_NAME__ || fc) + "." + (m||0) + "." + lambdaType;
-//	var ret = lambdaCache[key];
-//	if (ret)
-//		return ret;
-//    // creates a new functional interface
-//	// fc is either an executable method from i -> fc() or a class or object from Class::meth
-//	// m is the method name
-//	// lambdaType is 'S', 'F', 'C', or 'P' (Supplier, Function, Consumer, or Predicate)
-//	// note that we should be taking into account Boolean,Int,Double,Long here, and
-//	// we are not fully elaborating the classes. For example getClass() does not work here.
-//	var fAction;
-//	if (m) { // Lambda_M
-//		var g = fc[m];
-//		var f = g||fc.prototype[m];
-//		fAction = function(t) {return f.apply(f == g ? fc : t,[t])};		
-//	} else { // Lambda_E, Lambda_S, Lambda_C, Lambda_T
-//		fAction = fc;
-//	}	
-//	switch(lambdaType) {
-//	case 'S': 
-//		ret =  {get$: fAction,
-//			__CLASS_NAME__:"java_util_function_Supplier"
-//		};
-//		// this is a rough-in
-//		ret.getAsBoolean$ = ret.getAsDouble$ = ret.getAsInt$ = ret.getAsLong$ = ret.get$;
-//		break;
-//	case 'C':
-//		ret =  {accept$: fAction, 
-//				andThen$java_util_function_Function: function(after) { 
-//					if (!after) throw new NullPointerException(); 
-//					return function(t,u) { fAction(t,u); after.accept$(t,u);}
-//				}, 
-//			__CLASS_NAME__:"java_util_function_Consumer"
-//		};
-//		break;
-//	case 'F':
-//		ret = {
-//				apply$: fAction, 
-//				andThen$java_util_function_Function: function(after) { 
-//					if (!after) throw new NullPointerException(); 
-//					return function(t,u) { return after.apply$(fAction(t,u));}
-//				}, 
-//				compose$java_util_function_Function: function(before) {
-//					if (!before) throw new NullPointerException(); 
-//					return function(t,u) { return fAction(before.apply$(t,u));}		
-//				},
-//				identity$: function(t) { return t},
-//				__CLASS_NAME__:"java_util_function_Function"
-//			};
-//		break;
-//	case 'P':
-//		ret =  {test$: fAction, 
-//			and$java_util_function_predicate: function(other) {
-//				if (!other) throw new NullPointerException(); 
-//				return function(t,u) { return fAction(t,u) && other.test$(t,u);}
-//			},
-//			or$java_util_function_predicate: function(other) {
-//				if (!other) throw new NullPointerException(); 
-//				return function(t,u) { return fAction(t,u) || other.test$(t,u);}
-//			},
-//			negate$: function() {
-//				return function(t,u) { return !fAction(t,u) }	
-//			},
-//			isEqual$O: function(target) {
-//				return function(t) { return (target == null) == (t == null)
-//					&& (t == null  || t.equals$O(target));}
-//			},
-//			__CLASS_NAME__:"java_util_function_Predicate"
-//		};
-//		break;
-//	}
-//	
-//	return lambdaCache[key] = ret;
-//};
 
 var __allowOverwriteClass = true;
 
@@ -15616,21 +15476,6 @@ objMethods.equals$O = objMethods.equals;
 
 ;(function(proto) {
 
-//  for (var i = minimalObjNames.length, name; --i >= 0;) {
-//    name = minimalObjNames[i];
-//    objMethods[name].exClazz = Clazz._O;
-//    objMethods[name].exName = name;
-//    Clazz._O[name = objNames[i]] = Array[name] = objMethods[name];
-//  }
-  
-//  addProto(proto, "isInstance", function(c) {
-//    return Clazz.instanceOf(this, c);
-//  }),
-//
-//  addProto(proto, "equals", function (obj) {
-//    return this == obj;
-//  });
-
   addProto(proto, "equals$O", function (obj) {
     return this == obj;
   });
@@ -15676,13 +15521,6 @@ var extendObject = function(clazz, ext) {
   }
 }
 
-//var checkObjectMethods = function (hostSuper, funName) {
-//  for (var k = objNames.length; --k >= 0;)
-//    if (funName == objNames[k] && objMethods[funName] === hostSuper[funName])
-//      return true;
-//  return false;
-//};
-
 // see also 
 var excludeSuper = function(o) {
  return o == "b$" || o == "$this$0"
@@ -15715,6 +15553,7 @@ var copyStatics = function(clazzFrom, clazzThis, isInterface) {
     }
   }
   if (isInterface) {
+	clazzFrom.$static$ && (initStatics(clazzFrom), clazzFrom.$static$());
 	clazzThis.$defaults$ && clazzThis.$defaults$(clazzThis);
 	for (var o in clazzFrom.prototype) {
 	if (clazzThis.prototype[o] == undefined && !excludeSuper(o)) {
@@ -16200,7 +16039,7 @@ throw Clazz.new_(Clazz.load('java.util.NoSuchElementException'));
 
 Clazz.newMeth(C$, ['forEachRemaining$java_util_function_IntConsumer','forEachRemaining$O'], function (block) {
 for (; this.cur < this.b$['CharSequence'].length$(); this.cur++) {
-block.accept$(this.b$['CharSequence'].charAt$I(this.cur).$c());
+block.accept$I(this.b$['CharSequence'].charAt$I(this.cur).$c());
 }
 });
 
@@ -16229,14 +16068,14 @@ try {
 while (i < length){
 var c1 = this.b$['CharSequence'].charAt$I(i++);
 if (!Character.isHighSurrogate$C(c1) || i >= length ) {
-block.accept$(c1.$c());
+block.accept$I(c1.$c());
 } else {
 var c2 = this.b$['CharSequence'].charAt$I(i);
 if (Character.isLowSurrogate$C(c2)) {
 i++;
-block.accept$(Character.toCodePoint$C$C(c1, c2));
+block.accept$I(Character.toCodePoint$C$C(c1, c2));
 } else {
-block.accept$(c1.$c());
+block.accept$I(c1.$c());
 }}}
 } finally {
 this.cur=i;
@@ -16612,7 +16451,7 @@ _Loader.setClasspathFor = function(clazzes) {
   if (!(clazzes instanceof Array))
     clazzes = [clazzes];
     for (var i = clazzes.length; --i >= 0;) {
-      path = clazzes[i];
+      var path = clazzes[i];
       var jar = _Loader.getJ2SLibBase() + path.split(".")[0]+".js";
       path = path.replace(/\//g,".");
       classpathMap["#" + path] = jar;
@@ -17462,37 +17301,46 @@ Sys.err = new Clazz._O ();
 Sys.err.__CLASS_NAME__ = "java.io.PrintStream";
 
 var checkTrace = function(s) {
-	if (J2S._nooutput || J2S._traceFilter && s.indexOf(J2S._traceFilter) < 0) return;
-	if (!J2S._traceFilter && J2S._traceOutput && s && 
-			(("" + s).indexOf(J2S._traceOutput) >= 0 || '"' + s + '"' == J2S._traceOutput)) {
+	if (J2S._nooutput || !J2S._traceFilter && !J2S._traceOutput) return;
+	if (J2S._traceFilter) {
+		if ((s= "" + s).indexOf(J2S._traceFilter) < 0) 
+			return;
+	} else if (!(s = "" + s) || s.indexOf(J2S._traceOutput) < 0 && '"' + s + '"' != J2S._traceOutput) {
+		return;
+	}
 	alert(s + "\n\n" + Clazz._getStackTrace());
 	doDebugger();
-	}
 }
 
 var setps = function(ps, f) {
 
-ps.print = ps.print$O = ps.print$Z = ps.print$I = ps.print$S = ps.print$C = function (s) { 
+ps.flush$ = function() {}
+
+ps.print = ps.print$ = ps.print$O = ps.print$Z = ps.print$I = ps.print$S = ps.print$C = function (s) { 
   checkTrace(s);
-  f(s);
+  f("" + s);
 };
 
 ps.print$J = function(l) {ps.print(Long.$s(l))}
+ps.print$F = ps.print$D = function(f) {
+	var s = "" + f; 
+	ps.println(s.indexOf(".") < 0 && s.indexOf("Inf") < 0 ? s + ".0" : s);
+}
+
 ps.printf = ps.printf$S$OA = ps.format = ps.format$S$OA = function (f, args) {
   ps.print(String.format$S$OA.apply(null, arguments));
 }
 
-ps.flush$ = function() {}
-
-ps.println = ps.println$ = ps.println$O = ps.println$Z = ps.println$I = ps.println$S = ps.println$C = function(s) {
- s = (typeof s == "undefined" ? "" : "" + s);
+ps.println = ps.println$ = ps.println$Z = ps.println$I = ps.println$S = ps.println$C = ps.println$O = function(s) {
  checkTrace(s);
- s = (typeof s == "undefined" ? "\r\n" : s == null ?  s = "null\r\n" : s + "\r\n");
-  f(s);
+ f((s && s.toString ? s.toString() : "" + s)  + "\r\n");
 };
 
 ps.println$J = function(l) {ps.println(Long.$s(l))}
-ps.println$F = ps.println$D = function(f) {var s = "" + f; ps.println(s.indexOf(".") < 0 && s.indexOf("Inf") < 0 ? s + ".0" : s)};
+ps.println$F = ps.println$D = function(f) {
+	var s = "" + f; 
+	ps.println(s.indexOf(".") < 0 && s.indexOf("Inf") < 0 ? s + ".0" : s);
+}
 
 ps.write$I = function(ch) {
   ps.print(String.fromCharCode(ch));	
@@ -17500,7 +17348,7 @@ ps.write$I = function(ch) {
 
 ps.write$BA = function (buf) {
 	ps.write$BA$I$I(buf, 0, buf.length);
-	};
+};
 
 ps.write$BA$I$I = function (buf, offset, len) {
   ps.print(String.instantialize(buf, offset, len));
@@ -17792,7 +17640,10 @@ Number.prototype._numberToString=Number.prototype.toString;
 Number.__CLASS_NAME__="Number";
 addInterface(Number,java.io.Serializable);
 //extendPrototype(Number, true, false);
-Number.prototype.compareTo$ = Number.prototype.compareTo$Number = Number.prototype.compareTo$O = function(x) { var a = this.valueOf(), b = x.valueOf(); return (a < b ? -1 : a == b ? 0 : 1) };
+Number.prototype.compareTo$ = Number.prototype.compareTo$Number = 
+	Number.prototype.compareTo$O = Number.prototype.compareTo$Byte = Number.prototype.compareTo$Integer = 
+	Number.prototype.compareTo$Short = Number.prototype.compareTo$Float = Number.prototype.compareTo$Double = 
+						function(x) { var a = this.valueOf(), b = x.valueOf(); return (a < b ? -1 : a == b ? 0 : 1) };
 
 var $b$ = new Int8Array(1);
 var $s$ = new Int16Array(1);
@@ -18070,9 +17921,9 @@ var radix=(n.startsWith("0x", i) ? 16 : n.startsWith("0", i) ? 8 : 10);
 // The general problem with parseInt is that is not strict -- ParseInt("10whatever") == 10.
 // Number is strict, but Number("055") does not work, though ParseInt("055", 8) does.
 // need to make sure negative numbers are negative
-if (n == "")
- return NaN
-n = Number(n) & 0xFFFFFFFF;
+if (n == "" || radix == 10 && isNaN(+n))
+	return NaN
+n = (+n) & 0xFFFFFFFF;
 return (radix == 8 ? parseInt(n, 8) : n);
 }, 1);
 
@@ -18897,6 +18748,8 @@ var minLong = -maxLong;
 Long.SIZE=Long.prototype.SIZE=64;// REALLY 53
 
 
+m$(Long,["intValue","intValue$"],function(){return Long.$ival(this.valueOf());});
+
 m$(Long,["longValue","longValue$"],function(){return this.valueOf();});
 
 m$(Long,"c$",
@@ -19418,6 +19271,9 @@ function(n){
 }, 1);
 
 Clazz._floatToString = function(f) {
+	if (f === 0) {
+		return (1/f == -Infinity ? "-0.0" : "0.0");
+	}
  var check57 = (Math.abs(f) >= 1e-6 && Math.abs(f) < 1e-3);
  if (check57)
 	f/=1e7;
@@ -19445,7 +19301,7 @@ var maxFloat = 3.4028235E38;
 var minFloat = -3.4028235E38;
 
 m$(Float,"c$", function(v){
-	v || v == null || v != v || (v = 0);
+	v || v == null || v != v || (v == 0) || (v = 0);
 	if (typeof v != "number") 
 	v = Float.parseFloat$S(v);
 	this.valueOf=function(){return v;}
@@ -19461,6 +19317,7 @@ m$(Float, "c$$S", function(v){
 }, 1);
 
 m$(Float, "c$$D", function(v){
+	v || (v = 0);
   v = (v < minFloat ? -Infinity : v > maxFloat ? Infinity : v);
  this.valueOf=function(){return v;}
 }, 1);
@@ -19591,18 +19448,19 @@ return Clazz._floatToString(this.valueOf());
 };
 
 m$(Double, "c$$D", function(v){
+	v || (v = 0);
 	this.valueOf=function(){return v;};
 }, 1);
 
 m$(Double,"c$", function(v){
-v || v == null ||  v != v || (v = 0);
+  v || v == null || v != v || (v == 0) || (v = 0);
  if (typeof v != "number") 
   v = Double.parseDouble$S(v);
  this.valueOf=function(){return v;}
 }, 1);
 
 m$(Double, ["c$$S"], function(v){
-v || v == null || (v = 0);
+v || v == null || (v == 0) || (v = 0);
 if (typeof v != "number") 
 	v = Double.parseDouble$S(v);
 this.valueOf=function(){return v;};
@@ -19749,36 +19607,50 @@ m$(Boolean,"toString$Z",function(b){return "" + b;}, 1);
 
 
 Clazz._Encoding={
-  UTF8:"utf-8",
-  UTF16:"utf-16",
+  UTF8:"utf-8",   // EF BB BF
+  UTF16:"utf-16", // FF FE  (LE)
   ASCII:"ascii"
 };
 
-(function(Encoding) {
+(function(E) {
 
-Encoding.guessEncoding=function(str){
-return (str.charCodeAt(0)==0xEF&&str.charCodeAt(1)==0xBB&&str.charCodeAt(2)==0xBF ? Encoding.UTF8
-  : str.charCodeAt(0)==0xFF&&str.charCodeAt(1)==0xFE ? Encoding.UTF16 
-  : Encoding.ASCII);
+	var textDecoder = (self.TextDecoder && new TextDecoder() || null);
+
+E.guessEncoding=function(str){
+return ((str.charCodeAt(0)&0xFF)==0xEF&&(str.charCodeAt(1)&0xFF)==0xBB&&(str.charCodeAt(2)&0xFF)==0xBF ? E.UTF8
+  : (str.charCodeAt(0)&0xFF)==0xFF&&(str.charCodeAt(1)&0xFF)==0xFE ? E.UTF16 // LE 
+  : E.ASCII);
 };
 
-Encoding.guessEncodingArray=function(a, offset){
-return (a[offset]==0xEF&&a[offset + 1]==0xBB&&a[offset + 2]==0xBF ? Encoding.UTF8 
-  : a[offset + 0]==0xFF&&a[offset + 1]==0xFE ? Encoding.UTF16 : Encoding.ASCII);
+E.guessEncodingArray=function(a, offset){
+return ((a[offset]&0xFF)==0xEF&&(a[offset + 1]&0xFF)==0xBB&&(a[offset + 2]&0xFF)==0xBF ? E.UTF8 
+  : (a[offset + 0]&0xFF)==0xFF&&(a[offset + 1]&0xFF)==0xFE ? E.UTF16 : E.ASCII);
 };
 
-Encoding.readUTF8Array=function(a, offset, length){
-if (arguments.length == 1) {
-  offset = 0;
-  length = a.length;
-}
-var encoding=Encoding.guessEncodingArray(a);
-var startIdx=0;
-if(encoding==Encoding.UTF8){
-startIdx=3;
-}else if(encoding==Encoding.UTF16){
-startIdx=2;
-}
+E.readUTF8Array=function(a, offset, length){
+	// a will be an Int8Array, UTF8 only
+	// TextDecoder will accept a BOM or not. Java doesn't
+  var encoding=E.guessEncodingArray(a, offset);
+  var startIdx=0;
+  if(encoding==E.UTF8){
+	startIdx=3;
+  }else if(encoding==E.UTF16){
+	startIdx=2;
+  }
+  if (textDecoder) {
+	offset += startIdx;
+	length -= startIdx;
+	if (offset == 0 && length == a.length)
+		return textDecoder.decode(a);
+	var arr=new Uint8Array(length);
+	for(var i = 0; i < length; i++){
+		arr[i] = a[offset + i];
+	}
+	// Java needs to see the 0xFEFF byte mark
+	var s = textDecoder.decode(arr);
+	return (startIdx ? '\ufeff' + s : s);
+  }
+// IE only. I don't know where this comes from. Is it Java?
 var arrs=new Array();
 for(var i=offset + startIdx, endIdx = offset + length; i < endIdx; i++){
 var charCode=a[i];
@@ -19801,12 +19673,12 @@ return arrs.join('');
 };
 
 
-Encoding.convert2UTF8=function(str){
+E.convert2UTF8=function(str){
 var encoding=this.guessEncoding(str);
 var startIdx=0;
-if(encoding==Encoding.UTF8){
+if(encoding==E.UTF8){
 return str;
-}else if(encoding==Encoding.UTF16){
+}else if(encoding==E.UTF16){
 startIdx=2;
 }
 
@@ -19830,7 +19702,6 @@ arrs[offset+i-startIdx]=String.fromCharCode(c1)+String.fromCharCode(c2)+String.f
 }
 return arrs.join('');
 };
-
 if(!String.__PARAMCODE){
 
 String.__PARAMCODE = "S";
@@ -19921,20 +19792,6 @@ sp.replace$ = function(c1,c2){
   }
   return this.replace(new RegExp(c1,"gm"),c2);
 };
-
-//// experimental -- only marginally faster:
-//var reCache = new Map();
-//sp.replace2$ = function(c1,c2){
-//	if (c1 == c2 || this.indexOf(c1) < 0) return "" + this;
-//	var re;
-//	if (c1.length == 1) {
-//		re = reCache.get(c1);
-//		re || reCache.set(c1, re = new RegExp("\\$.*+|?^{}()[]".indexOf(c1) == 0 ? "\\" + c1 : c1, 'gm'));
-//	} else {    
-//	re = new RegExp(c1.replace(/([\\\$\.\*\+\|\?\^\{\}\(\)\[\]])/g,function($0,$1){return "\\"+$1;}), 'gm');
-//	}
-//	return this.replace(re,c2);
-//};
 
 // fastest:
 sp.replaceAll$=sp.replaceAll$S$S=sp.replaceAll$CharSequence$CharSequence=function(exp,str){
@@ -20109,8 +19966,7 @@ sp.getBytes$I$I$BA$I=function(i0, i1, dst, dpt) {
 
 sp.getBytes$=sp.getBytes$S=sp.getBytes$java_nio_charset_Charset=function(){
 var s=this;
-if(arguments.length==1){
- var cs=arguments[0].toString().toLowerCase();
+var cs = (arguments.length == 1 ? arguments[0] : "utf-8").toString().toLowerCase();
  var simple=false;
  for(var i=0;i<charset.length;i++){
   if(charset[i]==cs){
@@ -20127,9 +19983,8 @@ if(arguments.length==1){
   return cs.encode$S(this.toString()).toArray$();	
  }
  if(cs=="utf-8"||cs=="utf8"){
-  s=Encoding.convert2UTF8(this);
+  s=E.convert2UTF8(this);
  }
-}
 var arrs=[];
 for(var i=0, ii=0;i<s.length;i++){
 var c=s.charCodeAt(i);
@@ -20174,7 +20029,7 @@ oo[i]=o[off+i];
 return oo.join('');
 }
 }
-return""+o;
+return (o != null && o.toString ? o.toString() : ""+o);
 };
 
 sp.subSequence$I$I=function(beginIndex,endIndex){
@@ -20284,29 +20139,6 @@ sp.trim$ = function() {
 
 })(String.prototype);
 
-/*
-String(byte[] bytes)
-String(char[] value)
-String(StringBuffer buffer)
-String(StringBuilder builder)
-String(String original)
-
-String(char[] value, boolean share) // Java8
-String(byte[] ascii, int hibyte)
-String(byte[] bytes, Charset charset)
-String(byte[] bytes, String charsetName)
-
-String(byte[] bytes, int offset, int length)
-String(char[] value, int offset, int count)
-String(int[] codePoints, int offset, int count)
-
-String(byte[] bytes, int offset, int length, Charset charset)
-String(byte[] bytes, int offset, int length, String charsetName)
-String(byte[] ascii, int hibyte, int offset, int count)
-*/
-
-var textDecoder = null;
-
 // Note that of all these constructors, only new String("xxx") and new String(new String())
 // return actual JavaScript String objects (as of 3.2.9.v1)
 
@@ -20321,21 +20153,24 @@ case 1:
   // String(StringBuffer buffer)
   // String(StringBuilder builder)
   // String(String original)
-  if (x.__BYTESIZE || x instanceof Array){
-    return x.length == 0 ? "" : typeof x[0]=="number" ? Encoding.readUTF8Array(x).toString() : x.join('');
+  if (x.__BYTESIZE){
+    return x.length == 0 ? "" : E.readUTF8Array(x, 0, x.length).toString();
+  }
+  if (x instanceof Array){
+	    return x.length == 0 ? "" : typeof x[0]=="number" ? E.readUTF8Array(new Uint8Array(x), 0, x.length).toString() : x.join('');
   }
   // raw JavaScript string unless new String(string)
   return (typeof x == "string" ||  x instanceof String ? new String(x) : x.toString());
 case 2:  
-  // String(char[] value, boolean share)
   // String(byte[] ascii, int hibyte)
+  // String(char[] value, boolean share) ???
   // String(byte[] bytes, Charset charset)
   // String(byte[] bytes, String charsetName)
 
-  var hibyte=arguments[1];
-  return (typeof hibyte=="number" ? String.instantialize(x,hibyte,0,x.length) 
-	: typeof hibyte == "boolean" ? x.join('') : self.TextDecoder && (textDecoder || (textDecoder = new TextDecoder())) && arguments[1].toString().toUpperCase() == "UTF-8" ? textDecoder.decode(arguments[0])
-	: String.instantialize(x,0,x.length,hibyte)).toString();
+  var a1=arguments[1];
+  return (typeof a1=="number" ? String.instantialize(x,a1,0,x.length) 
+	: typeof a1 == "boolean" ? x.join('') 
+    : String.instantialize(x,0,x.length,a1.toString()));
 case 3:
   // String(byte[] bytes, int offset, int length)
   // String(char[] value, int offset, int count)
@@ -20344,27 +20179,21 @@ case 3:
   var bytes=x;
   var offset=arguments[1];
   var length=arguments[2];
-  if(arguments[2]instanceof Array){
-    // ???
-    bytes=arguments[2];
-    offset=x;
-    length=arguments[1];
-  }
-  var arr=new Array(length);
   if(offset<0||length+offset>bytes.length){
-    throw new IndexOutOfBoundsException();
+	    throw new IndexOutOfBoundsException();
   }
-  if(length>0){
-    var isChar=(bytes[offset].length!=null);
-    if(isChar){
+  if (length == 0)
+	  return "";
+  var arr=new Array(length);
+  var isChar=!!bytes[offset].length;
+  if(isChar){
       for(var i=0;i<length;i++){
         arr[i]=bytes[offset+i];
       }
-    }else{
+  }else{
       for(var i=0;i<length;i++){
         arr[i]=String.fromCharCode(bytes[offset+i]);
       }
-    }
   }
   return arr.join('');
 case 4:
@@ -20378,8 +20207,8 @@ case 4:
     var offset=arguments[1];
     var length=arguments[2];
     if (typeof cs == "string") {
-    	if (",utf8,utf-8,utf_8,".indexOf("," + cs + ",") >= 0)
-    		return Encoding.readUTF8Array(bytes,offset,length).toString();
+    	if (",utf8,utf-8,".indexOf("," + cs.toLowerCase() + ",") >= 0)
+    		return E.readUTF8Array(bytes,offset,length).toString();
     	cs = Clazz.loadClass("java.nio.charset.Charset").forName$S(cs);
     	if (!cs)
     		throw new java.io.UnsupportedEncodingException();
@@ -20775,10 +20604,13 @@ var ht=this.getTime();
 return parseInt(ht)^parseInt((ht>>32));
 });
 
-Date.prototype.toString$ = Date.prototype.toString;
+Date.prototype.toString$ = Date.prototype.toString$$ = Date.prototype.toString;
 m$(java.util.Date,"toString",
 function(){
-return this.toString$().split("(")[0].trim();
+var a = this.toString$().split(" ");
+// Sun Mar 10 1996 17:05:00 GMT-0600 (Central Daylight Time) -> Sun Mar 10 16:05:00 CST 1996 
+return a[0] + " " + a[1] + " " + a[2] + " " + a[4] + " " + a[5] + " " + a[3];
+//	return this.toString$().split("(")[0].trim();
 });
 })();
 
@@ -20805,31 +20637,13 @@ dp.setMonth$I = dp.setMonth;
 dp.setSeconds$I = dp.setSeconds;
 dp.setTime$J = dp.setTime;
 dp.setYear$I = dp.setYear;
-dp.toGMTString$ = dp.toGMTString;
+dp.toGMTString$ = dp.toUTCString || dp.toGMTString;
 dp.toLocaleString$ = dp.toLocaleString = dp.toLocaleDateString;
 dp.UTC$ = dp.UTC;
 
 
 	
 })(Date.prototype);
-
-/*
- Java8 classes have default methods
-Clazz.newInterface(java.util,"Iterator");
-
-Clazz.newInterface(java.util,"ListIterator",java.util.Iterator);
-Clazz.newInterface(java.util,"Enumeration");
-Clazz.newInterface(java.util,"Collection",Iterable);
-
-Clazz.newInterface(java.util,"Set",java.util.Collection);
-Clazz.newInterface(java.util,"Map");
-Clazz.newInterface(java.util.Map,"Entry");
-
-Clazz.newInterface(java.util,"List",java.util.Collection);
-
-Clazz.newInterface(java.util,"Queue",java.util.Collection);
-Clazz.newInterface(java.util,"RandomAccess");
-*/
 
 var C$ = Clazz.newClass(java.lang, "Throwable", function () {
 Clazz.newInstance(this, arguments);
@@ -21423,9 +21237,6 @@ var newMethodNotFoundException = function (clazz, method) {
   console.log(message);
   throw Clazz.new_(java.lang.NoSuchMethodException.c$$S, [message]);        
 };
-
-// Constructor, Field, Method all moved back to their original class js; no need to have those here
-
 
 //  if (needPackage("core"))
   //  _Loader.loadPackage("core");  

@@ -624,8 +624,6 @@ var bias=Clazz.array($I$(4), [1]);
 var magicPosition=caret.getMagicCaretPosition$();
 try {
 if (magicPosition == null  && (this.direction == 1 || this.direction == 5 ) ) {
-var r=(bidiCaret != null ) ? (target.getUI$()).modelToView$javax_swing_text_JTextComponent$I$javax_swing_text_Position_Bias(target, dot, bidiCaret.getDotBias$()) : target.modelToView$I(dot);
-magicPosition=Clazz.new_($I$(3,1).c$$I$I,[r.x, r.y]);
 }var filter=target.getNavigationFilter$();
 if (filter != null ) {
 dot=filter.getNextVisualPositionFrom$javax_swing_text_JTextComponent$I$javax_swing_text_Position_Bias$I$javax_swing_text_Position_BiasA(target, dot, (bidiCaret != null ) ? bidiCaret.getDotBias$() : $I$(4).Forward, this.direction, bias);
@@ -1165,4 +1163,4 @@ target.秘repaint$();
 }});
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:21 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:20 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

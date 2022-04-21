@@ -153,6 +153,7 @@ this.id+="_" + this.num;
 Clazz.newMeth(C$, 'getListNode$',  function () {
 var node=this.reInit$Z(true);
 this.reInit$Z(false);
+this.imagePersists=true;
 return node;
 });
 
@@ -406,7 +407,7 @@ if (this.isAWT) p$1.setAWTFontAndColor$java_awt_Container.apply(this, [value]);
 if (this.cellComponent != null ) return;
 p$1.updatePropertyAncestor$Z.apply(this, [false]);
 if (value == null ) return;
-if (this.isDisposed && this.c.visible && e.getNewValue$() != null   ) this.setVisible$Z(true);
+if ((this.isDisposed || this.isTainted ) && this.c.visible ) this.setVisible$Z(true);
 }this.propertyChangedCUI$java_beans_PropertyChangeEvent$S(e, prop);
 });
 
@@ -433,7 +434,9 @@ switch (prop) {
 case "ancestor":
 if (this.cellComponent != null  || e.getNewValue$() == null  ) return;
 var anc=$I$(10).秘getTopInvokableAncestor$java_awt_Component$Z(this.c, false);
-p$1.updatePropertyAncestor$Z.apply(this, [anc != null  && anc.isVisible$() ]);
+var isVis=(anc != null  && anc.isVisible$() );
+p$1.updatePropertyAncestor$Z.apply(this, [isVis]);
+if (isVis && this.isTainted ) this.setHTMLElement$();
 break;
 }
 this.propertyChangedCUI$java_beans_PropertyChangeEvent$S(e, prop);
@@ -656,7 +659,7 @@ w0 = node.style.width; h0 = node.style.height; position = node.style.position;
 if (node == centerNode && simpleButton) { w0i = dNode.style.width;
 h0i = dNode.style.height; }
 }
-}$I$(5).setStyles(node, ["position", null, "width", null, "height", null]);
+}$I$(5,"setStyles",[node, ["position", null, "width", this.getSizingWidth$(), "height", null]]);
 if (this.innerNode != null ) $I$(5).setStyles(this.innerNode, ["width", null, "height", null]);
 if (node === this.centeringNode ) {
 if (!this.isHTML) {
@@ -688,6 +691,10 @@ node.focus();
 }}return dim;
 });
 
+Clazz.newMeth(C$, 'getSizingWidth$',  function () {
+return null;
+});
+
 Clazz.newMeth(C$, 'getBoundingRect$swingjs_api_js_DOMNode',  function (node) {
 if (C$.tempDiv == null ) {
 C$.tempDiv=$I$(5).createElement("div", "_temp");
@@ -711,7 +718,7 @@ return this.setHTMLElementCUI$();
 Clazz.newMeth(C$, 'setHTMLElementCUI$',  function () {
 if (this.isUIDisabled || !this.isTainted ) return this.outerNode;
 if (this.isDummyFrame) {
-this.isTainted=false;
+this.setTainted$Z(false);
 return (this.outerNode=$I$(5).createElement("div", "dummyFrame"));
 }this.updateDOMNode$();
 p$1.checkTransparent.apply(this, []);
@@ -743,7 +750,7 @@ $I$(5).transferTo(this.outerNode, this.body);
 $I$(5).setStyle(this.outerNode, "position", "absolute");
 }} else {
 $I$(5).setStyle(this.outerNode, "overflow", "hidden");
-}this.isTainted=false;
+}this.setTainted$Z(false);
 if (this.embeddingNode != null ) {
 $I$(5).detachAll(this.embeddingNode);
 $I$(5).appendChildSafely(this.embeddingNode, this.outerNode);
@@ -800,6 +807,7 @@ return this.height=this.c.getHeight$();
 Clazz.newMeth(C$, 'update$java_awt_Graphics$javax_swing_JComponent',  function (g, c) {
 if (this.isUIDisabled) return;
 if (this.cellComponent == null ) {
+if ($I$(5).getParent(this.domNode) !== this.outerNode ) this.setTainted$();
 this.setHTMLElement$();
 if (this.allowTextAlignment && this.centeringNode != null  ) this.setAlignments$javax_swing_AbstractButton$Z(this.jc, false);
 }this.paint$java_awt_Graphics$javax_swing_JComponent(g, c);
@@ -865,7 +873,7 @@ return $I$(5,"getAttr",[this.domNode, this.valueNode == null  ? "innerText" : "v
 });
 
 Clazz.newMeth(C$, 'getOuterNode$',  function () {
-return (this.outerNode == null  && !this.isUIDisabled  ? this.setHTMLElement$() : this.outerNode);
+return ((this.outerNode == null  || this.isTainted && !this.isTable  ) && !this.isUIDisabled  ? this.setHTMLElement$() : this.outerNode);
 });
 
 Clazz.newMeth(C$, 'setJSText$swingjs_api_js_DOMNode$S$S',  function (obj, prop, val) {
@@ -1672,7 +1680,7 @@ this.setTainted$();
 Clazz.newMeth(C$, 'checkStopPopupMenuTimer$O$I$O',  function (target, eventType, jQueryEvent) {
 if (target === this.domNode  && eventType == -1 ) {
 var type=(jQueryEvent.type ||"");
-if (type.equals$O("mouseenter")) {
+if (type.equals$O("mouseenter") || type.equals$O("pointerenter") ) {
 this.stopPopupMenuTimer$();
 }}});
 
@@ -1743,7 +1751,7 @@ var isOpaque=this.c.isOpaque$();
 var paintsSelf=this.jc.秘paintsSelf$();
 if (g == null ) {
 if (!paintsSelf) this.setBackgroundDOM$swingjs_api_js_DOMNode$java_awt_Color(this.domNode, color);
-} else if (this.allowPaintedBackground && (isOpaque && (this.isPanel || this.cellComponent != null   || this.jc.getComponentCount$() > 0 )  || this.jc.秘g != null  ) ) {
+} else if (this.allowPaintedBackground && (isOpaque && (this.isPanel || this.isLabel && paintsSelf   || this.cellComponent != null   || this.jc.getComponentCount$() > 0 )  || this.jc.秘g != null  ) ) {
 if (isOpaque == (color.getAlpha$() == 255) ) {
 g.setBackground$java_awt_Color(color);
 } else {
@@ -1812,4 +1820,4 @@ C$.zeroInsets=Clazz.new_($I$(3,1).c$$I$I$I$I,[0, 0, 0, 0]);
 });
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:03 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:13 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

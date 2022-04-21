@@ -146,9 +146,11 @@ switch (jQueryEvent.type ||"") {
 case "click":
 this.frameCloserAction$();
 return true;
+case "pointerout":
 case "mouseout":
 $I$(3).setStyle(this.closerNode, "background-color", "#DDD");
 return true;
+case "pointerenter":
 case "mouseenter":
 $I$(3).setStyle(this.closerNode, "background-color", "red");
 return true;
@@ -268,4 +270,4 @@ C$.$static$=function(){C$.$static$=0;
 C$.ZERO_INSETS=Clazz.new_($I$(1,1).c$$I$I$I$I,[0, 0, 0, 0]);
 };
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:27 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:14 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

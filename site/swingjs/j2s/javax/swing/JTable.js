@@ -975,7 +975,7 @@ Clazz.newMeth(C$, 'setSizeAt$I$I',  function (s, i) {
 this.$finals$.cm.getColumn$I(i + this.$finals$.start).setWidth$I(s);
 });
 })()
-), Clazz.new_(P$.JTable$3.$init$,[this, {start:start,cm:cm,end:end}]));
+), Clazz.new_(P$.JTable$3.$init$,[this, {start:start,end:end,cm:cm}]));
 var totalWidth=0;
 for (var i=from; i < to; i++) {
 var aColumn=this.columnModel.getColumn$I(i);
@@ -1142,7 +1142,7 @@ Clazz.newMeth(C$, 'run$',  function () {
 if (this.$finals$.me.hasFocus$()) this.$finals$.comp.requestFocus$();
 });
 })()
-), Clazz.new_(P$.JTable$6.$init$,[this, {me:me,comp:comp}]))]);
+), Clazz.new_(P$.JTable$6.$init$,[this, {comp:comp,me:me}]))]);
 }this.setEditingRow$I(row);
 this.setEditingColumn$I(column);
 this.setCellEditor$javax_swing_table_TableCellEditor(editor);
@@ -2454,4 +2454,4 @@ Clazz.newMeth(C$, 'c$$javax_swing_JCheckBox$Z',  function (c, value) {
 Clazz.newMeth(C$);
 })()
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:33:46 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:26:10 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4

@@ -1,4 +1,4 @@
-(function(){var P$=Clazz.newPackage("swingjs.plaf"),p$1={},I$=[[0,'javax.swing.MenuSelectionManager','swingjs.plaf.ButtonListener','swingjs.plaf.JSComponentUI','swingjs.plaf.JSPopupMenuUI','javax.swing.MenuElement',['swingjs.plaf.ButtonListener','.Actions'],'swingjs.plaf.LazyActionMap','javax.swing.SwingUtilities','javax.swing.UIManager','javax.swing.plaf.ComponentInputMapUIResource','sun.swing.DefaultLookup','javax.swing.KeyStroke']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
+(function(){var P$=Clazz.newPackage("swingjs.plaf"),p$1={},I$=[[0,'javax.swing.MenuSelectionManager','swingjs.plaf.ButtonListener','swingjs.plaf.JSComponentUI','swingjs.plaf.JSPopupMenuUI','javax.swing.MenuElement',['swingjs.plaf.ButtonListener','.Actions'],'swingjs.api.js.DOMNode','swingjs.plaf.LazyActionMap','javax.swing.SwingUtilities','javax.swing.UIManager','javax.swing.plaf.ComponentInputMapUIResource','sun.swing.DefaultLookup','javax.swing.KeyStroke']],I$0=I$[0],$I$=function(i,n,m){return m?$I$(i)[n].apply(null,m):((i=(I$[i]||(I$[i]=Clazz.load(I$0[i])))),!n&&i.$load$&&Clazz.load(i,2),i)};
 /*c*/var C$=Clazz.newClass(P$, "ButtonListener", function(){
 Clazz.newInstance(this, arguments,0,C$);
 }, null, ['java.awt.event.MouseListener', 'java.awt.event.MouseMotionListener', 'java.awt.event.FocusListener', 'javax.swing.event.ChangeListener', 'java.beans.PropertyChangeListener']);
@@ -47,35 +47,37 @@ break;
 });
 
 Clazz.newMeth(C$, 'checkOpacity$javax_swing_AbstractButton',  function (b) {
-b.setOpaque$Z(b.isContentAreaFilled$());
+if (!b.isContentAreaFilled$()) {
+$I$(7).setStyles(this.ui.domNode, ["border", "none", "outline", "none"]);
+}b.setOpaque$Z(b.isContentAreaFilled$());
 });
 
 Clazz.newMeth(C$, 'installKeyboardActions$javax_swing_JComponent',  function (c) {
-$I$(7,"installLazyActionMap$javax_swing_JComponent$Class$S",[c, Clazz.getClass(C$), "Button.actionMap"]);
+$I$(8,"installLazyActionMap$javax_swing_JComponent$Class$S",[c, Clazz.getClass(C$), "Button.actionMap"]);
 if (!this.ui.isMenu && !this.ui.isMenuItem ) {
 var button=c;
 this.updateMnemonicBinding$javax_swing_AbstractButton(button);
 var km=this.getInputMap$I$javax_swing_JComponent(0, c);
-$I$(8).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(c, 0, km);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(c, 0, km);
 return;
-}if (this.ui.isMenu) C$.crossMenuMnemonic=$I$(9).getBoolean$O("Menu.crossMenuMnemonic");
+}if (this.ui.isMenu) C$.crossMenuMnemonic=$I$(10).getBoolean$O("Menu.crossMenuMnemonic");
 this.createInputMap$javax_swing_JComponent(c);
 this.updateAcceleratorBinding$javax_swing_JComponent(c);
 });
 
 Clazz.newMeth(C$, 'createInputMap$javax_swing_JComponent',  function (c) {
-return Clazz.new_($I$(10,1).c$$javax_swing_JComponent,[c]);
+return Clazz.new_($I$(11,1).c$$javax_swing_JComponent,[c]);
 });
 
 Clazz.newMeth(C$, 'uninstallKeyboardActions$javax_swing_JComponent',  function (c) {
-$I$(8).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(c, 2, null);
-$I$(8).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(c, 0, null);
-$I$(8).replaceUIActionMap$javax_swing_JComponent$javax_swing_ActionMap(c, null);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(c, 2, null);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(c, 0, null);
+$I$(9).replaceUIActionMap$javax_swing_JComponent$javax_swing_ActionMap(c, null);
 });
 
 Clazz.newMeth(C$, 'getInputMap$I$javax_swing_JComponent',  function (condition, c) {
 if (condition == 0) {
-return $I$(11,"get$javax_swing_JComponent$javax_swing_plaf_ComponentUI$S",[c, this.ui, this.ui.getPropertyPrefix$() + ".focusInputMap"]);
+return $I$(12,"get$javax_swing_JComponent$javax_swing_plaf_ComponentUI$S",[c, this.ui, this.ui.getPropertyPrefix$() + ".focusInputMap"]);
 }return null;
 });
 
@@ -86,33 +88,33 @@ if (this.ui.isMenu && m != 0  && this.lastMnemonic != 0 ) {
 this.ui.setMnemonic$I(m);
 }if (m == this.lastMnemonic) return;
 if (this.ui.isMenuItem || this.ui.isMenu ) {
-var shortcutKeys=$I$(11).get$javax_swing_JComponent$javax_swing_plaf_ComponentUI$S(this.ui.menuItem, this.ui, "Menu.shortcutKeys");
+var shortcutKeys=$I$(12).get$javax_swing_JComponent$javax_swing_plaf_ComponentUI$S(this.ui.menuItem, this.ui, "Menu.shortcutKeys");
 if (shortcutKeys == null ) {
 shortcutKeys=Clazz.array(Integer.TYPE, -1, [8]);
-}var map=$I$(8).getUIInputMap$javax_swing_JComponent$I(this.ui.menuItem, 2);
+}var map=$I$(9).getUIInputMap$javax_swing_JComponent$I(this.ui.menuItem, 2);
 if (this.lastMnemonic != 0 && map != null  ) {
 for (var shortcutKey, $shortcutKey = 0, $$shortcutKey = shortcutKeys; $shortcutKey<$$shortcutKey.length&&((shortcutKey=($$shortcutKey[$shortcutKey])),1);$shortcutKey++) {
-map.remove$javax_swing_KeyStroke($I$(12).getKeyStroke$I$I$Z(this.lastMnemonic, shortcutKey, false));
+map.remove$javax_swing_KeyStroke($I$(13).getKeyStroke$I$I$Z(this.lastMnemonic, shortcutKey, false));
 }
 }if (m != 0) {
 if (map == null ) {
 map=this.createInputMap$javax_swing_JComponent(this.ui.menuItem);
-$I$(8).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(this.ui.menuItem, 2, map);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(this.ui.menuItem, 2, map);
 }for (var i=shortcutKeys.length; --i >= 0; ) {
-map.put$javax_swing_KeyStroke$O($I$(12).getKeyStroke$I$I$Z(m, shortcutKeys[i], false), this.ui.isMenu ? "selectMenu" : "doClick");
+map.put$javax_swing_KeyStroke$O($I$(13).getKeyStroke$I$I$Z(m, shortcutKeys[i], false), this.ui.isMenu ? "selectMenu" : "doClick");
 }
 }}this.lastMnemonic=m;
 if (this.ui.isMenuItem || this.ui.isMenu ) {
 return;
-}var map=$I$(8).getUIInputMap$javax_swing_JComponent$I(b, 2);
+}var map=$I$(9).getUIInputMap$javax_swing_JComponent$I(b, 2);
 if (m != 0) {
 if (map == null ) {
-map=Clazz.new_($I$(10,1).c$$javax_swing_JComponent,[b]);
-$I$(8).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(b, 2, map);
+map=Clazz.new_($I$(11,1).c$$javax_swing_JComponent,[b]);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(b, 2, map);
 }map.clear$();
-map.put$javax_swing_KeyStroke$O($I$(12).getKeyStroke$I$I$Z(m, 8, false), "pressed");
-map.put$javax_swing_KeyStroke$O($I$(12).getKeyStroke$I$I$Z(m, 8, true), "released");
-map.put$javax_swing_KeyStroke$O($I$(12).getKeyStroke$I$I$Z(m, 0, true), "released");
+map.put$javax_swing_KeyStroke$O($I$(13).getKeyStroke$I$I$Z(m, 8, false), "pressed");
+map.put$javax_swing_KeyStroke$O($I$(13).getKeyStroke$I$I$Z(m, 8, true), "released");
+map.put$javax_swing_KeyStroke$O($I$(13).getKeyStroke$I$I$Z(m, 0, true), "released");
 } else if (map != null ) {
 map.clear$();
 }});
@@ -142,7 +144,7 @@ Clazz.newMeth(C$, 'mouseClicked$java_awt_event_MouseEvent',  function (e) {
 });
 
 Clazz.newMeth(C$, 'mousePressed$java_awt_event_MouseEvent',  function (e) {
-if ($I$(8).isLeftMouseButton$java_awt_event_MouseEvent(e)) {
+if ($I$(9).isLeftMouseButton$java_awt_event_MouseEvent(e)) {
 var b=e.getSource$();
 var ui=b.秘getUI$();
 if (ui.isMenu) {
@@ -157,12 +159,11 @@ if (i >= 0) mb.getMenu$I(i).setSelected$Z(false);
 }}});
 
 Clazz.newMeth(C$, 'mouseReleased$java_awt_event_MouseEvent',  function (e) {
-if ($I$(8).isLeftMouseButton$java_awt_event_MouseEvent(e)) {
+if ($I$(9).isLeftMouseButton$java_awt_event_MouseEvent(e)) {
 var b=e.getSource$();
 if (C$.checkHideMenus$javax_swing_AbstractButton(b)) return;
 b.doClick$I(0);
 this.verifyButtonClick$javax_swing_AbstractButton$Z(b, true);
-var ui=b.秘getUI$();
 }});
 
 Clazz.newMeth(C$, 'checkHideMenus$javax_swing_AbstractButton',  function (b) {
@@ -175,7 +176,7 @@ return false;
 Clazz.newMeth(C$, 'mouseEntered$java_awt_event_MouseEvent',  function (e) {
 var b=e.getSource$();
 var model=b.getModel$();
-if (b.isRolloverEnabled$() && !$I$(8).isLeftMouseButton$java_awt_event_MouseEvent(e) ) {
+if (b.isRolloverEnabled$() && !$I$(9).isLeftMouseButton$java_awt_event_MouseEvent(e) ) {
 model.setRollover$Z(true);
 }if (model.isPressed$()) model.setArmed$Z(true);
 });
@@ -203,16 +204,16 @@ var a;
 if (this.ui.isMenu && (this.ui.jc).isTopLevelMenu$() ) {
 var i=(this.ui.jc).getMnemonic$();
 if (i == 0) return;
-a=$I$(12).getKeyStroke$I$I$Z(i, 8, false);
+a=$I$(13).getKeyStroke$I$I$Z(i, 8, false);
 } else {
 a=this.ui.menuItem.getAccelerator$();
-}var map=$I$(8).getUIInputMap$javax_swing_JComponent$I(jc, 2);
+}var map=$I$(9).getUIInputMap$javax_swing_JComponent$I(jc, 2);
 if (map != null ) {
 map.clear$();
 }if (a != null ) {
 if (map == null ) {
 map=this.createInputMap$javax_swing_JComponent(jc);
-$I$(8).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(jc, 2, map);
+$I$(9).replaceUIInputMap$javax_swing_JComponent$I$javax_swing_InputMap(jc, 2, map);
 }map.put$javax_swing_KeyStroke$O(a, "doClick");
 }});
 ;
@@ -325,4 +326,4 @@ Clazz.newMeth(C$);
 
 Clazz.newMeth(C$);
 })();
-;Clazz.setTVer('3.3.1-v1');//Created 2021-05-28 11:34:05 Java2ScriptVisitor version 3.3.1-v1 net.sf.j2s.core.jar version 3.3.1-v1
+;Clazz.setTVer('3.3.1-v4');//Created 2022-03-19 05:27:11 Java2ScriptVisitor version 3.3.1-v4 net.sf.j2s.core.jar version 3.3.1-v4
