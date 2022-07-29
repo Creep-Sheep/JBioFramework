@@ -110,20 +110,18 @@
   }
 
   .simulation {
-    height: 550px;
+    height: 450px;
     display: block;
-    justify-content: center;
-    align-items:center;
     position: relative;
     top: 90px;
     grid-area: section;
-    align-content: center;
-    margin-left: 185px;
-    margin-bottom: 80px;
-    width: 80%;
-    padding: 10px;
+    /*margin-left: 185px;*/
+    padding: 20px;
     z-index: 1;
     font-size: 1px;
+    margin: auto;
+    width: 50%;
+    border: 3px solid red;
   }
 
   .tab{
@@ -133,15 +131,17 @@
 .content {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
   max-width: 800px;
   margin: 50px;
-  padding: 20px;
+  padding: 100px;
   color: #000;
   align-content: center;
   margin: auto;
   width: 80%;
   padding: 10px;
   line-height: 20px;
+  z-index: 2;
 }
 
 .content input[type="radio"] {
@@ -270,4 +270,9 @@ section.nsf {
   float: right;
   position: relative;
   right: 20px;
+}
+
+.space {
+  height: 300px;
+  display:block;
 }
